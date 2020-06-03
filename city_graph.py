@@ -31,6 +31,19 @@ class city_graph:
         self.plot = False
         self.text = ""
 
+
+        from sidermit.graph import Graph
+        from sidermit.exceptions import SIDERMITException, NodeTypeIsNotValidException, NIsNegative
+        try:
+            g = Graph.build_from_file('golasasasd')
+            g = Graph.build_from_parameters(n, L, g)
+        except NodeTypeIsNotValidException:
+            print('El grafo ingresado no es válido, intente nuevamente')
+            exit(0)
+        except NIsNegative:
+            print('El valor ingreso no puede ser negativo')
+            exit('0')
+
         # Validación de parámetros
         # faltan validaciones geométricas
         validation_parameters, text_parameters = self.parameters_validation(n, L, g, etha, etha_zone, angles, Gi,
