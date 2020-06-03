@@ -25,25 +25,33 @@ class city_graph:
                  name_zones=None,
                  df_nodes=None, df_edges=None):
 
+        # return por defaults
         self.nodes = pd.DataFrame()
         self.edges = pd.DataFrame()
         self.plot = False
+        self.text = ""
 
         # Validación de parámetros
         # faltan validaciones geométricas
-        validation_parameters = self.parameters_validation(n, L, g, etha, etha_zone, angles, Gi, Hi, name_zones)
+        validation_parameters, text_parameters = self.parameters_validation(n, L, g, etha, etha_zone, angles, Gi,
+                                                                                 Hi, name_zones)
         # falta validacion de dataframes de entradas
-        validation_nodes = self.nodes_validation(df_nodes)
-        validation_edges = self.edge_validation(df_edges)
+        validation_nodes, text_nodes = self.nodes_validation(df_nodes)
+        validation_edges, text_edges = self.edges_validation(df_edges)
 
         # Contruccion por archivos externos
         if df_nodes is not None and df_edges is not None and validation_nodes and validation_edges:
             self.nodes = df_nodes
             self.edges = df_edges
             self.plot = True
-
+        if df_nodes is not None and df_edges is not None and validation_nodes is False:
+            self.text = text_nodes
+        if df_nodes is not None and df_edges is not None and validation_edges is False:
+            self.text = text_edges
         # contruccion por parámetros
         # requiere validación de parámetros
+        if df_nodes is None and df_edges is None and validation_parameters is False:
+            self.text = text_parameters
         if df_nodes is None and df_edges is None and validation_parameters:
             # datos de nodos
             id_nodes = []
@@ -205,7 +213,7 @@ class city_graph:
             y_cbd = self.nodes.at[0, 'y']
 
             self.edges = pd.DataFrame()
-            id_arc = []
+            id_edges = []
             nodei = []
             nodej = []
             distance = []
@@ -234,12 +242,12 @@ class city_graph:
                 dist_sc1_cbd = math.sqrt((x_cbd - x_sc1) ** 2 + (y_cbd - y_sc1) ** 2)
                 dist_sc1_sc2 = math.sqrt((x_sc2 - x_sc1) ** 2 + (y_sc2 - y_sc1) ** 2)
 
-                id_arc.append(6 * i + 1)  # p - sc1
-                id_arc.append(6 * i + 2)  # sc1 - p
-                id_arc.append(6 * i + 3)  # sc1 - cbd
-                id_arc.append(6 * i + 4)  # cbd - sc1
-                id_arc.append(6 * i + 5)  # sc1 - sc2
-                id_arc.append(6 * i + 6)  # sc2 - sc1
+                id_edges.append(6 * i + 1)  # p - sc1
+                id_edges.append(6 * i + 2)  # sc1 - p
+                id_edges.append(6 * i + 3)  # sc1 - cbd
+                id_edges.append(6 * i + 4)  # cbd - sc1
+                id_edges.append(6 * i + 5)  # sc1 - sc2
+                id_edges.append(6 * i + 6)  # sc2 - sc1
 
                 nodei.append(2 * i + 1)
                 nodei.append(2 * i + 2)
@@ -296,7 +304,7 @@ class city_graph:
                 y_j.append(y_sc2)
                 y_j.append(y_sc1)
 
-            self.edges["id_arc"] = id_arc
+            self.edges["id_edges"] = id_edges
             self.edges["nodei"] = nodei
             self.edges["nodej"] = nodej
             self.edges["distance"] = distance
@@ -315,15 +323,19 @@ class city_graph:
     # permite evaluar dataframe de nodes
     @staticmethod
     def nodes_validation(df_nodes):
+        text = ""
         if df_nodes is None:
-            return False
-        return True
+            text = "Error city_graph: proporcionar información de nodos"
+            return False, text
+        return True, text
 
     @staticmethod
-    def edge_validation(df_edges):
+    def edges_validation(df_edges):
+        text = ""
         if df_edges is None:
-            return False
-        return True
+            text = "Error city_graph: proporcionar información de nodos"
+            return False, text
+        return True, text
 
     # permite validad los parámetros de inicialización de la clase
     @staticmethod
@@ -332,77 +344,77 @@ class city_graph:
                               name_zones):
         # para caso simétrico y asimétrico
         if n is None:
-            print("Error city_graph: debe especificar valor para n")
-            return False
+            text = "Error city_graph: debe especificar valor para n"
+            return False, text
         if n is not None:
             if n <= 0:
-                print("Error city_graph: n debe ser mayor a 0")
-                return False
+                text = "Error city_graph: n debe ser mayor a 0"
+                return False, text
         if L is None:
-            print("Error city_graph: debe especificar valor para L")
-            return False
+            text = "Error city_graph: debe especificar valor para L"
+            return False, text
         if g is None:
-            print("Error city_graph: debe especificar valor para g")
-            return False
+            text = "Error city_graph: debe especificar valor para g"
+            return False, text
         if L is not None:
             if L < 0:
-                print("Error city_graph: L debe ser un valor positivo")
-                return False
+                text = "Error city_graph: L debe ser un valor positivo"
+                return False, text
         if g is not None:
             if g < 0:
-                print("Error city_graph: g debe ser un valor positivo")
-                return False
+                text = "Error city_graph: g debe ser un valor positivo"
+                return False, text
         if name_zones is not None:
             if n != len(name_zones):
-                print("Error city_graph: n_zones debe ser de tamaño n")
-                return False
+                text = "Error city_graph: n_zones debe ser de tamaño n"
+                return False, text
         # caso simétrico
         if etha is None and etha_zone is None and angles is None and Gi is None and Hi is None:
-            print("Construcción ciudad: caso simétrico")
+            text = ""
         # caso asimétrico
         else:
-            print("Construcción ciudad: caso asimétrico")
+            text = ""
             # excentricidad
             if etha is None and etha_zone is not None:
-                print("Error city_graph: debe especificar valor para etha y etha_zone simultaneamente")
-                return False
+                text = "Error city_graph: debe especificar valor para etha y etha_zone simultaneamente"
+                return False, text
             if etha is not None and etha_zone is None:
-                print("Error city_graph: debe especificar valor para etha y etha_zone simultaneamente")
-                return False
+                text = "Error city_graph: debe especificar valor para etha y etha_zone simultaneamente"
+                return False, text
             if etha_zone is not None:
                 if etha_zone > n or etha_zone < 1:
-                    print("Error city_graph: etha_zone debe ser una zona válida rango en [1,...,n]")
-                    return False
+                    text = "Error city_graph: etha_zone debe ser una zona válida rango en [1,...,n]"
+                    return False, text
             if etha is not None:
                 if etha > 1 or etha < 0:
-                    print("Error city_graph: etha debe pertenecer a rango [0-1]")
-                    return False
+                    text = "Error city_graph: etha debe pertenecer a rango [0-1]"
+                    return False, text
             if etha == 1 and etha_zone is not None:
-                print("Warning city_graph: zona {}: SC y CBD se sobreponen".format(etha_zone))
+                text = "Warning city_graph: zona {}: SC y CBD se sobreponen".format(etha_zone)
             # angularidad
             if angles is not None:
                 if n != len(angles):
-                    print("Error city_graph: el vector angles debe ser de tamaño n")
-                    return False
+                    text = "Error city_graph: el vector angles debe ser de tamaño n"
+                    return False, text
                 for ang in angles:
                     if ang < 0 or ang > 360:
-                        print("Error city_graph: cada angulo de angles debe estar en el rango [0°-360°]")
-                        return False
+                        text = "Error city_graph: cada angulo de angles debe estar en el rango [0°-360°]"
+                        return False, text
             # distancia
             if Gi is not None:
                 if n != len(Gi):
-                    print("Error city_graph: Gi debe ser de tamaño n")
-                    return False
+                    text = "Error city_graph: Gi debe ser de tamaño n"
+                    return False, text
                 for gi in Gi:
                     if gi < 0:
-                        print("Error city_graph: cada elemento de Gi debe ser positivo")
-                        return False
+                        text = "Error city_graph: cada elemento de Gi debe ser positivo"
+                        return False, text
             if Hi is not None:
                 if n != len(Hi):
-                    print("Error city_graph: Hi debe ser de tamaño n")
-                    return False
+                    text = "Error city_graph: Hi debe ser de tamaño n"
+                    return False, text
                 for hi in Hi:
                     if hi < 0:
-                        print("Error city_graph: cada elemento de Hi debe ser positivo")
-                        return False
-        return True
+                        text = "Error city_graph: cada elemento de Hi debe ser positivo"
+                        return False, text
+        return True, text

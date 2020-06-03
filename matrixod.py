@@ -15,9 +15,15 @@ class matrixod:
 
         self.matrix = pd.DataFrame()
         self.plot = False
+        self.text = ""
 
-        validation_matrix = self.matrix_validation(df_matrix)
-        validation_parameters = self.parameters_validation(n, y, a, alpha, beta)
+        validation_matrix, text_matrix = self.matrix_validation(df_matrix)
+        validation_parameters, text_parameters = self.parameters_validation(n, y, a, alpha, beta)
+
+        if validation_matrix is False and df_matrix is not None:
+            self.text = text_matrix
+        if validation_parameters is False and df_matrix is None:
+            self.text = text_parameters
 
         # Permitimos demanda asimetrica mediante la carga de un archivo de texto
         # (periferias + subcentros + CBD = 2n+1)
@@ -111,59 +117,63 @@ class matrixod:
         # elemento 0 es el CBD
         # relación de periferias y sub centro de una misma zona k e [1,...,n] -> periferia = 2k-1, subcentro = 2k
         matrix = df_matrix
+        text = ""
         if matrix is None:
-            return False
+            text = "Error matrixod: No data"
+            return False, text
         if self.check_dimension(self.n, matrix):
-            print("Matriz de {} zonas, dimensiones (2n+1)*(2n+1)".format(self.n))
+            text = ""
         else:
-            print("Error matrixod: Matriz no cumple con criterio de dimensión de (2n+1)*(2n+1)")
-            return False
-        return True
+            text = "Error matrixod: Matriz no cumple con criterio de dimensión de (2n+1)*(2n+1)"
+            return False, text
+        return True, text
 
     # validacion de parámetros
     @staticmethod
     def parameters_validation(n, y, a, alpha, beta):
 
+        text = ""
+
         if n is None:
-            print("Error matrixod: debe especificar valor para n")
-            return False
+            text = "Error matrixod: debe especificar valor para n"
+            return False, text
         if y is None:
-            print("Error matrixod: debe especificar valor para y")
-            return False
+            text = "Error matrixod: debe especificar valor para y"
+            return False, text
         if a is None:
-            print("Error matrixod: debe especificar valor para a")
-            return False
+            text = "Error matrixod: debe especificar valor para a"
+            return False, text
         if alpha is None:
-            print("Error matrixod: debe especificar valor para alpha")
-            return False
+            text = "Error matrixod: debe especificar valor para alpha"
+            return False, text
         if beta is None:
-            print("Error matrixod: debe especificar valor para beta")
-            return False
+            text = "Error matrixod: debe especificar valor para beta"
+            return False, text
         if n is not None:
             if n <= 0:
-                print("Error matrixod: n debe ser mayor a 0")
-                return False
+                text = "Error matrixod: n debe ser mayor a 0"
+                return False, text
         if y is not None:
             if y <= 0:
-                print("Error matrixod: y debe ser mayor a 0")
-                return False
+                text = "Error matrixod: y debe ser mayor a 0"
+                return False, text
         if a is not None:
             if a > 1 or a < 0:
-                print("Error matrixod: a debe pertenecer a intervalo [0,1]")
-            return False
+                text  = "Error matrixod: a debe pertenecer a intervalo [0,1]"
+                return False, text
         if alpha is not None:
             if alpha > 1 or alpha < 0:
-                print("Error matrixod: alpha debe pertenecer a intervalo [0,1]")
-                return False
+                text = "Error matrixod: alpha debe pertenecer a intervalo [0,1]"
+                return False, text
         if beta is not None:
             if beta > 1 or beta < 0:
-                print("Error matrixod: beta debe pertenecer a intervalo [0,1]")
-            return False
+                text = "Error matrixod: beta debe pertenecer a intervalo [0,1]"
+            return False, text
         if alpha is not None and beta is not None:
             if alpha + beta > 1:
-                print("Error matrixod: alpha + beta debe pertenecer a intervalo [0,1]")
-                return False
+                text = "Error matrixod: alpha + beta debe pertenecer a intervalo [0,1]"
+                return False, text
         if n is not None and alpha is not None and beta is not None:
             if n == 1 and alpha + beta != 1:
-                print("Warning matrixod: 1 zona, alpha + beta deben sumar 1, se actualiza valor de beta = 1 - alpha")
-        return True
+                text = "Warning matrixod: 1 zona, alpha + beta deben sumar 1, se actualiza valor de beta = 1 - alpha"
+        return True, text

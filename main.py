@@ -10,7 +10,7 @@ dir_out = r"C:\Users\felip\Downloads\esteb\output"
 n = 8
 L = 10000
 g = 0.5
-etha = 0.3
+etha = 1
 etha_zone = 3
 angles = [10, 60, 150, 160, 180, 240, 250, 355]
 Gi = [0.5, 1, 0.5, 1, 0.5, 1, 0.5, 1]
@@ -20,6 +20,7 @@ Hi = [1, 2, 1, 2, 1, 2, 1, 2]
 # validacion de archivos externos
 # validacion geométrica de parámetros
 c = city_graph(n, L=L, g=g, etha=etha, etha_zone=etha_zone, angles=angles, Gi=Gi, Hi=Hi)
+print(c.text_parameters)
 if c.plot:
     print("Informacion de nodos")
     print(c.nodes)
@@ -32,6 +33,7 @@ alpha = 1/3
 beta = 1/3
 # ############## MODULO DE DEMANDA #############
 m = matrixod(n, y=y, a=a, alpha=alpha, beta=beta)
+print(m.text)
 if m.plot:
     print("Informacion de demanda")
     print(m.matrix)
