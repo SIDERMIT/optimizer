@@ -3,4 +3,4 @@ package to calculate route variables
 
 # Módulos
 
-city_graph
+city_graph:  Creación grafo de ciudad por parámetros o archivos. 

@@ -10,6 +10,7 @@ dir_out = r"C:\Users\felip\Downloads\esteb\output"
 n = 8
 L = 10000
 g = 0.5
+p = 2
 etha = 1
 etha_zone = 3
 angles = [10, 60, 150, 160, 180, 240, 250, 355]

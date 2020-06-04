@@ -18,7 +18,7 @@ class city_graph:
     # Hi vector de alteracion de distancia entre P y (0,0) para cada zona
     # name_zones nombre de zonas, la zona 0 es el CBD
     # df_edges and df_nodes es un dataframe con la información de arcos y nodos
-    def __init__(self, n=None, L=None, g=None,
+    def __init__(self, n=None, L=None, g=None, p=None,
                  etha=None, etha_zone=None,
                  angles=None,
                  Gi=None, Hi=None,
@@ -33,7 +33,7 @@ class city_graph:
 
         # Validación de parámetros
         # faltan validaciones geométricas
-        validation_parameters, text_parameters = self.parameters_validation(n, L, g, etha, etha_zone, angles, Gi,
+        validation_parameters, text_parameters = self.parameters_validation(n, L, g, p, etha, etha_zone, angles, Gi,
                                                                                  Hi, name_zones)
         # falta validacion de dataframes de entradas
         validation_nodes, text_nodes = self.nodes_validation(df_nodes)
@@ -339,7 +339,7 @@ class city_graph:
 
     # permite validad los parámetros de inicialización de la clase
     @staticmethod
-    def parameters_validation(n, L, g,
+    def parameters_validation(n, L, g, p,
                               etha, etha_zone, angles, Gi, Hi,
                               name_zones):
         # para caso simétrico y asimétrico
@@ -349,6 +349,13 @@ class city_graph:
         if n is not None:
             if n <= 0:
                 text = "Error city_graph: n debe ser mayor a 0"
+                return False, text
+        if p is None:
+            text = "Error city_graph: debe especificar valor para p"
+            return False, text
+        if p is not None:
+            if p <= 0:
+                text = "Error city_graph: p debe ser mayor a 0"
                 return False, text
         if L is None:
             text = "Error city_graph: debe especificar valor para L"
