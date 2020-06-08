@@ -1,7 +1,7 @@
 from enum import Enum
 import pandas as pd
-import math
 from sidermit.exceptions import *
+import math
 
 
 class GraphFileFormat(Enum):
@@ -26,7 +26,7 @@ class Zone:
 
 class Node:
 
-    def __init__(self, node_id, x, y, radius, angle, width, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
         if radius < 0:
             raise NodeRadiusIsNotValidException("radius must be positive")
         if angle < 0 or angle > 360:
@@ -40,27 +40,28 @@ class Node:
         self.angle = angle
         self.width = width
         self.name = name
+        self.zone_id = zone_id
 
 
 class CBD(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
         # atributos de nodos
-        Node.__init__(self, node_id, x, y, radius, angle, width, name)
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Periphery(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
         # atributos de nodos
-        Node.__init__(self, node_id, x, y, radius, angle, width, name)
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Subcenter(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
         # atributos de nodos
-        Node.__init__(self, node_id, x, y, radius, angle, width, name)
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Edge:
@@ -84,6 +85,121 @@ class Graph:
         self.nodes = []
         self.edges = []
 
+    @staticmethod
+    def parameters_validator(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
+        if n is None:
+            raise NIsNotDefined('must specify value for n')
+        if n < 0 or not isinstance(n, int):
+            raise NIsNotValidNumberException('n cannot be a negative number')
+        if l is None:
+            raise LIsNotDefined('must specify value for L')
+        if l < 0:
+            raise LIsNotValidNumberException('L cannot be a negative number')
+        if g is None:
+            raise GIsNotDefined('must specify value for g')
+        if g < 0:
+            raise GIsNotValidNumberException('G cannot be a negative number')
+        if p is None:
+            raise PIsNotDefined('must specify value for p')
+        if p < 0:
+            raise PIsNotValidNumberException('n cannot be a negative number')
+        if etha is None and etha_zone is not None:
+            raise EthaValueRequiredExceptions("must give value for etha")
+        if etha is not None and etha_zone is None:
+            raise EthaZoneValueRequiredExceptions("must give value for etha zone")
+        if etha is not None and etha_zone is not None:
+            if etha < 0 or etha > 1:
+                raise EthaValueIsNotValidExceptions("etha value is not valid. Try with value belong in [0-1]")
+            if etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
+                raise EthaZoneValueIsNotValidExceptions("etha zone is not valid. Try with value belong in [1,...,n]")
+        if angles is not None:
+            if len(angles) != n:
+                raise LenAnglesIsNotValidExceptions("must give angle value for all zones")
+            for angle in angles:
+                if angle < 0 or angle > 360:
+                    raise AngleValueIsNotValidEceptions("angle must belong in [0°-360°]")
+        if Gi is not None:
+            if len(Gi) != n:
+                raise LenGiIsNotValidExceptions("must give Gi value for all zones")
+            for gi in Gi:
+                if gi < 0:
+                    raise GiValueIsNotValidEceptions("Gi must be >= 0")
+        if Hi is not None:
+            if len(Hi) != n:
+                raise LenHiIsNotValidExceptions("must give Hi value for all zones")
+            for hi in Hi:
+                if hi < 0:
+                    raise HiValueIsNotValidEceptions("Hi must be >= 0")
+        return True
+
+    @staticmethod
+    def build_from_parameters(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
+        """
+        create symetric
+        :param etha_zone:
+        :param etha:
+        :param angles:
+        :param Hi:
+        :param Gi:
+        :param n:
+        :param l:
+        :param g:
+        :param p:
+        :return:
+        """
+
+        graph_obj = Graph()
+
+        # if parameters are valid
+        if graph_obj.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi):
+            # ADD CBD
+            # ADD Zones
+            # # for each zones add Nodes periphery and subcenter
+            # ADD all edges
+            # add CBD
+            CBD_node = CBD(0, 0, 0, 0, 0, p, 0)
+            graph_obj.__add_cbd(CBD_node)
+
+            # Add zones
+            for zone in range(n):
+                id_p = 2 * zone + 1
+                id_sc = 2 * zone + 2
+                radius_p = l + g * l
+                radius_sc = l
+                angle_p = 360 / n * zone
+                angle_sc = 360 / n * zone
+                x_p, y_p = radius_p * math.cos(math.radians(angle_p)), radius_p * math.sin(math.radians(angle_p))
+                x_sc, y_sc = radius_sc * math.cos(math.radians(angle_sc)), radius_sc * math.sin(math.radians(angle_sc))
+
+                node_p = Periphery(id_p, x_p, y_p, radius_p, angle_p, p, zone + 1)
+                node_sc = Subcenter(id_sc, x_sc, y_sc, radius_sc, angle_sc, p, zone + 1)
+
+                # add periphery and subcenter nodes
+                # build edges
+                graph_obj.add_zone(node_p, node_sc, zone + 1)
+
+            # add asymmetry by angles
+            if angles is not None:
+                graph_obj.__angles_asymmetry(angles)
+            # add asymmetry by Gi
+            if Gi is not None:
+                graph_obj.__Gi_asymmetry(Gi)
+            # add asymmetry by Hi
+            if Hi is not None:
+                graph_obj.__Hi_asymmetry(Hi)
+            # add asymmetry by etha
+            if etha is not None and etha_zone is not None:
+                graph_obj.__etha_asymmetry(etha, etha_zone)
+
+        return graph_obj
+
+    def __add_cbd(self, CBD_node):
+        if not isinstance(CBD_node, CBD):
+            raise CBDTypeIsNotValidException('CBD_node is not a valid CBD node')
+        for node in self.nodes:
+            if isinstance(node, CBD):
+                raise CBDDuplicatedException('a CBD already exists')
+
     def add_zone(self, node_periphery, node_subcenter, zone_id=None):
         # zones can only be added if CBD is included
         if len(self.nodes) == 0:
@@ -101,6 +217,9 @@ class Graph:
             raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
         if not isinstance(node_subcenter, Subcenter):
             raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
+        # zone_id of the nodes must be equal to zone_id og the zone
+        if node_subcenter.id != len(self.zones) + 1 or node_periphery.id != len(self.zones) + 1:
+            raise ZoneIdIsNotValidExceptions("nodes dont have zone_id equal to zone")
 
         self.zones.append(Zone(zone_id, node_periphery, node_subcenter))
         self.__add_nodes(node_periphery, node_subcenter)
@@ -108,17 +227,10 @@ class Graph:
         # must build all the edges
         self.__build_edges()
 
-    def __add_cbd(self, CBD_node):
-        if not isinstance(CBD_node, CBD):
-            raise CBDTypeIsNotValidException('CBD_node is not a valid CBD node')
-        for node in self.nodes:
-            if isinstance(node, CBD):
-                raise CBDDuplicatedException('a CBD already exists')
-
     def __add_nodes(self, node_periphery, node_subcenter):
         if not isinstance(node_periphery, Periphery):
             raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
-        if not isinstance(node_subcenter, Node):
+        if not isinstance(node_subcenter, Subcenter):
             raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
 
         # to verified if id is not duplicated
@@ -139,10 +251,10 @@ class Graph:
             p = self.zones[0].periphery
             sc = self.zones[0].subcenter
             cbd = self.nodes[0]
-            self.add_edge(Edge(len(self.edges) + 1, p, sc))
-            self.add_edge(Edge(len(self.edges) + 1, sc, p))
-            self.add_edge(Edge(len(self.edges) + 1, sc, cbd))
-            self.add_edge(Edge(len(self.edges) + 1, cbd, sc))
+            self.__add_edge(Edge(len(self.edges) + 1, p, sc))
+            self.__add_edge(Edge(len(self.edges) + 1, sc, p))
+            self.__add_edge(Edge(len(self.edges) + 1, sc, cbd))
+            self.__add_edge(Edge(len(self.edges) + 1, cbd, sc))
         if len(self.zones) > 1:
             for i in range(len(self.zones)):
                 p = self.zones[i].periphery
@@ -170,61 +282,112 @@ class Graph:
                 raise IdEdgeIsDuplicatedException('id edge is duplicated')
         self.edges.append(edge)
 
-    @staticmethod
-    def build_from_parameters(n, l, g, p, etha = None, etha_zone = None, angles = None, Gi = None, Hi =None):
-        """
-        create symetric
-        :param n:
-        :param l:
-        :param g:
-        :param p:
-        :return:
-        """
-        if n is None:
-            raise NIsNotDefined('must specify value for n')
-        if n is not None:
-            if n < 0:
-                raise NIsNotValidNumberException('n cannot be a negative number')
-        if l is None:
-            raise LIsNotDefined('must specify value for L')
-        if l is not None:
-            if l < 0:
-                raise LIsNotValidNumberException('L cannot be a negative number')
-        if g is None:
-            raise GIsNotDefined('must specify value for g')
-        if g is not None:
-            if g < 0:
-                raise GIsNotValidNumberException('G cannot be a negative number')
-        if p is None:
-            raise PIsNotDefined('must specify value for p')
-        if p is not None:
-            if p < 0:
-                raise PIsNotValidNumberException('n cannot be a negative number')
+    def __etha_asymmetry(self, etha, etha_zone):
 
-        graph_obj = Graph()
-        # build nodes and edges
-        # build nodes
-        # ADD CBD
+        zone = self.zones[etha_zone - 1]
+        sc = zone.subcenter
+        r_cbd = etha * sc.radius
+        ang = sc.angle
 
-        CBD_node = CBD(0, 0, 0, 0, 0, p)
-        graph_obj.__add_cbd(CBD_node)
-        # for each zone add P and SC nodes
-        for zone in range(n):
-            id_p = 2 * zone + 1
-            id_sc = 2 * zone + 2
-            radius_p = l + g * l
-            radius_sc = l
-            angle_p = 360 / n * zone
-            angle_sc = 360 / n * zone
-            x_p, y_p = radius_p * math.cos(math.radians(angle_p)), radius_p * math.sin(math.radians(angle_p))
-            x_sc, y_sc = radius_sc * math.cos(math.radians(angle_sc)), radius_sc * math.sin(math.radians(angle_sc))
+        x_cbd, y_cbd = r_cbd * math.cos(math.radians(ang)), r_cbd * math.sin(math.radians(ang))
 
-            node_p = Node(id_p, x_p, y_p, radius_p, angle_p, p)
-            node_sc = Node(id_sc, x_sc, y_sc, radius_sc, angle_sc, p)
+        for node in range(len(self.nodes)):
+            if isinstance(self.nodes[node], CBD):
+                self.nodes[node].x = x_cbd
+                self.nodes[node].y = y_cbd
+                self.nodes[node].radius = r_cbd
+                self.nodes[node].angle = ang
 
-            graph_obj.add_zone(node_p, node_sc, n + 1)
+        # must build all the edges
+        self.__build_edges()
 
-        return graph_obj
+    def __Hi_asymmetry(self, Hi):
+
+        for i in range(len(self.zones)):
+            hi = Hi[i]
+            p = self.zones[i].periphery
+
+            r_p = hi * p.radius
+            ang = p.angle
+            x_p, y_p = r_p * math.cos(math.radians(ang)), r_p * math.sin(math.radians(ang))
+
+            # change values in nodes list
+            for node in range(len(self.nodes)):
+
+                if self.nodes[node] == p:
+                    self.nodes[node].x = x_p
+                    self.nodes[node].y = y_p
+                    self.nodes[node].radius = r_p
+
+            # change values in zones nodes information
+            self.zones[i].periphery.x = x_p
+            self.zones[i].periphery.y = y_p
+            self.zones[i].periphery.radius = r_p
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __Gi_asymmetry(self, Gi):
+
+        for i in range(len(self.zones)):
+            gi = Gi[i]
+            sc = self.zones[i].subcenter
+
+            r_sc = gi * sc.radius
+            ang = sc.angle
+            x_sc, y_sc = r_sc * math.cos(math.radians(ang)), r_sc * math.sin(math.radians(ang))
+
+            # change values in nodes list
+            for node in range(len(self.nodes)):
+
+                if self.nodes[node] == sc:
+                    self.nodes[node].x = x_sc
+                    self.nodes[node].y = y_sc
+                    self.nodes[node].radius = r_sc
+
+            # change values in zones nodes information
+            self.zones[i].subcenter.x = x_sc
+            self.zones[i].subcenter.y = y_sc
+            self.zones[i].subcenter.radius = r_sc
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __angles_asymmetry(self, angles):
+
+        for i in range(len(self.zones)):
+            ang = angles[i]
+
+            p = self.zones[i].periphery
+            sc = self.zones[i].subcenter
+
+            r_p = p.radius
+            r_sc = sc.radius
+            x_p, y_p = r_p * math.cos(math.radians(ang)), r_p * math.sin(math.radians(ang))
+            x_sc, y_sc = r_sc * math.cos(math.radians(ang)), r_sc * math.sin(math.radians(ang))
+
+            # change values in nodes list
+            for node in range(len(self.nodes)):
+                if self.nodes[node] == p:
+                    self.nodes[node].x = x_p
+                    self.nodes[node].y = y_p
+                    self.nodes[node].angle = ang
+                if self.nodes[node] == sc:
+                    self.nodes[node].x = x_sc
+                    self.nodes[node].y = y_sc
+                    self.nodes[node].angle = ang
+
+            # change values in zones nodes information
+            self.zones[i].periphery.x = x_p
+            self.zones[i].periphery.y = y_p
+            self.zones[i].periphery.angle = ang
+
+            self.zones[i].subcenter.x = x_sc
+            self.zones[i].subcenter.y = y_sc
+            self.zones[i].subcenter.angle = ang
+
+        # must build all the edges
+        self.__build_edges()
 
     @staticmethod
     def __pajekfile_to_dataframe(file_path):
@@ -246,35 +409,56 @@ class Graph:
                     continue
                 if nnodes > 0:
                     try:
-                        id, name, x, y, type, zone = line.split()
-                        if type != "CBD" or type != "SC" or type != "P":
+                        node_id, name, x, y, node_type, zone = line.split()
+                        if node_type != "CBD" or node_type != "SC" or node_type != "P":
                             raise NodeTypeIsNotValidExceptions("Node type is not valid. Try with CBD, SC or P")
                         if int(zone) < 0:
                             raise ZoneIdIsNotValidExceptions("zone is not valid. Try with a positive value")
-                        col_id.append(id)
+                        col_id.append(node_id)
                         col_name.append(name)
                         col_x.append(x)
                         col_y.append(y)
-                        col_type.append(type)
+                        col_type.append(node_type)
                         col_zone.append(zone)
 
                         nnodes = nnodes - 1
-                    except:
-                        raise PajekFormatIsNotValidExceptions(
-                            "each node line must provide information about [id] [name] [x] [y] [type] [zone]")
+                    except PajekFormatIsNotValidExceptions:
+                        raise PajekFormatIsNotValidExceptions("each node line must provide information about [id] ["
+                                                              "name] [x] [y] [type] [zone]")
 
             df_file["node_id"] = col_id
             df_file["name"] = col_name
-            df_file["x"] = x
-            df_file["y"] = y
-            df_file["type"] = type
-            df_file["zone"] = zone
+            df_file["x"] = col_x
+            df_file["y"] = col_y
+            df_file["type"] = col_type
+            df_file["zone"] = col_zone
 
             return df_file
 
     @staticmethod
-    def build_from_file(file_path, file_format=GraphFileFormat.PAJEK):
+    def obtain_angle(x, y):
+        a = 1
+        b = 0
+        c = x
+        d = y
+        dotProduct = a * c + b * d
+        # for three dimensional simply add dotProduct = a*c + b*d  + e*f
+        modOfVector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
+        # for three dimensional simply add modOfVector = math.sqrt( a*a + b*b + e*e)*math.sqrt(c*c + d*d +f*f)
+        angle = dotProduct / modOfVector1
+        # print("Cosθ =",angle)
+        angleInDegree = math.degrees(math.acos(angle))
+        if y < 0:
+            if x >= 0:
+                angleInDegree = 360 - angleInDegree
+            if x < 0:
+                angleInDegree = (180 - angleInDegree) + 180
+        return angleInDegree
+
+    @staticmethod
+    def build_from_filef(p, file_path, file_format=GraphFileFormat.PAJEK):
         """
+        :param p:
         :param file_path:
         :param file_format:
         :return: Graph instance
@@ -289,9 +473,113 @@ class Graph:
 
             n = (len(df_file["node_id"]) - 1) / 2
 
-            for n in range(n + 1)
+            if not isinstance(n, int):
+                raise NumberLinesInTheFileIsNotValidExceptions("The number of lines in the file must be 2n+1")
 
+            cbd = []
+            periphery = []
+            subcenter = []
 
+            # build nodes list
+            for i in range(len(df_file["node_id"])):
+                node_id = df_file.iloc[i]["node_id"]
+                name = df_file.iloc[i]["name"]
+                x = df_file.iloc[i]["x"]
+                y = df_file.iloc[i]["y"]
+                node_type = df_file.iloc[i]["type"]
+                zone = df_file.iloc[i]["zone"]
+
+                radius = math.sqrt(x ** 2 + y ** 2)
+                width = p
+                angle = graph_obj.obtain_angle(x, y)
+
+                if node_type == "CBD":
+                    cbd.append(CBD(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == "P":
+                    periphery.append(Periphery(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == "SC":
+                    subcenter.append(Subcenter(node_id, x, y, radius, angle, width, zone, name))
+
+            r_sc = []
+            r_p = []
+            ang_sc = []
+            r_cbd = 0
+            ang_cbd = 0
+
+            # verification of existence and uniqueness of CBD
+            if len(cbd) == 0:
+                raise CBDDoesNotExistExceptions("a CBD is required")
+            if len(cbd) > 1:
+                raise CBDDuplicatedException("only a CBD is required")
+            if len(cbd) == 1:
+                r_cbd = cbd[0].radius
+                ang_cbd = cbd[0].angle
+
+            etha = 0
+            etha_zone = 0
+
+            # verification of existence and uniqueness of SC and P by zone
+            # save information to build parameters
+            for zone in range(n):
+                zone_id = zone + 1
+                n_p = 0
+                n_sc = 0
+                node_periphery = None
+                node_subcenter = None
+
+                for p in periphery:
+                    if p.zone_id == zone_id:
+                        n_p = n_p + 1
+                        node_periphery = p
+                for sc in subcenter:
+                    if sc.zone_id == zone_id:
+                        n_sc = n_sc + 1
+                        node_subcenter = sc
+                if n_p != 1 or n_sc != 1:
+                    raise PeripherySubcenterNumberForZoneExceptions(
+                        "the number of periphery and subcenter nodes must be equal to 1")
+
+                radius_p = node_periphery.radius
+                radius_sc = node_subcenter.radius
+                angle_sc = node_subcenter.angle
+
+                r_sc.append(radius_sc)
+                r_p.append(radius_p)
+                ang_sc.append(angle_sc)
+
+                # Update etha and etha_zone
+                if ang_cbd - 0.001 <= angle_sc <= ang_cbd + 0.001:
+                    etha_zone = zone_id
+                    etha = r_cbd / radius_sc
+
+            L = sum(r_sc) / len(r_sc)
+            g = (sum(r_p) / len(r_p) - L) / L
+
+            Gi = []
+            Hi = []
+            for i in range(n):
+                Gi.append(r_sc[i] / L)
+                Hi.append(r_p[i] / (L + g * L))
+
+            angles = ang_sc
+
+            # if parameters are valid
+            if graph_obj.parameters_validator(n, L, g, p, etha, etha_zone, angles, Gi, Hi):
+
+                graph_obj.__add_cbd(cbd[0])
+
+                for i in range(n):
+                    node_periphery = None
+                    node_subcenter = None
+                    for p in periphery:
+                        if p.zone_id == i + 1:
+                            node_periphery = p
+                            break
+                    for sc in subcenter:
+                        if sc.zone_id == i + 1:
+                            node_subcenter = sc
+                            break
+                    graph_obj.add_zone(node_periphery, node_subcenter)
 
         else:
             raise FileFormatIsNotValidExceptions("File don't have a valid format. Try with Pajek format")

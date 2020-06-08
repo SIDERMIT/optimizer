@@ -121,7 +121,56 @@ class NodeTypeIsNotValidExceptions(GraphException):
     pass
 
 
+class EthaValueRequiredExceptions(GraphException):
+    pass
 
+
+class EthaZoneValueRequiredExceptions(GraphException):
+    pass
+
+
+class EthaValueIsNotValidExceptions(GraphException):
+    pass
+
+
+class EthaZoneValueIsNotValidExceptions(GraphException):
+    pass
+
+
+class LenAnglesIsNotValidExceptions(GraphException):
+    pass
+
+
+class AngleValueIsNotValidEceptions(GraphException):
+    pass
+
+
+class LenGiIsNotValidExceptions(GraphException):
+    pass
+
+
+class GiValueIsNotValidEceptions(GraphException):
+    pass
+
+
+class LenHiIsNotValidExceptions(GraphException):
+    pass
+
+
+class HiValueIsNotValidEceptions(GraphException):
+    pass
+
+
+class NumberLinesInTheFileIsNotValidExceptions(GraphException):
+    pass
+
+
+class NumberLinesInTheFileIsNotValidExceptions(GraphException):
+    pass
+
+
+class PeripherySubcenterNumberForZoneExceptions(GraphException):
+    pass
 
 
 
