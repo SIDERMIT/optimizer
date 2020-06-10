@@ -105,110 +105,65 @@ class test_graph(unittest.TestCase):
         """
         g = graph.Graph.build_from_file(self.test_0zone_path)
 
-        self.assertEqual(len(g.nodes), 1)
-        self.assertEqual(len(g.edges), 0)
-        self.assertEqual(len(g.zones), 0)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_file(self.test_1zone_path)
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_file(self.test_2zone_path)
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
-    def test_build_from_symmetric_parameters(self):
+    def test_build_from_parameters(self):
         """
-        # to test construction from symmetric parameters
+        # to test construction from parameters
         :return:
         """
-        g = graph.Graph.build_from_parameters(0, 1000, 0.5, 0)
-
-        self.assertEqual(len(g.nodes), 1)
-        self.assertEqual(len(g.edges), 0)
-        self.assertEqual(len(g.zones), 0)
-
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0)
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0)
-
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
-
-    def test_build_from_asymmetric_parameters(self):
-        """
-        # to test construction from asymmetric parameters
-        :return:
-        """
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, angles=[10])
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[10, 50])
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Gi=[2])
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[2, 0.5])
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Hi=[2])
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[2, 0.5])
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1)
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=2)
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10], Gi=[2], Hi=[2])
 
-        self.assertEqual(len(g.nodes), 3)
-        self.assertEqual(len(g.edges), 4)
-        self.assertEqual(len(g.zones), 1)
+        self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
                                               Hi=[2, 0.5])
 
-        self.assertEqual(len(g.nodes), 5)
-        self.assertEqual(len(g.edges), 10)
-        self.assertEqual(len(g.zones), 2)
+        self.assertTrue(g.is_valid())
 
     def test_raises_fileformat(self):
         """
@@ -265,67 +220,6 @@ class test_graph(unittest.TestCase):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[0.5])
         with self.assertRaises(exceptions.HiValueIsNotValidEceptions):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[0.5, -2])
-
-    def test_is_valid(self):
-        """
-        # to test validator with symmetric and asymmetric parameters and file constructor
-        :return:
-        """
-        # to test test with build from file
-        g = graph.Graph.build_from_file(self.test_0zone_path)
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_file(self.test_1zone_path)
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_file(self.test_2zone_path)
-
-        self.assertTrue(g.is_valid())
-
-        # to test with parameters of assymetry
-
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, angles=[10])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[10, 50])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Gi=[2])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[2, 0.5])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Hi=[2])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[2, 0.5])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1)
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=2)
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10], Gi=[2], Hi=[2])
-
-        self.assertTrue(g.is_valid())
-
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
-                                              Hi=[2, 0.5])
-
-        self.assertTrue(g.is_valid())
 
     def test_graph_to_pajek(self):
         """

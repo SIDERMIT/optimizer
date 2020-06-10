@@ -103,26 +103,26 @@ class Graph:
         self.__edges_id = []
         self.__CBD_exist = False
 
-        self.zones = []
-        self.nodes = []
-        self.edges = []
+        self.__zones = []
+        self.__nodes = []
+        self.__edges = []
 
-        self.n = None
-        self.l = None
-        self.g = None
-        self.p = None
-        self.etha = None
-        self.etha_zone = None
-        self.angles = None
-        self.Gi = None
-        self.Hi = None
+        self.__n = None
+        self.__l = None
+        self.__g = None
+        self.__p = None
+        self.__etha = None
+        self.__etha_zone = None
+        self.__angles = None
+        self.__Gi = None
+        self.__Hi = None
 
     def graph_to_pajek(self, file_path):
 
         if self.is_valid():
             file = open(file_path, 'w')
-            file.write("*vertices {}{}".format(len(self.nodes), "\n"))
-            for node in self.nodes:
+            file.write("*vertices {}{}".format(len(self.__nodes), "\n"))
+            for node in self.__nodes:
                 if isinstance(node, CBD):
                     file.write(
                         "{} {} {} {} CBD {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
@@ -140,17 +140,16 @@ class Graph:
         else:
             raise WritePajekFileExceptions("a error writing the Pajek file")
 
-
     def is_valid(self):
-        n = self.n
-        l = self.l
-        g = self.g
-        p = self.p
-        etha = self.etha
-        etha_zone = self.etha_zone
-        angles = self.angles
-        Gi = self.Gi
-        Hi = self.Hi
+        n = self.__n
+        l = self.__l
+        g = self.__g
+        p = self.__p
+        etha = self.__etha
+        etha_zone = self.__etha_zone
+        angles = self.__angles
+        Gi = self.__Gi
+        Hi = self.__Hi
 
         self.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi)
         self.__zones_validator()
@@ -162,7 +161,7 @@ class Graph:
     def __zones_validator(self):
         # zone id list to verified duplicated id and existence of the nodes in nodes list
         zone_id_list = []
-        for zone in self.zones:
+        for zone in self.__zones:
             if zone.id not in zone_id_list:
                 zone_id_list.append(zone.id)
             else:
@@ -176,7 +175,7 @@ class Graph:
             # to verified periphery and subcenter nodes in node list
             p_exist = False
             sc_exist = False
-            for node in self.nodes:
+            for node in self.__nodes:
                 if node == zone.periphery:
                     p_exist = True
                 if node == zone.subcenter:
@@ -186,7 +185,7 @@ class Graph:
             if not sc_exist:
                 raise SubcenterDoesNotExistExceptions("Node subcenter does not exist in nodes list")
         # to verified existences and uniqueness of all zones [1, ..., n]
-        for i in range(len(self.zones)):
+        for i in range(len(self.__zones)):
             j = i + 1
             i_exist = False
             for zone_id in zone_id_list:
@@ -203,7 +202,7 @@ class Graph:
         n_sc = 0
         # node_id list to duplicated
         node_id_list = []
-        for node in self.nodes:
+        for node in self.__nodes:
             if isinstance(node, CBD):
                 n_cbd = n_cbd + 1
             if isinstance(node, Periphery):
@@ -227,7 +226,7 @@ class Graph:
     def __edges_validator(self):
 
         edge_id_list = []
-        for edge in self.edges:
+        for edge in self.__edges:
             # node id duplicated
             if edge.id not in edge_id_list:
                 edge_id_list.append(edge.id)
@@ -238,7 +237,7 @@ class Graph:
 
             n1_exist = False
             n2_exist = False
-            for node in self.nodes:
+            for node in self.__nodes:
                 if node == n1:
                     n1_exist = True
                 if node == n2:
@@ -331,7 +330,7 @@ class Graph:
 
                 # add periphery and subcenter nodes
                 # build edges
-                graph_obj.add_zone(node_p, node_sc, zone + 1)
+                graph_obj.__add_zone(node_p, node_sc, zone + 1)
 
             # add asymmetry by angles
             if angles is not None:
@@ -346,15 +345,15 @@ class Graph:
             if etha is not None and etha_zone is not None:
                 graph_obj.__etha_asymmetry(etha, etha_zone)
 
-        graph_obj.n = n
-        graph_obj.l = l
-        graph_obj.g = g
-        graph_obj.p = p
-        graph_obj.etha = etha
-        graph_obj.etha_zone = etha_zone
-        graph_obj.angles = angles
-        graph_obj.Gi = Gi
-        graph_obj.Hi = Hi
+        graph_obj.__n = n
+        graph_obj.__l = l
+        graph_obj.__g = g
+        graph_obj.__p = p
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
 
         return graph_obj
 
@@ -568,20 +567,20 @@ class Graph:
                         if sc.zone_id == i + 1:
                             node_subcenter = sc
                             break
-                    graph_obj.add_zone(node_periphery, node_subcenter)
+                    graph_obj.__add_zone(node_periphery, node_subcenter)
 
         else:
             raise FileFormatIsNotValidExceptions("File don't have a valid format. Try with Pajek format")
 
-        graph_obj.n = n
-        graph_obj.l = L
-        graph_obj.g = g
-        graph_obj.p = width
-        graph_obj.etha = etha
-        graph_obj.etha_zone = etha_zone
-        graph_obj.angles = angles
-        graph_obj.Gi = Gi
-        graph_obj.Hi = Hi
+        graph_obj.__n = n
+        graph_obj.__l = L
+        graph_obj.__g = g
+        graph_obj.__p = width
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
 
         return graph_obj
 
@@ -594,30 +593,30 @@ class Graph:
             raise CBDDuplicatedException('a CBD already exists')
         self.__CBD_exist = True
         self.__nodes_id.append(CBD_node.id)
-        self.nodes.append(CBD_node)
+        self.__nodes.append(CBD_node)
 
-    def add_zone(self, node_periphery, node_subcenter, zone_id=None):
+    def __add_zone(self, node_periphery, node_subcenter, zone_id=None):
         # zones can only be added if CBD is included
-        if len(self.nodes) == 0:
+        if len(self.__nodes) == 0:
             raise CBDDoesNotExistExceptions("Need add CBD node previously")
         # always add last zone
         if zone_id is None:
-            zone_id = len(self.zones) + 1
+            zone_id = len(self.__zones) + 1
         if zone_id is not None:
             if zone_id < 1:
                 raise ZoneIdIsNotValidExceptions("zone_id number must be >=1")
-            if zone_id != len(self.zones) + 1:
-                raise AddPreviousZonesExceptions("need to specify zone {} previously".format(len(self.zones) + 1))
+            if zone_id != len(self.__zones) + 1:
+                raise AddPreviousZonesExceptions("need to specify zone {} previously".format(len(self.__zones) + 1))
         # need periphery and subcenter nodes
         if not isinstance(node_periphery, Periphery):
             raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
         if not isinstance(node_subcenter, Subcenter):
             raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
         # zone_id of the nodes must be equal to zone_id og the zone
-        if node_subcenter.zone_id != len(self.zones) + 1 or node_periphery.zone_id != len(self.zones) + 1:
+        if node_subcenter.zone_id != len(self.__zones) + 1 or node_periphery.zone_id != len(self.__zones) + 1:
             raise ZoneIdIsNotValidExceptions("nodes dont have zone_id equal to zone")
 
-        self.zones.append(Zone(zone_id, node_periphery, node_subcenter))
+        self.__zones.append(Zone(zone_id, node_periphery, node_subcenter))
         self.__add_nodes(node_periphery, node_subcenter)
 
         # must build all the edges
@@ -635,131 +634,131 @@ class Graph:
         if node_subcenter.id in self.__nodes_id:
             raise IdNodeIsDuplicatedException('id_node subcenter is duplicated')
 
-        self.nodes.append(node_periphery)
-        self.nodes.append(node_subcenter)
+        self.__nodes.append(node_periphery)
+        self.__nodes.append(node_subcenter)
         self.__nodes_id.append(node_periphery.id)
         self.__nodes_id.append(node_subcenter.id)
 
     def __build_edges(self):
-        self.edges = []
+        self.__edges = []
         self.__edges_id = []
-        if len(self.zones) == 1:
+        if len(self.__zones) == 1:
             # p <-> sc
             # sc <-> cbd
-            p = self.zones[0].periphery
-            sc = self.zones[0].subcenter
-            cbd = self.nodes[0]
-            self.__add_edge(Edge(len(self.edges) + 1, p, sc))
-            self.__add_edge(Edge(len(self.edges) + 1, sc, p))
-            self.__add_edge(Edge(len(self.edges) + 1, sc, cbd))
-            self.__add_edge(Edge(len(self.edges) + 1, cbd, sc))
+            p = self.__zones[0].periphery
+            sc = self.__zones[0].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
 
-        if len(self.zones) > 1:
-            for i in range(len(self.zones)):
-                p = self.zones[i].periphery
-                sc = self.zones[i].subcenter
-                cbd = self.nodes[0]
+        if len(self.__zones) > 1:
+            for i in range(len(self.__zones)):
+                p = self.__zones[i].periphery
+                sc = self.__zones[i].subcenter
+                cbd = self.__nodes[0]
                 j = i + 1
-                if i == len(self.zones) - 1:
+                if i == len(self.__zones) - 1:
                     j = 0
-                sc2 = self.zones[j].subcenter
+                sc2 = self.__zones[j].subcenter
                 # p <-> sc
                 # sc <-> cbd
                 # sc <-> sc2
-                self.__add_edge(Edge(len(self.edges) + 1, p, sc))
-                self.__add_edge(Edge(len(self.edges) + 1, sc, p))
-                self.__add_edge(Edge(len(self.edges) + 1, sc, cbd))
-                self.__add_edge(Edge(len(self.edges) + 1, cbd, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+                self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
                 if i != 1 and j != 0:
-                    self.__add_edge(Edge(len(self.edges) + 1, sc, sc2))
-                    self.__add_edge(Edge(len(self.edges) + 1, sc2, sc))
+                    self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
+                    self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
 
     def __add_edge(self, edge):
         if not isinstance(edge, Edge):
             raise EdgeDoesNotExistException('is not a valid edge')
         if edge.id in self.__edges_id:
             raise IdEdgeIsDuplicatedException('id edge is duplicated')
-        self.edges.append(edge)
+        self.__edges.append(edge)
         self.__edges_id.append(edge.id)
 
     def __etha_asymmetry(self, etha, etha_zone):
 
-        zone = self.zones[etha_zone - 1]
+        zone = self.__zones[etha_zone - 1]
         sc = zone.subcenter
         r_cbd = etha * sc.radius
         ang = sc.angle
 
         x_cbd, y_cbd = self.obtain_xy(r_cbd, ang)
 
-        for node in range(len(self.nodes)):
-            if isinstance(self.nodes[node], CBD):
-                self.nodes[node].x = x_cbd
-                self.nodes[node].y = y_cbd
-                self.nodes[node].radius = r_cbd
-                self.nodes[node].angle = ang
+        for node in range(len(self.__nodes)):
+            if isinstance(self.__nodes[node], CBD):
+                self.__nodes[node].x = x_cbd
+                self.__nodes[node].y = y_cbd
+                self.__nodes[node].radius = r_cbd
+                self.__nodes[node].angle = ang
 
         # must build all the edges
         self.__build_edges()
 
     def __Hi_asymmetry(self, Hi):
 
-        for i in range(len(self.zones)):
+        for i in range(len(self.__zones)):
             hi = Hi[i]
-            p = self.zones[i].periphery
+            p = self.__zones[i].periphery
 
             r_p = hi * p.radius
             ang = p.angle
             x_p, y_p = self.obtain_xy(r_p, ang)
 
             # change values in nodes list
-            for node in range(len(self.nodes)):
+            for node in range(len(self.__nodes)):
 
-                if self.nodes[node] == p:
-                    self.nodes[node].x = x_p
-                    self.nodes[node].y = y_p
-                    self.nodes[node].radius = r_p
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].radius = r_p
 
             # change values in zones nodes information
-            self.zones[i].periphery.x = x_p
-            self.zones[i].periphery.y = y_p
-            self.zones[i].periphery.radius = r_p
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.radius = r_p
 
         # must build all the edges
         self.__build_edges()
 
     def __Gi_asymmetry(self, Gi):
 
-        for i in range(len(self.zones)):
+        for i in range(len(self.__zones)):
             gi = Gi[i]
-            sc = self.zones[i].subcenter
+            sc = self.__zones[i].subcenter
 
             r_sc = gi * sc.radius
             ang = sc.angle
             x_sc, y_sc = self.obtain_xy(r_sc, ang)
 
             # change values in nodes list
-            for node in range(len(self.nodes)):
+            for node in range(len(self.__nodes)):
 
-                if self.nodes[node] == sc:
-                    self.nodes[node].x = x_sc
-                    self.nodes[node].y = y_sc
-                    self.nodes[node].radius = r_sc
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].radius = r_sc
 
             # change values in zones nodes information
-            self.zones[i].subcenter.x = x_sc
-            self.zones[i].subcenter.y = y_sc
-            self.zones[i].subcenter.radius = r_sc
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.radius = r_sc
 
         # must build all the edges
         self.__build_edges()
 
     def __angles_asymmetry(self, angles):
 
-        for i in range(len(self.zones)):
+        for i in range(len(self.__zones)):
             ang = angles[i]
 
-            p = self.zones[i].periphery
-            sc = self.zones[i].subcenter
+            p = self.__zones[i].periphery
+            sc = self.__zones[i].subcenter
 
             r_p = p.radius
             r_sc = sc.radius
@@ -767,24 +766,24 @@ class Graph:
             x_sc, y_sc = self.obtain_xy(r_sc, ang)
 
             # change values in nodes list
-            for node in range(len(self.nodes)):
-                if self.nodes[node] == p:
-                    self.nodes[node].x = x_p
-                    self.nodes[node].y = y_p
-                    self.nodes[node].angle = ang
-                if self.nodes[node] == sc:
-                    self.nodes[node].x = x_sc
-                    self.nodes[node].y = y_sc
-                    self.nodes[node].angle = ang
+            for node in range(len(self.__nodes)):
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].angle = ang
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].angle = ang
 
             # change values in zones nodes information
-            self.zones[i].periphery.x = x_p
-            self.zones[i].periphery.y = y_p
-            self.zones[i].periphery.angle = ang
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.angle = ang
 
-            self.zones[i].subcenter.x = x_sc
-            self.zones[i].subcenter.y = y_sc
-            self.zones[i].subcenter.angle = ang
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.angle = ang
 
         # must build all the edges
         self.__build_edges()
