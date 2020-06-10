@@ -173,11 +173,25 @@ class PeripherySubcenterNumberForZoneExceptions(GraphException):
     pass
 
 
+class PeripheryDoesNotExistExceptions(GraphException):
+    pass
 
 
+class SubcenterDoesNotExistExceptions(GraphException):
+    pass
 
 
+class NodeIdIsNotValidExceptions(GraphException):
+    pass
 
 
+class EdgeIdIsNotValidExceptions(GraphException):
+    pass
 
 
+class NodeDoesNotExistExceptions(GraphException):
+    pass
+
+
+class WritePajekFileExceptions(GraphException):
+    pass
