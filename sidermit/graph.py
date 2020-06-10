@@ -15,7 +15,8 @@ class Zone:
 
         if zone_id is None:
             raise ZoneIdIsNotValidExceptions("zone_id is not valid")
-
+        if zone_id <= 0:
+            raise ZoneIdIsNotValidExceptions("zone_id number must be >=1")
         if not isinstance(node_periphery, Periphery):
             raise NodePeripheryTypeIsNotValidException('node must be periphery')
 
@@ -382,8 +383,6 @@ class Graph:
                         node_id, name, x, y, node_type, zone, width = line.split()
                         if node_type != "CBD" and node_type != "SC" and node_type != "P":
                             raise NodeTypeIsNotValidExceptions("Node type is not valid. Try with CBD, SC or P")
-                        if int(zone) < 0:
-                            raise ZoneIdIsNotValidExceptions("zone is not valid. Try with a positive value")
                         col_id.append(node_id)
                         col_name.append(name)
                         col_x.append(x)
@@ -452,10 +451,13 @@ class Graph:
 
             df_file = df_file.sort_values(["zone", "type"], ascending=[True, True])
 
-            n = int((len(df_file["node_id"]) - 1) / 2)
+            lines_accepted = list(range(1, 10001, 2))
 
-            if not isinstance(n, int):
-                raise NumberLinesInTheFileIsNotValidExceptions("The number of lines in the file must be 2n+1")
+            if not len(df_file["node_id"]) in lines_accepted:
+                raise NumberLinesInTheFileIsNotValidExceptions("The number of lines in the file must be 2n+1 or "
+                                                               "file is very big (until 5000 zones accepted)")
+
+            n = int((len(df_file["node_id"]) - 1) / 2)
 
             cbd = []
             periphery = []
@@ -482,8 +484,6 @@ class Graph:
                     periphery.append(Periphery(node_id, x, y, radius, angle, width, zone, name))
                 if node_type == "SC":
                     subcenter.append(Subcenter(node_id, x, y, radius, angle, width, zone, name))
-                if node_type != "CBD" and node_type != "P" and node_type != "SC":
-                    raise NodeTypeIsNotValidExceptions("node type is not valid, try with CBD, P or SC")
 
             r_sc = []
             r_p = []
@@ -491,11 +491,6 @@ class Graph:
             r_cbd = 0
             ang_cbd = 0
 
-            # verification of existence and uniqueness of CBD
-            if len(cbd) == 0:
-                raise CBDDoesNotExistExceptions("a CBD is required")
-            if len(cbd) > 1:
-                raise CBDDuplicatedException("only a CBD is required")
             if len(cbd) == 1:
                 r_cbd = cbd[0].radius
                 ang_cbd = cbd[0].angle
@@ -521,8 +516,8 @@ class Graph:
                         n_sc = n_sc + 1
                         node_subcenter = sc
                 if n_p != 1 or n_sc != 1:
-                    raise PeripherySubcenterNumberForZoneExceptions(
-                        "the number of periphery and subcenter nodes must be equal to 1")
+                    raise PeripherySubcenterNumberForZoneExceptions("try to verify that each zone [1, ..., n] has "
+                                                                    "one sc and p")
 
                 radius_p = node_periphery.radius
                 radius_sc = node_subcenter.radius
@@ -554,7 +549,8 @@ class Graph:
             # if parameters are valid
             if graph_obj.parameters_validator(n, L, g, width, etha, etha_zone, angles, Gi, Hi):
 
-                graph_obj.__add_cbd(cbd[0])
+                for node in cbd:
+                    graph_obj.__add_cbd(node)
 
                 for i in range(n):
                     node_periphery = None
@@ -585,12 +581,12 @@ class Graph:
         return graph_obj
 
     def __add_cbd(self, CBD_node):
-        if CBD_node.id in self.__nodes_id:
-            raise IdEdgeIsDuplicatedException("node id is duplicated")
-        if not isinstance(CBD_node, CBD):
-            raise CBDTypeIsNotValidException('CBD_node is not a valid CBD node')
-        if self.__CBD_exist:
-            raise CBDDuplicatedException('a CBD already exists')
+        # not need to check because CBD is the first node append in __nodes
+        # if CBD_node.id in self.__nodes_id:
+        #   raise IdEdgeIsDuplicatedException("node id is duplicated")
+        # not need to check because n° of lines in pajek file and n° of SC = n° of P = 1 for each zone have exceptions
+        # if self.__CBD_exist:
+        #    raise CBDDuplicatedException('a CBD already exists')
         self.__CBD_exist = True
         self.__nodes_id.append(CBD_node.id)
         self.__nodes.append(CBD_node)
@@ -602,20 +598,9 @@ class Graph:
         # always add last zone
         if zone_id is None:
             zone_id = len(self.__zones) + 1
-        if zone_id is not None:
-            if zone_id < 1:
-                raise ZoneIdIsNotValidExceptions("zone_id number must be >=1")
-            if zone_id != len(self.__zones) + 1:
-                raise AddPreviousZonesExceptions("need to specify zone {} previously".format(len(self.__zones) + 1))
-        # need periphery and subcenter nodes
-        if not isinstance(node_periphery, Periphery):
-            raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
-        if not isinstance(node_subcenter, Subcenter):
-            raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
-        # zone_id of the nodes must be equal to zone_id og the zone
-        if node_subcenter.zone_id != len(self.__zones) + 1 or node_periphery.zone_id != len(self.__zones) + 1:
-            raise ZoneIdIsNotValidExceptions("nodes dont have zone_id equal to zone")
-
+        # not need to check because number of periphery and subcenter control exceptions
+        # if zone_id != len(self.__zones) + 1:
+        #    raise AddPreviousZonesExceptions("need to specify zone {} previously".format(len(self.__zones) + 1))
         self.__zones.append(Zone(zone_id, node_periphery, node_subcenter))
         self.__add_nodes(node_periphery, node_subcenter)
 
@@ -623,16 +608,15 @@ class Graph:
         self.__build_edges()
 
     def __add_nodes(self, node_periphery, node_subcenter):
-        if not isinstance(node_periphery, Periphery):
-            raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
-        if not isinstance(node_subcenter, Subcenter):
-            raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
+        # not need to check because number of periphery and subcenter control exceptions
+        # if not isinstance(node_periphery, Periphery):
+        #    raise PeripheryTypeIsNotValidException('node_periphery is not a valid periphery node')
+        # if not isinstance(node_subcenter, Subcenter):
+        #    raise SubcenterTypeIsNotValidException('node_subcenter is not a valid subcenter node')
 
         # to verified if id is not duplicated
-        if node_periphery.id in self.__nodes_id:
-            raise IdNodeIsDuplicatedException('id_node periphery is duplicated')
-        if node_subcenter.id in self.__nodes_id:
-            raise IdNodeIsDuplicatedException('id_node subcenter is duplicated')
+        if node_periphery.id in self.__nodes_id or node_subcenter.id in self.__nodes_id:
+            raise IdNodeIsDuplicatedException('id_node is duplicated')
 
         self.__nodes.append(node_periphery)
         self.__nodes.append(node_subcenter)
@@ -674,10 +658,11 @@ class Graph:
                     self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
 
     def __add_edge(self, edge):
-        if not isinstance(edge, Edge):
-            raise EdgeDoesNotExistException('is not a valid edge')
-        if edge.id in self.__edges_id:
-            raise IdEdgeIsDuplicatedException('id edge is duplicated')
+        # no need to check
+        # if not isinstance(edge, Edge):
+        #    raise EdgeDoesNotExistException('is not a valid edge')
+        # if edge.id in self.__edges_id:
+        #    raise IdEdgeIsDuplicatedException('id edge is duplicated')
         self.__edges.append(edge)
         self.__edges_id.append(edge.id)
 

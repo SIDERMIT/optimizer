@@ -14,6 +14,11 @@ class test_graph(unittest.TestCase):
         self.test_1zone_path = os.path.join(self.data_path, 'test_1zone.PAJEK')
         self.test_2zone_path = os.path.join(self.data_path, 'test_2zone.PAJEK')
         self.test_formatPajekExceptions = os.path.join(self.data_path, 'test_formatPajekExceptions.PAJEK')
+        self.test_NodeTypeExceptions = os.path.join(self.data_path, 'test_NodeTypeExceptions.PAJEK')
+        self.test_NumberOfLinesExceptions = os.path.join(self.data_path, 'test_NumberOfLinesExceptions.PAJEK')
+        self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path, 'test_NumberNodesForZoneExceptions.PAJEK')
+        self.test_needCbdExceptions = os.path.join(self.data_path, 'test_needCbdExceptions.PAJEK')
+        self.test_nodeIdExceptions = os.path.join(self.data_path, 'test_nodeIdExceptions.PAJEK')
 
     def test_Node_Exceptions(self):
         """
@@ -61,7 +66,10 @@ class test_graph(unittest.TestCase):
         # to test exceptions class zone
         :return:
         """
-
+        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+            p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
+            sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
+            graph.Zone(-1, p, sc)
         with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
@@ -251,6 +259,41 @@ class test_graph(unittest.TestCase):
         self.assertEqual(int(g.obtain_angle(-1, 1)), 135)
         self.assertEqual(int(g.obtain_angle(-1, -1)), 225)
         self.assertEqual(int(g.obtain_angle(1, -1)), 315)
+
+    def test_pajekfile_to_dataframe_exceptions(self):
+        """
+        # to test exception of node type in pajek file
+        :return:
+        """
+        with self.assertRaises(exceptions.NodeTypeIsNotValidExceptions):
+            graph.Graph.build_from_file(self.test_NodeTypeExceptions)
+
+    def test_build_from_file_exceptions(self):
+        """
+        # to test exception of number of lines in pajek file
+        :return:
+        """
+        with self.assertRaises(exceptions.NumberLinesInTheFileIsNotValidExceptions):
+            graph.Graph.build_from_file(self.test_NumberOfLinesExceptions)
+
+        with self.assertRaises(exceptions.PeripherySubcenterNumberForZoneExceptions):
+            graph.Graph.build_from_file(self.test_NumberNodesForZoneExceptions)
+
+    def test_add_zone_exceptions(self):
+        """
+        # to check exceptions __add_zones method
+        :return:
+        """
+        with self.assertRaises(exceptions.CBDDoesNotExistExceptions):
+            graph.Graph.build_from_file(self.test_needCbdExceptions)
+
+    def test_add_nodes_exceptions(self):
+        """
+        # to check exceptions __add_nodes method
+        :return:
+        """
+        with self.assertRaises(exceptions.IdNodeIsDuplicatedException):
+            graph.Graph.build_from_file(self.test_nodeIdExceptions)
 
 
 if __name__ == '__main__':

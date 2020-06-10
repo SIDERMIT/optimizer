@@ -166,10 +166,6 @@ class NumberLinesInTheFileIsNotValidExceptions(GraphException):
     pass
 
 
-class NumberLinesInTheFileIsNotValidExceptions(GraphException):
-    pass
-
-
 class PeripherySubcenterNumberForZoneExceptions(GraphException):
     pass
 
