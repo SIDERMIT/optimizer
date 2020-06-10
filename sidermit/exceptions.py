@@ -7,6 +7,7 @@ class SIDERMITException(Exception):
 class GraphException(SIDERMITException):
     pass
 
+
 # Exceptions Graph
 
 
@@ -194,4 +195,8 @@ class NodeDoesNotExistExceptions(GraphException):
 
 
 class WritePajekFileExceptions(GraphException):
+    pass
+
+
+class NameDoesNotDefinedExceptions(GraphException):
     pass

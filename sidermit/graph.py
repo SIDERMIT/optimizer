@@ -22,6 +22,9 @@ class Zone:
         if not isinstance(node_subcenter, Subcenter):
             raise NodeSubcenterTypeIsNotValidException('node must be subcenter')
 
+        if node_periphery.zone_id != zone_id or node_subcenter.zone_id != zone_id:
+            raise ZoneIdIsNotValidExceptions("node_periphery and node_subcenter must be equal to zone_id")
+
         self.id = zone_id
         self.periphery = node_periphery
         self.subcenter = node_subcenter
@@ -29,8 +32,10 @@ class Zone:
 
 class Node:
 
-    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
 
+        if name is None:
+            raise NameDoesNotDefinedExceptions("must define a name to node")
         if node_id is None:
             raise NodeIdIsNotValidExceptions("zone_id is not valid")
         if zone_id is None:
@@ -53,7 +58,7 @@ class Node:
 
 class CBD(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
         if zone_id != 0:
             raise ZoneIdIsNotValidExceptions("CBD node_id must be equal to 0")
         # atributos de nodos
@@ -62,14 +67,14 @@ class CBD(Node):
 
 class Periphery(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
         # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Subcenter(Node):
 
-    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name=None):
+    def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
         # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
@@ -307,7 +312,7 @@ class Graph:
             # # for each zones add Nodes periphery and subcenter
             # ADD all edges
             # add CBD
-            CBD_node = CBD(0, 0, 0, 0, 0, p, 0)
+            CBD_node = CBD(0, 0, 0, 0, 0, p, 0, "CBD")
             graph_obj.__add_cbd(CBD_node)
 
             # Add zones
@@ -321,8 +326,8 @@ class Graph:
                 x_p, y_p = graph_obj.obtain_xy(radius_p, angle_p)
                 x_sc, y_sc = graph_obj.obtain_xy(radius_sc, angle_sc)
 
-                node_p = Periphery(id_p, x_p, y_p, radius_p, angle_p, p, zone + 1)
-                node_sc = Subcenter(id_sc, x_sc, y_sc, radius_sc, angle_sc, p, zone + 1)
+                node_p = Periphery(id_p, x_p, y_p, radius_p, angle_p, p, zone + 1, "P_{}".format(zone + 1))
+                node_sc = Subcenter(id_sc, x_sc, y_sc, radius_sc, angle_sc, p, zone + 1, "SC_{}".format(zone + 1))
 
                 # add periphery and subcenter nodes
                 # build edges
