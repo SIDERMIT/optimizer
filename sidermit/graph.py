@@ -2,6 +2,7 @@ from enum import Enum
 import pandas as pd
 from sidermit.exceptions import *
 import math
+from matplotlib import pyplot as plt
 
 
 class GraphFileFormat(Enum):
@@ -119,6 +120,11 @@ class Graph:
         self.__Hi = None
 
     def graph_to_pajek(self, file_path):
+        """
+        # to write a pajek file with information in Graph class
+        :param file_path:
+        :return:
+        """
 
         if self.is_valid():
             file = open(file_path, 'w')
@@ -142,6 +148,10 @@ class Graph:
             raise WritePajekFileExceptions("a error writing the Pajek file")
 
     def is_valid(self):
+        """
+        # Return True if information in Graph is valid to generate a city graph
+        :return:
+        """
         n = self.__n
         l = self.__l
         g = self.__g
@@ -250,6 +260,19 @@ class Graph:
 
     @staticmethod
     def parameters_validator(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
+        """
+        # to validate parameters
+        :param n:
+        :param l:
+        :param g:
+        :param p:
+        :param etha:
+        :param etha_zone:
+        :param angles:
+        :param Gi:
+        :param Hi:
+        :return:
+        """
         if n < 0 or not isinstance(n, int):
             raise NIsNotValidNumberException('n cannot be a negative number')
         if l < 0:
@@ -290,7 +313,7 @@ class Graph:
     @staticmethod
     def build_from_parameters(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
         """
-        create symetric
+        # to build a city graph with parameters information
         :param etha_zone:
         :param etha:
         :param angles:
@@ -408,6 +431,12 @@ class Graph:
 
     @staticmethod
     def obtain_angle(x, y):
+        """
+        # to obtain angle of a vector with coor (0,0,x,y)  with respect to x+
+        :param x:
+        :param y:
+        :return:
+        """
         a = 1
         b = 0
         c = x
@@ -432,13 +461,19 @@ class Graph:
 
     @staticmethod
     def obtain_xy(radius, angle):
+        """
+        # to obtain x, y with radius and angle parameters
+        :param radius:
+        :param angle:
+        :return:
+        """
         x, y = radius * math.cos(math.radians(angle)), radius * math.sin(math.radians(angle))
         return x, y
 
     @staticmethod
     def build_from_file(file_path, file_format=GraphFileFormat.PAJEK):
-
         """
+        # to build a city graph with pajek file information
         :param file_path:
         :param file_format:
         :return: Graph instance
@@ -772,3 +807,61 @@ class Graph:
 
         # must build all the edges
         self.__build_edges()
+
+    def plot_graph(self):
+        """
+        # to plot graph
+        :return:
+        """
+        if self.is_valid():
+
+            # edges information and plot
+            for edge in self.__edges:
+                x = [edge.node1.x, edge.node2.x]
+                y = [edge.node1.y, edge.node2.y]
+                plt.plot(x, y, color="lime")
+
+            # nodes information and plot
+            info_cbd = []
+            info_sc = []
+            info_p = []
+
+            for node in self.__nodes:
+                if isinstance(node, CBD):
+                    info_cbd.append(node)
+                if isinstance(node, Periphery):
+                    info_p.append(node)
+                if isinstance(node, Subcenter):
+                    info_sc.append(node)
+
+            x_cbd = []
+            y_cbd = []
+            x_sc = []
+            y_sc = []
+            x_p = []
+            y_p = []
+
+            for cbd in info_cbd:
+                x_cbd.append(cbd.x)
+                y_cbd.append(cbd.y)
+
+            for sc in info_sc:
+                x_sc.append(sc.x)
+                y_sc.append(sc.y)
+
+            for p in info_cbd:
+                x_p.append(p.x)
+                y_p.append(p.y)
+
+            # ploteamos nodos
+            plt.plot(x_p, y_p, 'ro')
+            plt.plot(x_sc, y_sc, 'bo')
+            plt.plot(x_cbd, y_cbd, 'mo')
+
+            # propiedades gráfico
+            plt.title("City graph")
+            plt.xlabel("X")
+            plt.ylabel("Y")
+            plt.gca().set_aspect('equal')
+            plt.grid()
+            plt.show()
