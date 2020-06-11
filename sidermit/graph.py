@@ -671,8 +671,26 @@ class Graph:
             self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
             self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
             self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
+        if len(self.__zones) == 2:
+            # p <-> sc
+            # sc <-> cbd
+            p1 = self.__zones[0].periphery
+            sc1 = self.__zones[0].subcenter
+            p2 = self.__zones[1].periphery
+            sc2 = self.__zones[1].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p1, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, p1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, p2, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, p2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc2))
 
-        if len(self.__zones) > 1:
+        if len(self.__zones) > 2:
             for i in range(len(self.__zones)):
                 p = self.__zones[i].periphery
                 sc = self.__zones[i].subcenter
@@ -688,9 +706,8 @@ class Graph:
                 self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
                 self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
                 self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
-                if i != 1 and j != 0:
-                    self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
-                    self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
 
     def __add_edge(self, edge):
         # no need to check
@@ -814,7 +831,6 @@ class Graph:
         :return:
         """
         if self.is_valid():
-
             # edges information and plot
             for edge in self.__edges:
                 x = [edge.node1.x, edge.node2.x]
@@ -849,7 +865,7 @@ class Graph:
                 x_sc.append(sc.x)
                 y_sc.append(sc.y)
 
-            for p in info_cbd:
+            for p in info_p:
                 x_p.append(p.x)
                 y_p.append(p.y)
 
