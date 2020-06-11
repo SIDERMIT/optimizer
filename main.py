@@ -54,5 +54,5 @@
 
 from sidermit import graph
 
-g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles= [10, 50])
+g = graph.Graph.build_from_parameters(5, 1000, 0.5, 0, angles= [10, 50, 150, 180, 270], etha=0.5, etha_zone=3, Hi=[1, 2, 1, 1, 1], Gi=[1, 2, 1, 1, 1])
 g.plot_graph()

@@ -13,6 +13,7 @@ class test_graph(unittest.TestCase):
         self.test_0zone_path = os.path.join(self.data_path, 'test_0zone.PAJEK')
         self.test_1zone_path = os.path.join(self.data_path, 'test_1zone.PAJEK')
         self.test_2zone_path = os.path.join(self.data_path, 'test_2zone.PAJEK')
+        self.test_3zone_path = os.path.join(self.data_path, 'test_3zone.PAJEK')
         self.test_formatPajekExceptions = os.path.join(self.data_path, 'test_formatPajekExceptions.PAJEK')
         self.test_NodeTypeExceptions = os.path.join(self.data_path, 'test_NodeTypeExceptions.PAJEK')
         self.test_NumberOfLinesExceptions = os.path.join(self.data_path, 'test_NumberOfLinesExceptions.PAJEK')
@@ -106,7 +107,7 @@ class test_graph(unittest.TestCase):
             cbd = graph.CBD(0, 0, 0, 0, 0, 0, 0, "CBD")
             graph.Edge(1, cbd, p)
 
-    def test_read_pajek_file(self):
+    def test_build_from_pajek_file(self):
         """
         # to test reading pajek file
         :return:
@@ -120,6 +121,10 @@ class test_graph(unittest.TestCase):
         self.assertTrue(g.is_valid())
 
         g = graph.Graph.build_from_file(self.test_2zone_path)
+
+        self.assertTrue(g.is_valid())
+
+        g = graph.Graph.build_from_file(self.test_3zone_path)
 
         self.assertTrue(g.is_valid())
 
