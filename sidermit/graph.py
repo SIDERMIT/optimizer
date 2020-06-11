@@ -825,6 +825,34 @@ class Graph:
         # must build all the edges
         self.__build_edges()
 
+    def obtain_n(self):
+        """
+        # to get parameters of numbers of zones
+        :return:
+        """
+        return self.__n
+
+    def obtain_zones(self):
+        """
+        # to get all the zones built
+        :return:
+        """
+        return self.__zones
+
+    def obtain_nodes(self):
+        """
+        # to get all the nodes built
+        :return:
+        """
+        return self.__nodes
+
+    def obtain_edges(self):
+        """
+        # to get all the edges built
+        :return:
+        """
+        return self.__edges
+
     def plot_graph(self):
         """
         # to plot graph
