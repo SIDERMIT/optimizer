@@ -8,6 +8,11 @@ class GraphException(SIDERMITException):
     pass
 
 
+# Demand exception
+class DemandException(SIDERMITException):
+    pass
+
+
 # Exceptions Graph
 
 
@@ -195,4 +200,60 @@ class WritePajekFileExceptions(GraphException):
 
 
 class NameDoesNotDefinedExceptions(GraphException):
+    pass
+
+# Exceptions Demand
+class GraphIsNotValidExceptions(DemandException):
+    pass
+
+
+class NIsNotValidExceptions(DemandException):
+    pass
+
+
+class YIsNotValidExceptions(DemandException):
+    pass
+
+
+class AIsNotValidExceptions(DemandException):
+    pass
+
+
+class AlphaIsNotValidExceptions(DemandException):
+    pass
+
+
+class BetaIsNotValidExceptions(DemandException):
+    pass
+
+
+class NOutRangeExceptions(DemandException):
+    pass
+
+
+class YOutRangeExceptions(DemandException):
+    pass
+
+
+class AOutRangeExceptions(DemandException):
+    pass
+
+
+class AlphaOutRangeExceptions(DemandException):
+    pass
+
+
+class BetaOutRangeExceptions(DemandException):
+    pass
+
+
+class AlphaBetaOutRangeExceptions(DemandException):
+    pass
+
+
+class IdDestinationnDoesNotFoundExceptions(DemandException):
+    pass
+
+
+class IdOriginDoesNotFoundExceptions(DemandException):
     pass

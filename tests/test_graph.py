@@ -9,7 +9,8 @@ class test_graph(unittest.TestCase):
 
     def setUp(self):
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.data_path = os.path.join(self.dir_path, 'file_tests')
+        self.data_path = os.path.join(self.dir_path, 'file')
+        self.data_path = os.path.join(self.data_path, 'graph')
         self.test_0zone_path = os.path.join(self.data_path, 'test_0zone.PAJEK')
         self.test_1zone_path = os.path.join(self.data_path, 'test_1zone.PAJEK')
         self.test_2zone_path = os.path.join(self.data_path, 'test_2zone.PAJEK')
@@ -20,6 +21,20 @@ class test_graph(unittest.TestCase):
         self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path, 'test_NumberNodesForZoneExceptions.PAJEK')
         self.test_needCbdExceptions = os.path.join(self.data_path, 'test_needCbdExceptions.PAJEK')
         self.test_nodeIdExceptions = os.path.join(self.data_path, 'test_nodeIdExceptions.PAJEK')
+
+    def test_get_method(self):
+        """
+        test methods get class graph
+        :return:
+        """
+        g = graph.Graph.build_from_file(self.test_3zone_path)
+
+        self.assertTrue(isinstance(g.get_cbd(), graph.CBD))
+        self.assertEqual(g.get_n(), 3)
+        self.assertEqual(len(g.get_zones()), 3)
+        self.assertEqual(len(g.get_nodes()), 7)
+        self.assertEqual(len(g.get_edges()), 18)
+
 
     def test_Node_Exceptions(self):
         """

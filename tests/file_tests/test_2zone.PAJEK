@@ -1,7 +1,0 @@
-[id] [name] [x] [y] [type] [zone_id] [width]
-*vertices 5
-0 CBD 0 0 CBD 0 0
-1 SC_1 1000 0 SC 1 0
-2 P_1 1000 0 P 1 0
-3 SC_2 -1000 0 SC 2 0
-4 P_2 -1000 0 P 2 0
