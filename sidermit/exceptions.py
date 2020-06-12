@@ -257,3 +257,7 @@ class IdDestinationnDoesNotFoundExceptions(DemandException):
 
 class IdOriginDoesNotFoundExceptions(DemandException):
     pass
+
+
+class tripsValueIsNotValidExceptions(DemandException):
+    pass
