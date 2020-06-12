@@ -1,8 +1,9 @@
-import unittest
-from sidermit import graph
-from sidermit import exceptions
 import os
+import unittest
 from pathlib import Path
+
+from sidermit import exceptions
+from sidermit import graph
 
 
 class test_graph(unittest.TestCase):
@@ -21,6 +22,7 @@ class test_graph(unittest.TestCase):
         self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path, 'test_NumberNodesForZoneExceptions.PAJEK')
         self.test_needCbdExceptions = os.path.join(self.data_path, 'test_needCbdExceptions.PAJEK')
         self.test_nodeIdExceptions = os.path.join(self.data_path, 'test_nodeIdExceptions.PAJEK')
+        self.test_plot = os.path.join(self.data_path, 'plot_test.png')
 
     def test_get_method(self):
         """
@@ -34,7 +36,6 @@ class test_graph(unittest.TestCase):
         self.assertEqual(len(g.get_zones()), 3)
         self.assertEqual(len(g.get_nodes()), 7)
         self.assertEqual(len(g.get_edges()), 18)
-
 
     def test_Node_Exceptions(self):
         """
@@ -129,19 +130,27 @@ class test_graph(unittest.TestCase):
         """
         g = graph.Graph.build_from_file(self.test_0zone_path)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 1)
+        self.assertEqual(len(g.get_edges()), 0)
+        self.assertEqual(len(g.get_zones()), 0)
 
         g = graph.Graph.build_from_file(self.test_1zone_path)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_file(self.test_2zone_path)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
         g = graph.Graph.build_from_file(self.test_3zone_path)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 7)
+        self.assertEqual(len(g.get_edges()), 18)
+        self.assertEqual(len(g.get_zones()), 3)
 
     def test_build_from_parameters(self):
         """
@@ -150,48 +159,70 @@ class test_graph(unittest.TestCase):
         """
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, angles=[10])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[10, 50])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Gi=[2])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[2, 0.5])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, Hi=[2])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[2, 0.5])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=2)
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10], Gi=[2], Hi=[2])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 3)
+        self.assertEqual(len(g.get_edges()), 4)
+        self.assertEqual(len(g.get_zones()), 1)
 
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
                                               Hi=[2, 0.5])
 
-        self.assertTrue(g.is_valid())
+        self.assertEqual(len(g.get_nodes()), 5)
+        self.assertEqual(len(g.get_edges()), 10)
+        self.assertEqual(len(g.get_zones()), 2)
 
     def test_raises_fileformat(self):
         """
@@ -271,14 +302,14 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph()
-        self.assertEqual(int(g.obtain_angle(1, 0)), 0)
-        self.assertEqual(int(g.obtain_angle(0, 1)), 90)
-        self.assertEqual(int(g.obtain_angle(-1, 0)), 180)
-        self.assertEqual(int(g.obtain_angle(0, -1)), 270)
-        self.assertEqual(int(g.obtain_angle(1, 1)), 45)
-        self.assertEqual(int(g.obtain_angle(-1, 1)), 135)
-        self.assertEqual(int(g.obtain_angle(-1, -1)), 225)
-        self.assertEqual(int(g.obtain_angle(1, -1)), 315)
+        self.assertEqual(int(g.get_angle(1, 0)), 0)
+        self.assertEqual(int(g.get_angle(0, 1)), 90)
+        self.assertEqual(int(g.get_angle(-1, 0)), 180)
+        self.assertEqual(int(g.get_angle(0, -1)), 270)
+        self.assertEqual(int(g.get_angle(1, 1)), 45)
+        self.assertEqual(int(g.get_angle(-1, 1)), 135)
+        self.assertEqual(int(g.get_angle(-1, -1)), 225)
+        self.assertEqual(int(g.get_angle(1, -1)), 315)
 
     def test_pajekfile_to_dataframe_exceptions(self):
         """

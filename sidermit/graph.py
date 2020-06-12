@@ -128,137 +128,22 @@ class Graph:
         :return:
         """
 
-        if self.is_valid():
-            file = open(file_path, 'w')
-            file.write("*vertices {}{}".format(len(self.__nodes), "\n"))
-            for node in self.__nodes:
-                if isinstance(node, CBD):
-                    file.write(
-                        "{} {} {} {} CBD {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                         "\n"))
-                if isinstance(node, Periphery):
-                    file.write(
-                        "{} {} {} {} P {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                       "\n"))
-                if isinstance(node, Subcenter):
-                    file.write(
-                        "{} {} {} {} SC {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                        "\n"))
-            file.close()
-
-        else:
-            raise WritePajekFileExceptions("a error writing the Pajek file")
-
-    def is_valid(self):
-        """
-        # Return True if information in Graph is valid to generate a city graph
-        :return:
-        """
-        n = self.__n
-        l = self.__l
-        g = self.__g
-        p = self.__p
-        etha = self.__etha
-        etha_zone = self.__etha_zone
-        angles = self.__angles
-        Gi = self.__Gi
-        Hi = self.__Hi
-
-        self.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi)
-        self.__zones_validator()
-        self.__nodes_validator()
-        self.__edges_validator()
-
-        return True
-
-    def __zones_validator(self):
-        # zone id list to verified duplicated id and existence of the nodes in nodes list
-        zone_id_list = []
-        for zone in self.__zones:
-            if zone.id not in zone_id_list:
-                zone_id_list.append(zone.id)
-            else:
-                raise ZoneIdIsNotValidExceptions("Zone id is duplicated")
-            # verified periphery and subcenter nodes
-            if not isinstance(zone.periphery, Periphery):
-                raise PeripheryTypeIsNotValidException("node periphery is not valid")
-            if not isinstance(zone.subcenter, Subcenter):
-                raise SubcenterTypeIsNotValidException("node subcenter is not valid")
-
-            # to verified periphery and subcenter nodes in node list
-            p_exist = False
-            sc_exist = False
-            for node in self.__nodes:
-                if node == zone.periphery:
-                    p_exist = True
-                if node == zone.subcenter:
-                    sc_exist = True
-            if not p_exist:
-                raise PeripheryDoesNotExistExceptions("Node periphery does not exist in nodes list")
-            if not sc_exist:
-                raise SubcenterDoesNotExistExceptions("Node subcenter does not exist in nodes list")
-        # to verified existences and uniqueness of all zones [1, ..., n]
-        for i in range(len(self.__zones)):
-            j = i + 1
-            i_exist = False
-            for zone_id in zone_id_list:
-                if j == zone_id:
-                    i_exist = True
-                    break
-            if not i_exist:
-                raise ZoneIdIsNotValidExceptions("must give zone_id in order [1, ..., n]")
-
-    def __nodes_validator(self):
-        # numbers of the cbd, p and sc
-        n_cbd = 0
-        n_p = 0
-        n_sc = 0
-        # node_id list to duplicated
-        node_id_list = []
+        file = open(file_path, 'w')
+        file.write("*vertices {}{}".format(len(self.__nodes), "\n"))
         for node in self.__nodes:
             if isinstance(node, CBD):
-                n_cbd = n_cbd + 1
+                file.write(
+                    "{} {} {} {} CBD {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
+                                                     "\n"))
             if isinstance(node, Periphery):
-                n_p = n_p + 1
+                file.write(
+                    "{} {} {} {} P {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
+                                                   "\n"))
             if isinstance(node, Subcenter):
-                n_sc = n_sc + 1
-            # node id duplicated
-            if node.id not in node_id_list:
-                node_id_list.append(node.id)
-            else:
-                raise IdNodeIsDuplicatedException("node_id is duplicated")
-        # only one CBD
-        if n_cbd == 0:
-            raise CBDDoesNotExistExceptions("a CBD is required")
-        if n_cbd > 1:
-            raise CBDDoesNotExistExceptions("only a CBD is required")
-        # periphery numbers = subcenter numbers
-        if n_p != n_sc:
-            raise PeripherySubcenterNumberForZoneExceptions("number of P and SC must be equal")
-
-    def __edges_validator(self):
-
-        edge_id_list = []
-        for edge in self.__edges:
-            # node id duplicated
-            if edge.id not in edge_id_list:
-                edge_id_list.append(edge.id)
-            else:
-                raise IdEdgeIsDuplicatedException("edge_id is duplicated")
-            n1 = edge.node1
-            n2 = edge.node2
-
-            n1_exist = False
-            n2_exist = False
-            for node in self.__nodes:
-                if node == n1:
-                    n1_exist = True
-                if node == n2:
-                    n2_exist = True
-            if not n1_exist:
-                raise NodeDoesNotExistExceptions("node 1 does not exist")
-            if not n2_exist:
-                raise NodeDoesNotExistExceptions("node 2 does not exist")
+                file.write(
+                    "{} {} {} {} SC {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
+                                                    "\n"))
+        file.close()
 
     @staticmethod
     def parameters_validator(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
@@ -348,8 +233,8 @@ class Graph:
                 radius_sc = l
                 angle_p = 360 / n * zone
                 angle_sc = 360 / n * zone
-                x_p, y_p = graph_obj.obtain_xy(radius_p, angle_p)
-                x_sc, y_sc = graph_obj.obtain_xy(radius_sc, angle_sc)
+                x_p, y_p = graph_obj.get_xy(radius_p, angle_p)
+                x_sc, y_sc = graph_obj.get_xy(radius_sc, angle_sc)
 
                 node_p = Periphery(id_p, x_p, y_p, radius_p, angle_p, p, zone + 1, "P_{}".format(zone + 1))
                 node_sc = Subcenter(id_sc, x_sc, y_sc, radius_sc, angle_sc, p, zone + 1, "SC_{}".format(zone + 1))
@@ -432,7 +317,7 @@ class Graph:
             return df_file
 
     @staticmethod
-    def obtain_angle(x, y):
+    def get_angle(x, y):
         """
         # to obtain angle of a vector with coor (0,0,x,y)  with respect to x+
         :param x:
@@ -462,7 +347,7 @@ class Graph:
         return angleInDegree
 
     @staticmethod
-    def obtain_xy(radius, angle):
+    def get_xy(radius, angle):
         """
         # to obtain x, y with radius and angle parameters
         :param radius:
@@ -513,7 +398,7 @@ class Graph:
                 width = float(df_file.iloc[i]["width"])
 
                 radius = math.sqrt(x ** 2 + y ** 2)
-                angle = graph_obj.obtain_angle(x, y)
+                angle = graph_obj.get_angle(x, y)
 
                 if node_type == "CBD":
                     cbd.append(CBD(node_id, x, y, radius, angle, width, zone, name))
@@ -727,7 +612,7 @@ class Graph:
         r_cbd = etha * sc.radius
         ang = sc.angle
 
-        x_cbd, y_cbd = self.obtain_xy(r_cbd, ang)
+        x_cbd, y_cbd = self.get_xy(r_cbd, ang)
 
         for node in range(len(self.__nodes)):
             if isinstance(self.__nodes[node], CBD):
@@ -747,7 +632,7 @@ class Graph:
 
             r_p = hi * p.radius
             ang = p.angle
-            x_p, y_p = self.obtain_xy(r_p, ang)
+            x_p, y_p = self.get_xy(r_p, ang)
 
             # change values in nodes list
             for node in range(len(self.__nodes)):
@@ -773,7 +658,7 @@ class Graph:
 
             r_sc = gi * sc.radius
             ang = sc.angle
-            x_sc, y_sc = self.obtain_xy(r_sc, ang)
+            x_sc, y_sc = self.get_xy(r_sc, ang)
 
             # change values in nodes list
             for node in range(len(self.__nodes)):
@@ -801,8 +686,8 @@ class Graph:
 
             r_p = p.radius
             r_sc = sc.radius
-            x_p, y_p = self.obtain_xy(r_p, ang)
-            x_sc, y_sc = self.obtain_xy(r_sc, ang)
+            x_p, y_p = self.get_xy(r_p, ang)
+            x_sc, y_sc = self.get_xy(r_sc, ang)
 
             # change values in nodes list
             for node in range(len(self.__nodes)):
@@ -872,54 +757,53 @@ class Graph:
         # to plot graph
         :return:
         """
-        if self.is_valid():
-            # edges information and plot
-            for edge in self.__edges:
-                x = [edge.node1.x, edge.node2.x]
-                y = [edge.node1.y, edge.node2.y]
-                plt.plot(x, y, color="lime")
 
-            # nodes information and plot
-            info_cbd = []
-            info_sc = []
-            info_p = []
+        # edges information and plot
+        for edge in self.__edges:
+            x = [edge.node1.x, edge.node2.x]
+            y = [edge.node1.y, edge.node2.y]
+            plt.plot(x, y, color="lime")
 
-            for node in self.__nodes:
-                if isinstance(node, CBD):
-                    info_cbd.append(node)
-                if isinstance(node, Periphery):
-                    info_p.append(node)
-                if isinstance(node, Subcenter):
-                    info_sc.append(node)
+        # nodes information and plot
+        info_cbd = []
+        info_sc = []
+        info_p = []
 
-            x_cbd = []
-            y_cbd = []
-            x_sc = []
-            y_sc = []
-            x_p = []
-            y_p = []
+        for node in self.__nodes:
+            if isinstance(node, CBD):
+                info_cbd.append(node)
+            if isinstance(node, Periphery):
+                info_p.append(node)
+            if isinstance(node, Subcenter):
+                info_sc.append(node)
 
-            for cbd in info_cbd:
-                x_cbd.append(cbd.x)
-                y_cbd.append(cbd.y)
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
 
-            for sc in info_sc:
-                x_sc.append(sc.x)
-                y_sc.append(sc.y)
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
 
-            for p in info_p:
-                x_p.append(p.x)
-                y_p.append(p.y)
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
 
-            # ploteamos nodos
-            plt.plot(x_p, y_p, 'ro')
-            plt.plot(x_sc, y_sc, 'bo')
-            plt.plot(x_cbd, y_cbd, 'mo')
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
 
-            # propiedades gráfico
-            plt.title("City graph")
-            plt.xlabel("X")
-            plt.ylabel("Y")
-            plt.gca().set_aspect('equal')
-            plt.grid()
-            plt.show()
+        # ploteamos nodos
+        plt.plot(x_p, y_p, 'ro')
+        plt.plot(x_sc, y_sc, 'bo')
+        plt.plot(x_cbd, y_cbd, 'mo')
+
+        # propiedades gráfico
+        plt.title("City graph")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.gca().set_aspect('equal')
+        plt.show()
