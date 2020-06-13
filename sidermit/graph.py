@@ -123,7 +123,7 @@ class Graph:
 
     def graph_to_pajek(self, file_path):
         """
-        # to write a pajek file with information in Graph class
+        to write a pajek file with information in Graph class
         :param file_path:
         :return:
         """
@@ -148,7 +148,7 @@ class Graph:
     @staticmethod
     def parameters_validator(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
         """
-        # to validate parameters
+        to validate parameters
         :param n:
         :param l:
         :param g:
@@ -200,7 +200,7 @@ class Graph:
     @staticmethod
     def build_from_parameters(n, l, g, p, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None):
         """
-        # to build a city graph with parameters information
+        to build a city graph with parameters information
         :param etha_zone:
         :param etha:
         :param angles:
@@ -319,7 +319,7 @@ class Graph:
     @staticmethod
     def get_angle(x, y):
         """
-        # to obtain angle of a vector with coor (0,0,x,y)  with respect to x+
+        to get angle of a vector with coor (0,0,x,y)  with respect to x+
         :param x:
         :param y:
         :return:
@@ -349,7 +349,7 @@ class Graph:
     @staticmethod
     def get_xy(radius, angle):
         """
-        # to obtain x, y with radius and angle parameters
+        to get x, y with radius and angle parameters
         :param radius:
         :param angle:
         :return:
@@ -360,7 +360,7 @@ class Graph:
     @staticmethod
     def build_from_file(file_path, file_format=GraphFileFormat.PAJEK):
         """
-        # to build a city graph with pajek file information
+        to build a city graph with pajek file information
         :param file_path:
         :param file_format:
         :return: Graph instance
@@ -714,7 +714,7 @@ class Graph:
 
     def get_cbd(self):
         """
-        # to obtain CBD node
+        to obtain CBD node
         :return:
         """
         cbd = None
@@ -726,35 +726,35 @@ class Graph:
 
     def get_n(self):
         """
-        # to get parameters of numbers of zones
+        to get parameters of numbers of zones
         :return:
         """
         return self.__n
 
     def get_zones(self):
         """
-        # to get all the zones built
+        to get all the zones built
         :return:
         """
         return self.__zones
 
     def get_nodes(self):
         """
-        # to get all the nodes built
+        to get all the nodes built
         :return:
         """
         return self.__nodes
 
     def get_edges(self):
         """
-        # to get all the edges built
+        to get all the edges built
         :return:
         """
         return self.__edges
 
     def plot(self):
         """
-        # to plot graph
+        to plot graph
         :return:
         """
 

@@ -1,16 +1,18 @@
 from collections import defaultdict
 
-from sidermit.exceptions import *
-from sidermit.graph import CBD, Periphery, Subcenter
 import pandas as pd
 
-class demand:
+from sidermit.exceptions import *
+from sidermit.graph import CBD, Periphery, Subcenter
+
+
+class Demand:
 
     def __init__(self, graph_obj):
         # initialization of city graph
         self.__graph_obj = graph_obj
         # number of zones
-        self.__n = self.__graph_obj.obtain_n()
+        self.__n = self.__graph_obj.get_n()
         # matrix with demand information
         # dictionary structure [node_idO][node_idD] = vij
         self.__matrix = defaultdict(lambda: defaultdict(float))
@@ -36,18 +38,18 @@ class demand:
         df_matrix.to_csv(file_path, sep=",", index=False)
 
     def __initial_matrix(self):
-        for nodeO in self.__graph_obj.obtain_nodes():
-            for nodeD in self.__graph_obj.obtain_nodes():
-                self.__matrix[nodeO.id][nodeD.id] = 0
+        for nodeO in self.__graph_obj.get_nodes():
+            for nodeD in self.__graph_obj.get_nodes():
+                self.__matrix[str(nodeO.id)][str(nodeD.id)] = 0
 
     def __change_vij(self, nodeid_origin, nodeid_destination, vij):
 
         if vij < 0:
             raise tripsValueIsNotValidExceptions("trips value must be >= 0")
 
-        if self.__matrix.get(nodeid_origin):
-            if self.__matrix[nodeid_origin].get(nodeid_destination):
-                self.__matrix[nodeid_origin][nodeid_destination] = vij
+        if self.__matrix.get(str(nodeid_origin)):
+            if str(nodeid_destination) in self.__matrix[str(nodeid_origin)]:
+                self.__matrix[str(nodeid_origin)][str(nodeid_destination)] = vij
             else:
                 raise IdDestinationnDoesNotFoundExceptions("id destination does not found")
         else:
@@ -55,7 +57,7 @@ class demand:
 
     def get_matrix(self):
         """
-        # return last od matrix saved
+        return last od matrix saved
         :return:
         """
         return self.__matrix
@@ -63,7 +65,7 @@ class demand:
     @staticmethod
     def parameters_validator(y, a, alpha, beta):
         """
-        # to validate parameters
+        to validate parameters
         :param y:
         :param a:
         :param alpha:
@@ -81,7 +83,7 @@ class demand:
         if y < 0:
             raise YOutRangeExceptions("y must be positive")
         if a > 1 or a < 0:
-            raise AOutRangeExceptions("A must be in range [0-1]")
+            raise AOutRangeExceptions("a must be in range [0-1]")
         if alpha > 1 or alpha < 0:
             raise AlphaOutRangeExceptions("alpha must be in range [0-1]")
         if beta >= 1 or beta < 0:
@@ -102,11 +104,9 @@ class demand:
         :param beta:
         :return:
         """
-        demand_obj = demand(graph_obj)
+        demand_obj = Demand(graph_obj)
 
         if demand_obj.parameters_validator(y, a, alpha, beta):
-
-            zones = demand_obj.__graph_obj.obtain_zones()
 
             b = 1 - a
             gamma = 0
@@ -150,10 +150,10 @@ class demand:
                 for destination_id in demand_obj.__matrix[origin_id]:
                     nodeO = None
                     nodeD = None
-                    for node in demand_obj.__graph_obj.obtain_nodes():
-                        if node.id == origin_id:
+                    for node in demand_obj.__graph_obj.get_nodes():
+                        if str(node.id) == str(origin_id):
                             nodeO = node
-                        if node.id == destination_id:
+                        if str(node.id) == str(destination_id):
                             nodeD = node
 
                     # CBD does not generate trips
@@ -175,9 +175,10 @@ class demand:
                     if isinstance(nodeO, Subcenter) and isinstance(nodeD, CBD):
                         demand_obj.__change_vij(origin_id, destination_id, v_sc_cbd)
                     # trips beetween SC - OSC
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
+                    if isinstance(nodeO, Subcenter) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
                         demand_obj.__change_vij(origin_id, destination_id, v_sc_osc)
 
+        return demand_obj
     @staticmethod
     def build_matrix_from_file(file_path):
         pass

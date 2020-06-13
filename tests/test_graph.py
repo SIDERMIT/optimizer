@@ -39,7 +39,7 @@ class test_graph(unittest.TestCase):
 
     def test_Node_Exceptions(self):
         """
-        # to test exceptions class Node
+        to test exceptions class Node
         :return:
         """
         node_id = 0
@@ -65,7 +65,7 @@ class test_graph(unittest.TestCase):
 
     def test_CBD_Exceptions(self):
         """
-        # to test exceptions class CBD
+        to test exceptions class CBD
         :return:
         """
         node_id = 0
@@ -80,7 +80,7 @@ class test_graph(unittest.TestCase):
 
     def test_Zone_Exceptions(self):
         """
-        # to test exceptions class zone
+        to test exceptions class zone
         :return:
         """
         with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
@@ -104,7 +104,7 @@ class test_graph(unittest.TestCase):
 
     def test_Edge_Exceptions(self):
         """
-        # to test exceptions class Edge
+        to test exceptions class Edge
         :return:
         """
         with self.assertRaises(exceptions.EdgeIdIsNotValidExceptions):
@@ -125,7 +125,7 @@ class test_graph(unittest.TestCase):
 
     def test_build_from_pajek_file(self):
         """
-        # to test reading pajek file
+        to test reading pajek file
         :return:
         """
         g = graph.Graph.build_from_file(self.test_0zone_path)
@@ -154,7 +154,7 @@ class test_graph(unittest.TestCase):
 
     def test_build_from_parameters(self):
         """
-        # to test construction from parameters
+        to test construction from parameters
         :return:
         """
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0)
@@ -226,7 +226,7 @@ class test_graph(unittest.TestCase):
 
     def test_raises_fileformat(self):
         """
-        # to test pajek file exceptions, should have 7 columns separated by white space
+        to test pajek file exceptions, should have 7 columns separated by white space
         :return:
         """
         with self.assertRaises(exceptions.FileFormatIsNotValidExceptions):
@@ -234,7 +234,7 @@ class test_graph(unittest.TestCase):
 
     def test_raises_payekformat(self):
         """
-        # to test pajek format exceptions: file must have 7 columns, separator for " "
+        to test pajek format exceptions: file must have 7 columns, separator for " "
         :return:
         """
         with self.assertRaises(exceptions.PajekFormatIsNotValidExceptions):
@@ -242,7 +242,7 @@ class test_graph(unittest.TestCase):
 
     def test_symmetric_parameters_exceptions(self):
         """
-        # to test symmetric parameters exceptions n, l, g, p
+        to test symmetric parameters exceptions n, l, g, p
         :return:
         """
         with self.assertRaises(exceptions.NIsNotValidNumberException):
@@ -256,7 +256,7 @@ class test_graph(unittest.TestCase):
 
     def test_asymmetric_parameters_exceptions(self):
         """
-        # to test asymmetric parameters exceptions etha, etha_zone, angles, Gi, Hi
+        to test asymmetric parameters exceptions etha, etha_zone, angles, Gi, Hi
         :return:
         """
         with self.assertRaises(exceptions.EthaValueRequiredExceptions):
@@ -282,7 +282,7 @@ class test_graph(unittest.TestCase):
 
     def test_graph_to_pajek(self):
         """
-        # to test file writing
+        to test file writing
         :return:
         """
         # build graph
@@ -298,7 +298,7 @@ class test_graph(unittest.TestCase):
 
     def test_obtain_angle(self):
         """
-        # to test assistant method Graph.obtain_angle(x, y)
+        to test assistant method Graph.obtain_angle(x, y)
         :return:
         """
         g = graph.Graph()
@@ -313,7 +313,7 @@ class test_graph(unittest.TestCase):
 
     def test_pajekfile_to_dataframe_exceptions(self):
         """
-        # to test exception of node type in pajek file
+        to test exception of node type in pajek file
         :return:
         """
         with self.assertRaises(exceptions.NodeTypeIsNotValidExceptions):
@@ -321,7 +321,7 @@ class test_graph(unittest.TestCase):
 
     def test_build_from_file_exceptions(self):
         """
-        # to test exception of number of lines in pajek file
+        to test exception of number of lines in pajek file
         :return:
         """
         with self.assertRaises(exceptions.NumberLinesInTheFileIsNotValidExceptions):
@@ -332,7 +332,7 @@ class test_graph(unittest.TestCase):
 
     def test_add_zone_exceptions(self):
         """
-        # to check exceptions __add_zones method
+        to check exceptions __add_zones method
         :return:
         """
         with self.assertRaises(exceptions.CBDDoesNotExistExceptions):
@@ -340,7 +340,7 @@ class test_graph(unittest.TestCase):
 
     def test_add_nodes_exceptions(self):
         """
-        # to check exceptions __add_nodes method
+        to check exceptions __add_nodes method
         :return:
         """
         with self.assertRaises(exceptions.IdNodeIsDuplicatedException):

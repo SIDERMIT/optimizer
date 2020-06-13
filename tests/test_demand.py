@@ -18,3 +18,8 @@ class test_graph(unittest.TestCase):
         test methods get class graph
         :return:
         """
+
+
+
+if __name__ == '__main__':
+    unittest.main()
