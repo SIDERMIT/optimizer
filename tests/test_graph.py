@@ -22,7 +22,6 @@ class test_graph(unittest.TestCase):
         self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path, 'test_NumberNodesForZoneExceptions.PAJEK')
         self.test_needCbdExceptions = os.path.join(self.data_path, 'test_needCbdExceptions.PAJEK')
         self.test_nodeIdExceptions = os.path.join(self.data_path, 'test_nodeIdExceptions.PAJEK')
-        self.test_plot = os.path.join(self.data_path, 'plot_test.png')
 
     def test_get_method(self):
         """

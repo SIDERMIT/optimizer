@@ -94,7 +94,7 @@ class Demand:
         return True
 
     @staticmethod
-    def build_matrix_from_parameters(graph_obj, y, a, alpha, beta):
+    def build_from_parameters(graph_obj, y, a, alpha, beta):
         """
         to build OD matrix with symmetric parameters
         :param graph_obj:
@@ -179,6 +179,30 @@ class Demand:
                         demand_obj.__change_vij(origin_id, destination_id, v_sc_osc)
 
         return demand_obj
+
     @staticmethod
-    def build_matrix_from_file(file_path):
-        pass
+    def build_from_file(graph_obj, file_path):
+        """
+        to build from file
+        :param graph_obj:
+        :param file_path:
+        :return:
+        """
+
+        demand_obj = Demand(graph_obj)
+
+        with open(file_path, mode='r', encoding='utf-8') as f_obj:
+
+            n_lines = 0
+            for line in f_obj.readlines():
+                if n_lines == 0:
+                    n_lines = 1
+                    continue
+                else:
+                    if len(line.split(",")) == 3:
+                        origin_id, destination_id, vij = line.split(",")
+                        demand_obj.__change_vij(str(origin_id), str(destination_id), float(vij))
+                    else:
+                        raise FileFormatIsNotValidExceptions("each line must provide information about [origin_id] ["
+                                                             "destination_id] [vij]")
+        return demand_obj
