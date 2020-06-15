@@ -1,4 +1,3 @@
-import os
 import unittest
 
 from sidermit import transport_mode
@@ -6,11 +5,6 @@ from sidermit import exceptions
 
 
 class test_graph(unittest.TestCase):
-
-    def setUp(self):
-        self.dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.data_path = os.path.join(self.dir_path, 'file')
-        self.data_path = os.path.join(self.data_path, 'transport_mode')
 
     def test_is_valid(self):
         """
@@ -127,6 +121,22 @@ class test_graph(unittest.TestCase):
 
         with self.assertRaises(exceptions.ModeDoesNotExistExceptions):
             m.delete_mode("train")
+
+    def test_update_mode(self):
+        """
+        to test update_mode method
+        :return:
+        """
+        m = transport_mode.Transport_mode()
+
+        m.update_mode("bus", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        self.assertEqual(len(m.get_modes()), 2)
+
+        m.update_mode("metro")
+        self.assertEqual(len(m.get_modes()), 2)
+
+        with self.assertRaises(exceptions.ModeDoesNotExistExceptions):
+            m.update_mode("train")
 
 
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ class Mode:
             raise C1IsNotValidExceptions("You must give a value >=0 for c1")
         if c2 is None or c2 < 0:
             raise C2IsNotValidExceptions("You must give a value >=0 for c2")
-        if v is None or v < 0:
+        if v is None or v <= 0:
             raise VIsNotValidExceptions("You must give a value >=0 for v")
         if t is None or t < 0:
             raise TIsNotValidExceptions("You must give a value >=0 for t")
@@ -64,8 +64,6 @@ class Mode:
         return True
 
 
-
-
 class Transport_mode:
     def __init__(self):
         self.__list_name = []
@@ -79,6 +77,62 @@ class Transport_mode:
         self.__list_name.append("bus")
         self.__modes.append(metro)
         self.__list_name.append("metro")
+
+    def update_mode(self, name, bya=None, co=None, c1=None, c2=None, v=None, t=None, fmax=None, kmax=None, theta=None,
+                    tat=None, d=None):
+        """
+        to update information about a mode
+        :param v:
+        :param theta:
+        :param t:
+        :param kmax:
+        :param fmax:
+        :param co:
+        :param c2:
+        :param c1:
+        :param tat:
+        :param d:
+        :param bya:
+        :param name:
+        :return:
+        """
+
+        if name not in self.__list_name:
+            raise ModeDoesNotExistExceptions("mode name does not exist")
+
+        i = 0
+        for mode in self.__modes:
+            if mode.name != name:
+                i = i + 1
+                continue
+            else:
+                if bya is None:
+                    bya = mode.bya
+                if co is None:
+                    co = mode.co
+                if c1 is None:
+                    c1 = mode.c1
+                if c2 is None:
+                    c2 = mode.c2
+                if v is None:
+                    v = mode.v
+                if t is None:
+                    t = mode.t
+                if fmax is None:
+                    fmax = mode.fmax
+                if kmax is None:
+                    kmax = mode.kmax
+                if theta is None:
+                    theta = mode.theta
+                if tat is None:
+                    tat = mode.tat
+                if d is None:
+                    d = mode.d
+
+                m = Mode(mode.name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+
+                self.__modes[i] = m
+                break
 
     def is_valid(self):
         """

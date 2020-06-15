@@ -18,6 +18,11 @@ class TransportModeException(SIDERMITException):
     pass
 
 
+# Transport User exception
+class TransportUserException(SIDERMITException):
+    pass
+
+
 # Graph Exceptions
 
 
@@ -327,4 +332,41 @@ class ModeDoesNotExistExceptions(TransportModeException):
 
 
 class ModeNotFoundExceptions(TransportModeException):
+    pass
+
+
+# transport user exceptions
+class PvIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class VaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PwIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpvIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PtIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpwIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SptIsNotValidExceptions(TransportUserException):
     pass
