@@ -284,16 +284,21 @@ class test_graph(unittest.TestCase):
         to test file writing
         :return:
         """
+        filename = 'write1_test.PAJEK'
         # build graph
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
                                               Hi=[2, 0.5])
         # write file
-        g.graph_to_pajek(os.path.join(self.data_path, 'write1_test.PAJEK'))
-        fileObj = Path(os.path.join(self.data_path, 'write1_test.PAJEK'))
+        g.graph_to_pajek(os.path.join(self.data_path, filename))
+        file_obj = Path(os.path.join(self.data_path, filename))
+
         # test
-        self.assertTrue(fileObj.is_file())
+        self.assertTrue(file_obj.is_file())
+
+        # TODO: validate format
+
         # remove file
-        os.remove(os.path.join(self.data_path, 'write1_test.PAJEK'))
+        os.remove(os.path.join(self.data_path, filename))
 
     def test_obtain_angle(self):
         """
