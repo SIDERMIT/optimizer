@@ -13,20 +13,15 @@ class DemandException(SIDERMITException):
     pass
 
 
-# Transport mode exception
-class TransportModeException(SIDERMITException):
-    pass
-
-
-# Exceptions Graph
+# Graph Exceptions
 
 
 # build Zone
-class NodePeripheryTypeIsNotValidException(GraphException):
+class PeripheryNodeTypeIsNotValidException(GraphException):
     pass
 
 
-class NodeSubcenterTypeIsNotValidException(GraphException):
+class SubcenterNodeTypeIsNotValidException(GraphException):
     pass
 
 
@@ -44,15 +39,15 @@ class NodeWidthIsNotValidException(GraphException):
 
 
 # build graph
-class CBDDoesNotExistExceptions(GraphException):
+class CBDDoesNotExistException(GraphException):
     pass
 
 
-class ZoneIdIsNotValidExceptions(GraphException):
+class ZoneIdIsNotValidException(GraphException):
     pass
 
 
-class AddPreviousZonesExceptions(GraphException):
+class AddPreviousZonesException(GraphException):
     pass
 
 
@@ -72,7 +67,7 @@ class CBDDuplicatedException(GraphException):
     pass
 
 
-class IdNodeIsDuplicatedException(GraphException):
+class NodeIdDuplicatedException(GraphException):
     pass
 
 
@@ -80,7 +75,7 @@ class EdgeDoesNotExistException(GraphException):
     pass
 
 
-class IdEdgeIsDuplicatedException(GraphException):
+class EdgeIdDuplicatedException(GraphException):
     pass
 
 
@@ -116,211 +111,154 @@ class PIsNotValidNumberException(GraphException):
     pass
 
 
-class EdgeNotAvailable(GraphException):
+class EdgeIsNotAvailableException(GraphException):
     pass
 
 
-class PajekFormatIsNotValidExceptions(GraphException):
+class PajekFormatIsNotValidException(GraphException):
     pass
 
 
-class FileFormatIsNotValidExceptions(GraphException):
+class FileFormatIsNotValidException(GraphException):
     pass
 
 
-class NodeTypeIsNotValidExceptions(GraphException):
+class NodeTypeIsNotValidException(GraphException):
     pass
 
 
-class EthaValueRequiredExceptions(GraphException):
+class EthaValueRequiredException(GraphException):
     pass
 
 
-class EthaZoneValueRequiredExceptions(GraphException):
+class EthaZoneValueRequiredException(GraphException):
     pass
 
 
-class EthaValueIsNotValidExceptions(GraphException):
+class EthaValueIsNotValidException(GraphException):
     pass
 
 
-class EthaZoneValueIsNotValidExceptions(GraphException):
+class EthaZoneValueIsNotValidException(GraphException):
     pass
 
 
-class LenAnglesIsNotValidExceptions(GraphException):
+class AngleListLengthIsNotValidException(GraphException):
     pass
 
 
-class AngleValueIsNotValidEceptions(GraphException):
+class AngleValueIsNotValidException(GraphException):
     pass
 
 
-class LenGiIsNotValidExceptions(GraphException):
+class GiListLengthIsNotValidException(GraphException):
     pass
 
 
-class GiValueIsNotValidEceptions(GraphException):
+class GiValueIsNotValidException(GraphException):
     pass
 
 
-class LenHiIsNotValidExceptions(GraphException):
+class HiListLengthIsNotValidException(GraphException):
     pass
 
 
-class HiValueIsNotValidEceptions(GraphException):
+class HiValueIsNotValidException(GraphException):
     pass
 
 
-class NumberLinesInTheFileIsNotValidExceptions(GraphException):
+class LineNumberInFileIsNotValidException(GraphException):
     pass
 
 
-class PeripherySubcenterNumberForZoneExceptions(GraphException):
+class PeripherySubcenterNumberForZoneException(GraphException):
     pass
 
 
-class PeripheryDoesNotExistExceptions(GraphException):
+class PeripheryDoesNotExistException(GraphException):
     pass
 
 
-class SubcenterDoesNotExistExceptions(GraphException):
+class SubcenterDoesNotExistException(GraphException):
     pass
 
 
-class NodeIdIsNotValidExceptions(GraphException):
+class NodeIdIsNotValidException(GraphException):
     pass
 
 
-class EdgeIdIsNotValidExceptions(GraphException):
+class EdgeIdIsNotValidException(GraphException):
     pass
 
 
-class NodeDoesNotExistExceptions(GraphException):
+class NodeDoesNotExistException(GraphException):
     pass
 
 
-class WritePajekFileExceptions(GraphException):
+class WritePajekFileException(GraphException):
     pass
 
 
-class NameDoesNotDefinedExceptions(GraphException):
+class NameIsNotDefinedException(GraphException):
     pass
 
 
-# Exceptions Demand
-class GraphIsNotValidExceptions(DemandException):
+# Demand Exceptions
+class GraphIsNotValidException(DemandException):
     pass
 
 
-class NIsNotValidExceptions(DemandException):
+class NIsNotValidException(DemandException):
     pass
 
 
-class YIsNotValidExceptions(DemandException):
+class YIsNotValidException(DemandException):
     pass
 
 
-class AIsNotValidExceptions(DemandException):
+class AIsNotValidException(DemandException):
     pass
 
 
-class AlphaIsNotValidExceptions(DemandException):
+class AlphaIsNotValidException(DemandException):
     pass
 
 
-class BetaIsNotValidExceptions(DemandException):
+class BetaIsNotValidException(DemandException):
     pass
 
 
-class NOutRangeExceptions(DemandException):
+class NOutOfRangeException(DemandException):
     pass
 
 
-class YOutRangeExceptions(DemandException):
+class YOutOfRangeException(DemandException):
     pass
 
 
-class AOutRangeExceptions(DemandException):
+class AOutOfRangeException(DemandException):
     pass
 
 
-class AlphaOutRangeExceptions(DemandException):
+class AlphaOutOfRangeException(DemandException):
     pass
 
 
-class BetaOutRangeExceptions(DemandException):
+class BetaOutOfRangeException(DemandException):
     pass
 
 
-class AlphaBetaOutRangeExceptions(DemandException):
+class AlphaBetaOutOfRangeException(DemandException):
     pass
 
 
-class IdDestinationnDoesNotFoundExceptions(DemandException):
+class DestinationIdDoesNotFoundException(DemandException):
     pass
 
 
-class IdOriginDoesNotFoundExceptions(DemandException):
+class OriginIdDoesNotFoundException(DemandException):
     pass
 
 
-class tripsValueIsNotValidExceptions(DemandException):
-    pass
-
-
-# Transport mode exception
-class nameIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class ByaIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class CoIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class C1IsNotValidExceptions(TransportModeException):
-    pass
-
-
-class C2IsNotValidExceptions(TransportModeException):
-    pass
-
-
-class VIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class TIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class FmaxIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class KmaxIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class ThetaIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class TatIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class DIsNotValidExceptions(TransportModeException):
-    pass
-
-
-class AddModeExceptions(TransportModeException):
-    pass
-
-
-class ModeDoesNotExistExceptions(TransportModeException):
+class TripsValueIsNotValidException(DemandException):
     pass

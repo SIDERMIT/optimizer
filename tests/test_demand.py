@@ -22,24 +22,24 @@ class test_graph(unittest.TestCase):
 
         g = graph.Graph.build_from_parameters(3, 1000, 0.5, 2)
 
-        with self.assertRaises(exceptions.YIsNotValidExceptions):
+        with self.assertRaises(exceptions.YIsNotValidException):
             demand.Demand.build_from_parameters(g, None, 0.5, 1 / 3, 1 / 3)
-        with self.assertRaises(exceptions.AIsNotValidExceptions):
+        with self.assertRaises(exceptions.AIsNotValidException):
             demand.Demand.build_from_parameters(g, 1000, None, 1 / 3, 1 / 3)
-        with self.assertRaises(exceptions.AlphaIsNotValidExceptions):
+        with self.assertRaises(exceptions.AlphaIsNotValidException):
             demand.Demand.build_from_parameters(g, 1000, 0.5, None, 1 / 3)
-        with self.assertRaises(exceptions.BetaIsNotValidExceptions):
+        with self.assertRaises(exceptions.BetaIsNotValidException):
             demand.Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, None)
 
-        with self.assertRaises(exceptions.YOutRangeExceptions):
+        with self.assertRaises(exceptions.YOutOfRangeException):
             demand.Demand.build_from_parameters(g, -100, 0.5, 1 / 3, 1 / 3)
-        with self.assertRaises(exceptions.AOutRangeExceptions):
+        with self.assertRaises(exceptions.AOutOfRangeException):
             demand.Demand.build_from_parameters(g, 1000, 2, 1 / 3, 1 / 3)
-        with self.assertRaises(exceptions.AlphaOutRangeExceptions):
+        with self.assertRaises(exceptions.AlphaOutOfRangeException):
             demand.Demand.build_from_parameters(g, 1000, 0.5, 2, 1 / 3)
-        with self.assertRaises(exceptions.BetaOutRangeExceptions):
+        with self.assertRaises(exceptions.BetaOutOfRangeException):
             demand.Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 2)
-        with self.assertRaises(exceptions.AlphaBetaOutRangeExceptions):
+        with self.assertRaises(exceptions.AlphaBetaOutOfRangeException):
             demand.Demand.build_from_parameters(g, 1000, 0.5, 0.8, 0.8)
 
     def test_build_from_parameters(self):
@@ -98,16 +98,16 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        with self.assertRaises(exceptions.tripsValueIsNotValidExceptions):
+        with self.assertRaises(exceptions.TripsValueIsNotValidException):
             g = graph.Graph.build_from_parameters(3, 1000, 0.5, 2)
             demand.Demand.build_from_file(g, os.path.join(self.data_path, 'test_raisesVijNegativeExceptions.csv'))
 
-        with self.assertRaises(exceptions.IdDestinationnDoesNotFoundExceptions):
+        with self.assertRaises(exceptions.DestinationIdDoesNotFoundException):
             g = graph.Graph.build_from_parameters(3, 1000, 0.5, 2)
             demand.Demand.build_from_file(g,
                                           os.path.join(self.data_path, 'test_raisesDestinationNotFoundExceptions.csv'))
 
-        with self.assertRaises(exceptions.IdOriginDoesNotFoundExceptions):
+        with self.assertRaises(exceptions.OriginIdDoesNotFoundException):
             g = graph.Graph.build_from_parameters(3, 1000, 0.5, 2)
             demand.Demand.build_from_file(g, os.path.join(self.data_path, 'test_raisesOriginNotFoundExceptions.csv'))
 
@@ -117,7 +117,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        with self.assertRaises(exceptions.FileFormatIsNotValidExceptions):
+        with self.assertRaises(exceptions.FileFormatIsNotValidException):
             g = graph.Graph.build_from_parameters(3, 1000, 0.5, 2)
             demand.Demand.build_from_file(g, os.path.join(self.data_path, 'test_raisesFormatExceptions.csv'))
 

@@ -17,7 +17,7 @@ class Demand:
         # dictionary structure [node_idO][node_idD] = vij
         self.__matrix = defaultdict(lambda: defaultdict(float))
         # initialization of matriz with zero trips in all OD pairs
-        self.__initial_matrix()
+        self.__build_default_matrix()
 
     def matrix_to_file(self, file_path):
         col_origin = []
@@ -37,23 +37,27 @@ class Demand:
 
         df_matrix.to_csv(file_path, sep=",", index=False)
 
-    def __initial_matrix(self):
-        for nodeO in self.__graph_obj.get_nodes():
-            for nodeD in self.__graph_obj.get_nodes():
-                self.__matrix[str(nodeO.id)][str(nodeD.id)] = 0
+    def __build_default_matrix(self):
+        """
+        Build matrix of size Graph.get_n() with zero values
+        :return: None
+        """
+        for origin_node in self.__graph_obj.get_nodes():
+            for destination_node in self.__graph_obj.get_nodes():
+                self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
-    def __change_vij(self, nodeid_origin, nodeid_destination, vij):
+    def __change_vij(self, origin_node_id, destination_node_id, vij):
 
         if vij < 0:
-            raise tripsValueIsNotValidExceptions("trips value must be >= 0")
+            raise TripsValueIsNotValidException("trips value must be >= 0")
 
-        if self.__matrix.get(str(nodeid_origin)):
-            if str(nodeid_destination) in self.__matrix[str(nodeid_origin)]:
-                self.__matrix[str(nodeid_origin)][str(nodeid_destination)] = vij
+        if self.__matrix.get(str(origin_node_id)):
+            if str(destination_node_id) in self.__matrix[str(origin_node_id)]:
+                self.__matrix[str(origin_node_id)][str(destination_node_id)] = vij
             else:
-                raise IdDestinationnDoesNotFoundExceptions("id destination does not found")
+                raise DestinationIdDoesNotFoundException("id destination does not found")
         else:
-            raise IdOriginDoesNotFoundExceptions("id origin does not found")
+            raise OriginIdDoesNotFoundException("id origin does not found")
 
     def get_matrix(self):
         """
@@ -73,23 +77,23 @@ class Demand:
         :return:
         """
         if not isinstance(y, int) and not isinstance(y, float):
-            raise YIsNotValidExceptions("must specify value int or float for y")
+            raise YIsNotValidException("must specify value int or float for y")
         if not isinstance(a, int) and not isinstance(a, float):
-            raise AIsNotValidExceptions("must specify value int or float for a")
+            raise AIsNotValidException("must specify value int or float for a")
         if not isinstance(alpha, int) and not isinstance(alpha, float):
-            raise AlphaIsNotValidExceptions("must specify value int or float for alpha")
+            raise AlphaIsNotValidException("must specify value int or float for alpha")
         if not isinstance(beta, int) and not isinstance(beta, float):
-            raise BetaIsNotValidExceptions("must specify value int or float for beta")
+            raise BetaIsNotValidException("must specify value int or float for beta")
         if y < 0:
-            raise YOutRangeExceptions("y must be positive")
+            raise YOutOfRangeException("y must be positive")
         if a > 1 or a < 0:
-            raise AOutRangeExceptions("a must be in range [0-1]")
+            raise AOutOfRangeException("a must be in range [0-1]")
         if alpha > 1 or alpha < 0:
-            raise AlphaOutRangeExceptions("alpha must be in range [0-1]")
+            raise AlphaOutOfRangeException("alpha must be in range [0-1]")
         if beta >= 1 or beta < 0:
-            raise BetaOutRangeExceptions("beta must be in range [0-1)")
+            raise BetaOutOfRangeException("beta must be in range [0-1)")
         if alpha + beta > 1:
-            raise AlphaBetaOutRangeExceptions("alpha + beta must be in range [0-1]")
+            raise AlphaBetaOutOfRangeException("alpha + beta must be in range [0-1]")
 
         return True
 
@@ -145,38 +149,41 @@ class Demand:
                 v_sc_osc = y_sc * gamma_g / (n - 1)
 
             # for each origin in matrix
-            for origin_id in demand_obj.__matrix:
+            for origin_node_id in demand_obj.__matrix:
                 # for each destination in matrix[origin_id]
-                for destination_id in demand_obj.__matrix[origin_id]:
-                    nodeO = None
-                    nodeD = None
+                for destination_node_id in demand_obj.__matrix[origin_node_id]:
+                    origin_node_obj = None
+                    destination_node_obj = None
                     for node in demand_obj.__graph_obj.get_nodes():
-                        if str(node.id) == str(origin_id):
-                            nodeO = node
-                        if str(node.id) == str(destination_id):
-                            nodeD = node
+                        if str(node.id) == str(origin_node_id):
+                            origin_node_obj = node
+                        if str(node.id) == str(destination_node_id):
+                            destination_node_obj = node
 
                     # CBD does not generate trips
-                    if isinstance(nodeO, CBD):
+                    if isinstance(origin_node_obj, CBD):
                         continue
                     # periphery does not attract
-                    if isinstance(nodeD, Periphery):
+                    if isinstance(destination_node_obj, Periphery):
                         continue
-                    # trips beetween P - CBD
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, CBD):
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_cbd)
-                    # trips beetween P - SC
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, Subcenter) and nodeO.zone_id == nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_sc)
-                    # trips beetween P - OSC
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_osc)
-                    # trips beetween SC - CBD
-                    if isinstance(nodeO, Subcenter) and isinstance(nodeD, CBD):
-                        demand_obj.__change_vij(origin_id, destination_id, v_sc_cbd)
-                    # trips beetween SC - OSC
-                    if isinstance(nodeO, Subcenter) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_sc_osc)
+                    # trips between P - CBD
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, CBD):
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_cbd)
+                    # trips between P - SC
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id == destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_sc)
+                    # trips between P - OSC
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id != destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_osc)
+                    # trips between SC - CBD
+                    if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, CBD):
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_cbd)
+                    # trips between SC - OSC
+                    if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id != destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_osc)
 
         return demand_obj
 
@@ -203,6 +210,6 @@ class Demand:
                         origin_id, destination_id, vij = line.split(",")
                         demand_obj.__change_vij(str(origin_id), str(destination_id), float(vij))
                     else:
-                        raise FileFormatIsNotValidExceptions("each line must provide information about [origin_id] ["
-                                                             "destination_id] [vij]")
+                        raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
+                                                            "destination_id] [vij]")
         return demand_obj
