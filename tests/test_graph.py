@@ -296,6 +296,8 @@ class test_graph(unittest.TestCase):
         self.assertTrue(file_obj.is_file())
 
         # TODO: validate format
+        # import filecmp
+        # self.assertTrue(filecmp.cmp(created_file_path, expected_file_path))
 
         # remove file
         os.remove(os.path.join(self.data_path, filename))
