@@ -13,6 +13,11 @@ class DemandException(SIDERMITException):
     pass
 
 
+# Transport mode exception
+class TransportModeException(SIDERMITException):
+    pass
+
+
 # Exceptions Graph
 
 
@@ -202,6 +207,7 @@ class WritePajekFileExceptions(GraphException):
 class NameDoesNotDefinedExceptions(GraphException):
     pass
 
+
 # Exceptions Demand
 class GraphIsNotValidExceptions(DemandException):
     pass
@@ -260,4 +266,61 @@ class IdOriginDoesNotFoundExceptions(DemandException):
 
 
 class tripsValueIsNotValidExceptions(DemandException):
+    pass
+
+
+# Transport mode exception
+class nameIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class ByaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class CoIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C1IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C2IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class VIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class FmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class KmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class ThetaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TatIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class DIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class AddModeExceptions(TransportModeException):
+    pass
+
+
+class ModeDoesNotExistExceptions(TransportModeException):
     pass
