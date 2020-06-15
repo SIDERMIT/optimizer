@@ -17,7 +17,7 @@ class Demand:
         # dictionary structure [node_idO][node_idD] = vij
         self.__matrix = defaultdict(lambda: defaultdict(float))
         # initialization of matriz with zero trips in all OD pairs
-        self.__initial_matrix()
+        self.__build_default_matrix()
 
     def matrix_to_file(self, file_path):
         col_origin = []
@@ -37,7 +37,11 @@ class Demand:
 
         df_matrix.to_csv(file_path, sep=",", index=False)
 
-    def __initial_matrix(self):
+    def __build_default_matrix(self):
+        """
+        Build matrix of size Graph.get_n() with zero values
+        :return: None
+        """
         for origin_node in self.__graph_obj.get_nodes():
             for destination_node in self.__graph_obj.get_nodes():
                 self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
@@ -162,21 +166,21 @@ class Demand:
                     # periphery does not attract
                     if isinstance(destination_node_obj, Periphery):
                         continue
-                    # trips beetween P - CBD
+                    # trips between P - CBD
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, CBD):
                         demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_cbd)
-                    # trips beetween P - SC
+                    # trips between P - SC
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id == destination_node_obj.zone_id:
                         demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_sc)
-                    # trips beetween P - OSC
+                    # trips between P - OSC
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id != destination_node_obj.zone_id:
                         demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_osc)
-                    # trips beetween SC - CBD
+                    # trips between SC - CBD
                     if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, CBD):
                         demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_cbd)
-                    # trips beetween SC - OSC
+                    # trips between SC - OSC
                     if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id != destination_node_obj.zone_id:
                         demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_osc)
@@ -207,5 +211,5 @@ class Demand:
                         demand_obj.__change_vij(str(origin_id), str(destination_id), float(vij))
                     else:
                         raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
-                                                             "destination_id] [vij]")
+                                                            "destination_id] [vij]")
         return demand_obj
