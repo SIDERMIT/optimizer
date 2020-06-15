@@ -38,18 +38,18 @@ class Demand:
         df_matrix.to_csv(file_path, sep=",", index=False)
 
     def __initial_matrix(self):
-        for nodeO in self.__graph_obj.get_nodes():
-            for nodeD in self.__graph_obj.get_nodes():
-                self.__matrix[str(nodeO.id)][str(nodeD.id)] = 0
+        for origin_node in self.__graph_obj.get_nodes():
+            for destination_node in self.__graph_obj.get_nodes():
+                self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
-    def __change_vij(self, nodeid_origin, nodeid_destination, vij):
+    def __change_vij(self, origin_node_id, destination_node_id, vij):
 
         if vij < 0:
             raise tripsValueIsNotValidExceptions("trips value must be >= 0")
 
-        if self.__matrix.get(str(nodeid_origin)):
-            if str(nodeid_destination) in self.__matrix[str(nodeid_origin)]:
-                self.__matrix[str(nodeid_origin)][str(nodeid_destination)] = vij
+        if self.__matrix.get(str(origin_node_id)):
+            if str(destination_node_id) in self.__matrix[str(origin_node_id)]:
+                self.__matrix[str(origin_node_id)][str(destination_node_id)] = vij
             else:
                 raise IdDestinationnDoesNotFoundExceptions("id destination does not found")
         else:
@@ -145,38 +145,41 @@ class Demand:
                 v_sc_osc = y_sc * gamma_g / (n - 1)
 
             # for each origin in matrix
-            for origin_id in demand_obj.__matrix:
+            for origin_node_id in demand_obj.__matrix:
                 # for each destination in matrix[origin_id]
-                for destination_id in demand_obj.__matrix[origin_id]:
-                    nodeO = None
-                    nodeD = None
+                for destination_node_id in demand_obj.__matrix[origin_node_id]:
+                    origin_node_obj = None
+                    destination_node_obj = None
                     for node in demand_obj.__graph_obj.get_nodes():
-                        if str(node.id) == str(origin_id):
-                            nodeO = node
-                        if str(node.id) == str(destination_id):
-                            nodeD = node
+                        if str(node.id) == str(origin_node_id):
+                            origin_node_obj = node
+                        if str(node.id) == str(destination_node_id):
+                            destination_node_obj = node
 
                     # CBD does not generate trips
-                    if isinstance(nodeO, CBD):
+                    if isinstance(origin_node_obj, CBD):
                         continue
                     # periphery does not attract
-                    if isinstance(nodeD, Periphery):
+                    if isinstance(destination_node_obj, Periphery):
                         continue
                     # trips beetween P - CBD
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, CBD):
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_cbd)
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, CBD):
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_cbd)
                     # trips beetween P - SC
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, Subcenter) and nodeO.zone_id == nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_sc)
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id == destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_sc)
                     # trips beetween P - OSC
-                    if isinstance(nodeO, Periphery) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_p_osc)
+                    if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id != destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_osc)
                     # trips beetween SC - CBD
-                    if isinstance(nodeO, Subcenter) and isinstance(nodeD, CBD):
-                        demand_obj.__change_vij(origin_id, destination_id, v_sc_cbd)
+                    if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, CBD):
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_cbd)
                     # trips beetween SC - OSC
-                    if isinstance(nodeO, Subcenter) and isinstance(nodeD, Subcenter) and nodeO.zone_id != nodeD.zone_id:
-                        demand_obj.__change_vij(origin_id, destination_id, v_sc_osc)
+                    if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, Subcenter) and \
+                            origin_node_obj.zone_id != destination_node_obj.zone_id:
+                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_osc)
 
         return demand_obj
 
