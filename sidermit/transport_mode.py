@@ -38,8 +38,8 @@ class Mode:
         """
 
         if name is None:
-            raise nameIsNotValidExceptions("You must give a name")
-        if bya is None:
+            raise NameIsNotValidExceptions("You must give a name")
+        if bya is None or bya not in [0, 1]:
             raise ByaIsNotValidExceptions("You must give a value for bya")
         if co is None or co < 0:
             raise CoIsNotValidExceptions("You must give a value >=0 for co")
@@ -62,6 +62,8 @@ class Mode:
         if d is None or d < 0:
             raise DIsNotValidExceptions("You must give a value >=0 for d")
         return True
+
+
 
 
 class Transport_mode:
@@ -94,6 +96,11 @@ class Transport_mode:
         :param name:
         :return:
         """
+        if name not in self.__list_name:
+            raise ModeNotFoundExceptions("name mode not found")
+        for mode in self.__modes:
+            if mode.name == name:
+                return mode
 
     def get_modes(self):
         """

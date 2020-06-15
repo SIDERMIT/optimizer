@@ -13,6 +13,11 @@ class DemandException(SIDERMITException):
     pass
 
 
+# Transport Mode exception
+class TransportModeException(SIDERMITException):
+    pass
+
+
 # Graph Exceptions
 
 
@@ -261,4 +266,65 @@ class OriginIdDoesNotFoundException(DemandException):
 
 
 class TripsValueIsNotValidException(DemandException):
+    pass
+
+
+# TransportModeException
+class ByaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C2IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C1IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class KmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class FmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class ThetaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class DIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TatIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class VIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class CoIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class NameIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class AddModeExceptions(TransportModeException):
+    pass
+
+
+class ModeDoesNotExistExceptions(TransportModeException):
+    pass
+
+
+class ModeNotFoundExceptions(TransportModeException):
     pass
