@@ -49,11 +49,11 @@ class test_graph(unittest.TestCase):
         width = 0
         zone_id = 0
         name = "CBD"
-        with self.assertRaises(exceptions.NameDoesNotDefinedExceptions):
+        with self.assertRaises(exceptions.NameIsNotDefinedException):
             graph.Node(node_id, x, y, radius, angle, width, zone_id, None)
-        with self.assertRaises(exceptions.NodeIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.NodeIdIsNotValidException):
             graph.Node(None, x, y, radius, angle, width, zone_id, name)
-        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.ZoneIdIsNotValidException):
             graph.Node(node_id, x, y, radius, angle, width, None, name)
         with self.assertRaises(exceptions.NodeRadiusIsNotValidException):
             graph.Node(node_id, x, y, -2, angle, width, zone_id, name)
@@ -74,7 +74,7 @@ class test_graph(unittest.TestCase):
         angle = 0
         width = 0
         name = "CBD"
-        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.ZoneIdIsNotValidException):
             graph.CBD(node_id, x, y, radius, angle, width, 2, name)
 
     def test_Zone_Exceptions(self):
@@ -82,21 +82,21 @@ class test_graph(unittest.TestCase):
         to test exceptions class zone
         :return:
         """
-        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.ZoneIdIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(-1, p, sc)
-        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.ZoneIdIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(None, p, sc)
-        with self.assertRaises(exceptions.NodePeripheryTypeIsNotValidException):
+        with self.assertRaises(exceptions.PeripheryNodeTypeIsNotValidException):
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(1, sc, sc)
-        with self.assertRaises(exceptions.NodeSubcenterTypeIsNotValidException):
+        with self.assertRaises(exceptions.SubcenterNodeTypeIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             graph.Zone(1, p, p)
-        with self.assertRaises(exceptions.ZoneIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.ZoneIdIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(2, p, sc)
@@ -106,18 +106,18 @@ class test_graph(unittest.TestCase):
         to test exceptions class Edge
         :return:
         """
-        with self.assertRaises(exceptions.EdgeIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.EdgeIdIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Edge(None, p, sc)
-        with self.assertRaises(exceptions.EdgeNotAvailable):
+        with self.assertRaises(exceptions.EdgeIsNotAvailableException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             graph.Edge(1, p, p)
-        with self.assertRaises(exceptions.EdgeNotAvailable):
+        with self.assertRaises(exceptions.EdgeIsNotAvailableException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             cbd = graph.CBD(0, 0, 0, 0, 0, 0, 0, "CBD")
             graph.Edge(1, p, cbd)
-        with self.assertRaises(exceptions.EdgeNotAvailable):
+        with self.assertRaises(exceptions.EdgeIsNotAvailableException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             cbd = graph.CBD(0, 0, 0, 0, 0, 0, 0, "CBD")
             graph.Edge(1, cbd, p)
@@ -228,7 +228,7 @@ class test_graph(unittest.TestCase):
         to test pajek file exceptions, should have 7 columns separated by white space
         :return:
         """
-        with self.assertRaises(exceptions.FileFormatIsNotValidExceptions):
+        with self.assertRaises(exceptions.FileFormatIsNotValidException):
             graph.Graph.build_from_file(self.test_2zone_path, file_format="CSV")
 
     def test_raises_payekformat(self):
@@ -236,7 +236,7 @@ class test_graph(unittest.TestCase):
         to test pajek format exceptions: file must have 7 columns, separator for " "
         :return:
         """
-        with self.assertRaises(exceptions.PajekFormatIsNotValidExceptions):
+        with self.assertRaises(exceptions.PajekFormatIsNotValidException):
             graph.Graph.build_from_file(self.test_formatPajekExceptions)
 
     def test_symmetric_parameters_exceptions(self):
@@ -258,25 +258,25 @@ class test_graph(unittest.TestCase):
         to test asymmetric parameters exceptions etha, etha_zone, angles, Gi, Hi
         :return:
         """
-        with self.assertRaises(exceptions.EthaValueRequiredExceptions):
+        with self.assertRaises(exceptions.EthaValueRequiredException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha_zone=2)
-        with self.assertRaises(exceptions.EthaZoneValueRequiredExceptions):
+        with self.assertRaises(exceptions.EthaZoneValueRequiredException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5)
-        with self.assertRaises(exceptions.EthaValueIsNotValidExceptions):
+        with self.assertRaises(exceptions.EthaValueIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=-1, etha_zone=2)
-        with self.assertRaises(exceptions.EthaZoneValueIsNotValidExceptions):
+        with self.assertRaises(exceptions.EthaZoneValueIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=3)
-        with self.assertRaises(exceptions.LenAnglesIsNotValidExceptions):
+        with self.assertRaises(exceptions.AngleListLengthIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[20])
-        with self.assertRaises(exceptions.AngleValueIsNotValidEceptions):
+        with self.assertRaises(exceptions.AngleValueIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[20, 370])
-        with self.assertRaises(exceptions.LenGiIsNotValidExceptions):
+        with self.assertRaises(exceptions.GiListLengthIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[0.5])
-        with self.assertRaises(exceptions.GiValueIsNotValidEceptions):
+        with self.assertRaises(exceptions.GiValueIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[0.5, -2])
-        with self.assertRaises(exceptions.LenHiIsNotValidExceptions):
+        with self.assertRaises(exceptions.HiListLengthIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[0.5])
-        with self.assertRaises(exceptions.HiValueIsNotValidEceptions):
+        with self.assertRaises(exceptions.HiValueIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Hi=[0.5, -2])
 
     def test_graph_to_pajek(self):
@@ -315,7 +315,7 @@ class test_graph(unittest.TestCase):
         to test exception of node type in pajek file
         :return:
         """
-        with self.assertRaises(exceptions.NodeTypeIsNotValidExceptions):
+        with self.assertRaises(exceptions.NodeTypeIsNotValidException):
             graph.Graph.build_from_file(self.test_NodeTypeExceptions)
 
     def test_build_from_file_exceptions(self):
@@ -323,10 +323,10 @@ class test_graph(unittest.TestCase):
         to test exception of number of lines in pajek file
         :return:
         """
-        with self.assertRaises(exceptions.NumberLinesInTheFileIsNotValidExceptions):
+        with self.assertRaises(exceptions.LineNumberInFileIsNotValidException):
             graph.Graph.build_from_file(self.test_NumberOfLinesExceptions)
 
-        with self.assertRaises(exceptions.PeripherySubcenterNumberForZoneExceptions):
+        with self.assertRaises(exceptions.PeripherySubcenterNumberForZoneException):
             graph.Graph.build_from_file(self.test_NumberNodesForZoneExceptions)
 
     def test_add_zone_exceptions(self):
@@ -334,7 +334,7 @@ class test_graph(unittest.TestCase):
         to check exceptions __add_zones method
         :return:
         """
-        with self.assertRaises(exceptions.CBDDoesNotExistExceptions):
+        with self.assertRaises(exceptions.CBDDoesNotExistException):
             graph.Graph.build_from_file(self.test_needCbdExceptions)
 
     def test_add_nodes_exceptions(self):
@@ -342,7 +342,7 @@ class test_graph(unittest.TestCase):
         to check exceptions __add_nodes method
         :return:
         """
-        with self.assertRaises(exceptions.IdNodeIsDuplicatedException):
+        with self.assertRaises(exceptions.NodeIdDuplicatedException):
             graph.Graph.build_from_file(self.test_nodeIdExceptions)
 
 

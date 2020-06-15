@@ -17,17 +17,17 @@ class Zone:
     def __init__(self, zone_id, node_periphery, node_subcenter):
 
         if zone_id is None:
-            raise ZoneIdIsNotValidExceptions("zone_id is not valid")
+            raise ZoneIdIsNotValidException("zone_id is not valid")
         if zone_id <= 0:
-            raise ZoneIdIsNotValidExceptions("zone_id number must be >=1")
+            raise ZoneIdIsNotValidException("zone_id number must be >=1")
         if not isinstance(node_periphery, Periphery):
-            raise NodePeripheryTypeIsNotValidException('node must be periphery')
+            raise PeripheryNodeTypeIsNotValidException('node must be periphery')
 
         if not isinstance(node_subcenter, Subcenter):
-            raise NodeSubcenterTypeIsNotValidException('node must be subcenter')
+            raise SubcenterNodeTypeIsNotValidException('node must be subcenter')
 
         if node_periphery.zone_id != zone_id or node_subcenter.zone_id != zone_id:
-            raise ZoneIdIsNotValidExceptions("node_periphery and node_subcenter must be equal to zone_id")
+            raise ZoneIdIsNotValidException("node_periphery and node_subcenter must be equal to zone_id")
 
         self.id = zone_id
         self.periphery = node_periphery
@@ -39,11 +39,11 @@ class Node:
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
 
         if name is None:
-            raise NameDoesNotDefinedExceptions("must define a name to node")
+            raise NameIsNotDefinedException("must define a name to node")
         if node_id is None:
-            raise NodeIdIsNotValidExceptions("zone_id is not valid")
+            raise NodeIdIsNotValidException("zone_id is not valid")
         if zone_id is None:
-            raise ZoneIdIsNotValidExceptions("zone_id is not valid")
+            raise ZoneIdIsNotValidException("zone_id is not valid")
         if radius < 0:
             raise NodeRadiusIsNotValidException("radius must be positive")
         if angle < 0 or angle > 360:
@@ -64,7 +64,7 @@ class CBD(Node):
 
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
         if zone_id != 0:
-            raise ZoneIdIsNotValidExceptions("CBD node_id must be equal to 0")
+            raise ZoneIdIsNotValidException("CBD node_id must be equal to 0")
         # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
@@ -87,13 +87,13 @@ class Edge:
 
     def __init__(self, edge_id, node1, node2):
         if edge_id is None:
-            raise EdgeIdIsNotValidExceptions("edge_id is not valid")
+            raise EdgeIdIsNotValidException("edge_id is not valid")
         if isinstance(node1, Periphery) and isinstance(node2, Periphery):
-            raise EdgeNotAvailable("edge between periphery nodes is not available")
+            raise EdgeIsNotAvailableException("edge between periphery nodes is not available")
         if isinstance(node1, Periphery) and isinstance(node2, CBD):
-            raise EdgeNotAvailable("edge between periphery  and CBD is not available")
+            raise EdgeIsNotAvailableException("edge between periphery  and CBD is not available")
         if isinstance(node1, CBD) and isinstance(node2, Periphery):
-            raise EdgeNotAvailable("edge between periphery  and CBD is not available")
+            raise EdgeIsNotAvailableException("edge between periphery  and CBD is not available")
         self.id = edge_id
         self.node1 = node1
         self.node2 = node2
@@ -169,32 +169,32 @@ class Graph:
         if p < 0:
             raise PIsNotValidNumberException('n cannot be a negative number')
         if etha is None and etha_zone is not None:
-            raise EthaValueRequiredExceptions("must give value for etha")
+            raise EthaValueRequiredException("must give value for etha")
         if etha is not None and etha_zone is None:
-            raise EthaZoneValueRequiredExceptions("must give value for etha zone")
+            raise EthaZoneValueRequiredException("must give value for etha zone")
         if etha is not None and etha_zone is not None:
             if etha < 0 or etha > 1:
-                raise EthaValueIsNotValidExceptions("etha value is not valid. Try with value belong in [0-1]")
+                raise EthaValueIsNotValidException("etha value is not valid. Try with value belong in [0-1]")
             if etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
-                raise EthaZoneValueIsNotValidExceptions("etha zone is not valid. Try with value belong in [1,...,n]")
+                raise EthaZoneValueIsNotValidException("etha zone is not valid. Try with value belong in [1,...,n]")
         if angles is not None:
             if len(angles) != n:
-                raise LenAnglesIsNotValidExceptions("must give angle value for all zones")
+                raise AngleListLengthIsNotValidException("must give angle value for all zones")
             for angle in angles:
                 if angle < 0 or angle > 360:
-                    raise AngleValueIsNotValidEceptions("angle must belong in [0°-360°]")
+                    raise AngleValueIsNotValidException("angle must belong in [0°-360°]")
         if Gi is not None:
             if len(Gi) != n:
-                raise LenGiIsNotValidExceptions("must give Gi value for all zones")
+                raise GiListLengthIsNotValidException("must give Gi value for all zones")
             for gi in Gi:
                 if gi < 0:
-                    raise GiValueIsNotValidEceptions("Gi must be >= 0")
+                    raise GiValueIsNotValidException("Gi must be >= 0")
         if Hi is not None:
             if len(Hi) != n:
-                raise LenHiIsNotValidExceptions("must give Hi value for all zones")
+                raise HiListLengthIsNotValidException("must give Hi value for all zones")
             for hi in Hi:
                 if hi < 0:
-                    raise HiValueIsNotValidEceptions("Hi must be >= 0")
+                    raise HiValueIsNotValidException("Hi must be >= 0")
         return True
 
     @staticmethod
@@ -292,7 +292,7 @@ class Graph:
                     if len(line.split()) == 7:
                         node_id, name, x, y, node_type, zone, width = line.split()
                         if node_type != "CBD" and node_type != "SC" and node_type != "P":
-                            raise NodeTypeIsNotValidExceptions("Node type is not valid. Try with CBD, SC or P")
+                            raise NodeTypeIsNotValidException("Node type is not valid. Try with CBD, SC or P")
                         col_id.append(node_id)
                         col_name.append(name)
                         col_x.append(x)
@@ -303,7 +303,7 @@ class Graph:
 
                         nnodes = nnodes - 1
                     else:
-                        raise PajekFormatIsNotValidExceptions("each node line must provide information about [id] ["
+                        raise PajekFormatIsNotValidException("each node line must provide information about [id] ["
                                                               "name] [x] [y] [type] [zone] [width]")
 
             df_file["node_id"] = col_id
@@ -376,7 +376,7 @@ class Graph:
             lines_accepted = list(range(1, 10001, 2))
 
             if not len(df_file["node_id"]) in lines_accepted:
-                raise NumberLinesInTheFileIsNotValidExceptions("The number of lines in the file must be 2n+1 or "
+                raise LineNumberInFileIsNotValidException("The number of lines in the file must be 2n+1 or "
                                                                "file is very big (until 5000 zones accepted)")
 
             n = int((len(df_file["node_id"]) - 1) / 2)
@@ -438,7 +438,7 @@ class Graph:
                         n_sc = n_sc + 1
                         node_subcenter = sc
                 if n_p != 1 or n_sc != 1:
-                    raise PeripherySubcenterNumberForZoneExceptions("try to verify that each zone [1, ..., n] has "
+                    raise PeripherySubcenterNumberForZoneException("try to verify that each zone [1, ..., n] has "
                                                                     "one sc and p")
 
                 radius_p = node_periphery.radius
@@ -488,7 +488,7 @@ class Graph:
                     graph_obj.__add_zone(node_periphery, node_subcenter)
 
         else:
-            raise FileFormatIsNotValidExceptions("File don't have a valid format. Try with Pajek format")
+            raise FileFormatIsNotValidException("File don't have a valid format. Try with Pajek format")
 
         graph_obj.__n = n
         graph_obj.__l = L
@@ -516,7 +516,7 @@ class Graph:
     def __add_zone(self, node_periphery, node_subcenter, zone_id=None):
         # zones can only be added if CBD is included
         if len(self.__nodes) == 0:
-            raise CBDDoesNotExistExceptions("Need add CBD node previously")
+            raise CBDDoesNotExistException("Need add CBD node previously")
         # always add last zone
         if zone_id is None:
             zone_id = len(self.__zones) + 1
@@ -538,7 +538,7 @@ class Graph:
 
         # to verified if id is not duplicated
         if node_periphery.id in self.__nodes_id or node_subcenter.id in self.__nodes_id:
-            raise IdNodeIsDuplicatedException('id_node is duplicated')
+            raise NodeIdDuplicatedException('id_node is duplicated')
 
         self.__nodes.append(node_periphery)
         self.__nodes.append(node_subcenter)

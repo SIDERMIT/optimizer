@@ -45,15 +45,15 @@ class Demand:
     def __change_vij(self, origin_node_id, destination_node_id, vij):
 
         if vij < 0:
-            raise tripsValueIsNotValidExceptions("trips value must be >= 0")
+            raise TripsValueIsNotValidException("trips value must be >= 0")
 
         if self.__matrix.get(str(origin_node_id)):
             if str(destination_node_id) in self.__matrix[str(origin_node_id)]:
                 self.__matrix[str(origin_node_id)][str(destination_node_id)] = vij
             else:
-                raise IdDestinationnDoesNotFoundExceptions("id destination does not found")
+                raise DestinationIdDoesNotFoundException("id destination does not found")
         else:
-            raise IdOriginDoesNotFoundExceptions("id origin does not found")
+            raise OriginIdDoesNotFoundException("id origin does not found")
 
     def get_matrix(self):
         """
@@ -73,23 +73,23 @@ class Demand:
         :return:
         """
         if not isinstance(y, int) and not isinstance(y, float):
-            raise YIsNotValidExceptions("must specify value int or float for y")
+            raise YIsNotValidException("must specify value int or float for y")
         if not isinstance(a, int) and not isinstance(a, float):
-            raise AIsNotValidExceptions("must specify value int or float for a")
+            raise AIsNotValidException("must specify value int or float for a")
         if not isinstance(alpha, int) and not isinstance(alpha, float):
-            raise AlphaIsNotValidExceptions("must specify value int or float for alpha")
+            raise AlphaIsNotValidException("must specify value int or float for alpha")
         if not isinstance(beta, int) and not isinstance(beta, float):
-            raise BetaIsNotValidExceptions("must specify value int or float for beta")
+            raise BetaIsNotValidException("must specify value int or float for beta")
         if y < 0:
-            raise YOutRangeExceptions("y must be positive")
+            raise YOutOfRangeException("y must be positive")
         if a > 1 or a < 0:
-            raise AOutRangeExceptions("a must be in range [0-1]")
+            raise AOutOfRangeException("a must be in range [0-1]")
         if alpha > 1 or alpha < 0:
-            raise AlphaOutRangeExceptions("alpha must be in range [0-1]")
+            raise AlphaOutOfRangeException("alpha must be in range [0-1]")
         if beta >= 1 or beta < 0:
-            raise BetaOutRangeExceptions("beta must be in range [0-1)")
+            raise BetaOutOfRangeException("beta must be in range [0-1)")
         if alpha + beta > 1:
-            raise AlphaBetaOutRangeExceptions("alpha + beta must be in range [0-1]")
+            raise AlphaBetaOutOfRangeException("alpha + beta must be in range [0-1]")
 
         return True
 
@@ -206,6 +206,6 @@ class Demand:
                         origin_id, destination_id, vij = line.split(",")
                         demand_obj.__change_vij(str(origin_id), str(destination_id), float(vij))
                     else:
-                        raise FileFormatIsNotValidExceptions("each line must provide information about [origin_id] ["
+                        raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
                                                              "destination_id] [vij]")
         return demand_obj

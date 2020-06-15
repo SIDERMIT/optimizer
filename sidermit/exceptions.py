@@ -13,15 +13,15 @@ class DemandException(SIDERMITException):
     pass
 
 
-# Exceptions Graph
+# Graph Exceptions
 
 
 # build Zone
-class NodePeripheryTypeIsNotValidException(GraphException):
+class PeripheryNodeTypeIsNotValidException(GraphException):
     pass
 
 
-class NodeSubcenterTypeIsNotValidException(GraphException):
+class SubcenterNodeTypeIsNotValidException(GraphException):
     pass
 
 
@@ -39,15 +39,15 @@ class NodeWidthIsNotValidException(GraphException):
 
 
 # build graph
-class CBDDoesNotExistExceptions(GraphException):
+class CBDDoesNotExistException(GraphException):
     pass
 
 
-class ZoneIdIsNotValidExceptions(GraphException):
+class ZoneIdIsNotValidException(GraphException):
     pass
 
 
-class AddPreviousZonesExceptions(GraphException):
+class AddPreviousZonesException(GraphException):
     pass
 
 
@@ -67,7 +67,7 @@ class CBDDuplicatedException(GraphException):
     pass
 
 
-class IdNodeIsDuplicatedException(GraphException):
+class NodeIdDuplicatedException(GraphException):
     pass
 
 
@@ -75,7 +75,7 @@ class EdgeDoesNotExistException(GraphException):
     pass
 
 
-class IdEdgeIsDuplicatedException(GraphException):
+class EdgeIdDuplicatedException(GraphException):
     pass
 
 
@@ -111,153 +111,154 @@ class PIsNotValidNumberException(GraphException):
     pass
 
 
-class EdgeNotAvailable(GraphException):
+class EdgeIsNotAvailableException(GraphException):
     pass
 
 
-class PajekFormatIsNotValidExceptions(GraphException):
+class PajekFormatIsNotValidException(GraphException):
     pass
 
 
-class FileFormatIsNotValidExceptions(GraphException):
+class FileFormatIsNotValidException(GraphException):
     pass
 
 
-class NodeTypeIsNotValidExceptions(GraphException):
+class NodeTypeIsNotValidException(GraphException):
     pass
 
 
-class EthaValueRequiredExceptions(GraphException):
+class EthaValueRequiredException(GraphException):
     pass
 
 
-class EthaZoneValueRequiredExceptions(GraphException):
+class EthaZoneValueRequiredException(GraphException):
     pass
 
 
-class EthaValueIsNotValidExceptions(GraphException):
+class EthaValueIsNotValidException(GraphException):
     pass
 
 
-class EthaZoneValueIsNotValidExceptions(GraphException):
+class EthaZoneValueIsNotValidException(GraphException):
     pass
 
 
-class LenAnglesIsNotValidExceptions(GraphException):
+class AngleListLengthIsNotValidException(GraphException):
     pass
 
 
-class AngleValueIsNotValidEceptions(GraphException):
+class AngleValueIsNotValidException(GraphException):
     pass
 
 
-class LenGiIsNotValidExceptions(GraphException):
+class GiListLengthIsNotValidException(GraphException):
     pass
 
 
-class GiValueIsNotValidEceptions(GraphException):
+class GiValueIsNotValidException(GraphException):
     pass
 
 
-class LenHiIsNotValidExceptions(GraphException):
+class HiListLengthIsNotValidException(GraphException):
     pass
 
 
-class HiValueIsNotValidEceptions(GraphException):
+class HiValueIsNotValidException(GraphException):
     pass
 
 
-class NumberLinesInTheFileIsNotValidExceptions(GraphException):
+class LineNumberInFileIsNotValidException(GraphException):
     pass
 
 
-class PeripherySubcenterNumberForZoneExceptions(GraphException):
+class PeripherySubcenterNumberForZoneException(GraphException):
     pass
 
 
-class PeripheryDoesNotExistExceptions(GraphException):
+class PeripheryDoesNotExistException(GraphException):
     pass
 
 
-class SubcenterDoesNotExistExceptions(GraphException):
+class SubcenterDoesNotExistException(GraphException):
     pass
 
 
-class NodeIdIsNotValidExceptions(GraphException):
+class NodeIdIsNotValidException(GraphException):
     pass
 
 
-class EdgeIdIsNotValidExceptions(GraphException):
+class EdgeIdIsNotValidException(GraphException):
     pass
 
 
-class NodeDoesNotExistExceptions(GraphException):
+class NodeDoesNotExistException(GraphException):
     pass
 
 
-class WritePajekFileExceptions(GraphException):
+class WritePajekFileException(GraphException):
     pass
 
 
-class NameDoesNotDefinedExceptions(GraphException):
-    pass
-
-# Exceptions Demand
-class GraphIsNotValidExceptions(DemandException):
+class NameIsNotDefinedException(GraphException):
     pass
 
 
-class NIsNotValidExceptions(DemandException):
+# Demand Exceptions
+class GraphIsNotValidException(DemandException):
     pass
 
 
-class YIsNotValidExceptions(DemandException):
+class NIsNotValidException(DemandException):
     pass
 
 
-class AIsNotValidExceptions(DemandException):
+class YIsNotValidException(DemandException):
     pass
 
 
-class AlphaIsNotValidExceptions(DemandException):
+class AIsNotValidException(DemandException):
     pass
 
 
-class BetaIsNotValidExceptions(DemandException):
+class AlphaIsNotValidException(DemandException):
     pass
 
 
-class NOutRangeExceptions(DemandException):
+class BetaIsNotValidException(DemandException):
     pass
 
 
-class YOutRangeExceptions(DemandException):
+class NOutOfRangeException(DemandException):
     pass
 
 
-class AOutRangeExceptions(DemandException):
+class YOutOfRangeException(DemandException):
     pass
 
 
-class AlphaOutRangeExceptions(DemandException):
+class AOutOfRangeException(DemandException):
     pass
 
 
-class BetaOutRangeExceptions(DemandException):
+class AlphaOutOfRangeException(DemandException):
     pass
 
 
-class AlphaBetaOutRangeExceptions(DemandException):
+class BetaOutOfRangeException(DemandException):
     pass
 
 
-class IdDestinationnDoesNotFoundExceptions(DemandException):
+class AlphaBetaOutOfRangeException(DemandException):
     pass
 
 
-class IdOriginDoesNotFoundExceptions(DemandException):
+class DestinationIdDoesNotFoundException(DemandException):
     pass
 
 
-class tripsValueIsNotValidExceptions(DemandException):
+class OriginIdDoesNotFoundException(DemandException):
+    pass
+
+
+class TripsValueIsNotValidException(DemandException):
     pass
