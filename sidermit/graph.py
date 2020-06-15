@@ -8,6 +8,7 @@ from sidermit.exceptions import *
 
 
 class GraphFileFormat(Enum):
+    # Pajek reference: https://gephi.org/users/supported-graph-formats/pajek-net-format/
     # [node_id] [node name] [x] [y] [type] [zone] [width]
     PAJEK = 1
 
@@ -65,21 +66,18 @@ class CBD(Node):
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
         if zone_id != 0:
             raise ZoneIdIsNotValidException("CBD node_id must be equal to 0")
-        # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Periphery(Node):
 
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
-        # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
 class Subcenter(Node):
 
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
-        # atributos de nodos
         Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
 
 
@@ -91,9 +89,9 @@ class Edge:
         if isinstance(node1, Periphery) and isinstance(node2, Periphery):
             raise EdgeIsNotAvailableException("edge between periphery nodes is not available")
         if isinstance(node1, Periphery) and isinstance(node2, CBD):
-            raise EdgeIsNotAvailableException("edge between periphery  and CBD is not available")
+            raise EdgeIsNotAvailableException("edge between periphery and CBD is not available")
         if isinstance(node1, CBD) and isinstance(node2, Periphery):
-            raise EdgeIsNotAvailableException("edge between periphery  and CBD is not available")
+            raise EdgeIsNotAvailableException("edge between periphery and CBD is not available")
         self.id = edge_id
         self.node1 = node1
         self.node2 = node2
@@ -105,7 +103,7 @@ class Graph:
 
         self.__nodes_id = []
         self.__edges_id = []
-        self.__CBD_exist = False
+        self.__cbd_exist = False
 
         self.__zones = []
         self.__nodes = []
@@ -123,26 +121,25 @@ class Graph:
 
     def graph_to_pajek(self, file_path):
         """
-        to write a pajek file with information in Graph class
-        :param file_path:
-        :return:
+        Serialize graph data to file using Pajek format
+        :param file_path: file path
+        :return: None
         """
 
         file = open(file_path, 'w')
         file.write("*vertices {}{}".format(len(self.__nodes), "\n"))
-        for node in self.__nodes:
-            if isinstance(node, CBD):
-                file.write(
-                    "{} {} {} {} CBD {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                     "\n"))
-            if isinstance(node, Periphery):
-                file.write(
-                    "{} {} {} {} P {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                   "\n"))
-            if isinstance(node, Subcenter):
-                file.write(
-                    "{} {} {} {} SC {} {}{}".format(node.id, node.name, node.x, node.y, node.zone_id, node.width,
-                                                    "\n"))
+        for node_obj in self.__nodes:
+            node_type = None
+            if isinstance(node_obj, CBD):
+                node_type = 'CBD'
+            elif isinstance(node_obj, Periphery):
+                node_type = 'P'
+            elif isinstance(node_obj, Subcenter):
+                node_type = 'SC'
+
+            file.write("{0} {1} {2} {3} {4} {5} {6}\n".
+                       format(node_obj.id, node_obj.name, node_obj.x, node_obj.y, node_type, node_obj.zone_id,
+                              node_obj.width))
         file.close()
 
     @staticmethod
@@ -175,14 +172,14 @@ class Graph:
         if etha is not None and etha_zone is not None:
             if etha < 0 or etha > 1:
                 raise EthaValueIsNotValidException("etha value is not valid. Try with value belong in [0-1]")
-            if etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
+            elif etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
                 raise EthaZoneValueIsNotValidException("etha zone is not valid. Try with value belong in [1,...,n]")
         if angles is not None:
             if len(angles) != n:
                 raise AngleListLengthIsNotValidException("must give angle value for all zones")
             for angle in angles:
                 if angle < 0 or angle > 360:
-                    raise AngleValueIsNotValidException("angle must belong in [0°-360°]")
+                    raise AngleValueIsNotValidException("angle must belong in range [0°-360°]")
         if Gi is not None:
             if len(Gi) != n:
                 raise GiListLengthIsNotValidException("must give Gi value for all zones")
@@ -222,26 +219,29 @@ class Graph:
             # # for each zones add Nodes periphery and subcenter
             # ADD all edges
             # add CBD
-            CBD_node = CBD(0, 0, 0, 0, 0, p, 0, "CBD")
-            graph_obj.__add_cbd(CBD_node)
+            cbd_node_obj = CBD(0, 0, 0, 0, 0, p, 0, "CBD")
+            graph_obj.__add_cbd(cbd_node_obj)
 
             # Add zones
             for zone in range(n):
-                id_p = 2 * zone + 1
-                id_sc = 2 * zone + 2
-                radius_p = l + g * l
-                radius_sc = l
-                angle_p = 360 / n * zone
-                angle_sc = 360 / n * zone
-                x_p, y_p = graph_obj.get_xy(radius_p, angle_p)
-                x_sc, y_sc = graph_obj.get_xy(radius_sc, angle_sc)
+                periphery_node_id = 2 * zone + 1
+                subcenter_node_id = 2 * zone + 2
+                periphery_radius = l + g * l
+                subcenter_radius = l
+                periphery_angle = 360 / n * zone
+                subcenter_angle = 360 / n * zone
+                x_p, y_p = graph_obj.get_xy(periphery_radius, periphery_angle)
+                x_sc, y_sc = graph_obj.get_xy(subcenter_radius, subcenter_angle)
 
-                node_p = Periphery(id_p, x_p, y_p, radius_p, angle_p, p, zone + 1, "P_{}".format(zone + 1))
-                node_sc = Subcenter(id_sc, x_sc, y_sc, radius_sc, angle_sc, p, zone + 1, "SC_{}".format(zone + 1))
+                periphery_node_name = "P_{}".format(zone + 1)
+                periphery_node_obj = Periphery(periphery_node_id, x_p, y_p, periphery_radius, periphery_angle, p,
+                                               zone + 1, periphery_node_name)
+                subcenter_node_name = "SC_{}".format(zone + 1)
+                subcenter_node_obj = Subcenter(subcenter_node_id, x_sc, y_sc, subcenter_radius, subcenter_angle, p,
+                                               zone + 1, subcenter_node_name)
 
-                # add periphery and subcenter nodes
-                # build edges
-                graph_obj.__add_zone(node_p, node_sc, zone + 1)
+                # add periphery and subcenter nodes to graph obj
+                graph_obj.__add_zone(periphery_node_obj, subcenter_node_obj, zone + 1)
 
             # add asymmetry by angles
             if angles is not None:
@@ -282,13 +282,13 @@ class Graph:
         col_width = []
 
         with open(file_path, mode='r', encoding='utf-8') as f_obj:
-            nnodes = 0
+            n_nodes = 0
             for line in f_obj.readlines():
                 if line.lower().startswith("*vertices"):
-                    _, nnodes = line.split()
-                    nnodes = int(nnodes)
+                    _, n_nodes = line.split()
+                    n_nodes = int(n_nodes)
                     continue
-                if nnodes > 0:
+                if n_nodes > 0:
                     if len(line.split()) == 7:
                         node_id, name, x, y, node_type, zone, width = line.split()
                         if node_type != "CBD" and node_type != "SC" and node_type != "P":
@@ -301,10 +301,10 @@ class Graph:
                         col_zone.append(zone)
                         col_width.append(width)
 
-                        nnodes = nnodes - 1
+                        n_nodes = n_nodes - 1
                     else:
                         raise PajekFormatIsNotValidException("each node line must provide information about [id] ["
-                                                              "name] [x] [y] [type] [zone] [width]")
+                                                             "name] [x] [y] [type] [zone] [width]")
 
             df_file["node_id"] = col_id
             df_file["name"] = col_name
@@ -332,19 +332,19 @@ class Graph:
         if x == 0 and y == 0:
             return 0
 
-        dotProduct = a * c + b * d
+        dot_product = a * c + b * d
         # for three dimensional simply add dotProduct = a*c + b*d  + e*f
-        modOfVector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
+        mod_of_vector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
         # for three dimensional simply add modOfVector = math.sqrt( a*a + b*b + e*e)*math.sqrt(c*c + d*d +f*f)
-        angle = dotProduct / modOfVector1
+        angle = dot_product / mod_of_vector1
         # print("Cosθ =",angle)
-        angleInDegree = math.degrees(math.acos(angle))
+        angle_in_degree = math.degrees(math.acos(angle))
         if y < 0:
             if x >= 0:
-                angleInDegree = 360 - angleInDegree
+                angle_in_degree = 360 - angle_in_degree
             if x < 0:
-                angleInDegree = (180 - angleInDegree) + 180
-        return angleInDegree
+                angle_in_degree = (180 - angle_in_degree) + 180
+        return angle_in_degree
 
     @staticmethod
     def get_xy(radius, angle):
@@ -377,7 +377,7 @@ class Graph:
 
             if not len(df_file["node_id"]) in lines_accepted:
                 raise LineNumberInFileIsNotValidException("The number of lines in the file must be 2n+1 or "
-                                                               "file is very big (until 5000 zones accepted)")
+                                                          "file is very big (until 5000 zones accepted)")
 
             n = int((len(df_file["node_id"]) - 1) / 2)
 
@@ -439,7 +439,7 @@ class Graph:
                         node_subcenter = sc
                 if n_p != 1 or n_sc != 1:
                     raise PeripherySubcenterNumberForZoneException("try to verify that each zone [1, ..., n] has "
-                                                                    "one sc and p")
+                                                                   "one sc and p")
 
                 radius_p = node_periphery.radius
                 radius_sc = node_subcenter.radius
@@ -502,16 +502,16 @@ class Graph:
 
         return graph_obj
 
-    def __add_cbd(self, CBD_node):
+    def __add_cbd(self, cbd_node):
         # not need to check because CBD is the first node append in __nodes
         # if CBD_node.id in self.__nodes_id:
         #   raise IdEdgeIsDuplicatedException("node id is duplicated")
         # not need to check because n° of lines in pajek file and n° of SC = n° of P = 1 for each zone have exceptions
         # if self.__CBD_exist:
         #    raise CBDDuplicatedException('a CBD already exists')
-        self.__CBD_exist = True
-        self.__nodes_id.append(CBD_node.id)
-        self.__nodes.append(CBD_node)
+        self.__cbd_exist = True
+        self.__nodes_id.append(cbd_node.id)
+        self.__nodes.append(cbd_node)
 
     def __add_zone(self, node_periphery, node_subcenter, zone_id=None):
         # zones can only be added if CBD is included
@@ -796,12 +796,12 @@ class Graph:
             x_p.append(p.x)
             y_p.append(p.y)
 
-        # ploteamos nodos
+        # plo nodes
         plt.plot(x_p, y_p, 'ro')
         plt.plot(x_sc, y_sc, 'bo')
         plt.plot(x_cbd, y_cbd, 'mo')
 
-        # propiedades gráfico
+        # graph properties
         plt.title("City graph")
         plt.xlabel("X")
         plt.ylabel("Y")
