@@ -64,19 +64,20 @@ class Mode:
         return True
 
 
-class Transport_mode:
-    def __init__(self):
+class TransportMode:
+    def __init__(self, add_default_mode=True):
+
         self.__list_name = []
         self.__modes = []
-        # default bus
-        bus = Mode("bus", 1, 8.61, 0.15, 0, 20, 2.5, 150, 160, 0.7, 0, 6)
-        # default metro
-        metro = Mode("metro", 0, 80.91, 0.3, 933.15, 40, 0.33, 40, 1440, 0.5, 1, 1)
-
-        self.__modes.append(bus)
-        self.__list_name.append("bus")
-        self.__modes.append(metro)
-        self.__list_name.append("metro")
+        if add_default_mode:
+            # default bus
+            bus = Mode("bus", 1, 8.61, 0.15, 0, 20, 2.5, 150, 160, 0.7, 0, 6)
+            # default metro
+            metro = Mode("metro", 0, 80.91, 0.3, 933.15, 40, 0.33, 40, 1440, 0.5, 1, 1)
+            self.__modes.append(bus)
+            self.__list_name.append("bus")
+            self.__modes.append(metro)
+            self.__list_name.append("metro")
 
     def update_mode(self, name, bya=None, co=None, c1=None, c2=None, v=None, t=None, fmax=None, kmax=None, theta=None,
                     tat=None, d=None):
@@ -99,40 +100,35 @@ class Transport_mode:
 
         if name not in self.__list_name:
             raise ModeDoesNotExistExceptions("mode name does not exist")
+        else:
+            i = self.__list_name.index(name)
+            mode = self.__modes[i]
 
-        i = 0
-        for mode in self.__modes:
-            if mode.name != name:
-                i = i + 1
-                continue
-            else:
-                if bya is None:
-                    bya = mode.bya
-                if co is None:
-                    co = mode.co
-                if c1 is None:
-                    c1 = mode.c1
-                if c2 is None:
-                    c2 = mode.c2
-                if v is None:
-                    v = mode.v
-                if t is None:
-                    t = mode.t
-                if fmax is None:
-                    fmax = mode.fmax
-                if kmax is None:
-                    kmax = mode.kmax
-                if theta is None:
-                    theta = mode.theta
-                if tat is None:
-                    tat = mode.tat
-                if d is None:
-                    d = mode.d
+            if bya is None:
+                bya = mode.bya
+            if co is None:
+                co = mode.co
+            if c1 is None:
+                c1 = mode.c1
+            if c2 is None:
+                c2 = mode.c2
+            if v is None:
+                v = mode.v
+            if t is None:
+                t = mode.t
+            if fmax is None:
+                fmax = mode.fmax
+            if kmax is None:
+                kmax = mode.kmax
+            if theta is None:
+                theta = mode.theta
+            if tat is None:
+                tat = mode.tat
+            if d is None:
+                d = mode.d
 
-                m = Mode(mode.name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
-
-                self.__modes[i] = m
-                break
+            m = Mode(mode.name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            self.__modes[i] = m
 
     def is_valid(self):
         """
@@ -152,9 +148,10 @@ class Transport_mode:
         """
         if name not in self.__list_name:
             raise ModeNotFoundExceptions("name mode not found")
-        for mode in self.__modes:
-            if mode.name == name:
-                return mode
+        else:
+            i = self.__list_name.index(name)
+            mode = self.__modes[i]
+            return mode
 
     def get_modes(self):
         """
@@ -192,6 +189,7 @@ class Transport_mode:
 
         mode = Mode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
         self.__modes.append(mode)
+        self.__list_name.append(name)
 
     def delete_mode(self, name):
         """
@@ -199,14 +197,10 @@ class Transport_mode:
         :param name:
         :return:
         """
+
         if name in self.__list_name:
-            self.__list_name.remove(name)
-            modes = []
-            for mode in self.__modes:
-                if mode.name == name:
-                    continue
-                else:
-                    modes.append(mode)
-            self.__modes = modes
+            i = self.__list_name.index(name)
+            self.__list_name.pop(i)
+            self.__modes.pop(i)
         else:
             raise ModeDoesNotExistExceptions("Mode does not exist")

@@ -45,9 +45,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        user = transport_user.User(4.0, 2.74, 5.48, 8.22, 0.73, 2.74, 5.48, 8.22, 0.73)
-
-        u = transport_user.Transport_user()
+        u = transport_user.TransportUser()
 
         self.assertEqual(u.get_user().va, 4.0)
 

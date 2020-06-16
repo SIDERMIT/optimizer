@@ -12,7 +12,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        m = transport_mode.Transport_mode()
+        m = transport_mode.TransportMode()
 
         self.assertTrue(m.is_valid())
 
@@ -72,7 +72,7 @@ class test_graph(unittest.TestCase):
         to test get methods
         :return:
         """
-        m = transport_mode.Transport_mode()
+        m = transport_mode.TransportMode()
 
         self.assertEqual(len(m.get_modes()), 2)
         self.assertEqual(len(m.get_names_modes()), 2)
@@ -86,7 +86,7 @@ class test_graph(unittest.TestCase):
         to test add_mode method
         :return:
         """
-        m = transport_mode.Transport_mode()
+        m = transport_mode.TransportMode()
 
         name = "train"
         bya = 1
@@ -114,7 +114,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        m = transport_mode.Transport_mode()
+        m = transport_mode.TransportMode()
 
         m.delete_mode("bus")
         self.assertEqual(len(m.get_modes()), 1)
@@ -127,7 +127,7 @@ class test_graph(unittest.TestCase):
         to test update_mode method
         :return:
         """
-        m = transport_mode.Transport_mode()
+        m = transport_mode.TransportMode()
 
         m.update_mode("bus", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
         self.assertEqual(len(m.get_modes()), 2)

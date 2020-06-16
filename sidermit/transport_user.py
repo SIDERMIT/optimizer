@@ -53,11 +53,13 @@ class User:
         return True
 
 
-class Transport_user:
+class TransportUser:
 
-    def __init__(self):
-        # default user
-        self.__user = User(4.0, 2.74, 5.48, 8.22, 0.73, 2.74, 5.48, 8.22, 0.73)
+    def __init__(self, add_default_user=True):
+        self.__user = None
+        if add_default_user:
+            # default user
+            self.__user = User(4.0, 2.74, 5.48, 8.22, 0.73, 2.74, 5.48, 8.22, 0.73)
 
     def get_user(self):
         """
