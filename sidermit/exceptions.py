@@ -407,3 +407,11 @@ class NotCycleExceptions(TransportNetworkExceptions):
 
 class NodeSequencesNotValid(TransportNetworkExceptions):
     pass
+
+
+class RouteIdNotFoundExceptions(TransportNetworkExceptions):
+    pass
+
+
+class RouteIdDuplicatedExceptions(TransportNetworkExceptions):
+    pass
