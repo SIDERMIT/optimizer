@@ -23,6 +23,11 @@ class TransportUserException(SIDERMITException):
     pass
 
 
+# Transport Network Exceptions
+class TransportNetworkExceptions(SIDERMITException):
+    pass
+
+
 # Graph Exceptions
 
 
@@ -369,4 +374,36 @@ class SpwIsNotValidExceptions(TransportUserException):
 
 
 class SptIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class RouteIdIsNotValidExceptions(TransportNetworkExceptions):
+    pass
+
+
+class ModeNameIsNotValidExceptions(TransportNetworkExceptions):
+    pass
+
+
+class SequencesLenExceptions(TransportNetworkExceptions):
+    pass
+
+
+class StopsSequencesExceptions(TransportNetworkExceptions):
+    pass
+
+
+class FirstStopIsNotValidExceptions(TransportNetworkExceptions):
+    pass
+
+
+class LastStopIsNotValidExceptions(TransportNetworkExceptions):
+    pass
+
+
+class NotCycleExceptions(TransportNetworkExceptions):
+    pass
+
+
+class NodeSequencesNotValid(TransportNetworkExceptions):
     pass
