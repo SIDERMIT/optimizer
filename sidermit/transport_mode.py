@@ -160,7 +160,7 @@ class TransportMode:
         """
         return self.__modes
 
-    def get_names_modes(self):
+    def get_modes_names(self):
         """
         to get list_name of modes
         :return:

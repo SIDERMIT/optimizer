@@ -119,6 +119,18 @@ class Graph:
         self.__Gi = None
         self.__Hi = None
 
+    def edges_exist(self, id_i, id_j):
+        """
+        to check if edge with origin node id = id_i and destination node id = id_j exist
+        :param id_i:
+        :param id_j:
+        :return:
+        """
+        for edge in self.__edges:
+            if edge.node1.id == id_i and edge.node2.id == id_j:
+                return True
+        return False
+
     def graph_to_pajek(self, file_path):
         """
         Serialize graph data to file using Pajek format

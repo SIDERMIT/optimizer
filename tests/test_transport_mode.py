@@ -75,7 +75,7 @@ class test_graph(unittest.TestCase):
         m = transport_mode.TransportMode()
 
         self.assertEqual(len(m.get_modes()), 2)
-        self.assertEqual(len(m.get_names_modes()), 2)
+        self.assertEqual(len(m.get_modes_names()), 2)
         self.assertTrue(isinstance(m.get_mode("bus"), transport_mode.Mode))
 
         with self.assertRaises(exceptions.ModeNotFoundExceptions):
