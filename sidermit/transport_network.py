@@ -210,7 +210,7 @@ class TransportNetwork:
         else:
             raise RouteIdNotFoundExceptions("route_id not found")
 
-    def route_to_file(self, file_path):
+    def routes_to_file(self, file_path):
         """
         to save file with all routes information
         :param file_path:
@@ -225,7 +225,6 @@ class TransportNetwork:
         col_stops_sequence_r = []
 
         for route in self.__routes:
-
             col_route_id.append(route.id)
             col_mode.append(route.mode)
             col_nodes_sequence_i.append(route.sequences_to_string(route.nodes_sequence_i))
@@ -244,20 +243,113 @@ class TransportNetwork:
         df_transit_network.to_csv(file_path, sep=",", index=False)
 
     @staticmethod
-    def build_from_file(file_path):
+    def build_from_file(graph_obj, modes_obj, file_path):
         """
         to build route list from a file
+        :param modes_obj:
+        :param graph_obj:
         :param file_path:
         :return:
         """
-        pass
+        network_obj = TransportNetwork(graph_obj, modes_obj)
 
+        with open(file_path, mode='r', encoding='utf-8') as f_obj:
+            n_lines = 0
+            for line in f_obj.readlines():
+                if n_lines == 0:
+                    n_lines = 1
+                    continue
+                else:
+                    if len(line.split(";")) == 6:
+                        route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r = \
+                            line.split(";")
+                        network_obj.add_route(route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                                              stops_sequence_r)
+                    else:
+                        raise FileFormatIsNotValidException(
+                            "each line must provide information about "
+                            "route_id;mode_name;nodes_sequence_i;nodes_sequence_r;stops_sequence_i;stops_sequence_r")
+        return network_obj
+
+    def add_radial_routes(self, index_mode=0):
+        """
+        to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd for I direction and cbd-sc-p for R direction
+        :param index_mode:
+        :return:
+        """
+
+        cbd = self.__graph_obj.get_cbd()
+        modes = self.__modes_obj.get_modes()
+        id_cbd = cbd.id
+
+        for zone in self.__graph_obj.get_zones():
+            id_p = zone.periphery
+            id_sc = zone.subcenter
+
+            route_id = "R_{}".format(zone.id)
+            mode = modes[index_mode].name
+            nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
+            stops_sequence_i = nodes_sequence_i
+            nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
+            stops_sequence_r = nodes_sequence_r
+
+            self.add_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r)
+
+    def add_express_radial_routes(self, index_mode=0):
+        """
+        to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-cbd for I direction and cbd-p for R direction
+        :param index_mode:
+        :return:
+        """
+
+        cbd = self.__graph_obj.get_cbd()
+        modes = self.__modes_obj.get_modes()
+        id_cbd = cbd.id
+
+        for zone in self.__graph_obj.get_zones():
+            id_p = zone.periphery
+            id_sc = zone.subcenter
+
+            route_id = "ER_{}".format(zone.id)
+            mode = modes[index_mode].name
+            nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
+            stops_sequence_i = "{},{}".format(id_p, id_cbd)
+            nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
+            stops_sequence_r = "{},{}".format(id_cbd, id_p)
+
+            self.add_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r)
 
     def update_route(self, route_id, mode_name=None, nodes_sequence_i=None,
-                          nodes_sequence_r=None, stops_sequence_i=None, stops_sequence_r=None):
+                     nodes_sequence_r=None, stops_sequence_i=None, stops_sequence_r=None):
         """
         to update route information
         :param route_id:
+        :param mode_name:
+        :param nodes_sequence_i:
+        :param nodes_sequence_r:
+        :param stops_sequence_i:
+        :param stops_sequence_r:
         :return:
         """
-        pass
+        if route_id not in self.__routes_id:
+            raise RouteIdNotFoundExceptions("route_id does not exist")
+        else:
+            i = self.__routes_id.index(route_id)
+            route = self.__routes[i]
+
+            if mode_name is None:
+                mode_name = route.mode
+            if nodes_sequence_i is None:
+                nodes_sequence_i = route.sequences_to_string(route.nodes_sequence_i)
+            if nodes_sequence_r is None:
+                nodes_sequence_r = route.sequences_to_string(route.nodes_sequence_r)
+            if stops_sequence_i is None:
+                stops_sequence_i = route.sequences_to_string(route.stops_sequence_i)
+            if stops_sequence_r is None:
+                stops_sequence_r = route.sequences_to_string(route.stops_sequence_r)
+
+            r = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
+                      stops_sequence_i, stops_sequence_r)
+            self.__routes[i] = r
