@@ -127,7 +127,7 @@ class Graph:
         :return:
         """
         for edge in self.__edges:
-            if edge.node1.id == id_i and edge.node2.id == id_j:
+            if str(edge.node1.id) == str(id_i) and str(edge.node2.id) == str(id_j):
                 return True
         return False
 

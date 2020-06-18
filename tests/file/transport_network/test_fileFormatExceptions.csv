@@ -1,0 +1,3 @@
+route_id;mode;nodes_sequence_i;nodes_sequence_r;stops_sequence_i;stops_sequence_r
+r1;bus;1,2,0,4,3;3,4,0,2,1;1,0,3;3,0,1
+r2;metro;1,2,0,4,3;3,4,0,2,1;1,0,3
