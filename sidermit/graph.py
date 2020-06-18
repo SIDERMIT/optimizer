@@ -119,7 +119,7 @@ class Graph:
         self.__Gi = None
         self.__Hi = None
 
-    def edges_exist(self, id_i, id_j):
+    def edge_exist(self, id_i, id_j):
         """
         to check if edge with origin node id = id_i and destination node id = id_j exist
         :param id_i:
