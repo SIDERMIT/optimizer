@@ -70,7 +70,7 @@ class Route:
             if line == "":
                 line = line + node
             else:
-                line = line + "-" + node
+                line = line + "," + node
 
         return line
 
@@ -83,8 +83,12 @@ class Route:
         """
         nodes = sequence.split(",")
 
+        for node in nodes:
+            i = nodes.index(node)
+            nodes[i] = node.rstrip("\n")
+
         if len(nodes) <= 1:
-            raise SequencesLenExceptions("len(sequences) must be >=0")
+            raise SequencesLenExceptions("len(sequences) must be >= 0")
 
         return nodes
 
@@ -118,7 +122,7 @@ class Route:
         :return:
         """
         if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
-                nodes_list_r[0] != nodes_list_i[len(nodes_list_r) - 1]:
+                nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
             raise NotCycleExceptions("sequence of nodes of both directions do not form a cycle")
         return True
 
@@ -130,11 +134,10 @@ class Route:
         :param node_list:
         :return:
         """
-
         for i in range(len(node_list) - 1):
             j = i + 1
-            if not graph_obj.edge_exist(i, j):
-                raise NodeSequencesNotValid("Node sequences is not valid because a edge does not exist")
+            if not graph_obj.edge_exist(node_list[i], node_list[j]):
+                raise NodeSequencesIsNotValidExceptions("Node sequences is not valid because a edge does not exist")
         return True
 
 
@@ -189,6 +192,7 @@ class TransportNetwork:
         :param stops_sequence_r:
         :return:
         """
+
         if route_id not in self.__routes_id:
             route = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i,
                           nodes_sequence_r, stops_sequence_i, stops_sequence_r)
@@ -240,7 +244,7 @@ class TransportNetwork:
         df_transit_network["stops_sequence_i"] = col_stops_sequence_i
         df_transit_network["stops_sequence_r"] = col_stops_sequence_r
 
-        df_transit_network.to_csv(file_path, sep=",", index=False)
+        df_transit_network.to_csv(file_path, sep=";", index=False)
 
     @staticmethod
     def build_from_file(graph_obj, modes_obj, file_path):
@@ -263,6 +267,7 @@ class TransportNetwork:
                     if len(line.split(";")) == 6:
                         route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r = \
                             line.split(";")
+
                         network_obj.add_route(route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
                                               stops_sequence_r)
                     else:
@@ -284,8 +289,8 @@ class TransportNetwork:
         id_cbd = cbd.id
 
         for zone in self.__graph_obj.get_zones():
-            id_p = zone.periphery
-            id_sc = zone.subcenter
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
 
             route_id = "R_{}".format(zone.id)
             mode = modes[index_mode].name
@@ -309,8 +314,8 @@ class TransportNetwork:
         id_cbd = cbd.id
 
         for zone in self.__graph_obj.get_zones():
-            id_p = zone.periphery
-            id_sc = zone.subcenter
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
 
             route_id = "ER_{}".format(zone.id)
             mode = modes[index_mode].name

@@ -1,3 +1,4 @@
+import filecmp
 import os
 import unittest
 from pathlib import Path
@@ -85,12 +86,16 @@ class test_graph(unittest.TestCase):
         g = graph.Graph.build_from_parameters(2, 1000, 0.5, 2)
         d = demand.Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 1 / 3)
         # write file
-        d.matrix_to_file(os.path.join(self.data_path, 'write1_test.csv'))
-        fileObj = Path(os.path.join(self.data_path, 'write1_test.csv'))
+        d.matrix_to_file(os.path.join(self.data_path, 'write_test.csv'))
+        fileObj = Path(os.path.join(self.data_path, 'write_test.csv'))
         # test
         self.assertTrue(fileObj.is_file())
+        # to compare file with a test file
+        self.assertTrue(
+            filecmp.cmp(os.path.join(self.data_path, 'write1_test.csv'),
+                        os.path.join(self.data_path, 'write_test.csv')))
         # remove file
-        os.remove(os.path.join(self.data_path, 'write1_test.csv'))
+        os.remove(os.path.join(self.data_path, 'write_test.csv'))
 
     def test_change_vij_exceptions(self):
         """

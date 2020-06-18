@@ -405,7 +405,7 @@ class NotCycleExceptions(TransportNetworkExceptions):
     pass
 
 
-class NodeSequencesNotValid(TransportNetworkExceptions):
+class NodeSequencesIsNotValidExceptions(TransportNetworkExceptions):
     pass
 
 
