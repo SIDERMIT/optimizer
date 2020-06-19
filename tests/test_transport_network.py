@@ -3,10 +3,13 @@ import os
 import unittest
 from pathlib import Path
 
+
 from sidermit import exceptions
 from sidermit import graph
 from sidermit import transport_mode
 from sidermit import transport_network
+
+
 
 
 class test_graph(unittest.TestCase):
@@ -226,6 +229,35 @@ class test_graph(unittest.TestCase):
         self.assertEqual(t.get_route("ER_2").nodes_sequence_r, ["0", "4", "3"])
         self.assertEqual(t.get_route("ER_2").stops_sequence_i, ["3", "0"])
         self.assertEqual(t.get_route("ER_2").stops_sequence_r, ["0", "3"])
+    
+    def test_plot(self):
+        """
+        to test plot method
+        :return: 
+        """
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+                                              etha_zone=3,
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+
+        m = transport_mode.TransportMode(add_default_mode=True)
+
+        t = transport_network.TransportNetwork(g, m)
+        t.add_express_radial_routes(index_mode=0)
+        # save figure in path
+        t.plot(os.path.join(self.data_path, 'figure1_test.png'))
+        fileObj = Path(os.path.join(self.data_path, 'figure1_test.png'))
+        # test
+        self.assertTrue(fileObj.is_file())
+        # to compare figure with a test figure
+        self.assertTrue(
+            filecmp.cmp(os.path.join(self.data_path, 'figure_test.png'),
+                        os.path.join(self.data_path, "figure1_test.png")))
+
+        # remove file
+        os.remove(os.path.join(self.data_path, 'figure1_test.png'))
+
+        with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
+            t.plot(os.path.join(self.data_path, 'figure_test.png'), list_routes=["506"])
 
 
 if __name__ == '__main__':

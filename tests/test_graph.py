@@ -352,6 +352,28 @@ class test_graph(unittest.TestCase):
         with self.assertRaises(exceptions.NodeIdDuplicatedException):
             graph.Graph.build_from_file(self.test_nodeIdExceptions)
 
+    def test_plot(self):
+        """
+        to test plot method
+        :return:
+        """
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+                                              etha_zone=3,
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+
+        # save figure in path
+        g.plot(os.path.join(self.data_path, 'figure1_test.png'))
+        fileObj = Path(os.path.join(self.data_path, 'figure1_test.png'))
+        # test
+        self.assertTrue(fileObj.is_file())
+        # to compare figure with a test figure
+        self.assertTrue(
+            filecmp.cmp(os.path.join(self.data_path, 'figure_test.png'),
+                        os.path.join(self.data_path, "figure1_test.png")))
+
+        # remove file
+        os.remove(os.path.join(self.data_path, 'figure1_test.png'))
+
 
 if __name__ == '__main__':
     unittest.main()

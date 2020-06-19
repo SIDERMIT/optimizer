@@ -363,7 +363,7 @@ class TransportNetwork:
                       stops_sequence_i, stops_sequence_r)
             self.__routes[i] = r
 
-    def plot(self, list_routes=None):
+    def plot(self, file_path, list_routes=None):
         """
         to plot graph
         :return:
@@ -436,13 +436,13 @@ class TransportNetwork:
                 stops_i = route.stops_sequence_i
                 stops_r = route.stops_sequence_r
 
-                for i in range(len(nodes_i)-1):
+                for i in range(len(nodes_i) - 1):
                     id1 = nodes_i[i]
-                    id2 = nodes_i[i+1]
+                    id2 = nodes_i[i + 1]
                     edges_i.append((id1, id2))
-                for i in range(len(nodes_r)-1):
+                for i in range(len(nodes_r) - 1):
                     id1 = nodes_r[i]
-                    id2 = nodes_r[i+1]
+                    id2 = nodes_r[i + 1]
                     edges_r.append((id1, id2))
                 for i in range(len(stops_i)):
                     if stops_i[i] not in stops:
@@ -463,7 +463,8 @@ class TransportNetwork:
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
                                node_size=300)
         # plot stops
-        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops, node_color='yellow', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops, node_color='yellow',
+                               node_size=300)
         # plot labels
         nx.draw_networkx_labels(G, position)
         # plot edges city
@@ -477,4 +478,4 @@ class TransportNetwork:
         plt.xlabel("X")
         plt.ylabel("Y")
         plt.gca().set_aspect('equal')
-        plt.show()
+        plt.savefig(file_path)
