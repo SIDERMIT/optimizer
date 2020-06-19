@@ -1,6 +1,8 @@
 import math
+from collections import defaultdict
 from enum import Enum
 
+import networkx as nx
 import pandas as pd
 from matplotlib import pyplot as plt
 
@@ -770,13 +772,19 @@ class Graph:
         :return:
         """
 
-        # edges information and plot
+        # edges information and positions
+        edges = []
+        position = defaultdict(list)
         for edge in self.__edges:
-            x = [edge.node1.x, edge.node2.x]
-            y = [edge.node1.y, edge.node2.y]
-            plt.plot(x, y, color="lime")
+            edges.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
 
-        # nodes information and plot
+        # nodes information and positions
         info_cbd = []
         info_sc = []
         info_p = []
@@ -788,7 +796,9 @@ class Graph:
                 info_p.append(node)
             if isinstance(node, Subcenter):
                 info_sc.append(node)
-
+        id_cbd = []
+        id_sc = []
+        id_p = []
         x_cbd = []
         y_cbd = []
         x_sc = []
@@ -799,21 +809,28 @@ class Graph:
         for cbd in info_cbd:
             x_cbd.append(cbd.x)
             y_cbd.append(cbd.y)
+            id_cbd.append(cbd.id)
 
         for sc in info_sc:
             x_sc.append(sc.x)
             y_sc.append(sc.y)
-
+            id_sc.append(sc.id)
         for p in info_p:
             x_p.append(p.x)
             y_p.append(p.y)
+            id_p.append(p.id)
 
-        # plo nodes
-        plt.plot(x_p, y_p, 'ro')
-        plt.plot(x_sc, y_sc, 'bo')
-        plt.plot(x_cbd, y_cbd, 'mo')
+        G = nx.DiGraph()
+        G.add_edges_from(edges)
 
-        # graph properties
+        # separate calls to draw labels, nodes and edges
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_p, node_color='red', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_sc, node_color='blue', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
+                               node_size=300)
+        nx.draw_networkx_labels(G, position)
+        nx.draw_networkx_edges(G, position, edgelist=edges, edge_color='orange', arrows=True)
+
         plt.title("City graph")
         plt.xlabel("X")
         plt.ylabel("Y")

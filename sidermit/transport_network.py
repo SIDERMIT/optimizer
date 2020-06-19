@@ -1,6 +1,10 @@
+import networkx as nx
 import pandas as pd
+from matplotlib import pyplot as plt
+from collections import defaultdict
 
 from sidermit.exceptions import *
+from sidermit import graph
 
 
 class Route:
@@ -358,3 +362,119 @@ class TransportNetwork:
             r = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
                       stops_sequence_i, stops_sequence_r)
             self.__routes[i] = r
+
+    def plot(self, list_routes=None):
+        """
+        to plot graph
+        :return:
+        """
+        # if list routes is empty then plot all routes
+        if list_routes is None:
+            list_routes = self.__routes_id
+
+        # edges information and positions
+        # edge city
+        edges_graph = []
+        position = defaultdict(list)
+        for edge in self.__graph_obj.get_edges():
+            edges_graph.append((str(edge.node1.id), str(edge.node2.id)))
+            if not position.get(str(edge.node1.id)):
+                position[str(edge.node1.id)].append(edge.node1.x)
+                position[str(edge.node1.id)].append(edge.node1.y)
+            if not position.get(str(edge.node2.id)):
+                position[str(edge.node2.id)].append(edge.node2.x)
+                position[str(edge.node2.id)].append(edge.node2.y)
+
+        # nodes information and positions
+        info_cbd = []
+        info_sc = []
+        info_p = []
+        id_cbd = []
+        id_sc = []
+        id_p = []
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
+
+        for node in self.__graph_obj.get_nodes():
+            if isinstance(node, graph.CBD):
+                info_cbd.append(node)
+            if isinstance(node, graph.Periphery):
+                info_p.append(node)
+            if isinstance(node, graph.Subcenter):
+                info_sc.append(node)
+
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
+            id_cbd.append(str(cbd.id))
+
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
+            id_sc.append(str(sc.id))
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
+            id_p.append(str(p.id))
+
+        # edges routes and stops
+        edges_i = []
+        edges_r = []
+        stops = []
+        for route_id in list_routes:
+            if route_id not in self.__routes_id:
+                raise RouteIdNotFoundExceptions("route_id does not found")
+            else:
+                ind = self.__routes_id.index(route_id)
+                route = self.__routes[ind]
+                nodes_i = route.nodes_sequence_i
+                nodes_r = route.nodes_sequence_r
+                stops_i = route.stops_sequence_i
+                stops_r = route.stops_sequence_r
+
+                for i in range(len(nodes_i)-1):
+                    id1 = nodes_i[i]
+                    id2 = nodes_i[i+1]
+                    edges_i.append((id1, id2))
+                for i in range(len(nodes_r)-1):
+                    id1 = nodes_r[i]
+                    id2 = nodes_r[i+1]
+                    edges_r.append((id1, id2))
+                for i in range(len(stops_i)):
+                    if stops_i[i] not in stops:
+                        stops.append(stops_i[i])
+                for i in range(len(stops_r)):
+                    if stops_r[i] not in stops:
+                        stops.append(stops_r[i])
+
+        G = nx.DiGraph()
+        G.add_edges_from(edges_graph)
+        G.add_edges_from(edges_i)
+        G.add_edges_from(edges_r)
+
+        # separate calls to draw labels, nodes and edges
+        # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_p, node_color='red', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_sc, node_color='blue', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
+                               node_size=300)
+        # plot stops
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops, node_color='yellow', node_size=300)
+        # plot labels
+        nx.draw_networkx_labels(G, position)
+        # plot edges city
+        nx.draw_networkx_edges(G, position, edgelist=edges_graph, edge_color='orange', arrows=True)
+        # plot edges_i
+        nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color='lime', arrows=True)
+        # plot edges_r
+        nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color='aqua', arrows=True)
+
+        plt.title("City graph")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.gca().set_aspect('equal')
+        plt.show()
