@@ -352,6 +352,17 @@ class test_graph(unittest.TestCase):
         with self.assertRaises(exceptions.NodeIdDuplicatedException):
             graph.Graph.build_from_file(self.test_nodeIdExceptions)
 
+    def test_edges_exist(self):
+        """
+        to test edge_exist method
+        :return:
+        """
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+                                              etha_zone=3,
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+        self.assertTrue(g.edge_exist(1, 2))
+        self.assertTrue(not g.edge_exist("1", "200"))
+
     def test_plot(self):
         """
         to test plot method

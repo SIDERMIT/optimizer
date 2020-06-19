@@ -1,10 +1,11 @@
+from collections import defaultdict
+
 import networkx as nx
 import pandas as pd
 from matplotlib import pyplot as plt
-from collections import defaultdict
 
-from sidermit.exceptions import *
 from sidermit import graph
+from sidermit.exceptions import *
 
 
 class Route:

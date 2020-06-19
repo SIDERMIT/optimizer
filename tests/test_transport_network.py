@@ -3,13 +3,10 @@ import os
 import unittest
 from pathlib import Path
 
-
 from sidermit import exceptions
 from sidermit import graph
 from sidermit import transport_mode
 from sidermit import transport_network
-
-
 
 
 class test_graph(unittest.TestCase):
