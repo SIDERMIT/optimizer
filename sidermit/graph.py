@@ -766,7 +766,7 @@ class Graph:
         """
         return self.__edges
 
-    def plot(self):
+    def plot(self, file_path):
         """
         to plot graph
         :return:
@@ -835,4 +835,4 @@ class Graph:
         plt.xlabel("X")
         plt.ylabel("Y")
         plt.gca().set_aspect('equal')
-        plt.show()
+        plt.savefig(file_path)
