@@ -24,7 +24,7 @@ class TransportUserException(SIDERMITException):
 
 
 # Transport Network Exceptions
-class TransportNetworkExceptions(SIDERMITException):
+class TransportNetworkException(SIDERMITException):
     pass
 
 
@@ -377,41 +377,41 @@ class SptIsNotValidExceptions(TransportUserException):
     pass
 
 
-class RouteIdIsNotValidExceptions(TransportNetworkExceptions):
+class RouteIdIsNotValidException(TransportNetworkException):
     pass
 
 
-class ModeNameIsNotValidExceptions(TransportNetworkExceptions):
+class ModeNameIsNotValidException(TransportNetworkException):
     pass
 
 
-class SequencesLenExceptions(TransportNetworkExceptions):
+class SequencesLenException(TransportNetworkException):
     pass
 
 
-class StopsSequencesExceptions(TransportNetworkExceptions):
+class StopsSequencesException(TransportNetworkException):
     pass
 
 
-class FirstStopIsNotValidExceptions(TransportNetworkExceptions):
+class FirstStopIsNotValidException(TransportNetworkException):
     pass
 
 
-class LastStopIsNotValidExceptions(TransportNetworkExceptions):
+class LastStopIsNotValidException(TransportNetworkException):
     pass
 
 
-class NotCycleExceptions(TransportNetworkExceptions):
+class NotCycleException(TransportNetworkException):
     pass
 
 
-class NodeSequencesIsNotValidExceptions(TransportNetworkExceptions):
+class NodeSequencesIsNotValidException(TransportNetworkException):
     pass
 
 
-class RouteIdNotFoundExceptions(TransportNetworkExceptions):
+class RouteIdNotFoundException(TransportNetworkException):
     pass
 
 
-class RouteIdDuplicatedExceptions(TransportNetworkExceptions):
+class RouteIdDuplicatedException(TransportNetworkException):
     pass

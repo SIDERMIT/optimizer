@@ -51,10 +51,10 @@ class Route:
         stops_r = self.sequences_to_list(stops_sequence_r)
 
         if route_id is None:
-            raise RouteIdIsNotValidExceptions("route_id is not valid. Try to give a value for route_id")
+            raise RouteIdIsNotValidException("route_id is not valid. Try to give a value for route_id")
 
         if mode_name not in modes_names:
-            raise ModeNameIsNotValidExceptions("mode_name was not define in modes_obj")
+            raise ModeNameIsNotValidException("mode_name was not define in modes_obj")
 
         if self.edges_validator(graph_obj, nodes_i) and self.edges_validator(graph_obj, nodes_r):
             if self.direction_validator(nodes_i, nodes_r):
@@ -93,7 +93,7 @@ class Route:
             nodes[i] = node.rstrip("\n")
 
         if len(nodes) <= 1:
-            raise SequencesLenExceptions("len(sequences) must be >= 0")
+            raise SequencesLenException("len(sequences) must be >= 0")
 
         return nodes
 
@@ -109,13 +109,13 @@ class Route:
         # to check if each stops be in node_sequences
         for stop in stops_list:
             if stop not in nodes_list:
-                raise StopsSequencesExceptions("stop is not reachable")
+                raise StopsSequencesException("stop is not reachable")
         # to check if first stop is equal to first node in node sequences
         if nodes_list[0] != stops_list[0]:
-            raise FirstStopIsNotValidExceptions("first stop is not valid, must be equal to first node")
+            raise FirstStopIsNotValidException("first stop is not valid, must be equal to first node")
         # to check if last stop is equal to last node in node sequences
         if nodes_list[len(nodes_list) - 1] != stops_list[len(stops_list) - 1]:
-            raise LastStopIsNotValidExceptions("last stop is not valid, must be equal to last node")
+            raise LastStopIsNotValidException("last stop is not valid, must be equal to last node")
         return True
 
     @staticmethod
@@ -128,7 +128,7 @@ class Route:
         """
         if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
                 nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
-            raise NotCycleExceptions("sequence of nodes of both directions do not form a cycle")
+            raise NotCycleException("sequence of nodes of both directions do not form a cycle")
         return True
 
     @staticmethod
@@ -142,7 +142,7 @@ class Route:
         for i in range(len(node_list) - 1):
             j = i + 1
             if not graph_obj.edge_exist(node_list[i], node_list[j]):
-                raise NodeSequencesIsNotValidExceptions("Node sequences is not valid because a edge does not exist")
+                raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
 
 
@@ -183,7 +183,7 @@ class TransportNetwork:
             i = self.__routes_id.index(route_id)
             return self.__routes[i]
         else:
-            raise RouteIdNotFoundExceptions("route_id not found")
+            raise RouteIdNotFoundException("route_id not found")
 
     def add_route(self, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
                   stops_sequence_r):
@@ -204,7 +204,7 @@ class TransportNetwork:
             self.__routes.append(route)
             self.__routes_id.append(route_id)
         else:
-            raise RouteIdDuplicatedExceptions("route_id is duplicated")
+            raise RouteIdDuplicatedException("route_id is duplicated")
 
     def delete_route(self, route_id):
         """
@@ -217,7 +217,7 @@ class TransportNetwork:
             self.__routes_id.pop(i)
             self.__routes.pop(i)
         else:
-            raise RouteIdNotFoundExceptions("route_id not found")
+            raise RouteIdNotFoundException("route_id not found")
 
     def routes_to_file(self, file_path):
         """
@@ -344,7 +344,7 @@ class TransportNetwork:
         :return:
         """
         if route_id not in self.__routes_id:
-            raise RouteIdNotFoundExceptions("route_id does not exist")
+            raise RouteIdNotFoundException("route_id does not exist")
         else:
             i = self.__routes_id.index(route_id)
             route = self.__routes[i]
@@ -428,7 +428,7 @@ class TransportNetwork:
         stops = []
         for route_id in list_routes:
             if route_id not in self.__routes_id:
-                raise RouteIdNotFoundExceptions("route_id does not found")
+                raise RouteIdNotFoundException("route_id does not found")
             else:
                 ind = self.__routes_id.index(route_id)
                 route = self.__routes[ind]

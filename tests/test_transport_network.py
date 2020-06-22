@@ -39,35 +39,35 @@ class TransportNetworkTest(unittest.TestCase):
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
         m = TransportModeManager()
 
-        with self.assertRaises(exceptions.RouteIdIsNotValidExceptions):
+        with self.assertRaises(exceptions.RouteIdIsNotValidException):
             Route(g, m, None, "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
                   "3,0,1")
 
-        with self.assertRaises(exceptions.ModeNameIsNotValidExceptions):
+        with self.assertRaises(exceptions.ModeNameIsNotValidException):
             Route(g, m, "r1", "train", "1,2,0,4,3", "3,4,0,2,1",
                   "1,0,3", "3,0,1")
 
-        with self.assertRaises(exceptions.SequencesLenExceptions):
+        with self.assertRaises(exceptions.SequencesLenException):
             Route(g, m, "r1", "bus", "1", "3,4,0,2,1", "1,0,3",
                   "3,0,1")
 
-        with self.assertRaises(exceptions.StopsSequencesExceptions):
+        with self.assertRaises(exceptions.StopsSequencesException):
             Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,5,3",
                   "3,0,1")
 
-        with self.assertRaises(exceptions.FirstStopIsNotValidExceptions):
+        with self.assertRaises(exceptions.FirstStopIsNotValidException):
             Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "2,0,3",
                   "3,0,1")
 
-        with self.assertRaises(exceptions.LastStopIsNotValidExceptions):
+        with self.assertRaises(exceptions.LastStopIsNotValidException):
             Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,2",
                   "3,0,1")
 
-        with self.assertRaises(exceptions.NotCycleExceptions):
+        with self.assertRaises(exceptions.NotCycleException):
             Route(g, m, "r1", "bus", "1,2,0,4,3", "4,0,2,1", "1,0,3",
                   "4,0,1")
 
-        with self.assertRaises(exceptions.NodeSequencesIsNotValidExceptions):
+        with self.assertRaises(exceptions.NodeSequencesIsNotValidException):
             Route(g, m, "r1", "bus", "1,3,0,4,3", "3,4,0,2,1", "1,0,3",
                   "3,0,1")
 
@@ -84,7 +84,7 @@ class TransportNetworkTest(unittest.TestCase):
         self.assertTrue(isinstance(t.get_route("r1"), Route))
         self.assertEqual(len(t.get_routes()), 1)
 
-        with self.assertRaises(exceptions.RouteIdDuplicatedExceptions):
+        with self.assertRaises(exceptions.RouteIdDuplicatedException):
             t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
                         "3,0,1")
 
@@ -101,7 +101,7 @@ class TransportNetworkTest(unittest.TestCase):
         t.delete_route("r1")
         self.assertEqual(len(t.get_routes()), 0)
 
-        with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
+        with self.assertRaises(exceptions.RouteIdNotFoundException):
             t.delete_route("r1")
 
     def test_network_to_file(self):
@@ -149,7 +149,7 @@ class TransportNetworkTest(unittest.TestCase):
         raises get_route exceptions from transport network class
         :return:
         """
-        with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
+        with self.assertRaises(exceptions.RouteIdNotFoundException):
             g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
             m = TransportModeManager()
             t = TransportNetwork(g, m)
@@ -195,7 +195,7 @@ class TransportNetworkTest(unittest.TestCase):
         t.update_route("r1")
         self.assertEqual(t.get_route("r1").mode, "metro")
 
-        with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
+        with self.assertRaises(exceptions.RouteIdNotFoundException):
             t.update_route("r3")
 
     def test_add_radial_routes(self):
@@ -269,6 +269,6 @@ class TransportNetworkTest(unittest.TestCase):
         # remove file
         os.remove(os.path.join(self.data_path, 'figure1_test.png'))
 
-        with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
+        with self.assertRaises(exceptions.RouteIdNotFoundException):
             t.plot(os.path.join(self.data_path, 'figure_test.png'),
                    list_routes=["506"])

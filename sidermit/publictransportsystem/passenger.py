@@ -21,23 +21,23 @@ def passenger_property(property_name, comp_function, exception_instance,
 
 class Passenger:
     va = passenger_property('_va', operator.le, VaIsNotValidExceptions(
-        "You must give a value > 0 for va"))
+        "You must give a value > 0 for va"), docstring="Walking speed [km/h]")
     pv = passenger_property('_pv', operator.lt, PvIsNotValidExceptions(
-        "You must give a value >= 0 for pv"))
+        "You must give a value >= 0 for pv"), docstring="Value of in-vehicle time savings [US$/h]")
     pw = passenger_property('_pw', operator.lt, PwIsNotValidExceptions(
-        "You must give a value >= 0 for pw"))
+        "You must give a value >= 0 for pw"), docstring="Value of waiting time savings [US$/h]")
     pa = passenger_property('_pa', operator.lt, PaIsNotValidExceptions(
-        "You must give a value >= 0 for pa"))
+        "You must give a value >= 0 for pa"), docstring="Value of access time savings [US$/h]")
     pt = passenger_property('_pt', operator.lt, PtIsNotValidExceptions(
-        "You must give a value >= 0 for pt"))
+        "You must give a value >= 0 for pt"), docstring="Pure transfer penalty [EIV]")
     spv = passenger_property('_spv', operator.lt, SpvIsNotValidExceptions(
-        "You must give a value >= 0 for spv"))
+        "You must give a value >= 0 for spv"), docstring="Subjetive value of in-vehicle time savings [US$/h]")
     spw = passenger_property('_spw', operator.lt, SpwIsNotValidExceptions(
-        "You must give a value >= 0 for spw"))
+        "You must give a value >= 0 for spw"), docstring="Subjetive value of waiting time savings [US$/h]")
     spa = passenger_property('_spa', operator.lt, SpaIsNotValidExceptions(
-        "You must give a value >= 0 for spa"))
+        "You must give a value >= 0 for spa"), docstring="Subjetive value of access time savings [US$/h]")
     spt = passenger_property('_spt', operator.lt, SptIsNotValidExceptions(
-        "You must give a value >= 0 for spt"))
+        "You must give a value >= 0 for spt"), docstring="Subjetive pure transfer penalty [EIV]")
 
     def __init__(self, va: float, pv: float, pw: float, pa: float, pt: float,
                  spv: float, spw: float, spa: float, spt: float) -> None:

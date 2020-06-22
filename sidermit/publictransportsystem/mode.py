@@ -29,24 +29,24 @@ class TransportMode:
     name = property(operator.attrgetter('_name'))
     bya = property(operator.attrgetter('_bya'))
     co = mode_property('_co', operator.lt, CoIsNotValidExceptions(
-        "You must give a value >=0 for co"))
+        "You must give a value >=0 for co"), docstring="Unitary cost per vehicle per period of time [US$/h-veh]")
     c1 = mode_property('_c1', operator.lt, C1IsNotValidExceptions(
-        "You must give a value >=0 for c1"))
+        "You must give a value >=0 for c1"), docstring="Unitary cost per seat per period of time [US$/h-veh]")
     c2 = mode_property('_c2', operator.lt, C2IsNotValidExceptions(
-        "You must give a value >=0 for c2"))
+        "You must give a value >=0 for c2"), docstring="Unitary cost per vehicle per km of time [US$/h-veh]")
     v = mode_property('_v', operator.le, VIsNotValidExceptions(
-        "You must give a value >=0 for v"))
+        "You must give a value >=0 for v"), docstring="Cruise speed [km/h]")
     t = mode_property('_t', operator.lt, TIsNotValidExceptions(
-        "You must give a value >=0 for t"))
+        "You must give a value >=0 for t"), docstring="Boarding and alighting time [s/pax]")
     fmax = mode_property('_fmax', operator.lt, FmaxIsNotValidExceptions(
-        "You must give a value >=0 for fmax"))
+        "You must give a value >=0 for fmax"), docstring="Maximum frequency [veh/h]")
     kmax = mode_property('_kmax', operator.lt, KmaxIsNotValidExceptions(
-        "You must give a vale >=0 for kmax"))
+        "You must give a vale >=0 for kmax"), docstring="Maximum vehicle size [pax/veh]")
     theta = property(operator.attrgetter('_theta'))
     tat = mode_property('_tat', operator.lt, TatIsNotValidExceptions(
-        "You must give a value >=0 for tat"))
+        "You must give a value >=0 for tat"), docstring="Technological access time [min]")
     d = mode_property('_d', operator.lt, DIsNotValidExceptions(
-        "You must give a value >=0 for d"))
+        "You must give a value >=0 for d"), docstring="Parallel lines")
 
     @name.setter
     def name(self, value):
@@ -68,9 +68,9 @@ class TransportMode:
                 "You must give a value between [0-1] for theta")
         self._theta = value
 
-    def __init__(self, name: str, bya: float, co: float, c1: float, c2: float,
+    def __init__(self, name: str, bya: int, co: float, c1: float, c2: float,
                  v: float, t: float, fmax: float, kmax: float, theta: float,
-                 tat: float, d: float):
+                 tat: float, d: int):
         self.name = name
         self.bya = bya
         self.co = co
