@@ -257,18 +257,20 @@ class TransportNetworkTest(unittest.TestCase):
         t = TransportNetwork(g, m)
         t.add_express_radial_routes(index_mode=0)
         # save figure in path
-        t.plot(os.path.join(self.data_path, 'figure1_test.png'))
-        file_obj = Path(os.path.join(self.data_path, 'figure1_test.png'))
+        t.plot(os.path.join(self.data_path, 'figure2_test.png'))
+        file_obj = Path(os.path.join(self.data_path, 'figure2_test.png'))
         # test
         self.assertTrue(file_obj.is_file())
         # to compare figure with a test figure
         self.assertTrue(
-            filecmp.cmp(os.path.join(self.data_path, 'figure_test.png'),
-                        os.path.join(self.data_path, "figure1_test.png")))
+            filecmp.cmp(os.path.join(self.data_path, 'figure1_test.png'),
+                        os.path.join(self.data_path, "figure2_test.png")))
 
         # remove file
-        os.remove(os.path.join(self.data_path, 'figure1_test.png'))
+        os.remove(os.path.join(self.data_path, 'figure2_test.png'))
 
         with self.assertRaises(exceptions.RouteIdNotFoundException):
-            t.plot(os.path.join(self.data_path, 'figure_test.png'),
+            t.plot(os.path.join(self.data_path, 'figure_test2.png'),
                    list_routes=["506"])
+            # remove file
+            os.remove(os.path.join(self.data_path, 'figure2_test.png'))

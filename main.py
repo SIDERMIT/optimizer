@@ -71,4 +71,4 @@ u = Passenger.get_default_passenger()
 t = TransportNetwork(g, m)
 t.add_express_radial_routes(0)
 
-t.plot()
+t.plot("sidermit.png")
