@@ -1,18 +1,36 @@
 import unittest
 
 from sidermit import exceptions
-from sidermit import transport_user
+from sidermit.transport_user import Passenger
 
 
-class test_graph(unittest.TestCase):
+class PassengerTest(unittest.TestCase):
 
-    def test_user(self):
-        """
-        test user class method
-        :return:
+    def test_create_passenger(self):
         """
 
-        transport_user.User(1, 1, 1, 1, 1, 1, 1, 1, 1)
+        """
+        va = 1
+        pv = 2
+        pw = 3
+        pa = 4
+        pt = 5
+        spv = 6
+        spw = 7
+        spa = 8
+        spt = 9
+
+        passenger_obj = Passenger(va, pv, pw, pa, pt, spv, spw, spa, spt)
+
+        self.assertEqual(passenger_obj.va, va)
+        self.assertEqual(passenger_obj.pv, pv)
+        self.assertEqual(passenger_obj.pw, pw)
+        self.assertEqual(passenger_obj.pa, pa)
+        self.assertEqual(passenger_obj.pt, pt)
+        self.assertEqual(passenger_obj.spv, spv)
+        self.assertEqual(passenger_obj.spw, spw)
+        self.assertEqual(passenger_obj.spa, spa)
+        self.assertEqual(passenger_obj.spt, spt)
 
     def test_raises_user_exceptions(self):
         """
@@ -21,38 +39,33 @@ class test_graph(unittest.TestCase):
         """
 
         with self.assertRaises(exceptions.VaIsNotValidExceptions):
-            transport_user.User(0, 1, 1, 1, 1, 1, 1, 1, 1)
+            Passenger(0, 1, 1, 1, 1, 1, 1, 1, 1)
         with self.assertRaises(exceptions.PvIsNotValidExceptions):
-            transport_user.User(1, -1, 1, 1, 1, 1, 1, 1, 1)
+            Passenger(1, -1, 1, 1, 1, 1, 1, 1, 1)
         with self.assertRaises(exceptions.PwIsNotValidExceptions):
-            transport_user.User(1, 1, -1, 1, 1, 1, 1, 1, 1)
+            Passenger(1, 1, -1, 1, 1, 1, 1, 1, 1)
         with self.assertRaises(exceptions.PaIsNotValidExceptions):
-            transport_user.User(1, 1, 1, -1, 1, 1, 1, 1, 1)
+            Passenger(1, 1, 1, -1, 1, 1, 1, 1, 1)
         with self.assertRaises(exceptions.PtIsNotValidExceptions):
-            transport_user.User(1, 1, 1, 1, -1, 1, 1, 1, 1)
+            Passenger(1, 1, 1, 1, -1, 1, 1, 1, 1)
         with self.assertRaises(exceptions.SpvIsNotValidExceptions):
-            transport_user.User(1, 1, 1, 1, 1, -1, 1, 1, 1)
+            Passenger(1, 1, 1, 1, 1, -1, 1, 1, 1)
         with self.assertRaises(exceptions.SpwIsNotValidExceptions):
-            transport_user.User(1, 1, 1, 1, 1, 1, -1, 1, 1)
+            Passenger(1, 1, 1, 1, 1, 1, -1, 1, 1)
         with self.assertRaises(exceptions.SpaIsNotValidExceptions):
-            transport_user.User(1, 1, 1, 1, 1, 1, 1, -1, 1)
+            Passenger(1, 1, 1, 1, 1, 1, 1, -1, 1)
         with self.assertRaises(exceptions.SptIsNotValidExceptions):
-            transport_user.User(1, 1, 1, 1, 1, 1, 1, 1, -1)
+            Passenger(1, 1, 1, 1, 1, 1, 1, 1, -1)
 
-    def test_transport_user(self):
-        """
-        to test transport_user class
-        :return:
-        """
+    def test_get_default_passenger(self):
+        passenger_obj = Passenger.get_default_passenger()
 
-        u = transport_user.TransportUser()
-
-        self.assertEqual(u.get_user().va, 4.0)
-
-        u.update_user()
-
-        self.assertEqual(u.get_user().va, 4.0)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(passenger_obj.va, 4.0)
+        self.assertEqual(passenger_obj.pv, 2.74)
+        self.assertEqual(passenger_obj.pw, 5.48)
+        self.assertEqual(passenger_obj.pa, 8.22)
+        self.assertEqual(passenger_obj.pt, 0.73)
+        self.assertEqual(passenger_obj.spv, 2.74)
+        self.assertEqual(passenger_obj.spw, 5.48)
+        self.assertEqual(passenger_obj.spa, 8.22)
+        self.assertEqual(passenger_obj.spt, 0.73)
