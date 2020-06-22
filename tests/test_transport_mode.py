@@ -1,7 +1,7 @@
 import unittest
 
-from sidermit import transport_mode
 from sidermit import exceptions
+from sidermit.transport_mode import TransportMode, TransportModeManager
 
 
 class test_graph(unittest.TestCase):
@@ -12,7 +12,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
         self.assertTrue(m.is_valid())
 
@@ -43,40 +43,53 @@ class test_graph(unittest.TestCase):
         d = 1
 
         with self.assertRaises(exceptions.NameIsNotValidExceptions):
-            transport_mode.Mode(None, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            TransportMode(None, bya, co, c1, c2, v, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.ByaIsNotValidExceptions):
-            transport_mode.Mode(name, -1, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            TransportMode(name, -1, co, c1, c2, v, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.CoIsNotValidExceptions):
-            transport_mode.Mode(name, bya, -2, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            TransportMode(name, bya, -2, c1, c2, v, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.C1IsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, None, c2, v, t, fmax, kmax, theta, tat, d)
+            TransportMode(name, bya, co, None, c2, v, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.C2IsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, -3, v, t, fmax, kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, -3, v, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.VIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, None, t, fmax, kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, None, t, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.TIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, -3, fmax, kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, -3, fmax,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.FmaxIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, t, -200, kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, -200,
+                                         kmax, theta, tat, d)
         with self.assertRaises(exceptions.KmaxIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, t, fmax, -100, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax,
+                                         -100, theta, tat, d)
         with self.assertRaises(exceptions.ThetaIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, t, fmax, kmax, 2, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax,
+                                         kmax, 2, tat, d)
         with self.assertRaises(exceptions.TatIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, None, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax,
+                                         kmax, theta, None, d)
         with self.assertRaises(exceptions.DIsNotValidExceptions):
-            transport_mode.Mode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, -1)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax,
+                                         kmax, theta, tat, -1)
 
     def test_get(self):
         """
         to test get methods
         :return:
         """
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
         self.assertEqual(len(m.get_modes()), 2)
         self.assertEqual(len(m.get_modes_names()), 2)
-        self.assertTrue(isinstance(m.get_mode("bus"), transport_mode.Mode))
+        self.assertTrue(
+            isinstance(m.get_mode("bus"), TransportMode))
 
         with self.assertRaises(exceptions.ModeNotFoundExceptions):
             m.get_mode("train")
@@ -86,7 +99,7 @@ class test_graph(unittest.TestCase):
         to test add_mode method
         :return:
         """
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
         name = "train"
         bya = 1
@@ -114,7 +127,7 @@ class test_graph(unittest.TestCase):
         :return:
         """
 
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
         m.delete_mode("bus")
         self.assertEqual(len(m.get_modes()), 1)
@@ -127,9 +140,10 @@ class test_graph(unittest.TestCase):
         to test update_mode method
         :return:
         """
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
-        m.update_mode("bus", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        m.update_mode("bus", v=1, theta=1, t=1, kmax=1, fmax=1, co=1, c1=1,
+                      c2=1, tat=1, d=1, bya=1)
         self.assertEqual(len(m.get_modes()), 2)
 
         m.update_mode("metro")
