@@ -3,9 +3,8 @@ import os
 import unittest
 from pathlib import Path
 
-from sidermit import demand
+from sidermit.city import demand, graph
 from sidermit import exceptions
-from sidermit import graph
 
 
 class test_graph(unittest.TestCase):

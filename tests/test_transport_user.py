@@ -1,7 +1,7 @@
 import unittest
 
 from sidermit import exceptions
-from sidermit.transport_user import Passenger
+from sidermit.publictransportsystem import Passenger
 
 
 class PassengerTest(unittest.TestCase):

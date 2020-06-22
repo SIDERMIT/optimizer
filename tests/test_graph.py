@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 from sidermit import exceptions
-from sidermit import graph
+from sidermit.city import graph
 
 
 class test_graph(unittest.TestCase):
@@ -17,12 +17,18 @@ class test_graph(unittest.TestCase):
         self.test_1zone_path = os.path.join(self.data_path, 'test_1zone.PAJEK')
         self.test_2zone_path = os.path.join(self.data_path, 'test_2zone.PAJEK')
         self.test_3zone_path = os.path.join(self.data_path, 'test_3zone.PAJEK')
-        self.test_formatPajekExceptions = os.path.join(self.data_path, 'test_formatPajekExceptions.PAJEK')
-        self.test_NodeTypeExceptions = os.path.join(self.data_path, 'test_NodeTypeExceptions.PAJEK')
-        self.test_NumberOfLinesExceptions = os.path.join(self.data_path, 'test_NumberOfLinesExceptions.PAJEK')
-        self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path, 'test_NumberNodesForZoneExceptions.PAJEK')
-        self.test_needCbdExceptions = os.path.join(self.data_path, 'test_needCbdExceptions.PAJEK')
-        self.test_nodeIdExceptions = os.path.join(self.data_path, 'test_nodeIdExceptions.PAJEK')
+        self.test_formatPajekExceptions = os.path.join(self.data_path,
+                                                       'test_formatPajekExceptions.PAJEK')
+        self.test_NodeTypeExceptions = os.path.join(self.data_path,
+                                                    'test_NodeTypeExceptions.PAJEK')
+        self.test_NumberOfLinesExceptions = os.path.join(self.data_path,
+                                                         'test_NumberOfLinesExceptions.PAJEK')
+        self.test_NumberNodesForZoneExceptions = os.path.join(self.data_path,
+                                                              'test_NumberNodesForZoneExceptions.PAJEK')
+        self.test_needCbdExceptions = os.path.join(self.data_path,
+                                                   'test_needCbdExceptions.PAJEK')
+        self.test_nodeIdExceptions = os.path.join(self.data_path,
+                                                  'test_nodeIdExceptions.PAJEK')
 
     def test_get_method(self):
         """
@@ -91,10 +97,12 @@ class test_graph(unittest.TestCase):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(None, p, sc)
-        with self.assertRaises(exceptions.PeripheryNodeTypeIsNotValidException):
+        with self.assertRaises(
+                exceptions.PeripheryNodeTypeIsNotValidException):
             sc = graph.Subcenter(2, 1, 1, 1, 1, 1, 1, "sc")
             graph.Zone(1, sc, sc)
-        with self.assertRaises(exceptions.SubcenterNodeTypeIsNotValidException):
+        with self.assertRaises(
+                exceptions.SubcenterNodeTypeIsNotValidException):
             p = graph.Periphery(1, 1, 1, 1, 1, 1, 1, "p")
             graph.Zone(1, p, p)
         with self.assertRaises(exceptions.ZoneIdIsNotValidException):
@@ -199,25 +207,31 @@ class test_graph(unittest.TestCase):
         self.assertEqual(len(g.get_edges()), 10)
         self.assertEqual(len(g.get_zones()), 2)
 
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1)
+        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=1)
 
         self.assertEqual(len(g.get_nodes()), 3)
         self.assertEqual(len(g.get_edges()), 4)
         self.assertEqual(len(g.get_zones()), 1)
 
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=2)
+        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=2)
 
         self.assertEqual(len(g.get_nodes()), 5)
         self.assertEqual(len(g.get_edges()), 10)
         self.assertEqual(len(g.get_zones()), 2)
 
-        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10], Gi=[2], Hi=[2])
+        g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=1, angles=[10], Gi=[2],
+                                              Hi=[2])
 
         self.assertEqual(len(g.get_nodes()), 3)
         self.assertEqual(len(g.get_edges()), 4)
         self.assertEqual(len(g.get_zones()), 1)
 
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
+        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=1, angles=[10, 50],
+                                              Gi=[2, 0.5],
                                               Hi=[2, 0.5])
 
         self.assertEqual(len(g.get_nodes()), 5)
@@ -226,15 +240,18 @@ class test_graph(unittest.TestCase):
 
     def test_raises_fileformat(self):
         """
-        to test pajek file exceptions, should have 7 columns separated by white space
+        to test pajek file exceptions, should have 7 columns separated by
+        white space
         :return:
         """
         with self.assertRaises(exceptions.FileFormatIsNotValidException):
-            graph.Graph.build_from_file(self.test_2zone_path, file_format="CSV")
+            graph.Graph.build_from_file(self.test_2zone_path,
+                                        file_format="CSV")
 
     def test_raises_payekformat(self):
         """
-        to test pajek format exceptions: file must have 7 columns, separator for " "
+        to test pajek format exceptions: file must have 7 columns, separator
+        for " "
         :return:
         """
         with self.assertRaises(exceptions.PajekFormatIsNotValidException):
@@ -256,7 +273,8 @@ class test_graph(unittest.TestCase):
 
     def test_asymmetric_parameters_exceptions(self):
         """
-        to test asymmetric parameters exceptions etha, etha_zone, angles, Gi, Hi
+        to test asymmetric parameters exceptions etha, etha_zone, angles, Gi,
+        Hi
         :return:
         """
         with self.assertRaises(exceptions.EthaValueRequiredException):
@@ -264,13 +282,16 @@ class test_graph(unittest.TestCase):
         with self.assertRaises(exceptions.EthaZoneValueRequiredException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5)
         with self.assertRaises(exceptions.EthaValueIsNotValidException):
-            graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=-1, etha_zone=2)
+            graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=-1,
+                                              etha_zone=2)
         with self.assertRaises(exceptions.EthaZoneValueIsNotValidException):
-            graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=3)
+            graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=3)
         with self.assertRaises(exceptions.AngleListLengthIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[20])
         with self.assertRaises(exceptions.AngleValueIsNotValidException):
-            graph.Graph.build_from_parameters(2, 1000, 0.5, 0, angles=[20, 370])
+            graph.Graph.build_from_parameters(2, 1000, 0.5, 0,
+                                              angles=[20, 370])
         with self.assertRaises(exceptions.GiListLengthIsNotValidException):
             graph.Graph.build_from_parameters(2, 1000, 0.5, 0, Gi=[0.5])
         with self.assertRaises(exceptions.GiValueIsNotValidException):
@@ -287,7 +308,9 @@ class test_graph(unittest.TestCase):
         """
         filename = 'write1.PAJEK'
         # build graph
-        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5, etha_zone=1, angles=[10, 50], Gi=[2, 0.5],
+        g = graph.Graph.build_from_parameters(2, 1000, 0.5, 0, etha=0.5,
+                                              etha_zone=1, angles=[10, 50],
+                                              Gi=[2, 0.5],
                                               Hi=[2, 0.5])
         # write file
         g.graph_to_pajek(os.path.join(self.data_path, filename))
@@ -298,7 +321,8 @@ class test_graph(unittest.TestCase):
 
         # to compare file with a test file
         self.assertTrue(
-            filecmp.cmp(os.path.join(self.data_path, filename), os.path.join(self.data_path, "write1_test.PAJEK")))
+            filecmp.cmp(os.path.join(self.data_path, filename),
+                        os.path.join(self.data_path, "write1_test.PAJEK")))
         # remove file
         os.remove(os.path.join(self.data_path, filename))
 
@@ -333,7 +357,8 @@ class test_graph(unittest.TestCase):
         with self.assertRaises(exceptions.LineNumberInFileIsNotValidException):
             graph.Graph.build_from_file(self.test_NumberOfLinesExceptions)
 
-        with self.assertRaises(exceptions.PeripherySubcenterNumberForZoneException):
+        with self.assertRaises(
+                exceptions.PeripherySubcenterNumberForZoneException):
             graph.Graph.build_from_file(self.test_NumberNodesForZoneExceptions)
 
     def test_add_zone_exceptions(self):
@@ -357,9 +382,12 @@ class test_graph(unittest.TestCase):
         to test edge_exist method
         :return:
         """
-        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0,
+                                              angles=[10, 50, 150, 180, 270,
+                                                      300, 320], etha=0.5,
                                               etha_zone=3,
-                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3],
+                                              Gi=[1, 2, 1, 1, 1, 3, 2])
         self.assertTrue(g.edge_exist(1, 2))
         self.assertTrue(not g.edge_exist("1", "200"))
 
@@ -368,9 +396,12 @@ class test_graph(unittest.TestCase):
         to test plot method
         :return:
         """
-        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0,
+                                              angles=[10, 50, 150, 180, 270,
+                                                      300, 320], etha=0.5,
                                               etha_zone=3,
-                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3],
+                                              Gi=[1, 2, 1, 1, 1, 3, 2])
 
         # save figure in path
         g.plot(os.path.join(self.data_path, 'figure1_test.png'))
@@ -384,7 +415,3 @@ class test_graph(unittest.TestCase):
 
         # remove file
         os.remove(os.path.join(self.data_path, 'figure1_test.png'))
-
-
-if __name__ == '__main__':
-    unittest.main()

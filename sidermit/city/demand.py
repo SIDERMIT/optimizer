@@ -3,7 +3,7 @@ from collections import defaultdict
 import pandas as pd
 
 from sidermit.exceptions import *
-from sidermit.graph import CBD, Periphery, Subcenter
+from sidermit.city.graph import CBD, Periphery, Subcenter
 
 
 class Demand:

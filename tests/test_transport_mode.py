@@ -1,10 +1,10 @@
 import unittest
 
 from sidermit import exceptions
-from sidermit.transport_mode import TransportMode, TransportModeManager
+from sidermit.publictransportsystem import TransportMode, TransportModeManager
 
 
-class test_graph(unittest.TestCase):
+class TransportModeTest(unittest.TestCase):
 
     def test_is_valid(self):
         """
@@ -43,41 +43,40 @@ class test_graph(unittest.TestCase):
         d = 1
 
         with self.assertRaises(exceptions.NameIsNotValidExceptions):
-            TransportMode(None, bya, co, c1, c2, v, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(None, bya, co, c1, c2, v, t, fmax, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.ByaIsNotValidExceptions):
-            TransportMode(name, -1, co, c1, c2, v, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, -1, co, c1, c2, v, t, fmax, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.CoIsNotValidExceptions):
-            TransportMode(name, bya, -2, c1, c2, v, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, -2, c1, c2, v, t, fmax, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.C1IsNotValidExceptions):
-            TransportMode(name, bya, co, None, c2, v, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, co, None, c2, v, t, fmax, kmax, theta,
+                          tat, d)
         with self.assertRaises(exceptions.C2IsNotValidExceptions):
-            TransportMode(name, bya, co, c1, -3, v, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, -3, v, t, fmax, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.VIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, None, t, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, None, t, fmax, kmax, theta,
+                          tat, d)
         with self.assertRaises(exceptions.TIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, -3, fmax,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, -3, fmax, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.FmaxIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, t, -200,
-                                         kmax, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, -200, kmax, theta, tat,
+                          d)
         with self.assertRaises(exceptions.KmaxIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, t, fmax,
-                                         -100, theta, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax, -100, theta, tat,
+                          d)
         with self.assertRaises(exceptions.ThetaIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, t, fmax,
-                                         kmax, 2, tat, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax, kmax, 2, tat, d)
         with self.assertRaises(exceptions.TatIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, t, fmax,
-                                         kmax, theta, None, d)
+            TransportMode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, None,
+                          d)
         with self.assertRaises(exceptions.DIsNotValidExceptions):
             TransportMode(name, bya, co, c1, c2, v, t, fmax,
-                                         kmax, theta, tat, -1)
+                          kmax, theta, tat, -1)
 
     def test_get(self):
         """

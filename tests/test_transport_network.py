@@ -4,12 +4,12 @@ import unittest
 from pathlib import Path
 
 from sidermit import exceptions
-from sidermit import graph
-from sidermit import transport_mode
-from sidermit import transport_network
+from sidermit.city import graph
+from sidermit.publictransportsystem import TransportModeManager, \
+    TransportNetwork, Route
 
 
-class test_graph(unittest.TestCase):
+class TransportNetworkTest(unittest.TestCase):
 
     def setUp(self):
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -23,11 +23,12 @@ class test_graph(unittest.TestCase):
         """
 
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
-        r = transport_network.Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
+        r = Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
+                  "3,0,1")
 
-        self.assertTrue(isinstance(r, transport_network.Route))
+        self.assertTrue(isinstance(r, Route))
 
     def test_raises_routes_exceptions(self):
         """
@@ -36,31 +37,39 @@ class test_graph(unittest.TestCase):
         """
 
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
+        m = TransportModeManager()
 
         with self.assertRaises(exceptions.RouteIdIsNotValidExceptions):
-            transport_network.Route(g, m, None, "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
+            Route(g, m, None, "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
+                  "3,0,1")
 
         with self.assertRaises(exceptions.ModeNameIsNotValidExceptions):
-            transport_network.Route(g, m, "r1", "train", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
+            Route(g, m, "r1", "train", "1,2,0,4,3", "3,4,0,2,1",
+                  "1,0,3", "3,0,1")
 
         with self.assertRaises(exceptions.SequencesLenExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1", "3,4,0,2,1", "1,0,3", "3,0,1")
+            Route(g, m, "r1", "bus", "1", "3,4,0,2,1", "1,0,3",
+                  "3,0,1")
 
         with self.assertRaises(exceptions.StopsSequencesExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,5,3", "3,0,1")
+            Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,5,3",
+                  "3,0,1")
 
         with self.assertRaises(exceptions.FirstStopIsNotValidExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "2,0,3", "3,0,1")
+            Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "2,0,3",
+                  "3,0,1")
 
         with self.assertRaises(exceptions.LastStopIsNotValidExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,2", "3,0,1")
+            Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,2",
+                  "3,0,1")
 
         with self.assertRaises(exceptions.NotCycleExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1,2,0,4,3", "4,0,2,1", "1,0,3", "4,0,1")
+            Route(g, m, "r1", "bus", "1,2,0,4,3", "4,0,2,1", "1,0,3",
+                  "4,0,1")
 
         with self.assertRaises(exceptions.NodeSequencesIsNotValidExceptions):
-            transport_network.Route(g, m, "r1", "bus", "1,3,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
+            Route(g, m, "r1", "bus", "1,3,0,4,3", "3,4,0,2,1", "1,0,3",
+                  "3,0,1")
 
     def test_add_route_transport_network(self):
         """
@@ -68,15 +77,16 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
         t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
 
-        self.assertTrue(isinstance(t.get_route("r1"), transport_network.Route))
+        self.assertTrue(isinstance(t.get_route("r1"), Route))
         self.assertEqual(len(t.get_routes()), 1)
 
         with self.assertRaises(exceptions.RouteIdDuplicatedExceptions):
-            t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
+            t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
+                        "3,0,1")
 
     def test_delete_route_transport_network(self):
         """
@@ -85,8 +95,8 @@ class test_graph(unittest.TestCase):
         """
 
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
         t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
         t.delete_route("r1")
         self.assertEqual(len(t.get_routes()), 0)
@@ -101,15 +111,15 @@ class test_graph(unittest.TestCase):
         """
 
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
         t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
         t.add_route("r2", "metro", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
         # write file
         t.routes_to_file(os.path.join(self.data_path, 'write_test.csv'))
-        fileObj = Path(os.path.join(self.data_path, 'write_test.csv'))
+        file_obj = Path(os.path.join(self.data_path, 'write_test.csv'))
         # test
-        self.assertTrue(fileObj.is_file())
+        self.assertTrue(file_obj.is_file())
         # to compare file with a test file
         self.assertTrue(
             filecmp.cmp(os.path.join(self.data_path, 'write1_test.csv'),
@@ -124,8 +134,8 @@ class test_graph(unittest.TestCase):
         """
 
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
         t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
 
         self.assertTrue(t.is_valid())
@@ -141,8 +151,8 @@ class test_graph(unittest.TestCase):
         """
         with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
             g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-            m = transport_mode.TransportMode()
-            t = transport_network.TransportNetwork(g, m)
+            m = TransportModeManager()
+            t = TransportNetwork(g, m)
             t.get_route("r1")
 
     def test_build_from_file(self):
@@ -151,8 +161,9 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork.build_from_file(g, m, os.path.join(self.data_path, 'write1_test.csv'))
+        m = TransportModeManager()
+        t = TransportNetwork.build_from_file(g, m, os.path.join(
+            self.data_path, 'write1_test.csv'))
 
         self.assertEqual(len(t.get_routes()), 2)
 
@@ -163,9 +174,10 @@ class test_graph(unittest.TestCase):
         """
         with self.assertRaises(exceptions.FileFormatIsNotValidException):
             g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-            m = transport_mode.TransportMode()
-            transport_network.TransportNetwork.build_from_file(g, m, os.path.join(self.data_path,
-                                                                                  'test_fileformatExceptions.csv'))
+            m = TransportModeManager()
+            TransportNetwork.build_from_file(g, m, os.path.join(
+                self.data_path,
+                'test_fileformatExceptions.csv'))
 
     def test_update_route(self):
         """
@@ -173,8 +185,9 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork.build_from_file(g, m, os.path.join(self.data_path, 'write1_test.csv'))
+        m = TransportModeManager()
+        t = TransportNetwork.build_from_file(g, m, os.path.join(
+            self.data_path, 'write1_test.csv'))
 
         t.update_route("r1", mode_name="metro")
         self.assertEqual(t.get_route("r1").mode, "metro")
@@ -191,8 +204,8 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
 
         t.add_radial_routes(0)
 
@@ -212,8 +225,8 @@ class test_graph(unittest.TestCase):
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        m = transport_mode.TransportMode()
-        t = transport_network.TransportNetwork(g, m)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
 
         t.add_express_radial_routes()
 
@@ -226,25 +239,28 @@ class test_graph(unittest.TestCase):
         self.assertEqual(t.get_route("ER_2").nodes_sequence_r, ["0", "4", "3"])
         self.assertEqual(t.get_route("ER_2").stops_sequence_i, ["3", "0"])
         self.assertEqual(t.get_route("ER_2").stops_sequence_r, ["0", "3"])
-    
+
     def test_plot(self):
         """
         to test plot method
         :return: 
         """
-        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5,
+        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0,
+                                              angles=[10, 50, 150, 180, 270,
+                                                      300, 320], etha=0.5,
                                               etha_zone=3,
-                                              Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+                                              Hi=[1, 2, 1, 1, 1, 0.5, 3],
+                                              Gi=[1, 2, 1, 1, 1, 3, 2])
 
-        m = transport_mode.TransportMode(add_default_mode=True)
+        m = TransportModeManager(add_default_mode=True)
 
-        t = transport_network.TransportNetwork(g, m)
+        t = TransportNetwork(g, m)
         t.add_express_radial_routes(index_mode=0)
         # save figure in path
         t.plot(os.path.join(self.data_path, 'figure1_test.png'))
-        fileObj = Path(os.path.join(self.data_path, 'figure1_test.png'))
+        file_obj = Path(os.path.join(self.data_path, 'figure1_test.png'))
         # test
-        self.assertTrue(fileObj.is_file())
+        self.assertTrue(file_obj.is_file())
         # to compare figure with a test figure
         self.assertTrue(
             filecmp.cmp(os.path.join(self.data_path, 'figure_test.png'),
@@ -254,8 +270,5 @@ class test_graph(unittest.TestCase):
         os.remove(os.path.join(self.data_path, 'figure1_test.png'))
 
         with self.assertRaises(exceptions.RouteIdNotFoundExceptions):
-            t.plot(os.path.join(self.data_path, 'figure_test.png'), list_routes=["506"])
-
-
-if __name__ == '__main__':
-    unittest.main()
+            t.plot(os.path.join(self.data_path, 'figure_test.png'),
+                   list_routes=["506"])

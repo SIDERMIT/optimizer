@@ -52,21 +52,23 @@
 #     t4 = "Gi:{}, Hi:{}".format(Gi, Hi)
 #     plot_city(c.nodes, c.edges, t1, t2, t3, t4)
 
-from sidermit import demand
-from sidermit import graph
-from sidermit import transport_mode
-from sidermit import transport_network
-from sidermit import transport_user
+from sidermit.city import Demand, Graph
+from sidermit.publictransportsystem import TransportModeManager, \
+    TransportNetwork, Passenger
 
-g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0, angles=[10, 50, 150, 180, 270, 300, 320], etha=0.5, etha_zone=3,
-                                      Hi=[1, 2, 1, 1, 1, 0.5, 3], Gi=[1, 2, 1, 1, 1, 3, 2])
+g = Graph.build_from_parameters(7, 1000, 0.5, 0,
+                                angles=[10, 50, 150, 180, 270, 300, 320],
+                                etha=0.5, etha_zone=3,
+                                Hi=[1, 2, 1, 1, 1, 0.5, 3],
+                                Gi=[1, 2, 1, 1, 1, 3, 2])
 
-d = demand.Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 1 / 3)
+d = Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 1 / 3)
 
-m = transport_mode.TransportMode(add_default_mode=True)
+m = TransportModeManager(add_default_mode=True)
 
-u = transport_user.TransportUser(add_default_user=True)
+u = Passenger.get_default_passenger()
 
-t = transport_network.TransportNetwork(g, m)
+t = TransportNetwork(g, m)
 t.add_express_radial_routes(0)
+
 t.plot()

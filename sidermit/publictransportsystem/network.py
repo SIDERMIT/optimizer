@@ -4,7 +4,7 @@ import networkx as nx
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from sidermit import graph
+from sidermit.city import graph
 from sidermit.exceptions import *
 
 
