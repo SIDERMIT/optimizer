@@ -40,7 +40,6 @@ class Zone:
 class Node:
 
     def __init__(self, node_id, x, y, radius, angle, width, zone_id, name):
-
         if name is None:
             raise NameIsNotDefinedException("must define a name to node")
         if node_id is None:
