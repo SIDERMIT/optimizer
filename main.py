@@ -71,12 +71,11 @@ m = TransportModeManager(add_default_mode=False)
 m.add_mode("bus", 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2)
 
 modes = m.get_mode("bus")
-print(modes.bya)
 
 u = Passenger.get_default_passenger()
 
 t = TransportNetwork(g, m)
-#t.add_express_radial_routes(0)
+# t.add_express_radial_routes(0)
 t.add_route("r1", mode_name="bus", nodes_sequence_i="1,2,0", nodes_sequence_r="0,2,1", stops_sequence_i="1,0", stops_sequence_r="0,1")
 
 t.plot("sidermit.png")

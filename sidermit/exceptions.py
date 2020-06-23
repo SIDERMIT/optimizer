@@ -415,3 +415,20 @@ class RouteIdNotFoundException(TransportNetworkException):
 
 class RouteIdDuplicatedException(TransportNetworkException):
     pass
+
+
+class ModeNameNotFoundException(TransportNetworkException):
+    pass
+
+
+class JumpIsNotValidException(TransportNetworkException):
+    pass
+
+
+class BanRouteIdException(TransportNetworkException):
+    pass
+
+
+class CircularRouteIsNotValidException(TransportNetworkException):
+    pass
+

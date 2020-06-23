@@ -19,6 +19,15 @@ class Route:
         self.stops_sequence_i = None
         self.stops_sequence_r = None
 
+        # special case for circular routes
+        if route_id.startswith("CIR_I_") or route_id.startswith("CIR_R_"):
+            self.id = route_id
+            self.mode = mode_name
+            self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+            self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+            self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+            self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+
         if self.parameters_validator(graph_obj, modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
                                      stops_sequence_i,
                                      stops_sequence_r):
@@ -185,6 +194,27 @@ class TransportNetwork:
         else:
             raise RouteIdNotFoundException("route_id not found")
 
+    def __add_predefined_route(self, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                               stops_sequence_r):
+        """
+        to add a specific route in routes list
+        :param route_id:
+        :param mode_name:
+        :param nodes_sequence_i:
+        :param nodes_sequence_r:
+        :param stops_sequence_i:
+        :param stops_sequence_r:
+        :return:
+        """
+
+        if route_id not in self.__routes_id:
+            route = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i,
+                          nodes_sequence_r, stops_sequence_i, stops_sequence_r)
+            self.__routes.append(route)
+            self.__routes_id.append(route_id)
+        else:
+            raise RouteIdDuplicatedException("route_id is duplicated")
+
     def add_route(self, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
                   stops_sequence_r):
         """
@@ -197,6 +227,12 @@ class TransportNetwork:
         :param stops_sequence_r:
         :return:
         """
+        ban_name_list = ["CIR_I_", "CIR_R_", "RS_", "RE_", "R_", "DSE", "DS", "DE", "D", "TSE", "TS", "TE", "T"]
+
+        for i in ban_name_list:
+            if route_id.startswith(i):
+                raise BanRouteIdException(
+                    "route_id can not start with a prefix CIR_I_, CIR_R_, RS_, RE_, R_, DSE, DS, DE, D, TSE, TS, TE, T")
 
         if route_id not in self.__routes_id:
             route = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i,
@@ -281,55 +317,312 @@ class TransportNetwork:
                             "route_id;mode_name;nodes_sequence_i;nodes_sequence_r;stops_sequence_i;stops_sequence_r")
         return network_obj
 
-    def add_radial_routes(self, index_mode=0):
+    def add_circular_routes(self, mode_name):
         """
-        to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
-        p-sc-cbd for I direction and cbd-sc-p for R direction
-        :param index_mode:
-        :return:
+        to add predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+        subcenter nodes.
+        :param mode_name: name of mode of the all circular routes
+        :return: None
         """
 
-        cbd = self.__graph_obj.get_cbd()
+        zones = self.__graph_obj.get_zones()
+        if len(zones) >= 1:
+            raise CircularRouteIsNotValidException("to add a predefined circular route you have a city "
+                                                   "with more of one zone created")
+
         modes = self.__modes_obj.get_modes()
-        id_cbd = cbd.id
+        modes_names = self.__modes_obj.get_modes_names()
+
+        if mode_name not in modes_names:
+            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+
+        index_mode = modes_names.index(mode_name)
+        mode = modes[index_mode].name
+
+        route_id_i = "CIR_I_{}".format(mode_name)
+        route_id_r = "CIR_R_{}".format(mode_name)
+
+        nodes_sequence_i = ""
+        nodes_sequence_r = ""
+
+        for i in range(len(zones)):
+
+            if nodes_sequence_i == "":
+                nodes_sequence_i = nodes_sequence_i + zones[i].subcenter.id
+                nodes_sequence_r = nodes_sequence_r + zones[len(zones) - 1 - i].subcenter.id
+            else:
+                nodes_sequence_i = nodes_sequence_i + "," + zones[i].subcenter.id
+                nodes_sequence_r = nodes_sequence_r + "," + zones[len(zones) - 1 - i].subcenter.id
+
+        stops_sequence_i = nodes_sequence_i
+        stops_sequence_r = nodes_sequence_r
+
+        self.__add_predefined_route(route_id_i, mode, nodes_sequence_i, "", stops_sequence_i, "")
+        self.__add_predefined_route(route_id_r, mode, "", nodes_sequence_r, "", stops_sequence_r)
+
+    def add_feeder_routes(self, mode_name):
+        """
+        to add predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc for I direction and sc-p for R direction.
+        :param mode_name: name of mode of the all feeder routes
+        :return: None
+        """
+
+        modes = self.__modes_obj.get_modes()
+        modes_names = self.__modes_obj.get_modes_names()
+
+        if mode_name not in modes_names:
+            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+
+        index_mode = modes_names.index(mode_name)
+        mode = modes[index_mode].name
 
         for zone in self.__graph_obj.get_zones():
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 
-            route_id = "R_{}".format(zone.id)
-            mode = modes[index_mode].name
-            nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
+            route_id = "F_{}_{}".format(mode_name, zone.id)
+            nodes_sequence_i = "{},{}".format(id_p, id_sc)
             stops_sequence_i = nodes_sequence_i
-            nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
+            nodes_sequence_r = "{},{}".format(id_sc, id_p)
             stops_sequence_r = nodes_sequence_r
 
-            self.add_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r)
+            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                                        stops_sequence_r)
 
-    def add_express_radial_routes(self, index_mode=0):
+    def add_radial_routes(self, mode_name, short=False, express=False):
         """
         to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
-        p-cbd for I direction and cbd-p for R direction
-        :param index_mode:
-        :return:
+        p-sc-cbd for I direction and cbd-sc-p for R direction.
+        :param mode_name: name of mode of the all radial routes
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenter (default: False)
+        :return: None
         """
-
         cbd = self.__graph_obj.get_cbd()
-        modes = self.__modes_obj.get_modes()
         id_cbd = cbd.id
+        modes = self.__modes_obj.get_modes()
+        modes_names = self.__modes_obj.get_modes_names()
+
+        if mode_name not in modes_names:
+            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+
+        index_mode = modes_names.index(mode_name)
+        mode = modes[index_mode].name
 
         for zone in self.__graph_obj.get_zones():
+
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 
-            route_id = "ER_{}".format(zone.id)
-            mode = modes[index_mode].name
-            nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
-            stops_sequence_i = "{},{}".format(id_p, id_cbd)
-            nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
-            stops_sequence_r = "{},{}".format(id_cbd, id_p)
+            if short is True:
+                route_id = "RS_{}_{}".format(mode_name, zone.id)
+                nodes_sequence_i = "{},{}".format(id_sc, id_cbd)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = "{},{}".format(id_cbd, id_sc)
+                stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = "RE_{}_{}".format(mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = "{},{}".format(id_p, id_cbd)
+                    nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = "{},{}".format(id_cbd, id_p)
+                else:
+                    route_id = "R_{}_{}".format(mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{}".format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
 
-            self.add_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r)
+            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                                        stops_sequence_r)
+
+    def add_diametral_routes(self, mode_name, jump, short=False, express=False):
+        """
+        to add predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd-sc'-p' for I direction and p'-sc'-cbd-sc-p for R direction. p' and sc' are periphery and subcenter
+        nodes with zone id equivalent to the id of the treated zone plus the jump
+        :param mode_name: name of mode of the all diametral routes
+        :param jump: to identified other zone where diametral routes transit
+        :param short: if diametral routes omit the passage through the periphery (default: False)
+        :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
+        :return: None
+        """
+        cbd = self.__graph_obj.get_cbd()
+        id_cbd = cbd.id
+        modes = self.__modes_obj.get_modes()
+        modes_names = self.__modes_obj.get_modes_names()
+
+        if mode_name not in modes_names:
+            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+
+        index_mode = modes_names.index(mode_name)
+        mode = modes[index_mode].name
+
+        zones = self.__graph_obj.get_zones()
+        if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        for zone in zones:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump <= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            if short is True:
+                if express is True:
+                    route_id = "DSE{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{}".format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = "{},{}".format(id_sc, id_sc2)
+                    nodes_sequence_r = "{},{},{}".format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = "{},{}".format(id_sc2, id_sc)
+                else:
+                    route_id = "DS{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{}".format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = "{},{},{}".format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = "DE{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{},{},{}".format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = "{},{}".format(id_p, id_p2)
+                    nodes_sequence_r = "{},{},{},{},{}".format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = "{},{}".format(id_p2, id_p)
+                else:
+                    route_id = "D{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{},{},{},{}".format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = "{},{},{},{},{}".format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
+
+            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                                        stops_sequence_r)
+
+    def add_tangencial_routes(self, mode_name, jump, short=False, express=False):
+        """
+        to add predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-sc'-...-sc''-p'' for I direction and p''-sc''-...-sc'-sc-p for R direction. sc', ..., sc'' are subcenter
+        nodes with zone id less than or equal to id of the treated zone plus the jump. p'' and sc'' are periphery
+        and subcenter nodes with id equivalent to the id of the treated zone plus the jump
+        :param mode_name: name of mode of the all tangencial routes
+        :param jump: to identified other zone where tangencial routes transit
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenters nodes (default: False)
+        :return: None
+        """
+
+        modes = self.__modes_obj.get_modes()
+        modes_names = self.__modes_obj.get_modes_names()
+
+        if mode_name not in modes_names:
+            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+
+        index_mode = modes_names.index(mode_name)
+        mode = modes[index_mode].name
+
+        zones = self.__graph_obj.get_zones()
+        if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        for zone in zones:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump <= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            list_zones_id = []
+
+            if zone2_id > zone_id and jump != 1:
+                for i in range(zone_id + 1, zone2_id):
+                    list_zones_id.append(i)
+
+            if zone2_id < zone_id:
+                if zone_id != len(zones):
+                    for i in range(zone_id + 1, len(zones)):
+                        list_zones_id.append(i)
+
+                for i in range(1, zone2_id):
+                    list_zones_id.append(i)
+
+            if short is True:
+                if express is True:
+                    route_id = "TSE{}_{}_{}".format(jump, mode_name, zone.id)
+
+                    nodes_sequence_i = "{}".format(id_sc)
+                    nodes_sequence_r = "{}".format(id_sc2)
+
+                    for i in range(len(list_zones_id)):
+                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
+                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+
+                    nodes_sequence_i = nodes_sequence_i + "," + "{}".format(id_sc2)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{}".format(id_sc)
+
+                    stops_sequence_i = "{},{}".format(id_sc, id_sc2)
+                    stops_sequence_r = "{},{}".format(id_sc2, id_sc)
+
+                else:
+                    route_id = "TS{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{}".format(id_sc)
+                    nodes_sequence_r = "{}".format(id_sc2)
+                    for i in range(len(list_zones_id)):
+                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
+                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+                    nodes_sequence_i = nodes_sequence_i + "," + "{}".format(id_sc2)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{}".format(id_sc)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            else:
+                if express is True:
+                    route_id = "TE{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{}".format(id_p, id_sc)
+                    nodes_sequence_r = "{},{}".format(id_sc2, id_p2)
+                    for i in range(len(list_zones_id)):
+                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
+                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc, id_p)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc2, id_p2)
+                    stops_sequence_i = "{},{}".format(id_p, id_p2)
+                    stops_sequence_r = "{},{}".format(id_p2, id_p)
+                else:
+                    route_id = "T{}_{}_{}".format(jump, mode_name, zone.id)
+                    nodes_sequence_i = "{},{}".format(id_p, id_sc)
+                    nodes_sequence_r = "{},{}".format(id_sc2, id_p2)
+                    for i in range(len(list_zones_id)):
+                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
+                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc, id_p)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc2, id_p2)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                                        stops_sequence_r)
 
     def update_route(self, route_id, mode_name=None, nodes_sequence_i=None,
                      nodes_sequence_r=None, stops_sequence_i=None, stops_sequence_r=None):

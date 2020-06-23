@@ -207,7 +207,7 @@ class TransportNetworkTest(unittest.TestCase):
         m = TransportModeManager()
         t = TransportNetwork(g, m)
 
-        t.add_radial_routes(0)
+        t.add_radial_routes(mode_name="bus", short=False, express=False)
 
         self.assertEqual(len(t.get_routes()), 5)
         self.assertEqual(t.get_route("R_1").nodes_sequence_i, ["1", "2", "0"])
