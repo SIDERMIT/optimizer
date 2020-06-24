@@ -76,6 +76,5 @@ u = Passenger.get_default_passenger()
 
 t = TransportNetwork(g, m)
 # t.add_express_radial_routes(0)
-t.add_route("r1", mode_name="bus", nodes_sequence_i="1,2,0", nodes_sequence_r="0,2,1", stops_sequence_i="1,0", stops_sequence_r="0,1")
-
+t.add_circular_routes("bus")
 t.plot("sidermit.png")

@@ -354,6 +354,9 @@ class TransportNetwork:
                 nodes_sequence_i = nodes_sequence_i + "," + str(zones[i].subcenter.id)
                 nodes_sequence_r = nodes_sequence_r + "," + str(zones[len(zones) - 1 - i].subcenter.id)
 
+        nodes_sequence_i = nodes_sequence_i + "," + str(zones[0].subcenter.id)
+        nodes_sequence_r = nodes_sequence_r + "," + str(zones[len(zones) - 1].subcenter.id)
+
         stops_sequence_i = nodes_sequence_i
         stops_sequence_r = nodes_sequence_r
 

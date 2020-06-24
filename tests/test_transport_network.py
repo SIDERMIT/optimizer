@@ -237,15 +237,15 @@ class TransportNetworkTest(unittest.TestCase):
         t.add_circular_routes("bus")
 
         self.assertEqual(len(t.get_routes()), 2)
-        self.assertEqual(t.get_route("CIR_I_bus").nodes_sequence_i, ["2", "4", "6", "8", "10"])
-        self.assertEqual(t.get_route("CIR_I_bus").stops_sequence_i, ["2", "4", "6", "8", "10"])
+        self.assertEqual(t.get_route("CIR_I_bus").nodes_sequence_i, ["2", "4", "6", "8", "10", "2"])
+        self.assertEqual(t.get_route("CIR_I_bus").stops_sequence_i, ["2", "4", "6", "8", "10", "2"])
         self.assertEqual(t.get_route("CIR_I_bus").nodes_sequence_r, [])
         self.assertEqual(t.get_route("CIR_I_bus").stops_sequence_r, [])
 
         self.assertEqual(t.get_route("CIR_R_bus").nodes_sequence_i, [])
         self.assertEqual(t.get_route("CIR_R_bus").stops_sequence_i, [])
-        self.assertEqual(t.get_route("CIR_R_bus").nodes_sequence_r, ["10", "8", "6", "4", "2"])
-        self.assertEqual(t.get_route("CIR_R_bus").stops_sequence_r, ["10", "8", "6", "4", "2"])
+        self.assertEqual(t.get_route("CIR_R_bus").nodes_sequence_r, ["10", "8", "6", "4", "2", "10"])
+        self.assertEqual(t.get_route("CIR_R_bus").stops_sequence_r, ["10", "8", "6", "4", "2", "10"])
 
         with self.assertRaises(exceptions.CircularRouteIsNotValidException):
             g = graph.Graph.build_from_parameters(1, 1000, 0.5, 2)
