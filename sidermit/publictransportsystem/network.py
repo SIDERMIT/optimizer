@@ -1,74 +1,78 @@
 from collections import defaultdict
+from enum import Enum
 
 import networkx as nx
 import pandas as pd
 from matplotlib import pyplot as plt
 
 from sidermit.city import graph
+from sidermit.publictransportsystem import TransportMode
 from sidermit.exceptions import *
+
+
+class RouteType(Enum):
+    CUSTOM = 1
+    PREDEFINED = 2
 
 
 class Route:
 
-    def __init__(self, graph_obj, modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                 stops_sequence_r):
+    def __init__(self, route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                 stops_sequence_r, _type=RouteType.CUSTOM):
         self.id = None
         self.mode = None
         self.nodes_sequence_i = None
         self.nodes_sequence_r = None
         self.stops_sequence_i = None
         self.stops_sequence_r = None
+        self._type = _type
 
         if route_id is None:
             raise RouteIdIsNotValidException("route_id is not valid. Try to give a value for route_id")
 
         # special case for circular routes
-        if route_id.startswith("CIR_I_") or route_id.startswith("CIR_R_"):
+        if _type == RouteType.PREDEFINED:
             self.id = route_id
-            self.mode = mode_name
+            self.mode = mode_obj
             self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
             self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
             self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
             self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
         else:
-            if self.parameters_validator(graph_obj, modes_obj, mode_name, nodes_sequence_i, nodes_sequence_r,
-                                         stops_sequence_i,
-                                         stops_sequence_r):
+            # to valid parameters
+            if self.parameters_validator(mode_obj,
+                                         nodes_sequence_i, nodes_sequence_r,
+                                         stops_sequence_i, stops_sequence_r):
                 self.id = route_id
-                self.mode = mode_name
+                self.mode = mode_obj
                 self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
                 self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
                 self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
                 self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
-    def parameters_validator(self, graph_obj, modes_obj, mode_name, nodes_sequence_i, nodes_sequence_r,
+    def parameters_validator(self, mode_obj, nodes_sequence_i, nodes_sequence_r,
                              stops_sequence_i, stops_sequence_r):
         """
         to check all parameters
-        :param graph_obj:
-        :param modes_obj:
-        :param mode_name:
+        :param mode_obj:
         :param nodes_sequence_i:
         :param nodes_sequence_r:
         :param stops_sequence_i:
         :param stops_sequence_r:
         :return:
         """
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
 
-        modes_names = modes_obj.get_modes_names()
         nodes_i = self.sequences_to_list(nodes_sequence_i)
         nodes_r = self.sequences_to_list(nodes_sequence_r)
         stops_i = self.sequences_to_list(stops_sequence_i)
         stops_r = self.sequences_to_list(stops_sequence_r)
 
-        if mode_name not in modes_names:
-            raise ModeNameIsNotValidException("mode_name was not define in modes_obj")
-
-        if self.edges_validator(graph_obj, nodes_i) and self.edges_validator(graph_obj, nodes_r):
-            if self.direction_validator(nodes_i, nodes_r):
-                if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
-                    return True
+        if self.direction_validator(nodes_i, nodes_r):
+            if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
+                return True
 
     @staticmethod
     def sequences_to_string(sequence_list):
@@ -77,15 +81,12 @@ class Route:
         :param sequence_list:
         :return:
         """
-
         line = ""
-
         for node in sequence_list:
             if line == "":
                 line = line + node
             else:
                 line = line + "," + node
-
         return line
 
     @staticmethod
@@ -140,28 +141,25 @@ class Route:
             raise NotCycleException("sequence of nodes of both directions do not form a cycle")
         return True
 
-    @staticmethod
-    def edges_validator(graph_obj, node_list):
+
+class TransportNetwork:
+
+    def __init__(self, graph_obj):
+        self.__graph_obj = graph_obj
+        self.__routes = []
+        self.__routes_id = []
+
+    def __edges_validator(self, node_list):
         """
         to check if each edges in a node_sequences exist in the graph object
-        :param graph_obj:
         :param node_list:
         :return:
         """
         for i in range(len(node_list) - 1):
             j = i + 1
-            if not graph_obj.edge_exist(node_list[i], node_list[j]):
+            if not self.__graph_obj.edge_exist(node_list[i], node_list[j]):
                 raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
-
-
-class TransportNetwork:
-
-    def __init__(self, graph_obj, modes_obj):
-        self.__graph_obj = graph_obj
-        self.__modes_obj = modes_obj
-        self.__routes = []
-        self.__routes_id = []
 
     def is_valid(self):
         """
@@ -194,53 +192,25 @@ class TransportNetwork:
         else:
             raise RouteIdNotFoundException("route_id not found")
 
-    def __add_predefined_route(self, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                               stops_sequence_r):
+    def add_route(self, route_obj):
         """
         to add a specific route in routes list
-        :param route_id:
-        :param mode_name:
-        :param nodes_sequence_i:
-        :param nodes_sequence_r:
-        :param stops_sequence_i:
-        :param stops_sequence_r:
+        :param route_obj:
         :return:
         """
+        if not isinstance(route_obj, Route):
+            raise RouteIsNotvalidException("route_obj is not valid")
 
-        if route_id not in self.__routes_id:
-            route = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i,
-                          nodes_sequence_r, stops_sequence_i, stops_sequence_r)
-            self.__routes.append(route)
-            self.__routes_id.append(route_id)
-        else:
-            raise RouteIdDuplicatedException("route_id is duplicated")
+        route_id = route_obj.id
+        nodes_sequence_i = route_obj.nodes_sequence_i
+        nodes_sequence_r = route_obj.nodes_sequence_r
 
-    def add_route(self, route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                  stops_sequence_r):
-        """
-        to add a specific route in routes list
-        :param route_id:
-        :param mode_name:
-        :param nodes_sequence_i:
-        :param nodes_sequence_r:
-        :param stops_sequence_i:
-        :param stops_sequence_r:
-        :return:
-        """
-        ban_name_list = ["CIR_I_", "CIR_R_", "RS_", "RE_", "R_", "DSE", "DS", "DE", "D", "TSE", "TS", "TE", "T"]
-
-        for i in ban_name_list:
-            if route_id.startswith(i):
-                raise BanRouteIdException(
-                    "route_id can not start with a prefix CIR_I_, CIR_R_, RS_, RE_, R_, DSE, DS, DE, D, TSE, TS, TE, T")
-
-        if route_id not in self.__routes_id:
-            route = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i,
-                          nodes_sequence_r, stops_sequence_i, stops_sequence_r)
-            self.__routes.append(route)
-            self.__routes_id.append(route_id)
-        else:
-            raise RouteIdDuplicatedException("route_id is duplicated")
+        if self.__edges_validator(nodes_sequence_i) or self.__edges_validator(nodes_sequence_r):
+            if route_id not in self.__routes_id:
+                self.__routes.append(route_obj)
+                self.__routes_id.append(route_id)
+            else:
+                raise RouteIdDuplicatedException("route_id is duplicated")
 
     def delete_route(self, route_id):
         """
@@ -271,7 +241,7 @@ class TransportNetwork:
 
         for route in self.__routes:
             col_route_id.append(route.id)
-            col_mode.append(route.mode)
+            col_mode.append(route.mode.name)
             col_nodes_sequence_i.append(route.sequences_to_string(route.nodes_sequence_i))
             col_nodes_sequence_r.append(route.sequences_to_string(route.nodes_sequence_r))
             col_stops_sequence_i.append(route.sequences_to_string(route.stops_sequence_i))
@@ -287,41 +257,11 @@ class TransportNetwork:
 
         df_transit_network.to_csv(file_path, sep=";", index=False)
 
-    @staticmethod
-    def build_from_file(graph_obj, modes_obj, file_path):
-        """
-        to build route list from a file
-        :param modes_obj:
-        :param graph_obj:
-        :param file_path:
-        :return:
-        """
-        network_obj = TransportNetwork(graph_obj, modes_obj)
-
-        with open(file_path, mode='r', encoding='utf-8') as f_obj:
-            n_lines = 0
-            for line in f_obj.readlines():
-                if n_lines == 0:
-                    n_lines = 1
-                    continue
-                else:
-                    if len(line.split(";")) == 6:
-                        route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r = \
-                            line.split(";")
-
-                        network_obj.add_route(route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                                              stops_sequence_r)
-                    else:
-                        raise FileFormatIsNotValidException(
-                            "each line must provide information about "
-                            "route_id;mode_name;nodes_sequence_i;nodes_sequence_r;stops_sequence_i;stops_sequence_r")
-        return network_obj
-
-    def add_circular_routes(self, mode_name):
+    def get_circular_routes(self, mode_obj):
         """
         to add predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
         subcenter nodes.
-        :param mode_name: name of mode of the all circular routes
+        :param mode_obj:
         :return: None
         """
 
@@ -330,14 +270,10 @@ class TransportNetwork:
             raise CircularRouteIsNotValidException("to add a predefined circular route you have a city "
                                                    "with more of one zone created")
 
-        modes = self.__modes_obj.get_modes()
-        modes_names = self.__modes_obj.get_modes_names()
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
 
-        if mode_name not in modes_names:
-            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
-
-        index_mode = modes_names.index(mode_name)
-        mode = modes[index_mode].name
+        mode_name = mode_obj.name
 
         route_id_i = "CIR_I_{}".format(mode_name)
         route_id_r = "CIR_R_{}".format(mode_name)
@@ -360,26 +296,25 @@ class TransportNetwork:
         stops_sequence_i = nodes_sequence_i
         stops_sequence_r = nodes_sequence_r
 
-        self.__add_predefined_route(route_id_i, mode, nodes_sequence_i, "", stops_sequence_i, "")
-        self.__add_predefined_route(route_id_r, mode, "", nodes_sequence_r, "", stops_sequence_r)
+        route1 = Route(route_id_i, mode_obj, nodes_sequence_i, "", stops_sequence_i, "", _type=RouteType.PREDEFINED)
+        route2 = Route(route_id_r, mode_obj, "", nodes_sequence_r, "", stops_sequence_r, _type=RouteType.PREDEFINED)
 
-    def add_feeder_routes(self, mode_name):
+        return [route1, route2]
+
+    def get_feeder_routes(self, mode_obj):
         """
         to add predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc for I direction and sc-p for R direction.
-        :param mode_name: name of mode of the all feeder routes
+        :param mode_obj: name of mode of the all feeder routes
         :return: None
         """
 
-        modes = self.__modes_obj.get_modes()
-        modes_names = self.__modes_obj.get_modes_names()
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
 
-        if mode_name not in modes_names:
-            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
+        mode_name = mode_obj.name
 
-        index_mode = modes_names.index(mode_name)
-        mode = modes[index_mode].name
-
+        routes = []
         for zone in self.__graph_obj.get_zones():
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
@@ -390,28 +325,32 @@ class TransportNetwork:
             nodes_sequence_r = "{},{}".format(id_sc, id_p)
             stops_sequence_r = nodes_sequence_r
 
-            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                                        stops_sequence_r)
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
 
-    def add_radial_routes(self, mode_name, short=False, express=False):
+            routes.append(route)
+
+        return routes
+
+    def get_radial_routes(self, mode_obj, short=False, express=False):
         """
         to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd for I direction and cbd-sc-p for R direction.
-        :param mode_name: name of mode of the all radial routes
+        :param mode_obj: name of mode of the all radial routes
         :param short: if radial routes omit the passage through the periphery (default: False)
         :param express: if radial routes omit to stop in the subcenter (default: False)
         :return: None
         """
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
+
+        mode_name = mode_obj.name
+
         cbd = self.__graph_obj.get_cbd()
         id_cbd = cbd.id
-        modes = self.__modes_obj.get_modes()
-        modes_names = self.__modes_obj.get_modes_names()
 
-        if mode_name not in modes_names:
-            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
-
-        index_mode = modes_names.index(mode_name)
-        mode = modes[index_mode].name
+        routes = []
 
         for zone in self.__graph_obj.get_zones():
 
@@ -438,34 +377,36 @@ class TransportNetwork:
                     nodes_sequence_r = "{},{},{}".format(id_cbd, id_sc, id_p)
                     stops_sequence_r = nodes_sequence_r
 
-            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                                        stops_sequence_r)
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
 
-    def add_diametral_routes(self, mode_name, jump, short=False, express=False):
+        return routes
+
+    def get_diametral_routes(self, mode_obj, jump, short=False, express=False):
         """
         to add predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd-sc'-p' for I direction and p'-sc'-cbd-sc-p for R direction. p' and sc' are periphery and subcenter
         nodes with zone id equivalent to the id of the treated zone plus the jump
-        :param mode_name: name of mode of the all diametral routes
+        :param mode_obj: name of mode of the all diametral routes
         :param jump: to identified other zone where diametral routes transit
         :param short: if diametral routes omit the passage through the periphery (default: False)
         :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
         :return: None
         """
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
+
+        mode_name = mode_obj.name
+
         cbd = self.__graph_obj.get_cbd()
         id_cbd = cbd.id
-        modes = self.__modes_obj.get_modes()
-        modes_names = self.__modes_obj.get_modes_names()
-
-        if mode_name not in modes_names:
-            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
-
-        index_mode = modes_names.index(mode_name)
-        mode = modes[index_mode].name
 
         zones = self.__graph_obj.get_zones()
         if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        routes = []
 
         for zone in zones:
             id_p = zone.periphery.id
@@ -510,35 +451,34 @@ class TransportNetwork:
                     stops_sequence_i = nodes_sequence_i
                     nodes_sequence_r = "{},{},{},{},{}".format(id_p2, id_sc2, id_cbd, id_sc, id_p)
                     stops_sequence_r = nodes_sequence_r
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
 
-            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                                        stops_sequence_r)
+        return routes
 
-    def add_tangencial_routes(self, mode_name, jump, short=False, express=False):
+    def get_tangencial_routes(self, mode_obj, jump, short=False, express=False):
         """
         to add predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-sc'-...-sc''-p'' for I direction and p''-sc''-...-sc'-sc-p for R direction. sc', ..., sc'' are subcenter
         nodes with zone id less than or equal to id of the treated zone plus the jump. p'' and sc'' are periphery
         and subcenter nodes with id equivalent to the id of the treated zone plus the jump
-        :param mode_name: name of mode of the all tangencial routes
+        :param mode_obj: name of mode of the all tangencial routes
         :param jump: to identified other zone where tangencial routes transit
         :param short: if radial routes omit the passage through the periphery (default: False)
         :param express: if radial routes omit to stop in the subcenters nodes (default: False)
         :return: None
         """
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode obj is not valid")
 
-        modes = self.__modes_obj.get_modes()
-        modes_names = self.__modes_obj.get_modes_names()
-
-        if mode_name not in modes_names:
-            raise ModeNameNotFoundException("Mode name is not defined in modes_obj")
-
-        index_mode = modes_names.index(mode_name)
-        mode = modes[index_mode].name
+        mode_name = mode_obj.name
 
         zones = self.__graph_obj.get_zones()
         if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        routes = []
 
         for zone in zones:
             id_p = zone.periphery.id
@@ -636,41 +576,25 @@ class TransportNetwork:
                     stops_sequence_i = nodes_sequence_i
                     stops_sequence_r = nodes_sequence_r
 
-            self.__add_predefined_route(route_id, mode, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                                        stops_sequence_r)
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
 
-    def update_route(self, route_id, mode_name=None, nodes_sequence_i=None,
-                     nodes_sequence_r=None, stops_sequence_i=None, stops_sequence_r=None):
+        return routes
+
+    def update_route(self, route_id, **kwargs):
         """
         to update route information
         :param route_id:
-        :param mode_name:
-        :param nodes_sequence_i:
-        :param nodes_sequence_r:
-        :param stops_sequence_i:
-        :param stops_sequence_r:
         :return:
         """
         if route_id not in self.__routes_id:
             raise RouteIdNotFoundException("route_id does not exist")
-        else:
-            i = self.__routes_id.index(route_id)
-            route = self.__routes[i]
 
-            if mode_name is None:
-                mode_name = route.mode
-            if nodes_sequence_i is None:
-                nodes_sequence_i = route.sequences_to_string(route.nodes_sequence_i)
-            if nodes_sequence_r is None:
-                nodes_sequence_r = route.sequences_to_string(route.nodes_sequence_r)
-            if stops_sequence_i is None:
-                stops_sequence_i = route.sequences_to_string(route.stops_sequence_i)
-            if stops_sequence_r is None:
-                stops_sequence_r = route.sequences_to_string(route.stops_sequence_r)
-
-            r = Route(self.__graph_obj, self.__modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
-                      stops_sequence_i, stops_sequence_r)
-            self.__routes[i] = r
+        i = self.__routes_id.index(route_id)
+        route_obj = self.__routes[i]
+        for attr in kwargs:
+            setattr(route_obj, attr, kwargs[attr])
 
     def plot(self, file_path, list_routes=None):
         """

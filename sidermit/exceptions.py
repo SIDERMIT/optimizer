@@ -432,3 +432,10 @@ class BanRouteIdException(TransportNetworkException):
 class CircularRouteIsNotValidException(TransportNetworkException):
     pass
 
+
+class ModeIsNotValidException(TransportNetworkException):
+    pass
+
+
+class RouteIsNotvalidException(TransportNetworkException):
+    pass
