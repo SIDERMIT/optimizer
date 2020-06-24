@@ -56,13 +56,13 @@ from sidermit.city import Demand, Graph
 from sidermit.publictransportsystem import TransportModeManager, \
     TransportNetwork, Passenger
 
-# g = Graph.build_from_parameters(7, 1000, 0.5, 0,
-#                                 angles=[10, 50, 150, 180, 270, 300, 320],
-#                                 etha=0.5, etha_zone=3,
-#                                 Hi=[1, 2, 1, 1, 1, 0.5, 3],
-#                                 Gi=[1, 2, 1, 1, 1, 3, 2])
+g = Graph.build_from_parameters(7, 1000, 0.5, 0,
+                                angles=[10, 50, 150, 180, 270, 300, 320],
+                                etha=0.5, etha_zone=3,
+                                Hi=[1, 2, 1, 1, 1, 0.5, 3],
+                                Gi=[1, 2, 1, 1, 1, 3, 2])
 
-g = Graph.build_from_parameters(7, 1000, 0.5, 0)
+# g = Graph.build_from_parameters(7, 1000, 0.5, 0)
 d = Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 1 / 3)
 
 # m = TransportModeManager(add_default_mode=True)
@@ -75,6 +75,6 @@ modes = m.get_mode("bus")
 u = Passenger.get_default_passenger()
 
 t = TransportNetwork(g, m)
-# t.add_express_radial_routes(0)
-t.add_circular_routes("bus")
-t.plot("sidermit.png")
+
+t.add_tangencial_routes("bus", jump=3, short=False, express=True)
+t.plot("sidermit.png", list_routes=["TE3_bus_1"])
