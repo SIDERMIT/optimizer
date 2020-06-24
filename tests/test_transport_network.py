@@ -208,6 +208,9 @@ class TransportNetworkTest(unittest.TestCase):
         self.assertEqual(routes[1].stops_sequence_i, ["3", "4"])
         self.assertEqual(routes[1].stops_sequence_r, ["4", "3"])
 
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            network.get_feeder_routes("bus_obj")
+
     def test_get_circular_routes(self):
         """
         to test add circular routes
@@ -230,6 +233,11 @@ class TransportNetworkTest(unittest.TestCase):
         self.assertEqual(routes[1].stops_sequence_i, [])
         self.assertEqual(routes[1].nodes_sequence_r, ["10", "8", "6", "4", "2", "10"])
         self.assertEqual(routes[1].stops_sequence_r, ["10", "8", "6", "4", "2", "10"])
+
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+            network = TransportNetwork(g)
+            network.get_circular_routes("bus_obj")
 
         with self.assertRaises(exceptions.CircularRouteIsNotValidException):
             g = graph.Graph.build_from_parameters(1, 1000, 0.5, 2)
@@ -297,6 +305,8 @@ class TransportNetworkTest(unittest.TestCase):
         self.assertEqual(routes[1].stops_sequence_i, ["4", "0"])
         self.assertEqual(routes[1].stops_sequence_r, ["0", "4"])
 
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            network.get_radial_routes("bus_obj")
 
     def test_get_diametral_routes(self):
         """
@@ -371,6 +381,9 @@ class TransportNetworkTest(unittest.TestCase):
         with self.assertRaises(exceptions.JumpIsNotValidException):
             network.get_diametral_routes(mode_obj=bus_obj, jump=6, short=True, express=True)
 
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            network.get_diametral_routes(mode_obj="bus_obj", jump=6, short=True, express=True)
+
     def test_get_tangencial_routes(self):
         """
         to test add tangencial routes
@@ -443,6 +456,9 @@ class TransportNetworkTest(unittest.TestCase):
 
         with self.assertRaises(exceptions.JumpIsNotValidException):
             t.get_tangencial_routes(mode_obj=bus, jump=6, short=True, express=True)
+
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            t.get_tangencial_routes(mode_obj="bus", jump=6, short=True, express=True)
 
     def test_plot(self):
         """
