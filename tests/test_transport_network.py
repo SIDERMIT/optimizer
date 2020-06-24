@@ -47,10 +47,6 @@ class TransportNetworkTest(unittest.TestCase):
             Route(g, m, "r1", "train", "1,2,0,4,3", "3,4,0,2,1",
                   "1,0,3", "3,0,1")
 
-        with self.assertRaises(exceptions.SequencesLenException):
-            Route(g, m, "r1", "bus", "1", "3,4,0,2,1", "1,0,3",
-                  "3,0,1")
-
         with self.assertRaises(exceptions.StopsSequencesException):
             Route(g, m, "r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,5,3",
                   "3,0,1")
@@ -86,6 +82,10 @@ class TransportNetworkTest(unittest.TestCase):
 
         with self.assertRaises(exceptions.RouteIdDuplicatedException):
             t.add_route("r1", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
+                        "3,0,1")
+
+        with self.assertRaises(exceptions.BanRouteIdException):
+            t.add_route("CIR_I_train", "bus", "1,2,0,4,3", "3,4,0,2,1", "1,0,3",
                         "3,0,1")
 
     def test_delete_route_transport_network(self):
@@ -198,6 +198,68 @@ class TransportNetworkTest(unittest.TestCase):
         with self.assertRaises(exceptions.RouteIdNotFoundException):
             t.update_route("r3")
 
+    def test_add_feeder_routes(self):
+        """
+        to test add feeder routes
+        :return:
+        """
+        g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
+
+        t.add_feeder_routes("bus")
+
+        self.assertEqual(len(t.get_routes()), 5)
+        self.assertEqual(t.get_route("F_bus_1").nodes_sequence_i, ["1", "2"])
+        self.assertEqual(t.get_route("F_bus_1").nodes_sequence_r, ["2", "1"])
+        self.assertEqual(t.get_route("F_bus_1").stops_sequence_i, ["1", "2"])
+        self.assertEqual(t.get_route("F_bus_1").stops_sequence_r, ["2", "1"])
+        self.assertEqual(t.get_route("F_bus_2").nodes_sequence_i, ["3", "4"])
+        self.assertEqual(t.get_route("F_bus_2").nodes_sequence_r, ["4", "3"])
+        self.assertEqual(t.get_route("F_bus_2").stops_sequence_i, ["3", "4"])
+        self.assertEqual(t.get_route("F_bus_2").stops_sequence_r, ["4", "3"])
+
+        with self.assertRaises(exceptions.ModeNameNotFoundException):
+            g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+            m = TransportModeManager()
+            t = TransportNetwork(g, m)
+            t.add_feeder_routes("train")
+
+    def test_add_circular_routes(self):
+        """
+        to test add circular routes
+        :return:
+        """
+        g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
+
+        t.add_circular_routes("bus")
+
+        self.assertEqual(len(t.get_routes()), 2)
+        self.assertEqual(t.get_route("CIR_I_bus").nodes_sequence_i, ["2", "4", "6", "8", "10"])
+        self.assertEqual(t.get_route("CIR_I_bus").stops_sequence_i, ["2", "4", "6", "8", "10"])
+        self.assertEqual(t.get_route("CIR_I_bus").nodes_sequence_r, [])
+        self.assertEqual(t.get_route("CIR_I_bus").stops_sequence_r, [])
+
+        self.assertEqual(t.get_route("CIR_R_bus").nodes_sequence_i, [])
+        self.assertEqual(t.get_route("CIR_R_bus").stops_sequence_i, [])
+        self.assertEqual(t.get_route("CIR_R_bus").nodes_sequence_r, ["10", "8", "6", "4", "2"])
+        self.assertEqual(t.get_route("CIR_R_bus").stops_sequence_r, ["10", "8", "6", "4", "2"])
+
+        with self.assertRaises(exceptions.CircularRouteIsNotValidException):
+            g = graph.Graph.build_from_parameters(1, 1000, 0.5, 2)
+            m = TransportModeManager()
+            t = TransportNetwork(g, m)
+            t.add_circular_routes("bus")
+
+        with self.assertRaises(exceptions.ModeNameNotFoundException):
+            g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+            m = TransportModeManager()
+            t = TransportNetwork(g, m)
+            t.add_circular_routes("train")
+
+
     def test_add_radial_routes(self):
         """
         to test add radial routes
@@ -210,35 +272,210 @@ class TransportNetworkTest(unittest.TestCase):
         t.add_radial_routes(mode_name="bus", short=False, express=False)
 
         self.assertEqual(len(t.get_routes()), 5)
-        self.assertEqual(t.get_route("R_1").nodes_sequence_i, ["1", "2", "0"])
-        self.assertEqual(t.get_route("R_1").nodes_sequence_r, ["0", "2", "1"])
-        self.assertEqual(t.get_route("R_1").stops_sequence_i, ["1", "2", "0"])
-        self.assertEqual(t.get_route("R_1").stops_sequence_r, ["0", "2", "1"])
-        self.assertEqual(t.get_route("R_2").nodes_sequence_i, ["3", "4", "0"])
-        self.assertEqual(t.get_route("R_2").nodes_sequence_r, ["0", "4", "3"])
-        self.assertEqual(t.get_route("R_2").stops_sequence_i, ["3", "4", "0"])
-        self.assertEqual(t.get_route("R_2").stops_sequence_r, ["0", "4", "3"])
+        self.assertEqual(t.get_route("R_bus_1").nodes_sequence_i, ["1", "2", "0"])
+        self.assertEqual(t.get_route("R_bus_1").nodes_sequence_r, ["0", "2", "1"])
+        self.assertEqual(t.get_route("R_bus_1").stops_sequence_i, ["1", "2", "0"])
+        self.assertEqual(t.get_route("R_bus_1").stops_sequence_r, ["0", "2", "1"])
+        self.assertEqual(t.get_route("R_bus_2").nodes_sequence_i, ["3", "4", "0"])
+        self.assertEqual(t.get_route("R_bus_2").nodes_sequence_r, ["0", "4", "3"])
+        self.assertEqual(t.get_route("R_bus_2").stops_sequence_i, ["3", "4", "0"])
+        self.assertEqual(t.get_route("R_bus_2").stops_sequence_r, ["0", "4", "3"])
 
-    def test_add_express_radial_routes(self):
+        t.add_radial_routes(mode_name="bus", short=True, express=False)
+
+        self.assertEqual(len(t.get_routes()), 10)
+        self.assertEqual(t.get_route("RS_bus_1").nodes_sequence_i, ["2", "0"])
+        self.assertEqual(t.get_route("RS_bus_1").nodes_sequence_r, ["0", "2"])
+        self.assertEqual(t.get_route("RS_bus_1").stops_sequence_i, ["2", "0"])
+        self.assertEqual(t.get_route("RS_bus_1").stops_sequence_r, ["0", "2"])
+        self.assertEqual(t.get_route("RS_bus_2").nodes_sequence_i, ["4", "0"])
+        self.assertEqual(t.get_route("RS_bus_2").nodes_sequence_r, ["0", "4"])
+        self.assertEqual(t.get_route("RS_bus_2").stops_sequence_i, ["4", "0"])
+        self.assertEqual(t.get_route("RS_bus_2").stops_sequence_r, ["0", "4"])
+
+        t.add_radial_routes(mode_name="bus", short=False, express=True)
+
+        self.assertEqual(len(t.get_routes()), 15)
+        self.assertEqual(t.get_route("RE_bus_1").nodes_sequence_i, ["1", "2", "0"])
+        self.assertEqual(t.get_route("RE_bus_1").nodes_sequence_r, ["0", "2", "1"])
+        self.assertEqual(t.get_route("RE_bus_1").stops_sequence_i, ["1", "0"])
+        self.assertEqual(t.get_route("RE_bus_1").stops_sequence_r, ["0", "1"])
+        self.assertEqual(t.get_route("RE_bus_2").nodes_sequence_i, ["3", "4", "0"])
+        self.assertEqual(t.get_route("RE_bus_2").nodes_sequence_r, ["0", "4", "3"])
+        self.assertEqual(t.get_route("RE_bus_2").stops_sequence_i, ["3", "0"])
+        self.assertEqual(t.get_route("RE_bus_2").stops_sequence_r, ["0", "3"])
+
+        t.add_radial_routes(mode_name="metro", short=True, express=True)
+
+        self.assertEqual(len(t.get_routes()), 20)
+        self.assertEqual(t.get_route("RS_metro_1").nodes_sequence_i, ["2", "0"])
+        self.assertEqual(t.get_route("RS_metro_1").nodes_sequence_r, ["0", "2"])
+        self.assertEqual(t.get_route("RS_metro_1").stops_sequence_i, ["2", "0"])
+        self.assertEqual(t.get_route("RS_metro_1").stops_sequence_r, ["0", "2"])
+        self.assertEqual(t.get_route("RS_metro_2").nodes_sequence_i, ["4", "0"])
+        self.assertEqual(t.get_route("RS_metro_2").nodes_sequence_r, ["0", "4"])
+        self.assertEqual(t.get_route("RS_metro_2").stops_sequence_i, ["4", "0"])
+        self.assertEqual(t.get_route("RS_metro_2").stops_sequence_r, ["0", "4"])
+
+        with self.assertRaises(exceptions.RouteIdDuplicatedException):
+            t.add_radial_routes(mode_name="metro", short=True, express=True)
+
+        with self.assertRaises(exceptions.ModeNameNotFoundException):
+            g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+            m = TransportModeManager()
+            t = TransportNetwork(g, m)
+            t.add_radial_routes("train")
+
+
+    def test_add_diametral_routes(self):
         """
-        to test add radial routes
+        to test add diametral routes
         :return:
         """
         g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
         m = TransportModeManager()
         t = TransportNetwork(g, m)
 
-        t.add_express_radial_routes()
+        t.add_diametral_routes(mode_name="bus", jump=2, short=False, express=False)
 
         self.assertEqual(len(t.get_routes()), 5)
-        self.assertEqual(t.get_route("ER_1").nodes_sequence_i, ["1", "2", "0"])
-        self.assertEqual(t.get_route("ER_1").nodes_sequence_r, ["0", "2", "1"])
-        self.assertEqual(t.get_route("ER_1").stops_sequence_i, ["1", "0"])
-        self.assertEqual(t.get_route("ER_1").stops_sequence_r, ["0", "1"])
-        self.assertEqual(t.get_route("ER_2").nodes_sequence_i, ["3", "4", "0"])
-        self.assertEqual(t.get_route("ER_2").nodes_sequence_r, ["0", "4", "3"])
-        self.assertEqual(t.get_route("ER_2").stops_sequence_i, ["3", "0"])
-        self.assertEqual(t.get_route("ER_2").stops_sequence_r, ["0", "3"])
+        self.assertEqual(t.get_route("D2_bus_1").nodes_sequence_i, ["1", "2", "0", "6", "5"])
+        self.assertEqual(t.get_route("D2_bus_1").nodes_sequence_r, ["5", "6", "0", "2", "1"])
+        self.assertEqual(t.get_route("D2_bus_1").stops_sequence_i, ["1", "2", "0", "6", "5"])
+        self.assertEqual(t.get_route("D2_bus_1").stops_sequence_r, ["5", "6", "0", "2", "1"])
+        self.assertEqual(t.get_route("D2_bus_5").nodes_sequence_i, ["9", "10", "0", "4", "3"])
+        self.assertEqual(t.get_route("D2_bus_5").nodes_sequence_r, ["3", "4", "0", "10", "9"])
+        self.assertEqual(t.get_route("D2_bus_5").stops_sequence_i, ["9", "10", "0", "4", "3"])
+        self.assertEqual(t.get_route("D2_bus_5").stops_sequence_r, ["3", "4", "0", "10", "9"])
+
+        t.add_diametral_routes(mode_name="bus", jump=2, short=True, express=False)
+
+        self.assertEqual(len(t.get_routes()), 10)
+        self.assertEqual(t.get_route("DS2_bus_1").nodes_sequence_i, ["2", "0", "6"])
+        self.assertEqual(t.get_route("DS2_bus_1").nodes_sequence_r, ["6", "0", "2"])
+        self.assertEqual(t.get_route("DS2_bus_1").stops_sequence_i, ["2", "0", "6"])
+        self.assertEqual(t.get_route("DS2_bus_1").stops_sequence_r, ["6", "0", "2"])
+        self.assertEqual(t.get_route("DS2_bus_5").nodes_sequence_i, ["10", "0", "4"])
+        self.assertEqual(t.get_route("DS2_bus_5").nodes_sequence_r, ["4", "0", "10"])
+        self.assertEqual(t.get_route("DS2_bus_5").stops_sequence_i, ["10", "0", "4"])
+        self.assertEqual(t.get_route("DS2_bus_5").stops_sequence_r, ["4", "0", "10"])
+
+        t.add_diametral_routes(mode_name="bus", jump=2, short=False, express=True)
+
+        self.assertEqual(len(t.get_routes()), 15)
+        self.assertEqual(t.get_route("DE2_bus_1").nodes_sequence_i, ["1", "2", "0", "6", "5"])
+        self.assertEqual(t.get_route("DE2_bus_1").nodes_sequence_r, ["5", "6", "0", "2", "1"])
+        self.assertEqual(t.get_route("DE2_bus_1").stops_sequence_i, ["1", "5"])
+        self.assertEqual(t.get_route("DE2_bus_1").stops_sequence_r, ["5", "1"])
+        self.assertEqual(t.get_route("DE2_bus_5").nodes_sequence_i, ["9", "10", "0", "4", "3"])
+        self.assertEqual(t.get_route("DE2_bus_5").nodes_sequence_r, ["3", "4", "0", "10", "9"])
+        self.assertEqual(t.get_route("DE2_bus_5").stops_sequence_i, ["9", "3"])
+        self.assertEqual(t.get_route("DE2_bus_5").stops_sequence_r, ["3", "9"])
+
+        t.add_diametral_routes(mode_name="bus", jump=2, short=True, express=True)
+
+        self.assertEqual(len(t.get_routes()), 20)
+        self.assertEqual(t.get_route("DSE2_bus_1").nodes_sequence_i, ["2", "0", "6"])
+        self.assertEqual(t.get_route("DSE2_bus_1").nodes_sequence_r, ["6", "0", "2"])
+        self.assertEqual(t.get_route("DSE2_bus_1").stops_sequence_i, ["2", "6"])
+        self.assertEqual(t.get_route("DSE2_bus_1").stops_sequence_r, ["6", "2"])
+        self.assertEqual(t.get_route("DSE2_bus_5").nodes_sequence_i, ["10", "0", "4"])
+        self.assertEqual(t.get_route("DSE2_bus_5").nodes_sequence_r, ["4", "0", "10"])
+        self.assertEqual(t.get_route("DSE2_bus_5").stops_sequence_i, ["10", "4"])
+        self.assertEqual(t.get_route("DSE2_bus_5").stops_sequence_r, ["4", "10"])
+
+        t.add_diametral_routes(mode_name="bus", jump=1, short=True, express=True)
+
+        self.assertEqual(len(t.get_routes()), 25)
+        self.assertEqual(t.get_route("DSE1_bus_1").nodes_sequence_i, ["2", "0", "4"])
+        self.assertEqual(t.get_route("DSE1_bus_1").nodes_sequence_r, ["4", "0", "2"])
+        self.assertEqual(t.get_route("DSE1_bus_1").stops_sequence_i, ["2", "4"])
+        self.assertEqual(t.get_route("DSE1_bus_1").stops_sequence_r, ["4", "2"])
+        self.assertEqual(t.get_route("DSE1_bus_5").nodes_sequence_i, ["10", "0", "2"])
+        self.assertEqual(t.get_route("DSE1_bus_5").nodes_sequence_r, ["2", "0", "10"])
+        self.assertEqual(t.get_route("DSE1_bus_5").stops_sequence_i, ["10", "2"])
+        self.assertEqual(t.get_route("DSE1_bus_5").stops_sequence_r, ["2", "10"])
+
+        with self.assertRaises(exceptions.JumpIsNotValidException):
+            t.add_diametral_routes(mode_name="bus", jump=6, short=True, express=True)
+
+        with self.assertRaises(exceptions.ModeNameNotFoundException):
+            t.add_diametral_routes(mode_name="train", jump=4, short=True, express=True)
+
+    def test_add_tangencial_routes(self):
+        """
+        to test add tangencial routes
+        :return:
+        """
+        g = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
+        m = TransportModeManager()
+        t = TransportNetwork(g, m)
+
+        t.add_tangencial_routes(mode_name="bus", jump=2, short=False, express=False)
+
+        self.assertEqual(len(t.get_routes()), 5)
+        self.assertEqual(t.get_route("T2_bus_1").nodes_sequence_i, ["1", "2", "4", "6", "5"])
+        self.assertEqual(t.get_route("T2_bus_1").nodes_sequence_r, ["5", "6", "4", "2", "1"])
+        self.assertEqual(t.get_route("T2_bus_1").stops_sequence_i, ["1", "2", "4", "6", "5"])
+        self.assertEqual(t.get_route("T2_bus_1").stops_sequence_r, ["5", "6", "4", "2", "1"])
+        self.assertEqual(t.get_route("T2_bus_5").nodes_sequence_i, ["9", "10", "2", "4", "3"])
+        self.assertEqual(t.get_route("T2_bus_5").nodes_sequence_r, ["3", "4", "2", "10", "9"])
+        self.assertEqual(t.get_route("T2_bus_5").stops_sequence_i, ["9", "10", "2", "4", "3"])
+        self.assertEqual(t.get_route("T2_bus_5").stops_sequence_r, ["3", "4", "2", "10", "9"])
+
+        t.add_tangencial_routes(mode_name="bus", jump=2, short=True, express=False)
+
+        self.assertEqual(len(t.get_routes()), 10)
+        self.assertEqual(t.get_route("TS2_bus_1").nodes_sequence_i, ["2", "4", "6"])
+        self.assertEqual(t.get_route("TS2_bus_1").nodes_sequence_r, ["6", "4", "2"])
+        self.assertEqual(t.get_route("TS2_bus_1").stops_sequence_i, ["2", "4", "6"])
+        self.assertEqual(t.get_route("TS2_bus_1").stops_sequence_r, ["6", "4", "2"])
+        self.assertEqual(t.get_route("TS2_bus_5").nodes_sequence_i, ["10", "2", "4"])
+        self.assertEqual(t.get_route("TS2_bus_5").nodes_sequence_r, ["4", "2", "10"])
+        self.assertEqual(t.get_route("TS2_bus_5").stops_sequence_i, ["10", "2", "4"])
+        self.assertEqual(t.get_route("TS2_bus_5").stops_sequence_r, ["4", "2", "10"])
+
+        t.add_tangencial_routes(mode_name="bus", jump=2, short=False, express=True)
+
+        self.assertEqual(len(t.get_routes()), 15)
+        self.assertEqual(t.get_route("TE2_bus_1").nodes_sequence_i, ["1", "2", "4", "6", "5"])
+        self.assertEqual(t.get_route("TE2_bus_1").nodes_sequence_r, ["5", "6", "4", "2", "1"])
+        self.assertEqual(t.get_route("TE2_bus_1").stops_sequence_i, ["1", "5"])
+        self.assertEqual(t.get_route("TE2_bus_1").stops_sequence_r, ["5", "1"])
+        self.assertEqual(t.get_route("TE2_bus_5").nodes_sequence_i, ["9", "10", "2", "4", "3"])
+        self.assertEqual(t.get_route("TE2_bus_5").nodes_sequence_r, ["3", "4", "2", "10", "9"])
+        self.assertEqual(t.get_route("TE2_bus_5").stops_sequence_i, ["9", "3"])
+        self.assertEqual(t.get_route("TE2_bus_5").stops_sequence_r, ["3", "9"])
+
+        t.add_tangencial_routes(mode_name="bus", jump=2, short=True, express=True)
+
+        self.assertEqual(len(t.get_routes()), 20)
+        self.assertEqual(t.get_route("TSE2_bus_1").nodes_sequence_i, ["2", "4", "6"])
+        self.assertEqual(t.get_route("TSE2_bus_1").nodes_sequence_r, ["6", "4", "2"])
+        self.assertEqual(t.get_route("TSE2_bus_1").stops_sequence_i, ["2", "6"])
+        self.assertEqual(t.get_route("TSE2_bus_1").stops_sequence_r, ["6", "2"])
+        self.assertEqual(t.get_route("TSE2_bus_5").nodes_sequence_i, ["10", "2", "4"])
+        self.assertEqual(t.get_route("TSE2_bus_5").nodes_sequence_r, ["4", "2", "10"])
+        self.assertEqual(t.get_route("TSE2_bus_5").stops_sequence_i, ["10", "4"])
+        self.assertEqual(t.get_route("TSE2_bus_5").stops_sequence_r, ["4", "10"])
+
+        t.add_tangencial_routes(mode_name="bus", jump=1, short=True, express=True)
+
+        self.assertEqual(len(t.get_routes()), 25)
+        self.assertEqual(t.get_route("TSE1_bus_1").nodes_sequence_i, ["2", "4"])
+        self.assertEqual(t.get_route("TSE1_bus_1").nodes_sequence_r, ["4", "2"])
+        self.assertEqual(t.get_route("TSE1_bus_1").stops_sequence_i, ["2", "4"])
+        self.assertEqual(t.get_route("TSE1_bus_1").stops_sequence_r, ["4", "2"])
+        self.assertEqual(t.get_route("TSE1_bus_5").nodes_sequence_i, ["10", "2"])
+        self.assertEqual(t.get_route("TSE1_bus_5").nodes_sequence_r, ["2", "10"])
+        self.assertEqual(t.get_route("TSE1_bus_5").stops_sequence_i, ["10", "2"])
+        self.assertEqual(t.get_route("TSE1_bus_5").stops_sequence_r, ["2", "10"])
+
+        with self.assertRaises(exceptions.JumpIsNotValidException):
+            t.add_tangencial_routes(mode_name="bus", jump=6, short=True, express=True)
+
+        with self.assertRaises(exceptions.ModeNameNotFoundException):
+            t.add_tangencial_routes(mode_name="train", jump=4, short=True, express=True)
 
     def test_plot(self):
         """
@@ -255,7 +492,7 @@ class TransportNetworkTest(unittest.TestCase):
         m = TransportModeManager(add_default_mode=True)
 
         t = TransportNetwork(g, m)
-        t.add_express_radial_routes(index_mode=0)
+        t.add_radial_routes("bus")
         # save figure in path
         t.plot(os.path.join(self.data_path, 'figure2_test.png'))
         file_obj = Path(os.path.join(self.data_path, 'figure2_test.png'))

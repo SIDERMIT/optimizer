@@ -19,6 +19,9 @@ class Route:
         self.stops_sequence_i = None
         self.stops_sequence_r = None
 
+        if route_id is None:
+            raise RouteIdIsNotValidException("route_id is not valid. Try to give a value for route_id")
+
         # special case for circular routes
         if route_id.startswith("CIR_I_") or route_id.startswith("CIR_R_"):
             self.id = route_id
@@ -28,23 +31,23 @@ class Route:
             self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
             self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
-        if self.parameters_validator(graph_obj, modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
-                                     stops_sequence_i,
-                                     stops_sequence_r):
-            self.id = route_id
-            self.mode = mode_name
-            self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
-            self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
-            self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
-            self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+        else:
+            if self.parameters_validator(graph_obj, modes_obj, mode_name, nodes_sequence_i, nodes_sequence_r,
+                                         stops_sequence_i,
+                                         stops_sequence_r):
+                self.id = route_id
+                self.mode = mode_name
+                self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+                self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+                self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+                self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
-    def parameters_validator(self, graph_obj, modes_obj, route_id, mode_name, nodes_sequence_i, nodes_sequence_r,
+    def parameters_validator(self, graph_obj, modes_obj, mode_name, nodes_sequence_i, nodes_sequence_r,
                              stops_sequence_i, stops_sequence_r):
         """
         to check all parameters
         :param graph_obj:
         :param modes_obj:
-        :param route_id:
         :param mode_name:
         :param nodes_sequence_i:
         :param nodes_sequence_r:
@@ -58,9 +61,6 @@ class Route:
         nodes_r = self.sequences_to_list(nodes_sequence_r)
         stops_i = self.sequences_to_list(stops_sequence_i)
         stops_r = self.sequences_to_list(stops_sequence_r)
-
-        if route_id is None:
-            raise RouteIdIsNotValidException("route_id is not valid. Try to give a value for route_id")
 
         if mode_name not in modes_names:
             raise ModeNameIsNotValidException("mode_name was not define in modes_obj")
@@ -95,14 +95,14 @@ class Route:
         :param sequence:
         :return:
         """
+        if sequence == "":
+            return []
+
         nodes = sequence.split(",")
 
         for node in nodes:
             i = nodes.index(node)
             nodes[i] = node.rstrip("\n")
-
-        if len(nodes) <= 1:
-            raise SequencesLenException("len(sequences) must be >= 0")
 
         return nodes
 
@@ -326,7 +326,7 @@ class TransportNetwork:
         """
 
         zones = self.__graph_obj.get_zones()
-        if len(zones) >= 1:
+        if len(zones) <= 1:
             raise CircularRouteIsNotValidException("to add a predefined circular route you have a city "
                                                    "with more of one zone created")
 
@@ -348,11 +348,11 @@ class TransportNetwork:
         for i in range(len(zones)):
 
             if nodes_sequence_i == "":
-                nodes_sequence_i = nodes_sequence_i + zones[i].subcenter.id
-                nodes_sequence_r = nodes_sequence_r + zones[len(zones) - 1 - i].subcenter.id
+                nodes_sequence_i = nodes_sequence_i + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + str(zones[len(zones) - 1 - i].subcenter.id)
             else:
-                nodes_sequence_i = nodes_sequence_i + "," + zones[i].subcenter.id
-                nodes_sequence_r = nodes_sequence_r + "," + zones[len(zones) - 1 - i].subcenter.id
+                nodes_sequence_i = nodes_sequence_i + "," + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + "," + str(zones[len(zones) - 1 - i].subcenter.id)
 
         stops_sequence_i = nodes_sequence_i
         stops_sequence_r = nodes_sequence_r
@@ -562,7 +562,7 @@ class TransportNetwork:
 
             if zone2_id < zone_id:
                 if zone_id != len(zones):
-                    for i in range(zone_id + 1, len(zones)):
+                    for i in range(zone_id + 1, len(zones) + 1):
                         list_zones_id.append(i)
 
                 for i in range(1, zone2_id):
@@ -576,11 +576,14 @@ class TransportNetwork:
                     nodes_sequence_r = "{}".format(id_sc2)
 
                     for i in range(len(list_zones_id)):
-                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
-                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
 
-                    nodes_sequence_i = nodes_sequence_i + "," + "{}".format(id_sc2)
-                    nodes_sequence_r = nodes_sequence_r + "," + "{}".format(id_sc)
+                        nodes_sequence_i = nodes_sequence_i + "," + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + "," + str(zone4.subcenter.id)
+
+                    nodes_sequence_i = nodes_sequence_i + "," + str("{}".format(id_sc2))
+                    nodes_sequence_r = nodes_sequence_r + "," + str("{}".format(id_sc))
 
                     stops_sequence_i = "{},{}".format(id_sc, id_sc2)
                     stops_sequence_r = "{},{}".format(id_sc2, id_sc)
@@ -590,8 +593,11 @@ class TransportNetwork:
                     nodes_sequence_i = "{}".format(id_sc)
                     nodes_sequence_r = "{}".format(id_sc2)
                     for i in range(len(list_zones_id)):
-                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
-                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + "," + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + "," + str(zone4.subcenter.id)
                     nodes_sequence_i = nodes_sequence_i + "," + "{}".format(id_sc2)
                     nodes_sequence_r = nodes_sequence_r + "," + "{}".format(id_sc)
                     stops_sequence_i = nodes_sequence_i
@@ -601,23 +607,29 @@ class TransportNetwork:
                 if express is True:
                     route_id = "TE{}_{}_{}".format(jump, mode_name, zone.id)
                     nodes_sequence_i = "{},{}".format(id_p, id_sc)
-                    nodes_sequence_r = "{},{}".format(id_sc2, id_p2)
+                    nodes_sequence_r = "{},{}".format(id_p2, id_sc2)
                     for i in range(len(list_zones_id)):
-                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
-                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
-                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc, id_p)
-                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc2, id_p2)
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + "," + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + "," + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc, id_p)
                     stops_sequence_i = "{},{}".format(id_p, id_p2)
                     stops_sequence_r = "{},{}".format(id_p2, id_p)
                 else:
                     route_id = "T{}_{}_{}".format(jump, mode_name, zone.id)
                     nodes_sequence_i = "{},{}".format(id_p, id_sc)
-                    nodes_sequence_r = "{},{}".format(id_sc2, id_p2)
+                    nodes_sequence_r = "{},{}".format(id_p2, id_sc2)
                     for i in range(len(list_zones_id)):
-                        nodes_sequence_i = nodes_sequence_i + "," + list_zones_id[i]
-                        nodes_sequence_r = nodes_sequence_r + "," + list_zones_id[len(zones) - 1 - i]
-                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc, id_p)
-                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc2, id_p2)
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + "," + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + "," + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + "," + "{},{}".format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + "," + "{},{}".format(id_sc, id_p)
                     stops_sequence_i = nodes_sequence_i
                     stops_sequence_r = nodes_sequence_r
 
