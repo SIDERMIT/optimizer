@@ -4,6 +4,23 @@ from enum import Enum
 from sidermit.publictransportsystem.network import RouteType
 
 
+#                                    Representation extended graph
+#
+# for each p,sc y CBD:                _______________city_node_______________
+#                                     ↑                  ↑                   ↑
+#                                access_edge        access_edge          access_edge
+#                                     ↓                  ↓                   ↓
+# for each mode:                  stop_node (mode1)  stop_node (mode2)    stop_node (mode3)
+#                                 |       ↑          |       ↑            |       ↑
+#                             boarding alighting  boarding alighting   boarding alighting
+#                               edge      edge      edge     edge        edge     edge
+#                                 ↓       |          ↓       |            ↓       |
+# for each route, direction      route_node           route_node          route_node
+#                                     ↓                    ↓                   ↓
+#                                route_edge             route_edge         route_edge
+#                                     ↓                    ↓                   ↓
+# relation with other city_node  route_node           route_node          route_node
+
 class ExtendedNode:
     def __init__(self, extendend_node_id):
         self.id = extendend_node_id
@@ -59,26 +76,29 @@ class ExtendedGraph:
         self.__graph_obj = graph_obj
         self.__network_obj = network_obj
 
-        # list with all city nodes
+        # list with all city_nodes
         self.__city_nodes = []
-        # to add city nodes
+        # to add city_nodes
         self.__add_city_nodes()
 
-        # assistant dictionary to build extended graph dic[node city][mode_obj] = list of routes
+        # assistant dictionary to build stop_nodes and routes_nodes: dic[city_node][mode_obj] = [list of routes]
         self.__tree_graph = defaultdict(lambda: defaultdict(list))
         # build assistant dictionary
         self.__build_tree_graph()
 
-        # list with all stop nodes, there are 1 stop node for each mode transiting in a city node
+        # list with all stop nodes, there are 1 stop_node for each mode transiting in a city_node
         self.__stop_nodes = []
-        # list with tuples (mode_obj, city_node) to not duplicated more of a stop for each mode in a city node
+        # list with tuples (mode_obj, city_node) to not duplicated more of a stop for each mode in a city_node
         self.__mode_city = []
-        # to add stop nodes
+        # to add stop_nodes
         self.__add_stop_nodes()
 
-        # list with all route nodes, there are 1 route node connected to a stop node for each route in a city node
+        # list with all route_nodes, there are 1 route_node connected to a stop_node for each route in a city_node
         self.__route_nodes = []
+        # to add routes_nodes
         self.__add_route_nodes()
+
+        # extended graph nodes like as a dictionary: dic[city_node][stop_node] = [list route_nodes]
 
         self.__access_edges = []
         self.__boarding_edges = []
