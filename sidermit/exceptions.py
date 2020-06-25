@@ -324,6 +324,10 @@ class CoIsNotValidExceptions(TransportModeException):
     pass
 
 
+class ModeIsNotValidException(TransportModeException):
+    pass
+
+
 class NameIsNotValidExceptions(TransportModeException):
     pass
 
@@ -430,10 +434,6 @@ class BanRouteIdException(TransportNetworkException):
 
 
 class CircularRouteIsNotValidException(TransportNetworkException):
-    pass
-
-
-class ModeIsNotValidException(TransportNetworkException):
     pass
 
 

@@ -9,7 +9,7 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
     NameIsNotValidExceptions, KmaxIsNotValidExceptions, \
     TatIsNotValidExceptions, DIsNotValidExceptions, ByaIsNotValidExceptions, \
     ThetaIsNotValidExceptions, ModeDoesNotExistExceptions, \
-    ModeNotFoundExceptions, AddModeExceptions
+    ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException
 
 
 def mode_property(property_name, comp_function, exception_instance,
@@ -154,30 +154,20 @@ class TransportModeManager:
         """
         return self.__list_name
 
-    def add_mode(self, name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d):
+    def add_mode(self, mode_obj):
         """
         to add a new mode
-        :param name:
-        :param bya:
-        :param co:
-        :param c1:
-        :param c2:
-        :param v:
-        :param t:
-        :param fmax:
-        :param kmax:
-        :param theta:
-        :param tat:
-        :param d:
+        :param mode_obj:
         :return:
         """
-        if name in self.__list_name:
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException("mode_obj is not valid")
+
+        if mode_obj.name in self.__list_name:
             raise AddModeExceptions("mode name exists, try with other name")
 
-        mode = TransportMode(name, bya, co, c1, c2, v, t, fmax, kmax, theta,
-                             tat, d)
-        self.__modes.append(mode)
-        self.__list_name.append(name)
+        self.__modes.append(mode_obj)
+        self.__list_name.append(mode_obj.name)
 
     def delete_mode(self, name):
         """

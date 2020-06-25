@@ -113,12 +113,18 @@ class TransportModeTest(unittest.TestCase):
         tat = 1
         d = 1
 
-        m.add_mode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+        mode_obj = TransportMode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+
+        m.add_mode(mode_obj)
 
         self.assertEqual(len(m.get_modes()), 3)
 
         with self.assertRaises(exceptions.AddModeExceptions):
-            m.add_mode("bus", bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            mode_obj = TransportMode("bus", bya, co, c1, c2, v, t, fmax, kmax, theta, tat, d)
+            m.add_mode(mode_obj)
+
+        with self.assertRaises(exceptions.ModeIsNotValidException):
+            m.add_mode("mode_obj")
 
     def test_delete_mode(self):
         """
