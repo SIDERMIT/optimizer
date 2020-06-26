@@ -34,9 +34,8 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        extended_graph = ExtendedGraph(graph_obj, network)
-
-        tree_graph = extended_graph.get_tree_graph()
+        city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
+        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
 
         one_stop = []
         two_stop = []
@@ -90,7 +89,3 @@ class test_extended_graph(unittest.TestCase):
         self.assertEqual(one_route_stop, 0)
         self.assertEqual(two_route_stop, 25)
         self.assertEqual(ten_route_stop, 1)
-
-
-
-
