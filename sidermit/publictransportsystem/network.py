@@ -72,7 +72,8 @@ class Route:
 
         if self.direction_validator(nodes_i, nodes_r):
             if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
-                return True
+                if self.sequences_validator(nodes_i) and self.sequences_validator(nodes_r):
+                    return True
 
     @staticmethod
     def sequences_to_string(sequence_list):
@@ -139,6 +140,19 @@ class Route:
         if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
                 nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
             raise NotCycleException("sequence of nodes of both directions do not form a cycle")
+        return True
+
+    @staticmethod
+    def sequences_validator(sequence):
+
+        for node1 in sequence:
+            n = 0
+            for node2 in sequence:
+                if node1 == node2:
+                    n = n + 1
+            if n > 1:
+                raise NodeSequencesIsNotValidException("node sequence loops")
+
         return True
 
 
