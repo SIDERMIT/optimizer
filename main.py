@@ -52,29 +52,42 @@
 #     t4 = "Gi:{}, Hi:{}".format(Gi, Hi)
 #     plot_city(c.nodes, c.edges, t1, t2, t3, t4)
 
-from sidermit.city import Demand, Graph
-from sidermit.publictransportsystem import TransportModeManager, \
-    TransportNetwork, Passenger
+from sidermit.city import graph
+from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, TransportMode, Passenger
+from sidermit.extended_graph import ExtendedGraph
 
-g = Graph.build_from_parameters(7, 1000, 0.5, 0,
-                                angles=[10, 50, 150, 180, 270, 300, 320],
-                                etha=0.5, etha_zone=3,
-                                Hi=[1, 2, 1, 1, 1, 0.5, 3],
-                                Gi=[1, 2, 1, 1, 1, 3, 2])
+graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
+network = TransportNetwork(graph_obj)
 
-# g = Graph.build_from_parameters(7, 1000, 0.5, 0)
-d = Demand.build_from_parameters(g, 1000, 0.5, 1 / 3, 1 / 3)
+mode_manager = TransportModeManager()
+bus_obj = mode_manager.get_mode("bus")
+metro_obj = mode_manager.get_mode("metro")
+train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
-# m = TransportModeManager(add_default_mode=True)
+passenger_obj = Passenger(4, 2, 2, 2, 2, 2, 2, 2, 2)
 
-m = TransportModeManager(add_default_mode=False)
-m.add_mode("bus", 1, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 2)
+feeder_routes = network.get_feeder_routes(bus_obj)
+radial_routes = network.get_radial_routes(metro_obj)
+circular_routes = network.get_circular_routes(train_obj)
 
-modes = m.get_mode("bus")
+for route in feeder_routes:
+    network.add_route(route)
 
-u = Passenger.get_default_passenger()
+for route in radial_routes:
+    network.add_route(route)
 
-t = TransportNetwork(g, m)
+for route in circular_routes:
+    network.add_route(route)
 
-t.add_tangencial_routes("bus", jump=3, short=False, express=True)
-t.plot("sidermit.png", list_routes=["TE3_bus_1"])
+extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+extended_graph_nodes = extended_graph.get_extended_graph_nodes()
+
+for city_node in extended_graph_nodes:
+    print("City node: {}".format(city_node.graph_node.name))
+
+    for stop_node in extended_graph_nodes[city_node]:
+        print("Stop node: {}".format(stop_node.mode.name))
+
+        for route_node in extended_graph_nodes[city_node][stop_node]:
+            print("Route node: {}-{}, adj: {}".format(route_node.route.id,
+                                                      route_node.direction, route_node.prev_route_node))

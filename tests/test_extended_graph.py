@@ -8,6 +8,13 @@ from sidermit.extended_graph import ExtendedGraph
 
 class test_extended_graph(unittest.TestCase):
 
+    def test_build_city_nodes(self):
+        graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
+
+        city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
+
+        self.assertEqual(len(city_nodes), 11)
+
     def test_build_tree_graph(self):
         """
         test methods get_tree_graph
@@ -89,3 +96,64 @@ class test_extended_graph(unittest.TestCase):
         self.assertEqual(one_route_stop, 0)
         self.assertEqual(two_route_stop, 25)
         self.assertEqual(ten_route_stop, 1)
+
+    def test_build_stop_nodes(self):
+        graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
+        network = TransportNetwork(graph_obj)
+
+        mode_manager = TransportModeManager()
+        bus_obj = mode_manager.get_mode("bus")
+        metro_obj = mode_manager.get_mode("metro")
+        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+        feeder_routes = network.get_feeder_routes(bus_obj)
+        radial_routes = network.get_radial_routes(metro_obj)
+        circular_routes = network.get_circular_routes(train_obj)
+
+        for route in feeder_routes:
+            network.add_route(route)
+
+        for route in radial_routes:
+            network.add_route(route)
+
+        for route in circular_routes:
+            network.add_route(route)
+
+        city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
+        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+
+        stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
+
+        self.assertEqual(len(stop_nodes), 26)
+
+    def test_build_routes_nodes(self):
+
+        graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
+        network = TransportNetwork(graph_obj)
+
+        mode_manager = TransportModeManager()
+        bus_obj = mode_manager.get_mode("bus")
+        metro_obj = mode_manager.get_mode("metro")
+        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+        feeder_routes = network.get_feeder_routes(bus_obj)
+        radial_routes = network.get_radial_routes(metro_obj)
+        circular_routes = network.get_circular_routes(train_obj)
+
+        for route in feeder_routes:
+            network.add_route(route)
+
+        for route in radial_routes:
+            network.add_route(route)
+
+        for route in circular_routes:
+            network.add_route(route)
+
+        city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
+        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+        stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
+
+        extended_graph = ExtendedGraph(graph_obj, network)
+        route_nodes = extended_graph.build_route_nodes(tree_graph, stop_nodes)
+
+        self.assertEqual(len(route_nodes), 60)
