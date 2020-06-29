@@ -13,6 +13,7 @@ from sidermit.exceptions import *
 class RouteType(Enum):
     CUSTOM = 1
     PREDEFINED = 2
+    CIRCULAR = 3
 
 
 class Route:
@@ -31,7 +32,7 @@ class Route:
             raise RouteIdIsNotValidException("route_id is not valid. Try to give a value for route_id")
 
         # special case for circular routes
-        if _type == RouteType.PREDEFINED:
+        if _type == RouteType.PREDEFINED or _type == RouteType.CIRCULAR:
             self.id = route_id
             self.mode = mode_obj
             self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
@@ -310,8 +311,8 @@ class TransportNetwork:
         stops_sequence_i = nodes_sequence_i
         stops_sequence_r = nodes_sequence_r
 
-        route1 = Route(route_id_i, mode_obj, nodes_sequence_i, "", stops_sequence_i, "", _type=RouteType.PREDEFINED)
-        route2 = Route(route_id_r, mode_obj, "", nodes_sequence_r, "", stops_sequence_r, _type=RouteType.PREDEFINED)
+        route1 = Route(route_id_i, mode_obj, nodes_sequence_i, "", stops_sequence_i, "", _type=RouteType.CIRCULAR)
+        route2 = Route(route_id_r, mode_obj, "", nodes_sequence_r, "", stops_sequence_r, _type=RouteType.CIRCULAR)
 
         return [route1, route2]
 
