@@ -57,7 +57,6 @@ from sidermit.publictransportsystem import TransportNetwork, TransportModeManage
 from sidermit.extended_graph import ExtendedGraph
 
 graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
-network = TransportNetwork(graph_obj)
 
 mode_manager = TransportModeManager()
 bus_obj = mode_manager.get_mode("bus")
@@ -66,8 +65,10 @@ train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
 passenger_obj = Passenger(4, 2, 2, 2, 2, 2, 2, 2, 2)
 
+network = TransportNetwork(graph_obj)
+
 feeder_routes = network.get_feeder_routes(bus_obj)
-radial_routes = network.get_radial_routes(metro_obj)
+radial_routes = network.get_radial_routes(metro_obj, express=True)
 circular_routes = network.get_circular_routes(train_obj)
 
 for route in feeder_routes:
@@ -79,15 +80,62 @@ for route in radial_routes:
 for route in circular_routes:
     network.add_route(route)
 
-extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+extended_graph = ExtendedGraph(graph_obj, network, passenger_obj, initial_frequency=28)
 extended_graph_nodes = extended_graph.get_extended_graph_nodes()
+extended_graph_edges = extended_graph.get_extended_graph_edges()
+
+# city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
+# tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+# stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
+# route_nodes = ExtendedGraph.build_route_nodes(network, stop_nodes)
+#
+# access_edges = ExtendedGraph.build_access_edges(extended_graph_nodes)
+# boarding_edges = ExtendedGraph.build_boarding_edges(extended_graph_nodes, 28)
+# alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj)
+# route_edges = ExtendedGraph.build_route_edges(extended_graph_nodes)
+
+network.plot("sidermit.png", list_routes=["RE_metro_1"])
+
+# for edge in route_edges:
+#     print("{} - {} - {} - {} - {} - {}".format(edge.nodei.id, edge.nodei.route.id, edge.nodei.direction, edge.nodei.stop_node.city_node.graph_node.name, edge.nodej.stop_node.city_node.graph_node.name, edge.t))
 
 for city_node in extended_graph_nodes:
     print("City node: {}".format(city_node.graph_node.name))
 
     for stop_node in extended_graph_nodes[city_node]:
-        print("Stop node: {}".format(stop_node.mode.name))
+
+        #information about access edge
+        for edge in extended_graph_edges:
+            if edge.nodei == city_node and edge.nodej == stop_node:
+                print("     Access time: {}".format(edge.t))
+
+        print("         Stop node: {}".format(stop_node.mode.name))
 
         for route_node in extended_graph_nodes[city_node][stop_node]:
-            print("Route node: {}-{}, adj: {}".format(route_node.route.id,
-                                                      route_node.direction, route_node.prev_route_node))
+
+            # information about boarding edge
+            for edge in extended_graph_edges:
+                if edge.nodei == stop_node and edge.nodej == route_node:
+                    print("             frequency boarding: {}".format(edge.f))
+
+            # information about boarding edge
+            for edge in extended_graph_edges:
+                if edge.nodei == route_node and edge.nodej == stop_node:
+                    print("             time alighting: {}".format(edge.t))
+
+            # information about route node
+            if route_node.prev_route_node is None:
+                print("                 Route node: {}, direction: {}, adj: {}, dist:{}".format(route_node.route.id,
+                                                                               route_node.direction, "no hay", 0))
+            else:
+                t = 0
+                for edge in extended_graph_edges:
+                    if edge.nodei == route_node.prev_route_node and edge.nodej == route_node:
+                        t = edge.t
+                        break
+                print("                 Route node: {}, direction: {}, adj: {} - {} - {}, dist:{}".format(route_node.route.id,
+                                                                               route_node.direction,
+                                                                               route_node.prev_route_node.stop_node.city_node.graph_node.name,
+                                                                               route_node.prev_route_node.route.id,
+                                                                               route_node.prev_route_node.direction,
+                                                                               t))
