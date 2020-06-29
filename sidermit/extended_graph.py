@@ -16,7 +16,7 @@ from sidermit.publictransportsystem.network import RouteType
 #                               edge      edge      edge     edge        edge     edge
 #                                 ↓       |          ↓       |            ↓       |
 # for each route, direction      route_node           route_node          route_node
-#                                     ↓                    ↓                   ↓
+#                                     ↑                    ↑                   ↑
 #                                route_edge             route_edge         route_edge
 #                                     ↑                    ↑                   ↑
 # relation with other city_node  route_node(i-1)      route_node(i-1)     route_node(i-1)
@@ -24,6 +24,8 @@ from sidermit.publictransportsystem.network import RouteType
 class ExtendedNode:
     def __init__(self, extendend_node_id):
         self.id = extendend_node_id
+        self.label = None
+        self.predecessor = None
 
 
 class CityNode(ExtendedNode):
@@ -92,7 +94,7 @@ class ExtendedGraph:
         # list with all alighting edges, edges between route_node->stop_node
         alighting_edges = self.build_alighting_edges(self.__extended_graph_nodes, passenger_obj)
         # list with all routes edges, edges between route_node(i-1)->route_node(i)
-        routes_edges = self.build_route_nodes(network_obj, stop_nodes)
+        routes_edges = self.build_route_edges(self.__extended_graph_nodes)
 
         self.__extended_graph_edges = []
 
@@ -107,6 +109,9 @@ class ExtendedGraph:
 
     def get_extended_graph_nodes(self):
         return self.__extended_graph_nodes
+
+    def get_extended_graph_edges(self):
+        return self.__extended_graph_edges
 
     @staticmethod
     def build_city_nodes(graph_obj):
@@ -132,7 +137,7 @@ class ExtendedGraph:
                 for stop in stops_i:
                     if str(node_graph_id) == str(stop):
                         # to avoid add twice first and last node in circular routes
-                        if route._type == RouteType.PREDEFINED:
+                        if route._type == RouteType.PREDEFINED or route._type == RouteType.CIRCULAR:
                             if (route, "I") not in tree_graph[city_node][mode_obj]:
                                 tree_graph[city_node][mode_obj].append((route, "I"))
                         else:
@@ -141,7 +146,7 @@ class ExtendedGraph:
                 for stop in stops_r:
                     if str(node_graph_id) == str(stop):
                         # to avoid add twice first and last node in circular routes
-                        if route._type == RouteType.PREDEFINED:
+                        if route._type == RouteType.PREDEFINED or route._type == RouteType.CIRCULAR:
                             if (route, "R") not in tree_graph[city_node][mode_obj]:
                                 tree_graph[city_node][mode_obj].append((route, "R"))
                         else:
@@ -163,14 +168,19 @@ class ExtendedGraph:
 
     @staticmethod
     def build_route_nodes(network_obj, stop_nodes):
-
+        # routes defined in the graph
         routes = network_obj.get_routes()
+        # list with all route nodes
         route_nodes = []
         for route in routes:
             mode = route.mode
             stop_i = route.stops_sequence_i
             stop_r = route.stops_sequence_r
 
+            _type = route._type
+
+            # nodes for "I" direction
+            nodes = []
             prev_route_node = None
             for stop in stop_i:
                 stop_node = None
@@ -180,8 +190,24 @@ class ExtendedGraph:
                         break
                 route_node = RouteNode(len(route_nodes), route, "I", stop_node, prev_route_node)
                 prev_route_node = route_node
-                route_nodes.append(route_node)
+                nodes.append(route_node)
 
+            if prev_route_node is not None and _type == RouteType.CIRCULAR:
+                for i in range(len(nodes)):
+                    if i == 0:
+                        continue
+                    n = nodes[i]
+                    if i == 1:
+                        n.prev_route_node = nodes[len(nodes) - 1]
+                        route_nodes.append(n)
+                        continue
+                    n = nodes[i]
+                    route_nodes.append(n)
+            if _type == RouteType.PREDEFINED or _type == RouteType.CUSTOM:
+                for n in nodes:
+                    route_nodes.append(n)
+
+            nodes = []
             prev_route_node = None
             for stop in stop_r:
                 stop_node = None
@@ -191,7 +217,22 @@ class ExtendedGraph:
                         break
                 route_node = RouteNode(len(route_nodes), route, "R", stop_node, prev_route_node)
                 prev_route_node = route_node
-                route_nodes.append(route_node)
+                nodes.append(route_node)
+
+            if prev_route_node is not None and _type == RouteType.CIRCULAR:
+                for i in range(len(nodes)):
+                    if i == 0:
+                        continue
+                    n = nodes[i]
+                    if i == 1:
+                        n.prev_route_node = nodes[len(nodes) - 1]
+                        route_nodes.append(n)
+                        continue
+                    n = nodes[i]
+                    route_nodes.append(n)
+            if _type == RouteType.PREDEFINED or _type == RouteType.CUSTOM:
+                for n in nodes:
+                    route_nodes.append(n)
 
         return route_nodes
 
@@ -227,9 +268,27 @@ class ExtendedGraph:
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
                 for route_node in extended_graph_nodes[city_node][stop_node]:
-                    edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                        0, initial_frequency, ExtendedEdgesType.BOARDING)
-                    boarding_edges.append(edge)
+                    route = route_node.route
+                    direction = route_node.direction
+
+                    if direction == "I":
+                        node_sequence = route.nodes_sequence_i
+                    else:
+                        node_sequence = route.nodes_sequence_r
+                    # if not be last stop of the route add boarding edges
+                    if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
+                            node_sequence[len(node_sequence) - 1]):
+                        edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
+                                            0, initial_frequency, ExtendedEdgesType.BOARDING)
+                        boarding_edges.append(edge)
+                        continue
+                    # but if route type is circular add always boarding edges
+                    if route._type == RouteType.CIRCULAR:
+                        edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
+                                            0, initial_frequency, ExtendedEdgesType.BOARDING)
+                        boarding_edges.append(edge)
+                        continue
+
         return boarding_edges
 
     @staticmethod
@@ -239,23 +298,92 @@ class ExtendedGraph:
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
                 for route_node in extended_graph_nodes[city_node][stop_node]:
-                    edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
-                                        pt, -1, ExtendedEdgesType.ALIGHTING)
-                    alighting_edges.append(edge)
+                    route = route_node.route
+                    direction = route_node.direction
+                    if direction == "I":
+                        node_sequence = route.nodes_sequence_i
+                    else:
+                        node_sequence = route.nodes_sequence_r
+                    # if not be first stop of the route add alighting edges
+                    if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
+                            node_sequence[0]):
+                        edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
+                                            pt, -1, ExtendedEdgesType.ALIGHTING)
+                        alighting_edges.append(edge)
+                        continue
+                    # but if route type is circular add always alighting edges
+                    if route._type == RouteType.CIRCULAR:
+                        edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
+                                            pt, -1, ExtendedEdgesType.ALIGHTING)
+                        alighting_edges.append(edge)
+                        continue
+
         return alighting_edges
 
     @staticmethod
-    def build_route_edges(route_nodes):
+    def build_route_edges(extended_graph_nodes):
+
+        route_nodes = []
+        nodes = []
+
+        for city_node in extended_graph_nodes:
+            nodes.append(city_node.graph_node)
+            for stop_node in extended_graph_nodes[city_node]:
+                for route_node in extended_graph_nodes[city_node][stop_node]:
+                    route_nodes.append(route_node)
 
         route_edges = []
         for route_node in route_nodes:
+            # only if route node has previous route node
             if route_node.prev_route_node is not None:
-                t = 0
 
-                # falta agregar tiempo de recorrido
+                # previous route node
+                previous_route_node = route_node.prev_route_node
 
+                # to identify route
+                route = route_node.route
+                direction = route_node.direction
 
-                edge = ExtendedEdge(len(route_edges), route_node.prev_route_node, route_node,
+                # velocity of the route
+                v = route_node.stop_node.mode.v
+
+                # id graph node to actual route node and previous route node
+                id_city1 = route_node.stop_node.city_node.graph_node.id
+                id_city2 = previous_route_node.stop_node.city_node.graph_node.id
+
+                # to identify node sequence of the route
+                if direction == "I":
+                    node_sequence = route.nodes_sequence_i
+                else:
+                    node_sequence = route.nodes_sequence_r
+
+                # to get distance between actual route node and previous route node
+                distance = 0
+                x_prev = previous_route_node.stop_node.city_node.graph_node.x
+                y_prev = previous_route_node.stop_node.city_node.graph_node.y
+                x_final = route_node.stop_node.city_node.graph_node.x
+                y_final = route_node.stop_node.city_node.graph_node.y
+                count = False
+                for node in node_sequence:
+                    if str(node) == str(id_city2):
+                        count = True
+                        continue
+                    if str(node) == str(id_city1):
+                        distance = distance + ((x_prev - x_final) ** 2 + (y_prev - y_final) ** 2) ** 0.5
+                        break
+                    if count:
+                        for n in nodes:
+                            if str(node) == str(n.id):
+                                x = n.x
+                                y = n.y
+                                distance = distance + ((x_prev - x) ** 2 + (y_prev - y) ** 2) ** 0.5
+                                x_prev = x
+                                y_prev = y
+                                break
+
+                t = distance  # / v
+
+                edge = ExtendedEdge(len(route_edges), previous_route_node, route_node,
                                     t, -1, ExtendedEdgesType.ROUTE)
                 route_edges.append(edge)
         return route_edges
