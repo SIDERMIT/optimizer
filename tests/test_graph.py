@@ -238,6 +238,18 @@ class test_graph(unittest.TestCase):
         self.assertEqual(len(g.get_edges()), 10)
         self.assertEqual(len(g.get_zones()), 2)
 
+        n, L, g, P, etha, etha_zone, angles, Gi, Hi = g.get_parameters()
+
+        self.assertEqual(n, 2)
+        self.assertEqual(L, 1000)
+        self.assertEqual(g, 0.5)
+        self.assertEqual(P, 0)
+        self.assertEqual(etha, 0.5)
+        self.assertEqual(etha_zone, 1)
+        self.assertEqual(angles, [10, 50])
+        self.assertEqual(Gi, [2, 0.5])
+        self.assertEqual(Hi, [2, 0.5])
+
     def test_raises_fileformat(self):
         """
         to test pajek file exceptions, should have 7 columns separated by
