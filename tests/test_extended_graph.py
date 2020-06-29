@@ -2,7 +2,7 @@ import unittest
 
 from sidermit.city import graph
 from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, TransportMode, Passenger
-from sidermit.extended_graph import ExtendedGraph
+from sidermit.extended_graph import ExtendedGraph, ExtendedEdgesType
 
 
 class test_extended_graph(unittest.TestCase):
@@ -126,6 +126,8 @@ class test_extended_graph(unittest.TestCase):
         graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
         network = TransportNetwork(graph_obj)
 
+        passenger_obj = Passenger(2, 2, 2, 2, 2, 2, 2, 2, 2)
+
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
@@ -144,12 +146,8 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
-        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
-        stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
-        route_nodes = ExtendedGraph.build_route_nodes(network, stop_nodes)
-
-        extended_graph_nodes = ExtendedGraph.build_extended_graph_nodes(route_nodes)
+        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+        extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 
         n_city = 0
         n_stop = 0
@@ -161,9 +159,9 @@ class test_extended_graph(unittest.TestCase):
                 for _ in extended_graph_nodes[city_node][stop_node]:
                     n_route = n_route + 1
 
-        self.assertEqual(n_city, len(city_nodes))
-        self.assertEqual(n_stop, len(stop_nodes))
-        self.assertEqual(n_route, len(route_nodes))
+        self.assertEqual(n_city, 11)
+        self.assertEqual(n_stop, 26)
+        self.assertEqual(n_route, 60)
 
     def test_build_edges(self):
 
@@ -206,4 +204,55 @@ class test_extended_graph(unittest.TestCase):
         self.assertEqual(len(boarding_edges), 40)
         self.assertEqual(len(alighting_edges), 40)
         self.assertEqual(len(route_edges), 40)
+
+    def test_get_extended_edges(self):
+
+        graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
+        network = TransportNetwork(graph_obj)
+
+        passenger_obj = Passenger(4, 2, 2, 2, 2, 2, 2, 2, 2)
+
+        mode_manager = TransportModeManager()
+        bus_obj = mode_manager.get_mode("bus")
+        metro_obj = mode_manager.get_mode("metro")
+        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+
+        feeder_routes = network.get_feeder_routes(bus_obj)
+        radial_routes = network.get_radial_routes(metro_obj, express=True)
+        circular_routes = network.get_circular_routes(train_obj)
+
+        for route in feeder_routes:
+            network.add_route(route)
+
+        for route in radial_routes:
+            network.add_route(route)
+
+        for route in circular_routes:
+            network.add_route(route)
+
+        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+        extended_graph_edges = extended_graph.get_extended_graph_edges()
+
+        n_access = 0
+        n_boarding = 0
+        n_alighting = 0
+        n_route = 0
+
+        for edge in extended_graph_edges:
+            if edge.type == ExtendedEdgesType.ACCESS:
+                n_access = n_access + 1
+            if edge.type == ExtendedEdgesType.BOARDING:
+                n_boarding = n_boarding + 1
+            if edge.type == ExtendedEdgesType.ALIGHTING:
+                n_alighting = n_alighting + 1
+            if edge.type == ExtendedEdgesType.ROUTE:
+                n_route = n_route + 1
+
+        self.assertEqual(n_access, 42)
+        self.assertEqual(n_boarding, 30)
+        self.assertEqual(n_alighting, 30)
+        self.assertEqual(n_route, 30)
+
+
+
 
