@@ -46,7 +46,7 @@ class Demand:
             for destination_node in self.__graph_obj.get_nodes():
                 self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
-    def __change_vij(self, origin_node_id, destination_node_id, vij):
+    def change_vij(self, origin_node_id, destination_node_id, vij):
 
         if vij < 0:
             raise TripsValueIsNotValidException("trips value must be >= 0")
@@ -168,22 +168,22 @@ class Demand:
                         continue
                     # trips between P - CBD
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, CBD):
-                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_cbd)
+                        demand_obj.change_vij(origin_node_id, destination_node_id, v_p_cbd)
                     # trips between P - SC
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id == destination_node_obj.zone_id:
-                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_sc)
+                        demand_obj.change_vij(origin_node_id, destination_node_id, v_p_sc)
                     # trips between P - OSC
                     if isinstance(origin_node_obj, Periphery) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id != destination_node_obj.zone_id:
-                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_p_osc)
+                        demand_obj.change_vij(origin_node_id, destination_node_id, v_p_osc)
                     # trips between SC - CBD
                     if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, CBD):
-                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_cbd)
+                        demand_obj.change_vij(origin_node_id, destination_node_id, v_sc_cbd)
                     # trips between SC - OSC
                     if isinstance(origin_node_obj, Subcenter) and isinstance(destination_node_obj, Subcenter) and \
                             origin_node_obj.zone_id != destination_node_obj.zone_id:
-                        demand_obj.__change_vij(origin_node_id, destination_node_id, v_sc_osc)
+                        demand_obj.change_vij(origin_node_id, destination_node_id, v_sc_osc)
 
         return demand_obj
 
@@ -208,7 +208,7 @@ class Demand:
                 else:
                     if len(line.split(",")) == 3:
                         origin_id, destination_id, vij = line.split(",")
-                        demand_obj.__change_vij(str(origin_id), str(destination_id), float(vij))
+                        demand_obj.change_vij(str(origin_id), str(destination_id), float(vij))
                     else:
                         raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
                                                             "destination_id] [vij]")
