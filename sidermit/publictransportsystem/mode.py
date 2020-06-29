@@ -1,4 +1,4 @@
-from __future__ import annotations
+# from __future__ import annotations
 
 import operator
 from typing import List
@@ -85,7 +85,7 @@ class TransportMode:
         self.d = d
 
     @staticmethod
-    def get_default_modes() -> List[TransportMode]:
+    def get_default_modes():# -> List[TransportMode]:
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
                                            150, 160, 0.7, 0, 6)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
