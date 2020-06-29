@@ -737,6 +737,14 @@ class Graph:
                 break
         return cbd
 
+    def get_parameters(self):
+        """
+        to get tuple with n, L, g, P, etha, etha_zone, angles, Gi, Hi
+        :return:
+        """
+        return (self.__n, self.__l, self.__g, self.__p, self.__etha,
+                self.__etha_zone, self.__angles, self.__Gi, self.__Hi)
+
     def get_n(self):
         """
         to get parameters of numbers of zones
