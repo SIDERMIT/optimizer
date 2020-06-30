@@ -304,10 +304,10 @@ class ExtendedGraph:
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
                 edge1 = ExtendedEdge(len(access_edges), city_node, stop_node,
-                                     stop_node.mode.tat, -1, ExtendedEdgesType.ACCESS)
+                                     stop_node.mode.tat, float('inf'), ExtendedEdgesType.ACCESS)
                 access_edges.append(edge1)
                 edge2 = ExtendedEdge(len(access_edges), stop_node, city_node,
-                                     stop_node.mode.tat, -1, ExtendedEdgesType.ACCESS)
+                                     stop_node.mode.tat, float('inf'), ExtendedEdgesType.ACCESS)
                 access_edges.append(edge2)
         return access_edges
 
@@ -357,13 +357,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[0]):
                         edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
-                                            pt, -1, ExtendedEdgesType.ALIGHTING)
+                                            pt, float('inf'), ExtendedEdgesType.ALIGHTING)
                         alighting_edges.append(edge)
                         continue
                     # but if route type is circular add always alighting edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
-                                            pt, -1, ExtendedEdgesType.ALIGHTING)
+                                            pt, float('inf'), ExtendedEdgesType.ALIGHTING)
                         alighting_edges.append(edge)
                         continue
 
@@ -433,6 +433,6 @@ class ExtendedGraph:
                 t = distance / v
 
                 edge = ExtendedEdge(len(route_edges), previous_route_node, route_node,
-                                    t, -1, ExtendedEdgesType.ROUTE)
+                                    t, float('inf'), ExtendedEdgesType.ROUTE)
                 route_edges.append(edge)
         return route_edges
