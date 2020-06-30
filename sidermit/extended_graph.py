@@ -70,7 +70,13 @@ class ExtendedEdgesType(Enum):
 
 class ExtendedGraph:
 
-    def __init__(self, graph_obj, network_obj, passenger_obj, initial_frequency=28):
+    def __init__(self, graph_obj, network_obj, passenger_obj, initial_frequency=None):
+
+        if initial_frequency is None:
+            initial_frequency = defaultdict(float)
+
+            for route in network_obj.get_routes():
+                initial_frequency[route.id] = 28
 
         # list with all city_nodes
         city_nodes = self.build_city_nodes(graph_obj)
@@ -106,6 +112,47 @@ class ExtendedGraph:
             self.__extended_graph_edges.append(edge)
         for edge in routes_edges:
             self.__extended_graph_edges.append(edge)
+
+    def __str__(self):
+        line = ""
+        for city_node in self.__extended_graph_nodes:
+            line += "City node\n-Graph node name: {}\n".format(city_node.graph_node.name)
+            for stop_node in self.__extended_graph_nodes[city_node]:
+                # information about access edge
+                for edge in self.__extended_graph_edges:
+                    if edge.nodei == city_node and edge.nodej == stop_node:
+                        line += "\tAccess edge\n\t-Access time: {} [min]\n".format(edge.t)
+
+                line += "\t\tStop node\n\t\t-Mode name: {}\n".format(stop_node.mode.name)
+
+                for route_node in self.__extended_graph_nodes[city_node][stop_node]:
+                    # information about boarding edge
+                    for edge in self.__extended_graph_edges:
+                        if edge.nodei == stop_node and edge.nodej == route_node:
+                            line += "\t\t\tBoarding edge\n\t\t\t-Frequency: {} [veh/h]\n".format(edge.f)
+
+                    # information about boarding edge
+                    for edge in self.__extended_graph_edges:
+                        if edge.nodei == route_node and edge.nodej == stop_node:
+                            line += "\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {} [min]\n".format(edge.t)
+
+                    # information about route node
+                    if route_node.prev_route_node is None:
+                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]\n".format(
+                            route_node.route.id,
+                            route_node.direction, "no data", 0)
+                    else:
+                        t = 0
+                        for edge in self.__extended_graph_edges:
+                            if edge.nodei == route_node.prev_route_node and edge.nodej == route_node:
+                                t = edge.t
+                                break
+                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]\n".format(
+                            route_node.route.id,
+                            route_node.direction,
+                            route_node.prev_route_node.stop_node.city_node.graph_node.name,
+                            t)
+        return line
 
     def get_extended_graph_nodes(self):
         return self.__extended_graph_nodes
@@ -279,13 +326,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[len(node_sequence) - 1]):
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency, ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route], ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
                     # but if route type is circular add always boarding edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency, ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route], ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
 
@@ -381,7 +428,7 @@ class ExtendedGraph:
                                 y_prev = y
                                 break
 
-                t = distance  # / v
+                t = distance / v
 
                 edge = ExtendedEdge(len(route_edges), previous_route_node, route_node,
                                     t, -1, ExtendedEdgesType.ROUTE)

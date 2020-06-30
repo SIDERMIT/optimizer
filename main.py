@@ -81,8 +81,11 @@ for route in circular_routes:
     network.add_route(route)
 
 extended_graph = ExtendedGraph(graph_obj, network, passenger_obj, initial_frequency=28)
-extended_graph_nodes = extended_graph.get_extended_graph_nodes()
-extended_graph_edges = extended_graph.get_extended_graph_edges()
+# extended_graph_nodes = extended_graph.get_extended_graph_nodes()
+# extended_graph_edges = extended_graph.get_extended_graph_edges()
+
+print(extended_graph.__str__())
+
 
 # city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
 # tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
@@ -94,48 +97,49 @@ extended_graph_edges = extended_graph.get_extended_graph_edges()
 # alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj)
 # route_edges = ExtendedGraph.build_route_edges(extended_graph_nodes)
 
-network.plot("sidermit.png", list_routes=["RE_metro_1"])
 
 # for edge in route_edges:
 #     print("{} - {} - {} - {} - {} - {}".format(edge.nodei.id, edge.nodei.route.id, edge.nodei.direction, edge.nodei.stop_node.city_node.graph_node.name, edge.nodej.stop_node.city_node.graph_node.name, edge.t))
 
-for city_node in extended_graph_nodes:
-    print("City node: {}".format(city_node.graph_node.name))
-
-    for stop_node in extended_graph_nodes[city_node]:
-
-        #information about access edge
-        for edge in extended_graph_edges:
-            if edge.nodei == city_node and edge.nodej == stop_node:
-                print("     Access time: {}".format(edge.t))
-
-        print("         Stop node: {}".format(stop_node.mode.name))
-
-        for route_node in extended_graph_nodes[city_node][stop_node]:
-
-            # information about boarding edge
-            for edge in extended_graph_edges:
-                if edge.nodei == stop_node and edge.nodej == route_node:
-                    print("             frequency boarding: {}".format(edge.f))
-
-            # information about boarding edge
-            for edge in extended_graph_edges:
-                if edge.nodei == route_node and edge.nodej == stop_node:
-                    print("             time alighting: {}".format(edge.t))
-
-            # information about route node
-            if route_node.prev_route_node is None:
-                print("                 Route node: {}, direction: {}, adj: {}, dist:{}".format(route_node.route.id,
-                                                                               route_node.direction, "no hay", 0))
-            else:
-                t = 0
-                for edge in extended_graph_edges:
-                    if edge.nodei == route_node.prev_route_node and edge.nodej == route_node:
-                        t = edge.t
-                        break
-                print("                 Route node: {}, direction: {}, adj: {} - {} - {}, dist:{}".format(route_node.route.id,
-                                                                               route_node.direction,
-                                                                               route_node.prev_route_node.stop_node.city_node.graph_node.name,
-                                                                               route_node.prev_route_node.route.id,
-                                                                               route_node.prev_route_node.direction,
-                                                                               t))
+# for city_node in extended_graph_nodes:
+#     print("City node\n-Graph node name: {}".format(city_node.graph_node.name))
+#
+#     for stop_node in extended_graph_nodes[city_node]:
+#
+#         # information about access edge
+#         for edge in extended_graph_edges:
+#             if edge.nodei == city_node and edge.nodej == stop_node:
+#                 print("\tAccess edge\n\t-Access time: {} [min]".format(edge.t))
+#
+#         print("\t\tStop node\n\t\t-Mode name: {}".format(stop_node.mode.name))
+#
+#         for route_node in extended_graph_nodes[city_node][stop_node]:
+#
+#             # information about boarding edge
+#             for edge in extended_graph_edges:
+#                 if edge.nodei == stop_node and edge.nodej == route_node:
+#                     print("\t\t\tBoarding edge\n\t\t\t-Frequency: {} [veh/h]".format(edge.f))
+#
+#             # information about boarding edge
+#             for edge in extended_graph_edges:
+#                 if edge.nodei == route_node and edge.nodej == stop_node:
+#                     print("\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {} [min]".format(edge.t))
+#
+#             # information about route node
+#             if route_node.prev_route_node is None:
+#                 print(
+#                     "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]".format(
+#                         route_node.route.id,
+#                         route_node.direction, "no data", 0))
+#             else:
+#                 t = 0
+#                 for edge in extended_graph_edges:
+#                     if edge.nodei == route_node.prev_route_node and edge.nodej == route_node:
+#                         t = edge.t
+#                         break
+#                 print(
+#                     "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]".format(
+#                         route_node.route.id,
+#                         route_node.direction,
+#                         route_node.prev_route_node.stop_node.city_node.graph_node.name,
+#                         t))

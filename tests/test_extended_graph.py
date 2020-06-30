@@ -4,6 +4,7 @@ from sidermit.city import graph
 from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, TransportMode, Passenger
 from sidermit.extended_graph import ExtendedGraph, ExtendedEdgesType
 
+from collections import defaultdict
 
 class test_extended_graph(unittest.TestCase):
 
@@ -195,8 +196,13 @@ class test_extended_graph(unittest.TestCase):
 
         extended_graph_nodes = ExtendedGraph.build_extended_graph_nodes(route_nodes)
 
+        initial_frequency = defaultdict(float)
+
+        for route in network.get_routes():
+            initial_frequency[route.id] = 28
+
         access_edges = ExtendedGraph.build_access_edges(extended_graph_nodes)
-        boarding_edges = ExtendedGraph.build_boarding_edges(extended_graph_nodes, 28)
+        boarding_edges = ExtendedGraph.build_boarding_edges(extended_graph_nodes, initial_frequency)
         alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj)
         route_edges = ExtendedGraph.build_route_edges(extended_graph_nodes)
 
