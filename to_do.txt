@@ -1,0 +1,6 @@
+General:
+Agregar docstring
+
+Network:
+verificar metodo update_route en clase TransportNetwork pues al parecer la actualización actual no verifica
+la validez de la actualización
