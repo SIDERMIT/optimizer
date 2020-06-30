@@ -24,8 +24,6 @@ from sidermit.publictransportsystem.network import RouteType
 class ExtendedNode:
     def __init__(self, extendend_node_id):
         self.id = extendend_node_id
-        self.label = None
-        self.predecessor = None
 
 
 class CityNode(ExtendedNode):
