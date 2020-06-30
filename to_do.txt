@@ -4,3 +4,6 @@ Agregar docstring
 Network:
 verificar metodo update_route en clase TransportNetwork pues al parecer la actualización actual no verifica
 la validez de la actualización
+
+Extended_network:
+modificar initial_frequency por un diccionario por ruta, servirá parcd a las iteraciones futuras del optimizador

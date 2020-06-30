@@ -164,28 +164,6 @@ class TransportNetworkTest(unittest.TestCase):
             network = TransportNetwork(graph_obj)
             network.get_route("r1")
 
-    def test_update_route(self):
-        """
-        to test update_route method from transport_network class
-        :return:
-        """
-        graph_obj = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        mode_manager = TransportModeManager()
-        bus_obj = mode_manager.get_mode("bus")
-        metro_obj = mode_manager.get_mode("metro")
-        network = TransportNetwork(graph_obj)
-        route = Route("r1", bus_obj, "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
-        network.add_route(route)
-
-        network.update_route("r1", mode=metro_obj)
-        self.assertEqual(network.get_route("r1").mode, metro_obj)
-
-        network.update_route("r1")
-        self.assertEqual(network.get_route("r1").mode, metro_obj)
-
-        with self.assertRaises(exceptions.RouteIdNotFoundException):
-            network.update_route("r3")
-
     def test_get_feeder_routes(self):
         """
         to test add feeder routes

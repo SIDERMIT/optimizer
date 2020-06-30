@@ -597,20 +597,6 @@ class TransportNetwork:
 
         return routes
 
-    def update_route(self, route_id, **kwargs):
-        """
-        to update route information
-        :param route_id:
-        :return:
-        """
-        if route_id not in self.__routes_id:
-            raise RouteIdNotFoundException("route_id does not exist")
-
-        i = self.__routes_id.index(route_id)
-        route_obj = self.__routes[i]
-        for attr in kwargs:
-            setattr(route_obj, attr, kwargs[attr])
-
     def plot(self, file_path, list_routes=None):
         """
         to plot graph

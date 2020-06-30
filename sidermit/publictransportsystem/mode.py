@@ -105,21 +105,6 @@ class TransportModeManager:
             self.__modes.append(metro_obj)
             self.__list_name.append(metro_obj.name)
 
-    def update_mode(self, name, **kwargs):
-        """
-        to update mode attributes
-        :param name:
-        :return:
-        """
-
-        if name not in self.__list_name:
-            raise ModeDoesNotExistExceptions("mode name does not exist")
-
-        i = self.__list_name.index(name)
-        mode_obj = self.__modes[i]
-        for attr in kwargs:
-            setattr(mode_obj, attr, kwargs[attr])
-
     def is_valid(self):
         """
         to check that there is at least one way

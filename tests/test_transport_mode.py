@@ -140,23 +140,6 @@ class TransportModeTest(unittest.TestCase):
         with self.assertRaises(exceptions.ModeDoesNotExistExceptions):
             m.delete_mode("train")
 
-    def test_update_mode(self):
-        """
-        to test update_mode method
-        :return:
-        """
-        m = TransportModeManager()
-
-        m.update_mode("bus", v=1, theta=1, t=1, kmax=1, fmax=1, co=1, c1=1,
-                      c2=1, tat=1, d=1, bya=1)
-        self.assertEqual(len(m.get_modes()), 2)
-
-        m.update_mode("metro")
-        self.assertEqual(len(m.get_modes()), 2)
-
-        with self.assertRaises(exceptions.ModeDoesNotExistExceptions):
-            m.update_mode("train")
-
 
 if __name__ == '__main__':
     unittest.main()
