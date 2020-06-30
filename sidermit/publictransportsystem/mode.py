@@ -1,7 +1,7 @@
 # from __future__ import annotations
 
 import operator
-from typing import List
+# from typing import List
 
 from sidermit.exceptions import CoIsNotValidExceptions, \
     C1IsNotValidExceptions, C2IsNotValidExceptions, VIsNotValidExceptions, \
