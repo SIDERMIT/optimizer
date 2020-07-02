@@ -80,11 +80,21 @@ for route in radial_routes:
 for route in circular_routes:
     network.add_route(route)
 
-extended_graph = ExtendedGraph(graph_obj, network, passenger_obj, initial_frequency=28)
+extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
 # extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 # extended_graph_edges = extended_graph.get_extended_graph_edges()
 
 print(extended_graph.__str__())
+
+import heapq
+
+l = [1, 3, float('inf'), 9, 7, 6, 5, 2, 5]
+heapq.heapify(l)
+print(l)
+for i in range(len(l)):
+    print(heapq.heappop(l))
+
+print(1/float('inf'))
 
 
 # city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
