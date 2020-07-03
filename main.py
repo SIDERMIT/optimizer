@@ -55,21 +55,21 @@
 from sidermit.city import graph
 from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, TransportMode, Passenger
 from sidermit.extended_graph import ExtendedGraph
+from sidermit.hyper_path import Hyperpath
 
 graph_obj = graph.Graph.build_from_parameters(n=5, l=1000, g=0.5, p=2)
 
 mode_manager = TransportModeManager()
 bus_obj = mode_manager.get_mode("bus")
 metro_obj = mode_manager.get_mode("metro")
-train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
-passenger_obj = Passenger(4, 2, 2, 2, 2, 2, 2, 2, 2)
+passenger_obj = Passenger.get_default_passenger()
 
 network = TransportNetwork(graph_obj)
 
 feeder_routes = network.get_feeder_routes(bus_obj)
-radial_routes = network.get_radial_routes(metro_obj, express=True)
-circular_routes = network.get_circular_routes(train_obj)
+radial_routes = network.get_radial_routes(metro_obj)
+circular_routes = network.get_circular_routes(bus_obj)
 
 for route in feeder_routes:
     network.add_route(route)
@@ -81,21 +81,18 @@ for route in circular_routes:
     network.add_route(route)
 
 extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+
+print(extended_graph.__str__())
 # extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 # extended_graph_edges = extended_graph.get_extended_graph_edges()
 
-print(extended_graph.__str__())
+# print(extended_graph.__str__())
 
-import heapq
+hyperpath_obj= Hyperpath()
 
-l = [1, 3, float('inf'), 9, 7, 6, 5, 2, 5]
-heapq.heapify(l)
-print(l)
-for i in range(len(l)):
-    print(heapq.heappop(l))
+successor, successor_inf, labels, labels_inf, frequencies = hyperpath_obj.get_hyperpath(extended_graph, "1", "0")
 
-print(1/float('inf'))
-
+print(hyperpath_obj.__str__(successor, successor_inf, labels, labels_inf, frequencies))
 
 # city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
 # tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
