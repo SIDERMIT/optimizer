@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from sidermit.extended_graph import CityNode, StopNode, RouteNode
+from sidermit.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdgesType
 
 
 class Hyperpath:
@@ -18,11 +18,8 @@ class Hyperpath:
 
             line_successor = ""
             if infinite:
-                successors = successor_inf[node]
-            else:
-                successors = successor[node]
+                suc = successor_inf[node]
 
-            for suc in successors:
                 nodei = suc.nodei
                 nodej = suc.nodej
                 linei = ""
@@ -43,16 +40,40 @@ class Hyperpath:
                                                           nodej.stop_node.city_node.graph_node.name)
 
                 line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
+            else:
+                for suc in successor[node]:
+                    nodei = suc.nodei
+                    nodej = suc.nodej
+                    linei = ""
+                    linej = ""
+                    if isinstance(nodei, CityNode):
+                        linei += "Citynode: {}".format(nodei.graph_node.name)
+                    if isinstance(nodei, StopNode):
+                        linei += "Stopnode {}: {}".format(nodei.mode.name, nodei.city_node.graph_node.name)
+                    if isinstance(nodei, RouteNode):
+                        linei += "Routenode {} {}: {}".format(nodei.route.id, nodei.direction,
+                                                              nodei.stop_node.city_node.graph_node.name)
+                    if isinstance(nodej, CityNode):
+                        linej += "Citynode: {}".format(nodej.graph_node.name)
+                    if isinstance(nodej, StopNode):
+                        linej += "Stopnode {}: {}".format(nodej.mode.name, nodej.city_node.graph_node.name)
+                    if isinstance(nodej, RouteNode):
+                        linej += "Routenode {} {}: {}".format(nodej.route.id, nodej.direction,
+                                                              nodej.stop_node.city_node.graph_node.name)
+
+                    line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
 
             if isinstance(node, CityNode):
                 line += "City_node\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
                     node.graph_node.name, min(labels_inf[node], labels[node]), line_successor, line_frequency)
             if isinstance(node, StopNode):
                 line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
-                    node.mode.name, node.city_node.graph_node.name, min(labels_inf[node], labels[node]), line_successor, line_frequency)
+                    node.mode.name, node.city_node.graph_node.name, min(labels_inf[node], labels[node]), line_successor,
+                    line_frequency)
             if isinstance(node, RouteNode):
                 line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
-                    node.route.id, node.direction, node.stop_node.city_node.graph_node.name, min(labels_inf[node], labels[node]),
+                    node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
+                    min(labels_inf[node], labels[node]),
                     line_successor, line_frequency)
         return line
 
@@ -76,7 +97,7 @@ class Hyperpath:
         labels_inf = defaultdict(float)
         # diccionario que para cada nodo tiene el listado de arcos que lo llevan a su sucesor: dic[node] = list arcos
         successor = defaultdict(list)
-        successor_inf = defaultdict(list)
+        successor_inf = defaultdict(None)
         # diccionario con la frecuencia acumulada de los arcos sucesores: dic[node] = frecuencia acumuladaq
         frequencies = defaultdict(float)
         # lista de nodos procesados (con estrategia calculada)
@@ -133,9 +154,14 @@ class Hyperpath:
 
             # para los arcos actualizamos el label del nodo de origen como: labeli = labelj + time_arco ij
             for edge in edge_j:
-                # equivalente a t_a cola de chancho en pseudo codigo del paper
 
-                t_i = edge.t + min(labels[j], labels_inf[j])
+                # para no considerar penalida de transbordo en el origen
+                edge_t = edge.t
+                if edge.type == ExtendedEdgesType.ALIGHTING:
+                    if str(edge.nodej.city_node.graph_node.id) == str(node_graph_origin_id):
+                        edge_t = 0
+                # equivalente a t_a cola de chancho en pseudo codigo del paper
+                t_i = edge_t + min(labels[j], labels_inf[j])
                 i = edge.nodei
 
                 # print(t_i)
@@ -144,7 +170,7 @@ class Hyperpath:
                 # actualizamos a nodos distintos de los de rutas
                 if edge.f == float('inf') and t_i < labels_inf[i]:
                     # print("hola")
-                    successor_inf[i].append(edge)
+                    successor_inf[i] = edge
                     labels_inf[i] = t_i
                     # print(labels[i])
 
@@ -165,9 +191,14 @@ class Hyperpath:
                 for edge_b in successor[i]:
                     if edge_b == edge:
                         continue
-                    # print("hola2")
+                    # para no considerar penalida de transbordo en el origen
+                    edge_b_t = edge_b.t
+                    if edge_b.type == ExtendedEdgesType.ALIGHTING:
+                        if str(edge.nodej.city_node.graph_node.id) == str(node_graph_origin_id):
+                            edge_b_t = 0
+
                     # equivalente a t_b cola de chancho
-                    t_ib = labels[edge_b.nodej] + edge_b.t
+                    t_ib = labels[edge_b.nodej] + edge_b_t
 
                     if t_ib >= labels[i]:
                         successor[i].remove(edge_b)

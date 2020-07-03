@@ -69,6 +69,7 @@ network = TransportNetwork(graph_obj)
 
 feeder_routes = network.get_feeder_routes(bus_obj)
 radial_routes = network.get_radial_routes(metro_obj)
+radial_routes_bus = network.get_radial_routes(bus_obj)
 circular_routes = network.get_circular_routes(bus_obj)
 
 for route in feeder_routes:
@@ -78,6 +79,9 @@ for route in radial_routes:
     network.add_route(route)
 
 for route in circular_routes:
+    network.add_route(route)
+
+for route in radial_routes_bus:
     network.add_route(route)
 
 extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
