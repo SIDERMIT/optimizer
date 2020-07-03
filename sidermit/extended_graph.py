@@ -132,7 +132,7 @@ class ExtendedGraph:
                     # information about boarding edge
                     for edge in self.__extended_graph_edges:
                         if edge.nodei == route_node and edge.nodej == stop_node:
-                            line += "\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {} [min]\n".format(edge.t)
+                            line += "\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {} [min]\n".format(edge.t * 60)
 
                     # information about route node
                     if route_node.prev_route_node is None:
@@ -304,10 +304,10 @@ class ExtendedGraph:
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
                 edge1 = ExtendedEdge(len(access_edges), city_node, stop_node,
-                                     stop_node.mode.tat, float('inf'), ExtendedEdgesType.ACCESS)
+                                     stop_node.mode.tat / 60, float('inf'), ExtendedEdgesType.ACCESS)
                 access_edges.append(edge1)
                 edge2 = ExtendedEdge(len(access_edges), stop_node, city_node,
-                                     stop_node.mode.tat, float('inf'), ExtendedEdgesType.ACCESS)
+                                     stop_node.mode.tat / 60, float('inf'), ExtendedEdgesType.ACCESS)
                 access_edges.append(edge2)
         return access_edges
 
@@ -328,13 +328,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[len(node_sequence) - 1]):
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route], ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route.id], ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
                     # but if route type is circular add always boarding edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route], ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route.id], ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
 
@@ -342,7 +342,7 @@ class ExtendedGraph:
 
     @staticmethod
     def build_alighting_edges(extended_graph_nodes, passenger_obj):
-        pt = passenger_obj.pt
+        spt = passenger_obj.spt / 60
         alighting_edges = []
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
@@ -357,13 +357,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[0]):
                         edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
-                                            pt, float('inf'), ExtendedEdgesType.ALIGHTING)
+                                            spt, float('inf'), ExtendedEdgesType.ALIGHTING)
                         alighting_edges.append(edge)
                         continue
                     # but if route type is circular add always alighting edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(alighting_edges), route_node, stop_node,
-                                            pt, float('inf'), ExtendedEdgesType.ALIGHTING)
+                                            spt, float('inf'), ExtendedEdgesType.ALIGHTING)
                         alighting_edges.append(edge)
                         continue
 
