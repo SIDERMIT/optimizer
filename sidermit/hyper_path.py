@@ -5,21 +5,15 @@ from sidermit.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdges
 
 class Hyperpath:
 
-    def __str__(self, successor, successor_inf, labels, labels_inf, frequencies):
-        line = ""
-        for node in labels:
+    def __str__(self, successors, label, frequencies):
+        line = "HyperPath\n"
+        for node in label:
 
             line_frequency = frequencies[node]
 
-            infinite = False
-
-            if labels_inf[node] < labels[node]:
-                infinite = True
-
             line_successor = ""
-            if infinite:
-                suc = successor_inf[node]
 
+            for suc in successors[node]:
                 nodei = suc.nodei
                 nodej = suc.nodej
                 linei = ""
@@ -40,56 +34,33 @@ class Hyperpath:
                                                           nodej.stop_node.city_node.graph_node.name)
 
                 line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
-            else:
-                for suc in successor[node]:
-                    nodei = suc.nodei
-                    nodej = suc.nodej
-                    linei = ""
-                    linej = ""
-                    if isinstance(nodei, CityNode):
-                        linei += "Citynode: {}".format(nodei.graph_node.name)
-                    if isinstance(nodei, StopNode):
-                        linei += "Stopnode {}: {}".format(nodei.mode.name, nodei.city_node.graph_node.name)
-                    if isinstance(nodei, RouteNode):
-                        linei += "Routenode {} {}: {}".format(nodei.route.id, nodei.direction,
-                                                              nodei.stop_node.city_node.graph_node.name)
-                    if isinstance(nodej, CityNode):
-                        linej += "Citynode: {}".format(nodej.graph_node.name)
-                    if isinstance(nodej, StopNode):
-                        linej += "Stopnode {}: {}".format(nodej.mode.name, nodej.city_node.graph_node.name)
-                    if isinstance(nodej, RouteNode):
-                        linej += "Routenode {} {}: {}".format(nodej.route.id, nodej.direction,
-                                                              nodej.stop_node.city_node.graph_node.name)
-
-                    line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
 
             if isinstance(node, CityNode):
                 line += "City_node\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
-                    node.graph_node.name, min(labels_inf[node], labels[node]), line_successor, line_frequency)
+                    node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, StopNode):
                 line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
-                    node.mode.name, node.city_node.graph_node.name, min(labels_inf[node], labels[node]), line_successor,
-                    line_frequency)
+                    node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, RouteNode):
                 line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
                     node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
-                    min(labels_inf[node], labels[node]),
-                    line_successor, line_frequency)
+                    label[node], line_successor, line_frequency)
         return line
 
     @staticmethod
-    def get_hyperpath(extended_graph_obj, node_graph_origin_id, node_graph_destination_id):
+    def build_hyperpath(extended_graph_obj, node_city_origin, node_city_destination):
+
         nodes = extended_graph_obj.get_extended_graph_nodes()
         edges = extended_graph_obj.get_extended_graph_edges()
 
         # quitaremos los arcos de acceso al city_graph de origen
         for edge in edges:
-            if isinstance(edge.nodei, CityNode):
-                if str(edge.nodei.graph_node.id) == str(node_graph_origin_id):
-                    edges.remove(edge)
-            if isinstance(edge.nodej, CityNode):
-                if str(edge.nodej.graph_node.id) == str(node_graph_origin_id):
-                    edges.remove(edge)
+
+            if edge.nodei == node_city_origin:
+                edges.remove(edge)
+
+            if edge.nodej == node_city_origin:
+                edges.remove(edge)
 
         # inicializamos etiquetas de nodos en infinito salvo para el destino que queda con etiqueta 0 y en lista heap
         # diccionario de etiquetas de todos los nodes: dic[node] = label
@@ -103,10 +74,11 @@ class Hyperpath:
         # lista de nodos procesados (con estrategia calculada)
         S = []
 
+        # inicializamos parámetros
+        # numero de nodos en el grafo extendido
         n_nodes = 0
         for city_node in nodes:
-            # print(city_node.graph_node.id)
-            if str(city_node.graph_node.id) == str(node_graph_destination_id):
+            if city_node == node_city_destination:
                 labels[city_node] = 0
                 labels_inf[city_node] = 0
                 frequencies[city_node] = 0
@@ -127,7 +99,7 @@ class Hyperpath:
                     frequencies[route_node] = 0
                     n_nodes = n_nodes + 1
 
-        # mientras heap tenga nodos por procesar
+        # mientras existan nodos que no han sido procesador
         while len(S) != n_nodes:
             # encontramos nodo con label minimo y que no pertenezca a S
             min_label_node = None
@@ -137,44 +109,35 @@ class Hyperpath:
                     if min(labels[node], labels_inf[node]) < min_label:
                         min_label = min(labels[node], labels_inf[node])
                         min_label_node = node
-            # actualizamos S
-            S.append(min_label_node)
-
-            # en un principio es igual al destino
+            # nodo que se procesara, en un principio es igual al destino
             j = min_label_node
-            # print(j)
-            # print(min_label)
-
+            # actualizamos S
+            S.append(j)
             # debemos encontrar todos los arcos que finalizan en j y cuyo inicio no este en S:
             edge_j = []
             for edge in edges:
                 if edge.nodei not in S and edge.nodej == j:
                     edge_j.append(edge)
-            # print(len(edge_j))
 
             # para los arcos actualizamos el label del nodo de origen como: labeli = labelj + time_arco ij
             for edge in edge_j:
 
-                # para no considerar penalida de transbordo en el origen
+                # para no considerar penalidad de transbordo en el origen
                 edge_t = edge.t
                 if edge.type == ExtendedEdgesType.ALIGHTING:
-                    if str(edge.nodej.city_node.graph_node.id) == str(node_graph_origin_id):
+                    if edge.nodej.city_node == node_city_origin:
                         edge_t = 0
+
                 # equivalente a t_a cola de chancho en pseudo codigo del paper
                 t_i = edge_t + min(labels[j], labels_inf[j])
                 i = edge.nodei
 
-                # print(t_i)
-                # print(edge.type)
-
-                # actualizamos a nodos distintos de los de rutas
+                # para to do tipo de arcos menos de boarding
                 if edge.f == float('inf') and t_i < labels_inf[i]:
-                    # print("hola")
                     successor_inf[i] = edge
                     labels_inf[i] = t_i
-                    # print(labels[i])
 
-                # actualizamos nodos de rutas
+                # para arcos de boarding
                 if edge.f < float('inf') and t_i < labels[i]:
                     # caso inicial de actualizacion
                     if frequencies[i] == 0 and labels[i] == float('inf'):
@@ -187,6 +150,7 @@ class Hyperpath:
                         successor[i].append(edge)
                         labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
                         frequencies[i] = frequencies[i] + edge.f
+
                 # verificamos que todos los sucessores previo de i se mantengan siendo optimos
                 for edge_b in successor[i]:
                     if edge_b == edge:
@@ -194,15 +158,122 @@ class Hyperpath:
                     # para no considerar penalida de transbordo en el origen
                     edge_b_t = edge_b.t
                     if edge_b.type == ExtendedEdgesType.ALIGHTING:
-                        if str(edge.nodej.city_node.graph_node.id) == str(node_graph_origin_id):
+                        if edge.nodej.city_node == node_city_origin:
                             edge_b_t = 0
 
                     # equivalente a t_b cola de chancho
-                    t_ib = labels[edge_b.nodej] + edge_b_t
+                    t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
 
                     if t_ib >= labels[i]:
                         successor[i].remove(edge_b)
                         labels[i] = (frequencies[i] * labels[i] - edge_b.f * t_ib) / (frequencies[i] - edge_b.f)
                         frequencies[i] = frequencies[i] - edge_b.f
 
-        return successor, successor_inf, labels, labels_inf, frequencies
+        # reducimos listados de sucesores y labels a una unica lista
+
+        successors = defaultdict(list)
+        label = defaultdict(float)
+
+        for city_node in nodes:
+            if labels[city_node] < labels_inf[city_node]:
+                label[city_node] = labels[city_node]
+                for suc in successor[city_node]:
+                    successors[city_node].append(suc)
+            else:
+                label[city_node] = labels_inf[city_node]
+
+                if successor_inf.get(city_node):
+                    successors[city_node].append(successor_inf[city_node])
+
+            for stop_node in nodes[city_node]:
+                if labels[stop_node] < labels_inf[stop_node]:
+                    label[stop_node] = labels[stop_node]
+                    for suc in successor[stop_node]:
+                        successors[stop_node].append(suc)
+                else:
+                    label[stop_node] = labels_inf[stop_node]
+                    if successor_inf.get(stop_node):
+                        successors[stop_node].append(successor_inf[stop_node])
+                for route_node in nodes[city_node][stop_node]:
+                    if labels[route_node] < labels_inf[route_node]:
+                        label[route_node] = labels[route_node]
+                        for suc in successor[route_node]:
+                            successors[route_node].append(suc)
+                    else:
+                        label[route_node] = labels_inf[route_node]
+                        if successor_inf.get(route_node):
+                            successors[route_node].append(successor_inf[route_node])
+
+        return successors, label, frequencies
+
+    def get_hyper_routes(self, extended_graph_obj, node_city_origin, node_city_destination):
+
+        successors, label, frequencies = self.build_hyperpath(extended_graph_obj,
+                                                              node_city_origin,
+                                                              node_city_destination)
+
+        nodes = extended_graph_obj.get_extended_graph_nodes()
+        # edges = extended_graph_obj.get_extended_graph_edges()
+
+        # print(successors)
+        # tantas hiperrutas por modo que tenga el origen
+        hyperpaths = []
+
+        # para cada paradero del origen
+        for stop in nodes[node_city_origin]:
+            # hiperruta individual de la parada
+            hyperpath_stop = []
+            # inicializamos la hiperruta con el nodo del paradero
+            hyperpath_stop.append([stop])
+
+            while True:
+                # condicion de parada que cada path individual haya llegado a destino
+                end = True
+                for path in hyperpath_stop:
+                    # existe un path que no ha llegado al destino
+                    if path[len(path) - 1] != node_city_destination:
+                        end = False
+                        break
+                if end:
+                    break
+
+                new_hyperpath_stop = []
+                # agregamos sucesores de auqellos path que no han llegado al destino
+                for path in hyperpath_stop:
+                    # path que no ha llegado a destino
+                    if path[len(path) - 1] != node_city_destination:
+                        # hyperpath_stop.remove(path)
+                        # agregamos tantos nuevos path como sucesores tenga el ultimo nodo del path analizado
+                        for suc in successors[path[len(path) - 1]]:
+
+                            new_path = []
+                            for n in path:
+                                new_path.append(n)
+                            new_path.append(suc.nodej)
+
+                            new_hyperpath_stop.append(new_path)
+                        # sacamos el camino evakuado
+                    # path que llego a destino
+                    else:
+                        new_hyperpath_stop.append(path)
+                hyperpath_stop = new_hyperpath_stop
+            hyperpaths.append(hyperpath_stop)
+
+        return hyperpaths
+
+    @staticmethod
+    def string_hyperpaths(hyperpaths):
+        line = ""
+        for hyperpath_stop in hyperpaths:
+            line += "\nNew stop\n"
+            for path in hyperpath_stop:
+                line += "\n\tNew Path:\n\t\t"
+                for node in path:
+                    if isinstance(node, CityNode):
+                        line += "[city_node {}]\n\t\t".format(node.graph_node.name)
+                    if isinstance(node, StopNode):
+                        line += "[stop_node {} - {}]\n\t\t".format(node.mode.name, node.city_node.graph_node.name)
+                    if isinstance(node, RouteNode):
+                        line += "[Route_node {} {} - {}]\n\t\t".format(node.route.id, node.direction,
+                                                                  node.stop_node.city_node.graph_node.name)
+        return line

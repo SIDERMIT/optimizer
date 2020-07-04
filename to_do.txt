@@ -1,2 +1,9 @@
 General:
 Agregar docstring
+
+network:
+agregar validación de que todos los pares OD con demanda tengan rutas
+
+observaciones:
+escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
+de grafos por ejemplo con rutas radiales cortas y largas exclusivas y falta especificar que es un escenario exclusivo
