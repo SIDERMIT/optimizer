@@ -53,4 +53,4 @@ class Passenger:
 
     @staticmethod
     def get_default_passenger():
-        return Passenger(4.0, 2.74, 5.48, 8.22, 0.73, 2.74, 5.48, 8.22, 0.73)
+        return Passenger(4.0, 2.74, 5.48, 8.22, 16, 2.74, 5.48, 8.22, 16)
