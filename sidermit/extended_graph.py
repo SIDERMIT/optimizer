@@ -68,25 +68,25 @@ class ExtendedEdgesType(Enum):
 
 class ExtendedGraph:
 
-    def __init__(self, graph_obj, network_obj, sPTP, frequency_routes=None):
+    def __init__(self, graph_obj, routes, sPTP, frequency_routes=None):
 
         if frequency_routes is None:
             frequency_routes = defaultdict(float)
 
-            for route in network_obj.get_routes():
+            for route in routes:
                 frequency_routes[route.id] = 28
 
         # list with all city_nodes
         city_nodes = self.build_city_nodes(graph_obj)
 
         # assistant dictionary to build stop_nodes and routes_nodes: dic[city_node][mode_obj] = [list of routes]
-        tree_graph = self.build_tree_graph(network_obj, city_nodes)
+        tree_graph = self.build_tree_graph(routes, city_nodes)
 
         # list with all stop nodes, there are 1 stop_node for each mode transiting in a city_node
         stop_nodes = self.build_stop_nodes(tree_graph)
 
         # list with all route_nodes, there are 1 route_node connected to a stop_node for each route in a city_node
-        route_nodes = self.build_route_nodes(network_obj, stop_nodes)
+        route_nodes = self.build_route_nodes(routes, stop_nodes)
 
         # extended graph nodes like as a dictionary: dic[city_node][stop_node] = [list route_nodes]
         self.__extended_graph_nodes = self.build_extended_graph_nodes(route_nodes)
@@ -167,13 +167,12 @@ class ExtendedGraph:
         return city_nodes
 
     @staticmethod
-    def build_tree_graph(network_obj, city_nodes):
+    def build_tree_graph(routes, city_nodes):
 
         tree_graph = defaultdict(lambda: defaultdict(list))
         for city_node in city_nodes:
             node_graph_id = city_node.graph_node.id
 
-            routes = network_obj.get_routes()
             for route in routes:
                 mode_obj = route.mode
                 stops_i = route.stops_sequence_i
@@ -212,9 +211,7 @@ class ExtendedGraph:
         return stop_nodes
 
     @staticmethod
-    def build_route_nodes(network_obj, stop_nodes):
-        # routes defined in the graph
-        routes = network_obj.get_routes()
+    def build_route_nodes(routes, stop_nodes):
         # list with all route nodes
         route_nodes = []
         for route in routes:
@@ -312,7 +309,7 @@ class ExtendedGraph:
         return access_edges
 
     @staticmethod
-    def build_boarding_edges(extended_graph_nodes, initial_frequency):
+    def build_boarding_edges(extended_graph_nodes, frequency_routes):
         boarding_edges = []
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:
@@ -328,13 +325,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[len(node_sequence) - 1]):
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
+                                            0, frequency_routes[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
                     # but if route type is circular add always boarding edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
+                                            0, frequency_routes[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
 
