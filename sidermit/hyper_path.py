@@ -1,11 +1,18 @@
 from collections import defaultdict
 
+import networkx as nx
+from matplotlib import pyplot as plt
+
 from sidermit.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdgesType
 
 
 class Hyperpath:
 
-    def __str__(self, successors, label, frequencies):
+    def __init__(self, extended_graph_obj):
+        self.extended_graph_obj = extended_graph_obj
+
+    @staticmethod
+    def print_hyperpath_graph(successors, label, frequencies):
         line = "HyperPath\n"
         for node in label:
 
@@ -36,19 +43,19 @@ class Hyperpath:
                 line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
 
             if isinstance(node, CityNode):
-                line += "City_node\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
                     node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, StopNode):
-                line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
                     node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, RouteNode):
-                line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
                     node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
                     label[node], line_successor, line_frequency)
         return line
 
     @staticmethod
-    def build_hyperpath(extended_graph_obj, node_city_origin, node_city_destination):
+    def build_hyperpath_graph(extended_graph_obj, node_city_origin, node_city_destination):
 
         nodes = extended_graph_obj.get_extended_graph_nodes()
         edges = extended_graph_obj.get_extended_graph_edges()
@@ -143,7 +150,7 @@ class Hyperpath:
                     if frequencies[i] == 0 and labels[i] == float('inf'):
                         # print(edge.type)
                         successor[i].append(edge)
-                        labels[i] = (1 + edge.f * t_i) / (frequencies[i] + edge.f)
+                        labels[i] = (1 + edge.f * t_i) / (edge.f)
                         frequencies[i] = frequencies[i] + edge.f
                     # etiqueta anteriormente asignada
                     else:
@@ -206,13 +213,11 @@ class Hyperpath:
 
         return successors, label, frequencies
 
-    def get_hyper_routes(self, extended_graph_obj, node_city_origin, node_city_destination):
+    def get_hyperpath_OD(self, origin, destination):
 
-        successors, label, frequencies = self.build_hyperpath(extended_graph_obj,
-                                                              node_city_origin,
-                                                              node_city_destination)
+        successors, label, frequencies = self.build_hyperpath_graph(self.extended_graph_obj, origin, destination)
 
-        nodes = extended_graph_obj.get_extended_graph_nodes()
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
         # edges = extended_graph_obj.get_extended_graph_edges()
 
         # print(successors)
@@ -220,7 +225,7 @@ class Hyperpath:
         hyperpaths = []
 
         # para cada paradero del origen
-        for stop in nodes[node_city_origin]:
+        for stop in nodes[origin]:
             # hiperruta individual de la parada
             hyperpath_stop = []
             # inicializamos la hiperruta con el nodo del paradero
@@ -231,7 +236,7 @@ class Hyperpath:
                 end = True
                 for path in hyperpath_stop:
                     # existe un path que no ha llegado al destino
-                    if path[len(path) - 1] != node_city_destination:
+                    if path[len(path) - 1] != destination:
                         end = False
                         break
                 if end:
@@ -241,7 +246,7 @@ class Hyperpath:
                 # agregamos sucesores de auqellos path que no han llegado al destino
                 for path in hyperpath_stop:
                     # path que no ha llegado a destino
-                    if path[len(path) - 1] != node_city_destination:
+                    if path[len(path) - 1] != destination:
                         # hyperpath_stop.remove(path)
                         # agregamos tantos nuevos path como sucesores tenga el ultimo nodo del path analizado
                         for suc in successors[path[len(path) - 1]]:
@@ -262,7 +267,7 @@ class Hyperpath:
         return hyperpaths
 
     @staticmethod
-    def string_hyperpaths(hyperpaths):
+    def string_hyperpaths(hyperpaths, label):
         line = ""
         for hyperpath_stop in hyperpaths:
             line += "\nNew stop\n"
@@ -270,10 +275,84 @@ class Hyperpath:
                 line += "\n\tNew Path:\n\t\t"
                 for node in path:
                     if isinstance(node, CityNode):
-                        line += "[city_node {}]\n\t\t".format(node.graph_node.name)
+                        line += "[city_node {}: {:.2f}]\n\t\t".format(node.graph_node.name, label[node])
                     if isinstance(node, StopNode):
-                        line += "[stop_node {} - {}]\n\t\t".format(node.mode.name, node.city_node.graph_node.name)
+                        line += "[stop_node {} - {}: {:.2f}]\n\t\t".format(node.mode.name,
+                                                                           node.city_node.graph_node.name, label[node])
                     if isinstance(node, RouteNode):
-                        line += "[Route_node {} {} - {}]\n\t\t".format(node.route.id, node.direction,
-                                                                  node.stop_node.city_node.graph_node.name)
+                        line += "[Route_node {} {} - {}: {:.2f}]\n\t\t".format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name,
+                                                                               label[node])
         return line
+
+    @staticmethod
+    def plot(hyperpaths, origin):
+        """
+        to plot hyperpaths
+        :return:
+        """
+        city_nodes = [origin.graph_node.name]
+        stop_nodes = []
+        route_nodes = []
+        edges_graph = []
+        for hyperpath_stop in hyperpaths:
+            for path in hyperpath_stop:
+                prev_node = origin.graph_node.name
+                for node in path:
+                    if isinstance(node, CityNode):
+                        city_nodes.append(node.graph_node.name)
+                        if prev_node is None:
+                            prev_node = node.graph_node.name
+                        else:
+                            edges_graph.append((prev_node, node.graph_node.name))
+                            prev_node = node.graph_node.name
+                    if isinstance(node, StopNode):
+                        stop_nodes.append("{} - {}".format(node.mode.name, node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = "{} - {}".format(node.mode.name, node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append(
+                                (prev_node, "{} - {}".format(node.mode.name, node.city_node.graph_node.name)))
+                            prev_node = "{} - {}".format(node.mode.name, node.city_node.graph_node.name)
+
+                    if isinstance(node, RouteNode):
+                        route_nodes.append("{} {} - {}".format(node.route.id, node.direction,
+                                                               node.stop_node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = "{} {} - {}".format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append((prev_node, "{} {} - {}".format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name)))
+                            prev_node = "{} {} - {}".format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+
+        G = nx.DiGraph()
+        G.add_nodes_from(city_nodes)
+        G.add_nodes_from(stop_nodes)
+        G.add_nodes_from(route_nodes)
+        G.add_edges_from(edges_graph)
+        pos = nx.spring_layout(G, scale=10)  # positions for all nodes
+
+
+        # nx.draw(G)
+        # # separate calls to draw labels, nodes and edges
+        # # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('Set2'), nodelist=city_nodes, node_color='yellow',
+                                node_size=200)
+        nx.draw_networkx_nodes(G, pos,  cmap=plt.get_cmap('Set2'), nodelist=stop_nodes, node_color='red',
+                                node_size=200)
+        nx.draw_networkx_nodes(G, pos,  cmap=plt.get_cmap('Set2'), nodelist=route_nodes, node_color='green',
+                                node_size=200)
+        # # plot labels
+        nx.draw_networkx_labels(G, pos, font_size=6)
+        # # plot edges city
+        nx.draw_networkx_edges(G, pos, edgelist=edges_graph, edge_color='orange', arrows=True)
+
+
+        plt.title("City graph")
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.gca().set_aspect('equal')
+        plt.show()
+        # plt.savefig(file_path)
