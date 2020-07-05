@@ -176,18 +176,6 @@ class TransportNetwork:
                 raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
 
-    def is_valid_to_assignment(self, demand_obj):
-        """
-        to check if the transport network has at least one connection with all the OD pairs with trips
-        :return:
-        """
-        # dic[str(origin_id)][str(destination_id)] = vij
-        matrixOD = demand_obj.get_matrix()
-
-        for origin_id in matrixOD:
-            for destination_id in matrixOD[origin_id]:
-                vij = matrixOD[origin_id][destination_id]
-
     def get_routes(self):
         """
         to get all routes

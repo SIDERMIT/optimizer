@@ -135,25 +135,6 @@ class TransportNetworkTest(unittest.TestCase):
         # remove file
         os.remove(os.path.join(self.data_path, 'write_test.csv'))
 
-    def test_is_valid(self):
-        """
-        to test is_Valid method from transport network class
-        :return:
-        """
-
-        graph_obj = graph.Graph.build_from_parameters(5, 1000, 0.5, 2)
-        mode_manager = TransportModeManager()
-        bus_obj = mode_manager.get_mode("bus")
-        network = TransportNetwork(graph_obj)
-        route = Route("r1", bus_obj, "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
-        network.add_route(route)
-
-        self.assertTrue(network.is_valid())
-
-        network.delete_route("r1")
-
-        self.assertTrue(not network.is_valid())
-
     def test_raises_get_route_exceptions(self):
         """
         raises get_route exceptions from transport network class
