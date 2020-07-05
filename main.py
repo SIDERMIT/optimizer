@@ -17,7 +17,7 @@ network = TransportNetwork(graph_obj)
 
 # agregamos rutas a la red
 feeder_routes = network.get_feeder_routes(bus_obj)
-radial_routes = network.get_radial_routes(metro_obj)
+radial_routes = network.get_radial_routes(metro_obj, short=True)
 radial_routes_bus = network.get_radial_routes(bus_obj)
 circular_routes = network.get_circular_routes(bus_obj)
 
@@ -34,10 +34,12 @@ for route in radial_routes_bus:
     network.add_route(route)
 
 # generamos grafo extendido
-extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+extended_graph = ExtendedGraph(graph_obj, network.get_routes(), passenger_obj.spt)
 print(extended_graph.__str__())
-extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 
+
+# para obtener un par OD para algoritmos que vienen
+extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 P1 = None
 CBD = None
 for city_node in extended_graph_nodes:
@@ -47,14 +49,15 @@ for city_node in extended_graph_nodes:
         P1 = city_node
 
 # generamos hiperruta para un par de nodos de origen y destino
-hyperpath_obj = Hyperpath()
-successors, label, frequencies = hyperpath_obj.build_hyperpath(extended_graph, P1, CBD)
-print(hyperpath_obj.__str__(successors, label, frequencies))
+hyperpath_obj = Hyperpath(extended_graph)
+successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(extended_graph, P1, CBD)
+print(hyperpath_obj.print_hyperpath_graph(successors, label, frequencies))
 
 # obtenemos hiperrutas
-HP = hyperpath_obj.get_hyper_routes(extended_graph, P1, CBD)
-string_HP = hyperpath_obj.string_hyperpaths(HP)
-print(string_HP)
+hyperpath_OD = hyperpath_obj.get_hyperpath_OD(P1, CBD)
+string_HP_OD = hyperpath_obj.string_hyperpaths(hyperpath_OD, label)
+print(string_HP_OD)
 
 print("Penalidad de transbordo: {} [min]".format(passenger_obj.spt))
 
+hyperpath_obj.plot(hyperpath_OD, P1)
