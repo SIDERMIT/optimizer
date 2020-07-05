@@ -37,7 +37,6 @@ for route in radial_routes_bus:
 extended_graph = ExtendedGraph(graph_obj, network.get_routes(), passenger_obj.spt)
 print(extended_graph.__str__())
 
-
 # para obtener un par OD para algoritmos que vienen
 extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 P1 = None
@@ -49,15 +48,16 @@ for city_node in extended_graph_nodes:
         P1 = city_node
 
 # generamos hiperruta para un par de nodos de origen y destino
-hyperpath_obj = Hyperpath(extended_graph)
-successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(extended_graph, P1, CBD)
-print(hyperpath_obj.print_hyperpath_graph(successors, label, frequencies))
+hyperpath_obj = Hyperpath(extended_graph, passenger_obj)
+successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(P1, CBD)
+print(hyperpath_obj.string_hyperpath_graph(successors, label, frequencies))
 
 # obtenemos hiperrutas
 hyperpath_OD = hyperpath_obj.get_hyperpath_OD(P1, CBD)
-string_HP_OD = hyperpath_obj.string_hyperpaths(hyperpath_OD, label)
+string_HP_OD = hyperpath_obj.string_hyperpaths_OD(hyperpath_OD, label)
 print(string_HP_OD)
 
 print("Penalidad de transbordo: {} [min]".format(passenger_obj.spt))
 
 hyperpath_obj.plot(hyperpath_OD, P1)
+print(metro_obj.theta)

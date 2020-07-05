@@ -8,11 +8,39 @@ from sidermit.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdges
 
 class Hyperpath:
 
-    def __init__(self, extended_graph_obj):
+    def __init__(self, extended_graph_obj, passenger_obj):
         self.extended_graph_obj = extended_graph_obj
+        self.passenger_obj = passenger_obj
+
+    def network_validator(self, matrixOD):
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        for origin_id in matrixOD:
+            for destination_id in matrixOD[origin_id]:
+                vij = matrixOD[origin_id][destination_id]
+                if vij != 0:
+                    origin = None
+                    destination = None
+                    for city_node in nodes:
+                        if str(origin_id) == str(city_node.graph_node.id):
+                            origin = city_node
+                        if str(destination_id) == str(city_node.graph_node.id):
+                            destination = city_node
+
+                    _, label, _ = self.build_hyperpath_graph(origin, destination)
+
+                    # si hay una parada con etiqueta distinta de infinito se puede llegar desde el origen al destino
+                    conection = False
+                    for stop in nodes[origin]:
+                        if label[stop] != float('inf'):
+                            conection = True
+                            break
+                    if conection is False:
+                        return False
+        return True
 
     @staticmethod
-    def print_hyperpath_graph(successors, label, frequencies):
+    def string_hyperpath_graph(successors, label, frequencies):
         line = "HyperPath\n"
         for node in label:
 
@@ -54,11 +82,10 @@ class Hyperpath:
                     label[node], line_successor, line_frequency)
         return line
 
-    @staticmethod
-    def build_hyperpath_graph(extended_graph_obj, node_city_origin, node_city_destination):
+    def build_hyperpath_graph(self, node_city_origin, node_city_destination):
 
-        nodes = extended_graph_obj.get_extended_graph_nodes()
-        edges = extended_graph_obj.get_extended_graph_edges()
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        edges = self.extended_graph_obj.get_extended_graph_edges()
 
         # quitaremos los arcos de acceso al city_graph de origen
         for edge in edges:
@@ -134,6 +161,8 @@ class Hyperpath:
                 if edge.type == ExtendedEdgesType.ALIGHTING:
                     if edge.nodej.city_node == node_city_origin:
                         edge_t = 0
+                if edge.type == ExtendedEdgesType.ACCESS:
+                    edge_t = edge.t * self.passenger_obj.spa / self.passenger_obj.spv
 
                 # equivalente a t_a cola de chancho en pseudo codigo del paper
                 t_i = edge_t + min(labels[j], labels_inf[j])
@@ -146,11 +175,13 @@ class Hyperpath:
 
                 # para arcos de boarding
                 if edge.f < float('inf') and t_i < labels[i]:
+                    theta = i.mode.theta
+
                     # caso inicial de actualizacion
                     if frequencies[i] == 0 and labels[i] == float('inf'):
                         # print(edge.type)
                         successor[i].append(edge)
-                        labels[i] = (1 + edge.f * t_i) / (edge.f)
+                        labels[i] = (theta * self.passenger_obj.spw / self.passenger_obj.spv + edge.f * t_i) / (edge.f)
                         frequencies[i] = frequencies[i] + edge.f
                     # etiqueta anteriormente asignada
                     else:
@@ -167,6 +198,8 @@ class Hyperpath:
                     if edge_b.type == ExtendedEdgesType.ALIGHTING:
                         if edge.nodej.city_node == node_city_origin:
                             edge_b_t = 0
+                    if edge_b.type == ExtendedEdgesType.ACCESS:
+                        edge_b_t = edge_b.t * self.passenger_obj.spa / self.passenger_obj.spv
 
                     # equivalente a t_b cola de chancho
                     t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
@@ -215,7 +248,7 @@ class Hyperpath:
 
     def get_hyperpath_OD(self, origin, destination):
 
-        successors, label, frequencies = self.build_hyperpath_graph(self.extended_graph_obj, origin, destination)
+        successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
         # edges = extended_graph_obj.get_extended_graph_edges()
@@ -267,9 +300,9 @@ class Hyperpath:
         return hyperpaths
 
     @staticmethod
-    def string_hyperpaths(hyperpaths, label):
+    def string_hyperpaths_OD(hyperpaths_od, label):
         line = ""
-        for hyperpath_stop in hyperpaths:
+        for hyperpath_stop in hyperpaths_od:
             line += "\nNew stop\n"
             for path in hyperpath_stop:
                 line += "\n\tNew Path:\n\t\t"
@@ -286,7 +319,7 @@ class Hyperpath:
         return line
 
     @staticmethod
-    def plot(hyperpaths, origin):
+    def plot(hyperpaths_od, origin):
         """
         to plot hyperpaths
         :return:
@@ -295,7 +328,7 @@ class Hyperpath:
         stop_nodes = []
         route_nodes = []
         edges_graph = []
-        for hyperpath_stop in hyperpaths:
+        for hyperpath_stop in hyperpaths_od:
             for path in hyperpath_stop:
                 prev_node = origin.graph_node.name
                 for node in path:
@@ -334,21 +367,19 @@ class Hyperpath:
         G.add_edges_from(edges_graph)
         pos = nx.spring_layout(G, scale=10)  # positions for all nodes
 
-
         # nx.draw(G)
         # # separate calls to draw labels, nodes and edges
         # # plot p, Sc and CBD
         nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('Set2'), nodelist=city_nodes, node_color='yellow',
-                                node_size=200)
-        nx.draw_networkx_nodes(G, pos,  cmap=plt.get_cmap('Set2'), nodelist=stop_nodes, node_color='red',
-                                node_size=200)
-        nx.draw_networkx_nodes(G, pos,  cmap=plt.get_cmap('Set2'), nodelist=route_nodes, node_color='green',
-                                node_size=200)
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('Set2'), nodelist=stop_nodes, node_color='red',
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap('Set2'), nodelist=route_nodes, node_color='green',
+                               node_size=200)
         # # plot labels
         nx.draw_networkx_labels(G, pos, font_size=6)
         # # plot edges city
         nx.draw_networkx_edges(G, pos, edgelist=edges_graph, edge_color='orange', arrows=True)
-
 
         plt.title("City graph")
         plt.xlabel("X")
