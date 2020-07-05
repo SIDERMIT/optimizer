@@ -6,8 +6,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 from sidermit.city import graph
-from sidermit.publictransportsystem import TransportMode
 from sidermit.exceptions import *
+from sidermit.publictransportsystem import TransportMode
 
 
 class RouteType(Enum):
@@ -176,17 +176,17 @@ class TransportNetwork:
                 raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
 
-    def is_valid(self):
+    def is_valid_to_assignment(self, demand_obj):
         """
-        to check if Transport Network is valid
+        to check if the transport network has at least one connection with all the OD pairs with trips
         :return:
         """
-        # could be added a validation of whether the defined routes are specific to transport the defined demand,
-        # very difficult to do
-        if len(self.__routes) == 0:
-            return False
-        else:
-            return True
+        # dic[str(origin_id)][str(destination_id)] = vij
+        matrixOD = demand_obj.get_matrix()
+
+        for origin_id in matrixOD:
+            for destination_id in matrixOD[origin_id]:
+                vij = matrixOD[origin_id][destination_id]
 
     def get_routes(self):
         """
