@@ -234,7 +234,7 @@ class ExtendedGraph:
                     if s.mode == mode and str(s.city_node.graph_node.id) == str(stop):
                         stop_node = s
                         break
-                route_node = RouteNode(len(route_nodes)+len(nodes), route, "I", stop_node, prev_route_node)
+                route_node = RouteNode(len(route_nodes) + len(nodes), route, "I", stop_node, prev_route_node)
                 prev_route_node = route_node
                 nodes.append(route_node)
             # add previous node_route in circular routes
@@ -263,7 +263,7 @@ class ExtendedGraph:
                     if s.mode == mode and str(s.city_node.graph_node.id) == str(stop):
                         stop_node = s
                         break
-                route_node = RouteNode(len(route_nodes)+len(nodes), route, "R", stop_node, prev_route_node)
+                route_node = RouteNode(len(route_nodes) + len(nodes), route, "R", stop_node, prev_route_node)
                 prev_route_node = route_node
                 nodes.append(route_node)
             # add previous node_route in circular routes
@@ -328,13 +328,13 @@ class ExtendedGraph:
                     if route._type != RouteType.CIRCULAR and str(route_node.stop_node.city_node.graph_node.id) != str(
                             node_sequence[len(node_sequence) - 1]):
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route.id], ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
                     # but if route type is circular add always boarding edges
                     if route._type == RouteType.CIRCULAR:
                         edge = ExtendedEdge(len(boarding_edges), stop_node, route_node,
-                                            0, initial_frequency[route.id], ExtendedEdgesType.BOARDING)
+                                            0, initial_frequency[route.id] / route.mode.d, ExtendedEdgesType.BOARDING)
                         boarding_edges.append(edge)
                         continue
 
