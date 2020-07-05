@@ -1,9 +1,18 @@
 General:
 Agregar docstring
+Realizar ejemplos en jupyter notebook
 
-network:
-agregar validación de que todos los pares OD con demanda tengan rutas
+Transport Mode:
+validar transport mode Manager, solo puede tener dos modos de transporte y uno de ellos debe tener un D=1
 
-observaciones:
-escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
+Network:
+Agregar validación de que todos los pares OD con demanda tengan rutas
+
+
+Hyperpath:
+Incluir valoración del tiempo de acceso, de espera y regularidad de los modos de transporte
+
+
+Observaciones:
+Escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
 de grafos por ejemplo con rutas radiales cortas y largas exclusivas y falta especificar que es un escenario exclusivo

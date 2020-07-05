@@ -85,7 +85,7 @@ class TransportMode:
         self.d = d
 
     @staticmethod
-    def get_default_modes():# -> List[TransportMode]:
+    def get_default_modes():  # -> List[TransportMode]:
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
                                            150, 160, 0.7, 0, 6)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
@@ -105,12 +105,20 @@ class TransportModeManager:
             self.__modes.append(metro_obj)
             self.__list_name.append(metro_obj.name)
 
-    def is_valid(self):
+    def is_valid_to_assignment_step(self):
         """
-        to check that there is at least one way
+        to check that list of modes is valid to optimization. There should be only one or two transport mode.
+        If there are two transport mode, one of them must have parameter d equal to 1
         :return:
         """
-        return len(self.__modes) >= 1
+        if len(self.__modes) == 1:
+            return True
+
+        if len(self.__modes) == 2:
+            for mode in self.__modes:
+                if mode.d == 1:
+                    return True
+        return False
 
     def get_mode(self, name):
         """

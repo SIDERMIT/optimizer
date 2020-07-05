@@ -6,7 +6,7 @@ from sidermit.publictransportsystem import TransportMode, TransportModeManager
 
 class TransportModeTest(unittest.TestCase):
 
-    def test_is_valid(self):
+    def test_is_valid_to_assignment_step(self):
         """
         test is_valid method
         :return:
@@ -14,15 +14,15 @@ class TransportModeTest(unittest.TestCase):
 
         m = TransportModeManager()
 
-        self.assertTrue(m.is_valid())
+        self.assertTrue(m.is_valid_to_assignment_step())
 
         m.delete_mode("bus")
 
-        self.assertTrue(m.is_valid())
+        self.assertTrue(m.is_valid_to_assignment_step())
 
         m.delete_mode("metro")
 
-        self.assertTrue(not m.is_valid())
+        self.assertTrue(not m.is_valid_to_assignment_step())
 
     def test_raises_mode_exceptions(self):
         """
