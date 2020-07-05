@@ -1,7 +1,7 @@
 import unittest
 
 from sidermit.city import graph
-from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, TransportMode, Passenger
+from sidermit.publictransportsystem import *
 from sidermit.extended_graph import ExtendedGraph, ExtendedEdgesType
 
 from collections import defaultdict
@@ -35,7 +35,7 @@ class test_extended_graph(unittest.TestCase):
             network.add_route(route)
 
         city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
-        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+        tree_graph = ExtendedGraph.build_tree_graph(network.get_routes(), city_nodes)
 
         one_stop = []
         two_stop = []
@@ -114,9 +114,9 @@ class test_extended_graph(unittest.TestCase):
             network.add_route(route)
 
         city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
-        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+        tree_graph = ExtendedGraph.build_tree_graph(network.get_routes(), city_nodes)
         stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
-        route_nodes = ExtendedGraph.build_route_nodes(network, stop_nodes)
+        route_nodes = ExtendedGraph.build_route_nodes(network.get_routes(), stop_nodes)
 
         self.assertEqual(len(city_nodes), 11)
         self.assertEqual(len(stop_nodes), 26)
@@ -147,7 +147,7 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj.spt)
+        extended_graph = ExtendedGraph(graph_obj, network.get_routes(), passenger_obj.spt)
         extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 
         n_city = 0
@@ -190,9 +190,9 @@ class test_extended_graph(unittest.TestCase):
             network.add_route(route)
 
         city_nodes = ExtendedGraph.build_city_nodes(graph_obj)
-        tree_graph = ExtendedGraph.build_tree_graph(network, city_nodes)
+        tree_graph = ExtendedGraph.build_tree_graph(network.get_routes(), city_nodes)
         stop_nodes = ExtendedGraph.build_stop_nodes(tree_graph)
-        route_nodes = ExtendedGraph.build_route_nodes(network, stop_nodes)
+        route_nodes = ExtendedGraph.build_route_nodes(network.get_routes(), stop_nodes)
 
         extended_graph_nodes = ExtendedGraph.build_extended_graph_nodes(route_nodes)
 
@@ -236,7 +236,7 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj.spt)
+        extended_graph = ExtendedGraph(graph_obj, network.get_routes(), passenger_obj.spt)
         extended_graph_edges = extended_graph.get_extended_graph_edges()
 
         n_access = 0
