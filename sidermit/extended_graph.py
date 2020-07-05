@@ -68,13 +68,13 @@ class ExtendedEdgesType(Enum):
 
 class ExtendedGraph:
 
-    def __init__(self, graph_obj, network_obj, passenger_obj, initial_frequency=None):
+    def __init__(self, graph_obj, network_obj, sPTP, frequency_routes=None):
 
-        if initial_frequency is None:
-            initial_frequency = defaultdict(float)
+        if frequency_routes is None:
+            frequency_routes = defaultdict(float)
 
             for route in network_obj.get_routes():
-                initial_frequency[route.id] = 28
+                frequency_routes[route.id] = 28
 
         # list with all city_nodes
         city_nodes = self.build_city_nodes(graph_obj)
@@ -94,9 +94,9 @@ class ExtendedGraph:
         # list with all access edges, edges between city_node<->stop_node
         access_edges = self.build_access_edges(self.__extended_graph_nodes)
         # list with all boarding edges, edges between stop_node->route_node
-        boarding_edges = self.build_boarding_edges(self.__extended_graph_nodes, initial_frequency)
+        boarding_edges = self.build_boarding_edges(self.__extended_graph_nodes, frequency_routes)
         # list with all alighting edges, edges between route_node->stop_node
-        alighting_edges = self.build_alighting_edges(self.__extended_graph_nodes, passenger_obj)
+        alighting_edges = self.build_alighting_edges(self.__extended_graph_nodes, sPTP)
         # list with all routes edges, edges between route_node(i-1)->route_node(i)
         routes_edges = self.build_route_edges(self.__extended_graph_nodes)
 
@@ -341,8 +341,8 @@ class ExtendedGraph:
         return boarding_edges
 
     @staticmethod
-    def build_alighting_edges(extended_graph_nodes, passenger_obj):
-        spt = passenger_obj.spt / 60
+    def build_alighting_edges(extended_graph_nodes, spt):
+        spt = spt / 60
         alighting_edges = []
         for city_node in extended_graph_nodes:
             for stop_node in extended_graph_nodes[city_node]:

@@ -147,7 +147,7 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj.spt)
         extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 
         n_city = 0
@@ -203,7 +203,7 @@ class test_extended_graph(unittest.TestCase):
 
         access_edges = ExtendedGraph.build_access_edges(extended_graph_nodes)
         boarding_edges = ExtendedGraph.build_boarding_edges(extended_graph_nodes, initial_frequency)
-        alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj)
+        alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj.spt)
         route_edges = ExtendedGraph.build_route_edges(extended_graph_nodes)
 
         self.assertEqual(len(access_edges), 52)
@@ -236,7 +236,7 @@ class test_extended_graph(unittest.TestCase):
         for route in circular_routes:
             network.add_route(route)
 
-        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj)
+        extended_graph = ExtendedGraph(graph_obj, network, passenger_obj.spt)
         extended_graph_edges = extended_graph.get_extended_graph_edges()
 
         n_access = 0
