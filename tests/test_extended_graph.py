@@ -1,10 +1,9 @@
 import unittest
+from collections import defaultdict
 
 from sidermit.city import graph
+from sidermit.preoptimization import ExtendedGraph, ExtendedEdgesType
 from sidermit.publictransportsystem import *
-from sidermit.preoptimization.extended_graph import ExtendedGraph, ExtendedEdgesType
-
-from collections import defaultdict
 
 
 class test_extended_graph(unittest.TestCase):

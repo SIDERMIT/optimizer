@@ -1,7 +1,7 @@
 from sidermit.city import graph
 from sidermit.publictransportsystem import TransportNetwork, TransportModeManager, Passenger
-from sidermit.preoptimization.extended_graph import ExtendedGraph
-from sidermit.preoptimization.hyper_path import Hyperpath
+from sidermit.preoptimization import ExtendedGraph
+from sidermit.preoptimization import Hyperpath
 
 graph_obj = graph.Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2)
 
