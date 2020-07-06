@@ -5,12 +5,16 @@ import networkx as nx
 import pandas as pd
 from matplotlib import pyplot as plt
 
-from sidermit.city import graph
+from sidermit.city import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
 from sidermit.publictransportsystem import TransportMode
 
 
 class RouteType(Enum):
+    """
+    route types, CUSTOM for user-created custom routes, PREDEFINED for predefined routes created by a method of the
+    TransportNetwork class, CIRCULAR to a special type of predefined route with different construction rules
+    """
     CUSTOM = 1
     PREDEFINED = 2
     CIRCULAR = 3
@@ -18,8 +22,19 @@ class RouteType(Enum):
 
 class Route:
 
-    def __init__(self, route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
-                 stops_sequence_r, _type=RouteType.CUSTOM):
+    def __init__(self, route_id, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                 stops_sequence_i: str,
+                 stops_sequence_r: str, _type=RouteType.CUSTOM):
+        """
+        to defined a route
+        :param route_id: route id
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :param _type: RouteType, default value CUSTOM.
+        """
         self.id = None
         self.mode = None
         self.nodes_sequence_i = None
@@ -52,16 +67,16 @@ class Route:
                 self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
                 self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
-    def parameters_validator(self, mode_obj, nodes_sequence_i, nodes_sequence_r,
-                             stops_sequence_i, stops_sequence_r):
+    def parameters_validator(self, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                             stops_sequence_i: str, stops_sequence_r: str):
         """
         to check all parameters
-        :param mode_obj:
-        :param nodes_sequence_i:
-        :param nodes_sequence_r:
-        :param stops_sequence_i:
-        :param stops_sequence_r:
-        :return:
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :return: True if parameters are valid. Exception if not.
         """
         if not isinstance(mode_obj, TransportMode):
             raise ModeIsNotValidException("mode obj is not valid")
@@ -79,9 +94,9 @@ class Route:
     @staticmethod
     def sequences_to_string(sequence_list):
         """
-        to get a string with a sequences list
-        :param sequence_list:
-        :return:
+        convert a node id sequence list to a string
+        :param sequence_list: node id sequence list
+        :return: String
         """
         line = ""
         for node in sequence_list:
@@ -92,11 +107,11 @@ class Route:
         return line
 
     @staticmethod
-    def sequences_to_list(sequence):
+    def sequences_to_list(sequence: str):
         """
-        to get a list with a sequence string
-        :param sequence:
-        :return:
+        convert a string of node id sequence to a list
+        :param sequence: String
+        :return: List[node id]
         """
         if sequence == "":
             return []
@@ -114,9 +129,9 @@ class Route:
         """
         to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
         nodes are stops
-        :param nodes_list:
-        :param stops_list:
-        :return:
+        :param nodes_list: list of node sequence
+        :param stops_list: list of stops sequence
+        :return: True if parameters are valid. Raise a exceptions if not
         """
         # to check if each stops be in node_sequences
         for stop in stops_list:
@@ -134,9 +149,9 @@ class Route:
     def direction_validator(nodes_list_i, nodes_list_r):
         """
         to check if both direction of a route form a cycle
-        :param nodes_list_i:
-        :param nodes_list_r:
-        :return:
+        :param nodes_list_i: list of node sequence (forward direction)
+        :param nodes_list_r: list of node sequence (return direction)
+        :return: True if parameters are valid. Raise a exceptions if not.
         """
         if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
                 nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
@@ -145,6 +160,11 @@ class Route:
 
     @staticmethod
     def sequences_validator(sequence):
+        """
+        to check if sequence have a loop
+        :param sequence: list of node sequence
+        :return: True if parameters are valid. Raise a exceptions if not.
+        """
 
         for node1 in sequence:
             n = 0
@@ -159,16 +179,20 @@ class Route:
 
 class TransportNetwork:
 
-    def __init__(self, graph_obj):
+    def __init__(self, graph_obj: Graph):
+        """
+        transport route manager on a city graph
+        :param graph_obj: Graph where transport network develops
+        """
         self.__graph_obj = graph_obj
         self.__routes = []
         self.__routes_id = []
 
     def __edges_validator(self, node_list):
         """
-        to check if each edges in a node_sequences exist in the graph object
-        :param node_list:
-        :return:
+        to check if each edges in a node_sequences list exist in the graph object
+        :param node_list: list of nodes
+        :return: True if parameters are valid. Raise a exceptions if not.
         """
         for i in range(len(node_list) - 1):
             j = i + 1
@@ -179,15 +203,15 @@ class TransportNetwork:
     def get_routes(self):
         """
         to get all routes
-        :return:
+        :return: List[Route]
         """
         return self.__routes
 
     def get_route(self, route_id):
         """
-        to get a specific route with a route_id
-        :param route_id:
-        :return:
+        to get a specific route by a route_id
+        :param route_id: route id
+        :return: Route object if route id is defined in the network. Raise a exceptions if not.
         """
         if route_id in self.__routes_id:
             i = self.__routes_id.index(route_id)
@@ -195,10 +219,10 @@ class TransportNetwork:
         else:
             raise RouteIdNotFoundException("route_id not found")
 
-    def add_route(self, route_obj):
+    def add_route(self, route_obj: Route):
         """
         to add a specific route in routes list
-        :param route_obj:
+        :param route_obj: Route object
         :return:
         """
         if not isinstance(route_obj, Route):
@@ -217,8 +241,8 @@ class TransportNetwork:
 
     def delete_route(self, route_id):
         """
-        to delete a specific route_id in list of routes
-        :param route_id:
+        to delete a specific route_id in the network
+        :param route_id: route id
         :return:
         """
         if route_id in self.__routes_id:
@@ -260,12 +284,12 @@ class TransportNetwork:
 
         df_transit_network.to_csv(file_path, sep=";", index=False)
 
-    def get_circular_routes(self, mode_obj):
+    def get_circular_routes(self, mode_obj: TransportMode):
         """
-        to add predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+        to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
         subcenter nodes.
-        :param mode_obj:
-        :return: None
+        :param mode_obj: transport Mode
+        :return: List[Route]
         """
 
         zones = self.__graph_obj.get_zones()
@@ -304,12 +328,12 @@ class TransportNetwork:
 
         return [route1, route2]
 
-    def get_feeder_routes(self, mode_obj):
+    def get_feeder_routes(self, mode_obj: TransportMode):
         """
-        to add predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+        to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc for I direction and sc-p for R direction.
-        :param mode_obj: name of mode of the all feeder routes
-        :return: None
+        :param mode_obj: TransportMode
+        :return: List[Route]
         """
 
         if not isinstance(mode_obj, TransportMode):
@@ -335,14 +359,14 @@ class TransportNetwork:
 
         return routes
 
-    def get_radial_routes(self, mode_obj, short=False, express=False):
+    def get_radial_routes(self, mode_obj: TransportMode, short=False, express=False):
         """
-        to add predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+        to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd for I direction and cbd-sc-p for R direction.
-        :param mode_obj: name of mode of the all radial routes
+        :param mode_obj: TransportMode
         :param short: if radial routes omit the passage through the periphery (default: False)
         :param express: if radial routes omit to stop in the subcenter (default: False)
-        :return: None
+        :return: List[Route]
         """
 
         if not isinstance(mode_obj, TransportMode):
@@ -386,16 +410,16 @@ class TransportNetwork:
 
         return routes
 
-    def get_diametral_routes(self, mode_obj, jump, short=False, express=False):
+    def get_diametral_routes(self, mode_obj: TransportMode, jump: int, short=False, express=False):
         """
-        to add predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+        to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd-sc'-p' for I direction and p'-sc'-cbd-sc-p for R direction. p' and sc' are periphery and subcenter
         nodes with zone id equivalent to the id of the treated zone plus the jump
-        :param mode_obj: name of mode of the all diametral routes
+        :param mode_obj: TransportMode
         :param jump: to identified other zone where diametral routes transit
         :param short: if diametral routes omit the passage through the periphery (default: False)
         :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
-        :return: None
+        :return: List[Route]
         """
         if not isinstance(mode_obj, TransportMode):
             raise ModeIsNotValidException("mode obj is not valid")
@@ -460,17 +484,17 @@ class TransportNetwork:
 
         return routes
 
-    def get_tangencial_routes(self, mode_obj, jump, short=False, express=False):
+    def get_tangencial_routes(self, mode_obj: TransportMode, jump: int, short=False, express=False):
         """
-        to add predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+        to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-sc'-...-sc''-p'' for I direction and p''-sc''-...-sc'-sc-p for R direction. sc', ..., sc'' are subcenter
         nodes with zone id less than or equal to id of the treated zone plus the jump. p'' and sc'' are periphery
         and subcenter nodes with id equivalent to the id of the treated zone plus the jump
-        :param mode_obj: name of mode of the all tangencial routes
+        :param mode_obj: TransportMode
         :param jump: to identified other zone where tangencial routes transit
         :param short: if radial routes omit the passage through the periphery (default: False)
         :param express: if radial routes omit to stop in the subcenters nodes (default: False)
-        :return: None
+        :return: List[Route]
         """
         if not isinstance(mode_obj, TransportMode):
             raise ModeIsNotValidException("mode obj is not valid")
@@ -585,9 +609,12 @@ class TransportNetwork:
 
         return routes
 
-    def plot(self, file_path, list_routes=None):
+    def plot(self, file_path, list_routes=None, direction=None):
         """
-        to plot graph
+        to plot network and graph
+        :param file_path:
+        :param list_routes: list of routes to plot, default value is None and plot all routes
+        :param direction: "I" or "R" direction to plot. default value is None and plot both direction.
         :return:
         """
         # if list routes is empty then plot all routes
@@ -622,11 +649,11 @@ class TransportNetwork:
         y_p = []
 
         for node in self.__graph_obj.get_nodes():
-            if isinstance(node, graph.CBD):
+            if isinstance(node, CBD):
                 info_cbd.append(node)
-            if isinstance(node, graph.Periphery):
+            if isinstance(node, Periphery):
                 info_p.append(node)
-            if isinstance(node, graph.Subcenter):
+            if isinstance(node, Subcenter):
                 info_sc.append(node)
 
         for cbd in info_cbd:
@@ -646,7 +673,8 @@ class TransportNetwork:
         # edges routes and stops
         edges_i = []
         edges_r = []
-        stops = []
+        stops_i = []
+        stops_r = []
         for route_id in list_routes:
             if route_id not in self.__routes_id:
                 raise RouteIdNotFoundException("route_id does not found")
@@ -655,8 +683,8 @@ class TransportNetwork:
                 route = self.__routes[ind]
                 nodes_i = route.nodes_sequence_i
                 nodes_r = route.nodes_sequence_r
-                stops_i = route.stops_sequence_i
-                stops_r = route.stops_sequence_r
+                stop_i = route.stops_sequence_i
+                stop_r = route.stops_sequence_r
 
                 for i in range(len(nodes_i) - 1):
                     id1 = nodes_i[i]
@@ -666,12 +694,12 @@ class TransportNetwork:
                     id1 = nodes_r[i]
                     id2 = nodes_r[i + 1]
                     edges_r.append((id1, id2))
-                for i in range(len(stops_i)):
-                    if stops_i[i] not in stops:
-                        stops.append(stops_i[i])
+                for i in range(len(stop_i)):
+                    if stop_i[i] not in stops_i:
+                        stops_i.append(stop_i[i])
                 for i in range(len(stops_r)):
-                    if stops_r[i] not in stops:
-                        stops.append(stops_r[i])
+                    if stop_r[i] not in stops_r:
+                        stops_r.append(stop_r[i])
 
         G = nx.DiGraph()
         G.add_edges_from(edges_graph)
@@ -685,16 +713,22 @@ class TransportNetwork:
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
                                node_size=300)
         # plot stops
-        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops, node_color='yellow',
-                               node_size=300)
+        if direction is None or direction == "I":
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_i, node_color='yellow',
+                                   node_size=300)
+        if direction is None or direction == "R":
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_r, node_color='yellow',
+                                   node_size=300)
         # plot labels
         nx.draw_networkx_labels(G, position)
         # plot edges city
         nx.draw_networkx_edges(G, position, edgelist=edges_graph, edge_color='orange', arrows=True)
         # plot edges_i
-        nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color='lime', arrows=True)
+        if direction is None or direction == "I":
+            nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color='lime', arrows=True)
         # plot edges_r
-        nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color='aqua', arrows=True)
+        if direction is None or direction == "I":
+            nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color='aqua', arrows=True)
 
         plt.title("City graph")
         plt.xlabel("X")
