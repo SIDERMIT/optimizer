@@ -59,5 +59,5 @@ print(string_HP_OD)
 
 print("Penalidad de transbordo: {} [min]".format(passenger_obj.spt))
 
-hyperpath_obj.plot(hyperpath_OD, P1)
+hyperpath_obj.plot(hyperpath_OD)
 print(metro_obj.theta)
