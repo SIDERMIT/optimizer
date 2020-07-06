@@ -9,6 +9,11 @@ from sidermit.city.graph import CBD, Periphery, Subcenter
 class Demand:
 
     def __init__(self, graph_obj):
+        """
+        class that allows to build the OD matrix
+        :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
+        with that of the OD matrix
+        """
         # initialization of city graph
         self.__graph_obj = graph_obj
         # number of zones
@@ -20,6 +25,11 @@ class Demand:
         self.__build_default_matrix()
 
     def matrix_to_file(self, file_path):
+        """
+        write OD matrix defined in a csv file
+        :param file_path:
+        :return:
+        """
         col_origin = []
         col_destination = []
         col_vij = []
@@ -39,7 +49,7 @@ class Demand:
 
     def __build_default_matrix(self):
         """
-        Build matrix of size Graph.get_n() with zero values
+        Build initial OD matrix with 0 trips in all OD pairs
         :return: None
         """
         for origin_node in self.__graph_obj.get_nodes():
@@ -47,6 +57,13 @@ class Demand:
                 self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
     def change_vij(self, origin_node_id, destination_node_id, vij):
+        """
+        Change trip value to a OD pair
+        :param origin_node_id:
+        :param destination_node_id:
+        :param vij: trips in OD pair
+        :return:
+        """
 
         if vij < 0:
             raise TripsValueIsNotValidException("trips value must be >= 0")
@@ -61,7 +78,7 @@ class Demand:
 
     def get_matrix(self):
         """
-        return last od matrix saved
+        Get last OD matrix saved
         :return:
         """
         return self.__matrix
@@ -69,12 +86,12 @@ class Demand:
     @staticmethod
     def parameters_validator(y, a, alpha, beta):
         """
-        to validate parameters
-        :param y:
-        :param a:
-        :param alpha:
-        :param beta:
-        :return:
+        to validate construction parameters of symmetric OD matrix
+        :param y: total demand
+        :param a: proportion of trips generated in the peripheries
+        :param alpha: proportion of trips from the periphery to the CBD
+        :param beta: proportion of trips from the periphery that go to the sub-center of the same zone
+        :return: True if parameters are valid. False if not.
         """
         if not isinstance(y, int) and not isinstance(y, float):
             raise YIsNotValidException("must specify value int or float for y")
@@ -101,11 +118,12 @@ class Demand:
     def build_from_parameters(graph_obj, y, a, alpha, beta):
         """
         to build OD matrix with symmetric parameters
-        :param graph_obj:
-        :param y:
-        :param a:
-        :param alpha:
-        :param beta:
+        :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
+        with that of the OD matrix.
+        :param y: total demand
+        :param a: proportion of trips generated in the peripheries
+        :param alpha: proportion of trips from the periphery to the CBD
+        :param beta: proportion of trips from the periphery that go to the sub-center of the same zone
         :return:
         """
         demand_obj = Demand(graph_obj)
@@ -190,8 +208,9 @@ class Demand:
     @staticmethod
     def build_from_file(graph_obj, file_path):
         """
-        to build from file
-        :param graph_obj:
+        to build OD matrix from file
+        :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
+        with that of the OD matrix.
         :param file_path:
         :return:
         """
