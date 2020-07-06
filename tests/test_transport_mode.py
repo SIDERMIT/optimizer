@@ -16,11 +16,11 @@ class TransportModeTest(unittest.TestCase):
 
         self.assertTrue(m.is_valid_to_assignment_step())
 
-        m.delete_mode("bus")
+        m.remove_mode("bus")
 
         self.assertTrue(m.is_valid_to_assignment_step())
 
-        m.delete_mode("metro")
+        m.remove_mode("metro")
 
         self.assertTrue(not m.is_valid_to_assignment_step())
 
@@ -134,11 +134,11 @@ class TransportModeTest(unittest.TestCase):
 
         m = TransportModeManager()
 
-        m.delete_mode("bus")
+        m.remove_mode("bus")
         self.assertEqual(len(m.get_modes()), 1)
 
         with self.assertRaises(exceptions.ModeDoesNotExistExceptions):
-            m.delete_mode("train")
+            m.remove_mode("train")
 
 
 if __name__ == '__main__':

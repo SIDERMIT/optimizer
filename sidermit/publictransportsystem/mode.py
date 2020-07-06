@@ -1,7 +1,6 @@
 # from __future__ import annotations
 
 import operator
-# from typing import List
 
 from sidermit.exceptions import CoIsNotValidExceptions, \
     C1IsNotValidExceptions, C2IsNotValidExceptions, VIsNotValidExceptions, \
@@ -10,6 +9,9 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
     TatIsNotValidExceptions, DIsNotValidExceptions, ByaIsNotValidExceptions, \
     ThetaIsNotValidExceptions, ModeDoesNotExistExceptions, \
     ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException
+
+
+# from typing import List
 
 
 def mode_property(property_name, comp_function, exception_instance,
@@ -26,8 +28,9 @@ def mode_property(property_name, comp_function, exception_instance,
 
 
 class TransportMode:
-    name = property(operator.attrgetter('_name'))
-    bya = property(operator.attrgetter('_bya'))
+    name = property(operator.attrgetter('_name'), doc="Name transport mode")
+    bya = property(operator.attrgetter('_bya'),
+                   doc="1 if passengers simultaneously get on and off the means of transport. 0 if they do it sequentially")
     co = mode_property('_co', operator.lt, CoIsNotValidExceptions(
         "You must give a value >=0 for co"), docstring="Unitary cost per vehicle per period of time [US$/h-veh]")
     c1 = mode_property('_c1', operator.lt, C1IsNotValidExceptions(
@@ -42,7 +45,7 @@ class TransportMode:
         "You must give a value >=0 for fmax"), docstring="Maximum frequency [veh/h]")
     kmax = mode_property('_kmax', operator.lt, KmaxIsNotValidExceptions(
         "You must give a vale >=0 for kmax"), docstring="Maximum vehicle size [pax/veh]")
-    theta = property(operator.attrgetter('_theta'))
+    theta = property(operator.attrgetter('_theta'), doc="regularity of arrival of the mode of transport at the stops")
     tat = mode_property('_tat', operator.lt, TatIsNotValidExceptions(
         "You must give a value >=0 for tat"), docstring="Technological access time [min]")
     d = mode_property('_d', operator.lt, DIsNotValidExceptions(
@@ -86,6 +89,10 @@ class TransportMode:
 
     @staticmethod
     def get_default_modes():  # -> List[TransportMode]:
+        """
+        to get bus and metro mode of transport with default values
+        :return: List[TransportMode]
+        """
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
                                            150, 160, 0.7, 0, 6)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
@@ -96,6 +103,12 @@ class TransportMode:
 
 class TransportModeManager:
     def __init__(self, add_default_mode=True):
+        """
+        transport mode manager
+        :param add_default_mode: (default: True) True to initialize list of modes with bus and metro with
+         default values. False to initialize list of modes empty
+        """
+
         self.__list_name = []
         self.__modes = []
         if add_default_mode:
@@ -109,7 +122,7 @@ class TransportModeManager:
         """
         to check that list of modes is valid to optimization. There should be only one or two transport mode.
         If there are two transport mode, one of them must have parameter d equal to 1
-        :return:
+        :return: True if list of mode is valid to assignment step, False if not.
         """
         if len(self.__modes) == 1:
             return True
@@ -122,9 +135,9 @@ class TransportModeManager:
 
     def get_mode(self, name):
         """
-        to get a specific mode
-        :param name:
-        :return:
+        to get a specific mode by name
+        :param name: mode name
+        :return: TransportMode
         """
         if name not in self.__list_name:
             raise ModeNotFoundExceptions("name mode not found")
@@ -135,22 +148,22 @@ class TransportModeManager:
 
     def get_modes(self):
         """
-        to get modes
-        :return:
+        to get all modes
+        :return: List[TransportMode]
         """
         return self.__modes
 
     def get_modes_names(self):
         """
         to get list_name of modes
-        :return:
+        :return: List[names]
         """
         return self.__list_name
 
     def add_mode(self, mode_obj):
         """
         to add a new mode
-        :param mode_obj:
+        :param mode_obj: TransportMode
         :return:
         """
         if not isinstance(mode_obj, TransportMode):
@@ -162,10 +175,10 @@ class TransportModeManager:
         self.__modes.append(mode_obj)
         self.__list_name.append(mode_obj.name)
 
-    def delete_mode(self, name):
+    def remove_mode(self, name):
         """
-        to delete a mode
-        :param name:
+        to delete a mode by name
+        :param name: mode name
         :return:
         """
 

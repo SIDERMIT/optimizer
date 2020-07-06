@@ -2,13 +2,13 @@ from collections import defaultdict
 
 import pandas as pd
 
+from sidermit.city.graph import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
-from sidermit.city.graph import CBD, Periphery, Subcenter
 
 
 class Demand:
 
-    def __init__(self, graph_obj):
+    def __init__(self, graph_obj: Graph):
         """
         class that allows to build the OD matrix
         :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
@@ -56,7 +56,7 @@ class Demand:
             for destination_node in self.__graph_obj.get_nodes():
                 self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
-    def change_vij(self, origin_node_id, destination_node_id, vij):
+    def change_vij(self, origin_node_id, destination_node_id, vij: float):
         """
         Change trip value to a OD pair
         :param origin_node_id:
@@ -84,7 +84,7 @@ class Demand:
         return self.__matrix
 
     @staticmethod
-    def parameters_validator(y, a, alpha, beta):
+    def parameters_validator(y: float, a: float, alpha: float, beta: float):
         """
         to validate construction parameters of symmetric OD matrix
         :param y: total demand
@@ -115,7 +115,7 @@ class Demand:
         return True
 
     @staticmethod
-    def build_from_parameters(graph_obj, y, a, alpha, beta):
+    def build_from_parameters(graph_obj: Graph, y: float, a: float, alpha: float, beta: float):
         """
         to build OD matrix with symmetric parameters
         :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
@@ -206,7 +206,7 @@ class Demand:
         return demand_obj
 
     @staticmethod
-    def build_from_file(graph_obj, file_path):
+    def build_from_file(graph_obj: Graph, file_path):
         """
         to build OD matrix from file
         :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
