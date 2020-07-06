@@ -239,7 +239,7 @@ class TransportNetwork:
             else:
                 raise RouteIdDuplicatedException("route_id is duplicated")
 
-    def delete_route(self, route_id):
+    def remove_route(self, route_id):
         """
         to delete a specific route_id in the network
         :param route_id: route id

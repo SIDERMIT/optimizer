@@ -90,7 +90,7 @@ class TransportNetworkTest(unittest.TestCase):
                           "3,0,1")
             network.add_route(route)
 
-    def test_delete_route_transport_network(self):
+    def test_remove_route_transport_network(self):
         """
         to test delete_route method of class transport_network class
         :return:
@@ -102,11 +102,11 @@ class TransportNetworkTest(unittest.TestCase):
         network = TransportNetwork(graph_obj)
         route = Route("r1", bus_obj, "1,2,0,4,3", "3,4,0,2,1", "1,0,3", "3,0,1")
         network.add_route(route)
-        network.delete_route("r1")
+        network.remove_route("r1")
         self.assertEqual(len(network.get_routes()), 0)
 
         with self.assertRaises(exceptions.RouteIdNotFoundException):
-            network.delete_route("r1")
+            network.remove_route("r1")
 
     def test_network_to_file(self):
         """
