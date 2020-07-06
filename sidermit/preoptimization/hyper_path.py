@@ -3,7 +3,7 @@ from collections import defaultdict
 import networkx as nx
 from matplotlib import pyplot as plt
 
-from sidermit.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdgesType
+from sidermit.preoptimization.extended_graph import CityNode, StopNode, RouteNode, ExtendedEdgesType
 
 
 class Hyperpath:

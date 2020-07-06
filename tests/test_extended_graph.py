@@ -2,9 +2,10 @@ import unittest
 
 from sidermit.city import graph
 from sidermit.publictransportsystem import *
-from sidermit.extended_graph import ExtendedGraph, ExtendedEdgesType
+from sidermit.preoptimization.extended_graph import ExtendedGraph, ExtendedEdgesType
 
 from collections import defaultdict
+
 
 class test_extended_graph(unittest.TestCase):
 
@@ -258,7 +259,3 @@ class test_extended_graph(unittest.TestCase):
         self.assertEqual(n_boarding, 30)
         self.assertEqual(n_alighting, 30)
         self.assertEqual(n_route, 30)
-
-
-
-
