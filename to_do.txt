@@ -12,7 +12,22 @@ Agregar validación de que todos los pares OD con demanda tengan rutas
 Hyperpath:
 Incluir valoración del tiempo de acceso, de espera y regularidad de los modos de transporte
 
-
+        """
+        to build a city graph with parameters information
+        :param n: zone numbers.
+        :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+        :param g: (>=0) to represent average distance of peripheries (= l + g * l).
+        :param p: node width in meters, takes part in the demand assignment considering lateral access time.
+        :param etha: [0-1] CBD eccentricity ratio.
+        :param etha_zone: CBD eccentricity direction zone
+        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values >=0
+        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values >=0
+        :return:
+        """
 Observaciones:
 Escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
 de grafos por ejemplo con rutas radiales cortas y largas exclusivas y falta especificar que es un escenario exclusivo
