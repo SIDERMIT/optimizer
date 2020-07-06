@@ -231,7 +231,7 @@ class Hyperpath:
         successors for each ExtendedNode
         :return: String with the representation of the hyperpath graph
         """
-        line = "HyperPath\n"
+        line = "HyperPath Graph\n"
         for node in label:
 
             line_frequency = frequencies[node]

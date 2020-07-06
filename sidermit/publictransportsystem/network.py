@@ -727,7 +727,7 @@ class TransportNetwork:
         if direction is None or direction == "I":
             nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color='lime', arrows=True)
         # plot edges_r
-        if direction is None or direction == "I":
+        if direction is None or direction == "R":
             nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color='aqua', arrows=True)
 
         plt.title("City graph")

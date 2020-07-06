@@ -11,5 +11,5 @@ de grafos por ejemplo con rutas radiales cortas y largas exclusivas. Falta espec
 2- La red de transporte definida en modulo network debe contar con una ruta para cada par OD con demanda para ser valida
  para ser optimizada. Esta verificación se puede efectuar usando metodo network validator de modulo de hiperruta pues
  utiliza el algoritmo de hiperruta para verificar este hecho.
-2- La etapa de asignación solo admite dos medios de transporte definidos, TransportModeManager tiene un validador para
+3- La etapa de asignación solo admite dos medios de transporte definidos, TransportModeManager tiene un validador para
 el cumplimiento de tal requisito
