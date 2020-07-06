@@ -53,4 +53,8 @@ class Passenger:
 
     @staticmethod
     def get_default_passenger():
+        """
+        to get passenger with default values
+        :return: Passenger
+        """
         return Passenger(4.0, 2.74, 5.48, 8.22, 16, 2.74, 5.48, 8.22, 16)
