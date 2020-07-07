@@ -261,13 +261,13 @@ class Hyperpath:
                 line_successor += "[{}: {} - {}] ".format(suc.type, linei, linej)
 
             if isinstance(node, CityNode):
-                line += "City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n".format(
                     node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, StopNode):
-                line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n".format(
                     node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
             if isinstance(node, RouteNode):
-                line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {}\n".format(
+                line += "Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n".format(
                     node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
                     label[node], line_successor, line_frequency)
         return line

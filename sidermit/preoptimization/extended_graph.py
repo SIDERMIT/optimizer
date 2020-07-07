@@ -173,7 +173,7 @@ class ExtendedGraph:
                 # information about access edge
                 for edge in self.__extended_graph_edges:
                     if edge.nodei == city_node and edge.nodej == stop_node:
-                        line += "\tAccess edge\n\t-Access time: {} [min]\n".format(edge.t)
+                        line += "\tAccess edge\n\t-Access time: {:.2f} [min]\n".format(edge.t)
 
                 line += "\t\tStop node\n\t\t-Mode name: {}\n".format(stop_node.mode.name)
 
@@ -181,16 +181,16 @@ class ExtendedGraph:
                     # information about boarding edge
                     for edge in self.__extended_graph_edges:
                         if edge.nodei == stop_node and edge.nodej == route_node:
-                            line += "\t\t\tBoarding edge\n\t\t\t-Frequency: {} [veh/h]\n".format(edge.f)
+                            line += "\t\t\tBoarding edge\n\t\t\t-Frequency: {:.2f} [veh/h]\n".format(edge.f)
 
                     # information about boarding edge
                     for edge in self.__extended_graph_edges:
                         if edge.nodei == route_node and edge.nodej == stop_node:
-                            line += "\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {} [min]\n".format(edge.t * 60)
+                            line += "\t\t\tAlighting edge\n\t\t\t-Penalty transfer: {:.2f} [min]\n".format(edge.t * 60)
 
                     # information about route node
                     if route_node.prev_route_node is None:
-                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]\n".format(
+                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {:.2f} [hrs]\n".format(
                             route_node.route.id,
                             route_node.direction, "no data", 0)
                     else:
