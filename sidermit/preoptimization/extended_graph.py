@@ -199,7 +199,7 @@ class ExtendedGraph:
                             if edge.nodei == route_node.prev_route_node and edge.nodej == route_node:
                                 t = edge.t
                                 break
-                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [min]\n".format(
+                        line += "\t\t\t\tRoute node\n\t\t\t\t-Route_id: {}\n\t\t\t\t-Direction: {}\n\t\t\t\t-Previous stop: {}\n\t\t\t\t-Time to previous stop: {} [hrs]\n".format(
                             route_node.route.id,
                             route_node.direction,
                             route_node.prev_route_node.stop_node.city_node.graph_node.name,

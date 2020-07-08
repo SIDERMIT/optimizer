@@ -132,7 +132,7 @@ class Hyperpath:
                 # not to consider transfer penalty at origin and include a penalty of access time
                 edge_t = edge.t
                 if edge.type == ExtendedEdgesType.ALIGHTING:
-                    if edge.nodej.city_node == node_city_origin:
+                    if edge.nodej.city_node == node_city_destination:
                         edge_t = 0
                 if edge.type == ExtendedEdgesType.ACCESS:
                     edge_t = edge.t * self.passenger_obj.spa / self.passenger_obj.spv
@@ -169,7 +169,7 @@ class Hyperpath:
                     # not to consider transfer penalty at origin and include a penalty of access time
                     edge_b_t = edge_b.t
                     if edge_b.type == ExtendedEdgesType.ALIGHTING:
-                        if edge.nodej.city_node == node_city_origin:
+                        if edge.nodej.city_node == node_city_destination:
                             edge_b_t = 0
                     if edge_b.type == ExtendedEdgesType.ACCESS:
                         edge_b_t = edge_b.t * self.passenger_obj.spa / self.passenger_obj.spv
