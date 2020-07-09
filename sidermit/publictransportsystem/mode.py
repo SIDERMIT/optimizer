@@ -94,7 +94,7 @@ class TransportMode:
         :return: List[TransportMode]
         """
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
-                                           150, 160, 0.7, 0, 6)
+                                           150, 160, 0.7, 0, 4)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
                                              40, 0.33, 40, 1440, 0.5, 1, 1)
 
