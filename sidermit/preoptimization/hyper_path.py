@@ -6,6 +6,8 @@ from matplotlib import pyplot as plt
 from sidermit.publictransportsystem import Passenger
 from sidermit.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType
 
+from sidermit.exceptions import *
+
 
 class Hyperpath:
 
@@ -18,17 +20,16 @@ class Hyperpath:
         self.extended_graph_obj = extended_graph_obj
         self.passenger_obj = passenger_obj
 
-    def network_validator(self, matrixOD):
+    def network_validator(self, OD_matrix):
         """
         to check if Transport network is well defined for all pairs OD with trips.
-        :param matrixOD: OD matrix get from Demand object
+        :param OD_matrix: OD matrix get from Demand object
         :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
         """
-
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
-        for origin_id in matrixOD:
-            for destination_id in matrixOD[origin_id]:
-                vij = matrixOD[origin_id][destination_id]
+        for origin_id in OD_matrix:
+            for destination_id in OD_matrix[origin_id]:
+                vij = OD_matrix[origin_id][destination_id]
                 if vij != 0:
                     origin = None
                     destination = None
@@ -60,16 +61,6 @@ class Hyperpath:
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
         edges = self.extended_graph_obj.get_extended_graph_edges()
-
-        # we will remove the edges of access to the CityNode of origin
-        # because each StopNode in origin must have its own hyperpath
-        for edge in edges:
-
-            if edge.nodei == node_city_origin:
-                edges.remove(edge)
-
-            if edge.nodej == node_city_origin:
-                edges.remove(edge)
 
         # we initialize node labels at infinity except for the destination with label 0
         labels = defaultdict(float)
@@ -124,6 +115,12 @@ class Hyperpath:
             # we must find all edges that end in j and whose beginning is not in S
             edge_j = []
             for edge in edges:
+                # we will remove the edges of access to the CityNode of origin
+                # because each StopNode in origin must have its own hyperpath
+                if edge.nodei == node_city_origin:
+                    continue
+                if edge.nodej == node_city_origin:
+                    continue
                 if edge.nodei not in S and edge.nodej == j:
                     edge_j.append(edge)
 
@@ -272,21 +269,21 @@ class Hyperpath:
                     label[node], line_successor, line_frequency)
         return line
 
-    def get_hyperpath_OD(self, origin, destination):
+    def get_hyperpath_OD(self, origin: CityNode, destination: CityNode):
         """
         to get all elemental path for each StopNode in Origin
         :param origin: CityNode origin
         :param destination: CityNode destination
-        :return: List[List[List[ExtendedNodes]]]. Each List[ExtendedNodes] represent a elemental path to connect
-        origin and destination and List[List[ExtendedNodes]] represent a hyperpath in a StopNode of the origin.
+        :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode) = Label). Each List[ExtendedNodes]
+        represent a elemental path to connect origin and destination.
         """
         # we run hyperpath algorithm
         successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
 
-        # list with hyperpath of each StopNode in the origin
-        hyperpaths = []
+        # dictionary with key: TransportMode and value all elemental path associated
+        hyperpaths_od = defaultdict(list)
 
         # for each StopNode in Origin
         for stop in nodes[origin]:
@@ -314,32 +311,33 @@ class Hyperpath:
                         # we add new elemental path as successors have the last node of the path analyzed
                         for suc in successors[path[len(path) - 1]]:
                             new_path = []
-                            for n in path:
-                                new_path.append(n)
+                            new_path.extend(path)
                             new_path.append(suc.nodej)
                             new_hyperpath_stop.append(new_path)
                     # path that arrived at destination
                     else:
                         new_hyperpath_stop.append(path)
                 hyperpath_stop = new_hyperpath_stop
-            hyperpaths.append(hyperpath_stop)
 
-        return hyperpaths
+            for elemental_path in hyperpath_stop:
+                hyperpaths_od[stop].append(elemental_path)
+
+        return hyperpaths_od, label, successors
 
     @staticmethod
     def string_hyperpaths_OD(hyperpaths_od, label):
         """
         String with the representation of the hyperpath for a OD pair
-        :param hyperpaths_od: List[List[List[ExtendedNodes]]]. Each List[ExtendedNodes] represent a elemental path to
-        connect origin and destination and List[List[ExtendedNodes]] represent a hyperpath in a StopNode of the origin.
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
+         path to connect origin and destination.
         :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
         with weight equivalent to the travel time
         :return: String with the representation of the hyperpath for a OD pair
         """
         line = ""
-        for hyperpath_stop in hyperpaths_od:
-            line += "\n{} stop\n".format(hyperpath_stop[0][1].mode.name)
-            for path in hyperpath_stop:
+        for stop in hyperpaths_od:
+            line += "\n{} stop\n".format(stop.mode.name)
+            for path in hyperpaths_od[stop]:
                 line += "\n\tNew Path:\n\t\t"
                 for node in path:
                     if isinstance(node, CityNode):
@@ -353,20 +351,81 @@ class Hyperpath:
                                                                                label[node])
         return line
 
+    def get_all_hyperpaths(self, OD_matrix):
+        """
+        get information about all hyperpath and label for all OD pair with trips in OD matrix
+        :param OD_matrix:  OD matrix get from Demand object
+        :return: dic[origin][destination][mode]= List[List[ExtendedNodes]] Each List[ExtendedNodes]
+        represent a elemental path to connect origin and destination
+        """
+        hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        successors = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+        if self.network_validator(OD_matrix):
+            for origin_id in OD_matrix:
+                for destination_id in OD_matrix[origin_id]:
+                    vij = OD_matrix[origin_id][destination_id]
+                    if vij != 0:
+                        origin = None
+                        destination = None
+                        for city_node in nodes:
+                            if str(origin_id) == str(city_node.graph_node.id):
+                                origin = city_node
+                            if str(destination_id) == str(city_node.graph_node.id):
+                                destination = city_node
+
+                        hyperpaths_od, label, successor = self.get_hyperpath_OD(origin, destination)
+
+                        for node in label:
+                            labels[origin][destination][node] = label[node]
+
+                        for node in successor:
+                            for suc in successor[node]:
+                                successors[origin][destination][node].append(suc)
+
+                        for stop in hyperpaths_od:
+                            for elemental_path in hyperpaths_od[stop]:
+                                hyperpaths[origin][destination][stop].append(elemental_path)
+
+        else:
+            raise TransportNetworkIsNotValidException(
+                "each OD pair with trips must have at least one path between origin and destination")
+
+        return hyperpaths, labels, successors
+
+    def string_all_hyperpaths(self, hyperpaths, labels, successors):
+
+        line = "\n"
+
+        for origin in hyperpaths:
+            for destination in hyperpaths[origin]:
+                for stop in hyperpaths[origin][destination]:
+                    line += "origin: {}, destination: {}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (succesors): {}\n".format(
+                            origin.graph_node.name,
+                            destination.graph_node.name,
+                            stop.mode.name, labels[origin][destination][stop],
+                            len(hyperpaths[origin][
+                                    destination][stop]), len(successors[origin][destination][stop]))
+
+        return line
+
     @staticmethod
     def plot(hyperpaths_od):
         """
         plot alls hyperpaths for a OD pair
-        :param hyperpaths_od: List[List[List[ExtendedNodes]]]. Each List[ExtendedNodes] represent a elemental path to
-        connect origin and destination and List[List[ExtendedNodes]] represent a hyperpath in a StopNode of the origin.
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
+        elemental path to connect origin and destination.
         :return:
         """
         city_nodes = []
         stop_nodes = []
         route_nodes = []
         edges_graph = []
-        for hyperpath_stop in hyperpaths_od:
-            for path in hyperpath_stop:
+        for stop in hyperpaths_od:
+            for path in hyperpaths_od[stop]:
                 prev_node = None
                 for node in path:
                     if isinstance(node, CityNode):

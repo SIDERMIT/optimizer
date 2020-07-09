@@ -5,6 +5,9 @@ Realizar ejemplos en jupyter notebook
 extended graph:
 falta testear metodo __str__
 
+hyper_path:
+falta testear
+
 Observaciones:
 1- Escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
 de grafos por ejemplo con rutas radiales cortas y largas exclusivas. Falta especificar que es un escenario exclusivo.

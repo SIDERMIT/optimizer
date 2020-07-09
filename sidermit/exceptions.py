@@ -28,6 +28,10 @@ class TransportNetworkException(SIDERMITException):
     pass
 
 
+class HyperpathException(SIDERMITException):
+    pass
+
+
 # Graph Exceptions
 
 
@@ -438,4 +442,8 @@ class CircularRouteIsNotValidException(TransportNetworkException):
 
 
 class RouteIsNotvalidException(TransportNetworkException):
+    pass
+
+
+class TransportNetworkIsNotValidException(HyperpathException):
     pass

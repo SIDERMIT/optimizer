@@ -1,34 +1,64 @@
-from sidermit.city import graph
+from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import Route, TransportNetwork, TransportModeManager, Passenger, TransportMode
 from sidermit.preoptimization import ExtendedGraph
 from sidermit.preoptimization import Hyperpath
 from collections import defaultdict
 
-# graph_obj = graph.Graph.build_from_parameters(n=2, l=5000, g=2, p=2, Hi=[(70 / 6 + 5) / 15, 1], angles=[10, 190])
-# graph_obj.plot("sidermit.png")
+# graph_obj = Graph.build_from_parameters(n=8, l=10000, g=0.85, p=2)
 #
-# mode_1 = TransportMode("mode_1", 1, 1, 1, 1, 76, 0, 100, 100, 1, 0, 1)  # 25
-# mode_3 = TransportMode("mode_3", 1, 1, 1, 1, 150, 0, 100, 100, 1, 0, 1)  # 4 - 4
-# mode_4 = TransportMode("mode_4", 1, 1, 1, 1, 60, 0, 100, 100, 1, 0, 1)  # 10
+# [bus_obj, metro_obj] = TransportMode.get_default_modes()
 #
-# passenger = Passenger(1, 1, 1, 0, 0, 1, 1, 0, 0)
-#
-# line_1 = Route("line_1", mode_1, "1,2,0,4,3", "3,4,0,2,1", "1,3", "3,1")
-# line_2 = Route("line_2", mode_1, "1,2,0,4", "4,0,2,1", "1,2,4", "4,2,1")
-# line_3 = Route("line_3", mode_3, "2,0,4,3", "3,4,0,2", "2,4,3", "3,4,2")
-# line_4 = Route("line_4", mode_4, "4,3", "3,4", "4,3", "3,4")
+# passenger = Passenger(1, 1, 2, 3, 16, 1, 2, 3, 16)
 #
 # network = TransportNetwork(graph_obj)
-# network.add_route(line_1)
-# network.add_route(line_2)
-# network.add_route(line_3)
-# network.add_route(line_4)
+#
+# circulares = network.get_circular_routes(bus_obj)
+# diametral4 = network.get_diametral_routes(bus_obj, jump=4)
+# diametral3 = network.get_diametral_routes(bus_obj, jump=3)
+# tangencial1 = network.get_tangencial_routes(bus_obj, jump=1)
+# tangencial2 = network.get_tangencial_routes(bus_obj, jump=2)
+# radial = network.get_radial_routes(bus_obj)
+# diametralc4 = network.get_diametral_routes(bus_obj, jump=4, short=True)
+# diametralc3 = network.get_diametral_routes(bus_obj, jump=3, short=True)
+# diametralc2 = network.get_diametral_routes(bus_obj, jump=2, short=True)
+# tangencialc1 = network.get_tangencial_routes(bus_obj, jump=1, short=True)
+# tangencialc2 = network.get_tangencial_routes(bus_obj, jump=2, short=True)
+#
+# for route in circulares:
+#     network.add_route(route)
+# for route in diametral4:
+#     network.add_route(route)
+# for route in diametral3:
+#     network.add_route(route)
+# for route in tangencial1:
+#     network.add_route(route)
+# for route in tangencial2:
+#     network.add_route(route)
+# for route in radial:
+#     network.add_route(route)
+# for route in diametralc4:
+#     network.add_route(route)
+# for route in diametralc3:
+#     network.add_route(route)
+# for route in diametralc2:
+#     network.add_route(route)
+# for route in tangencialc1:
+#     network.add_route(route)
+# for route in tangencialc2:
+#     network.add_route(route)
+#
+# # network.plot("sidermit.png")
 #
 # frequency = defaultdict(float)
-# frequency["line_1"] = 10
-# frequency["line_2"] = 10
-# frequency["line_3"] = 4
-# frequency["line_4"] = 20
+#
+# routes = network.get_routes()
+# routes_id = []
+#
+# for route in routes:
+#     routes_id.append(route.id)
+#
+# for route_id in routes_id:
+#     frequency[route_id] = 24
 #
 # extended_graph = ExtendedGraph(graph_obj, network.get_routes(), passenger.spt, frequency)
 # print(extended_graph.__str__())
@@ -36,36 +66,35 @@ from collections import defaultdict
 # # para obtener un par OD para algoritmos que vienen
 # extended_graph_nodes = extended_graph.get_extended_graph_nodes()
 # P1 = None
-# P2 = None
+# CBD = None
 # for city_node in extended_graph_nodes:
-#     if str(city_node.graph_node.name) == "P_2":
-#         P2 = city_node
+#     if str(city_node.graph_node.name) == "CBD":
+#         CBD = city_node
 #     if str(city_node.graph_node.name) == "P_1":
 #         P1 = city_node
 #
 # # generamos hiperruta para un par de nodos de origen y destino
 # hyperpath_obj = Hyperpath(extended_graph, passenger)
-# successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(P1, P2)
+# successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(P1, CBD)
 # print(hyperpath_obj.string_hyperpath_graph(successors, label, frequencies))
 #
 # # obtenemos hiperrutas
-# hyperpath_OD = hyperpath_obj.get_hyperpath_OD(P1, P2)
+# hyperpath_OD, label, successors = hyperpath_obj.get_hyperpath_OD(P1, CBD)
 # string_HP_OD = hyperpath_obj.string_hyperpaths_OD(hyperpath_OD, label)
 # print(string_HP_OD)
 #
 # hyperpath_obj.plot(hyperpath_OD)
 
+graph_obj = Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2)
 
-
-graph_obj = graph.Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2)
+demand_obj = Demand.build_from_parameters(graph_obj=graph_obj, y=1000, a=0.5, alpha=1 / 3, beta=1 / 3)
+OD_matrix = demand_obj.get_matrix()
 
 mode_manager = TransportModeManager()
 bus_obj = mode_manager.get_mode("bus")
 metro_obj = mode_manager.get_mode("metro")
 
 passenger_obj = Passenger.get_default_passenger()
-# para cambiar penalidad de transbordo
-passenger_obj.spt = 0
 
 network = TransportNetwork(graph_obj)
 
@@ -107,10 +136,14 @@ successors, label, frequencies = hyperpath_obj.build_hyperpath_graph(P1, CBD)
 print(hyperpath_obj.string_hyperpath_graph(successors, label, frequencies))
 
 # obtenemos hiperrutas
-hyperpath_OD = hyperpath_obj.get_hyperpath_OD(P1, CBD)
+hyperpath_OD, label, successor = hyperpath_obj.get_hyperpath_OD(P1, CBD)
 string_HP_OD = hyperpath_obj.string_hyperpaths_OD(hyperpath_OD, label)
 print(string_HP_OD)
 
 print("Penalidad de transbordo: {} [min]".format(passenger_obj.spt))
 
-hyperpath_obj.plot(hyperpath_OD)
+# hyperpath_obj.plot(hyperpath_OD)
+
+hyperpaths, labels, successors = hyperpath_obj.get_all_hyperpaths(OD_matrix)
+print(hyperpath_obj.string_all_hyperpaths(hyperpaths, labels, successors))
+
