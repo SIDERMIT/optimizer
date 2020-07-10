@@ -9,6 +9,8 @@ from sidermit.city import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
 from sidermit.publictransportsystem import TransportMode
 
+import math
+
 
 class RouteType(Enum):
     """
@@ -430,12 +432,19 @@ class TransportNetwork:
         id_cbd = cbd.id
 
         zones = self.__graph_obj.get_zones()
-        if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
+
+        if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        zones2 = []
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            zones2.extend(zones[:math.floor(len(zones) / 2)])
+        else:
+            zones2.extend(zones)
 
         routes = []
 
-        for zone in zones:
+        for zone in zones2:
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 
@@ -502,12 +511,19 @@ class TransportNetwork:
         mode_name = mode_obj.name
 
         zones = self.__graph_obj.get_zones()
-        if jump >= len(zones) or jump <= 0 or not isinstance(jump, int):
+
+        if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+
+        zones2 = []
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            zones2.extend(zones[:math.floor(len(zones) / 2)])
+        else:
+            zones2.extend(zones)
 
         routes = []
 
-        for zone in zones:
+        for zone in zones2:
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 

@@ -5,8 +5,23 @@ Realizar ejemplos en jupyter notebook
 extended graph:
 falta testear metodo __str__
 
+network:
+salto no puede ser mayor a n/2 redondeado hacia abajo
+
+
 hyper_path:
 falta testear
+
+Opcionales:
+1-Implementar heap binaria en hyperpath
+2-Generar actualización de arcos boarding en vez de reconstruir grafo extendido en cada etapa del optimizador
+
+Futuros:
+1-Incorporar mas modos de transporte
+2-Incorporar mas periferias
+3-Interaccion entre ciudades
+
+
 
 Observaciones:
 1- Escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
