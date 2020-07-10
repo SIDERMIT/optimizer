@@ -341,12 +341,12 @@ class Hyperpath:
                 line += "\n\tNew Path:\n\t\t"
                 for node in path:
                     if isinstance(node, CityNode):
-                        line += "[City_node {}: {:.2f}]\n\t\t".format(node.graph_node.name, label[node])
+                        line += "[City_node {}: {:.4f}]\n\t\t".format(node.graph_node.name, label[node])
                     if isinstance(node, StopNode):
-                        line += "[Stop_node {} - {}: {:.2f}]\n\t\t".format(node.mode.name,
+                        line += "[Stop_node {} - {}: {:.4f}]\n\t\t".format(node.mode.name,
                                                                            node.city_node.graph_node.name, label[node])
                     if isinstance(node, RouteNode):
-                        line += "[Route_node {} {} - {}: {:.2f}]\n\t\t".format(node.route.id, node.direction,
+                        line += "[Route_node {} {} - {}: {:.4f}]\n\t\t".format(node.route.id, node.direction,
                                                                                node.stop_node.city_node.graph_node.name,
                                                                                label[node])
         return line
@@ -404,11 +404,11 @@ class Hyperpath:
             for destination in hyperpaths[origin]:
                 for stop in hyperpaths[origin][destination]:
                     line += "origin: {}, destination: {}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n".format(
-                            origin.graph_node.name,
-                            destination.graph_node.name,
-                            stop.mode.name, labels[origin][destination][stop],
-                            len(hyperpaths[origin][
-                                    destination][stop]), len(successors[origin][destination][stop]))
+                        origin.graph_node.name,
+                        destination.graph_node.name,
+                        stop.mode.name, labels[origin][destination][stop],
+                        len(hyperpaths[origin][
+                                destination][stop]), len(successors[origin][destination][stop]))
 
         return line
 
