@@ -436,15 +436,13 @@ class TransportNetwork:
         if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
 
-        zones2 = []
+        end = len(zones)
         if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
-            zones2.extend(zones[:math.floor(len(zones) / 2)])
-        else:
-            zones2.extend(zones)
+            end = math.floor(len(zones) / 2)
 
         routes = []
 
-        for zone in zones2:
+        for zone in zones[:end]:
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 
@@ -515,15 +513,13 @@ class TransportNetwork:
         if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
             raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
 
-        zones2 = []
+        end = len(zones)
         if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
-            zones2.extend(zones[:math.floor(len(zones) / 2)])
-        else:
-            zones2.extend(zones)
+            end = math.floor(len(zones) / 2)
 
         routes = []
 
-        for zone in zones2:
+        for zone in zones[:end]:
             id_p = zone.periphery.id
             id_sc = zone.subcenter.id
 

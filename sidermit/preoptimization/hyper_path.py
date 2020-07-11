@@ -3,7 +3,7 @@ from collections import defaultdict
 import networkx as nx
 from matplotlib import pyplot as plt
 
-from sidermit.publictransportsystem import Passenger
+from sidermit.publictransportsystem import Passenger, TransportModeManager
 from sidermit.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType
 
 from sidermit.exceptions import *
@@ -22,11 +22,13 @@ class Hyperpath:
 
     def network_validator(self, OD_matrix):
         """
-        to check if Transport network is well defined for all pairs OD with trips.
+        to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
+        each OD pair with trips. Also this must has until 2 TransportMode
         :param OD_matrix: OD matrix get from Demand object
         :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
         """
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        # to check a path between all OD pair with trips
         for origin_id in OD_matrix:
             for destination_id in OD_matrix[origin_id]:
                 vij = OD_matrix[origin_id][destination_id]
@@ -49,7 +51,19 @@ class Hyperpath:
                             break
                     if conection is False:
                         return False
-        return True
+        # to check network must has until 2 TransportMode
+        list_mode = []
+        for city_node in nodes:
+            for stop in nodes[city_node]:
+                if stop.mode not in list_mode:
+                    list_mode.append(stop.mode)
+
+        mode_manager = TransportModeManager(add_default_mode=False)
+
+        for mode in list_mode:
+            mode_manager.add_mode(mode)
+
+        return mode_manager.is_valid_to_assignment_step()
 
     def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode):
         """
@@ -274,8 +288,9 @@ class Hyperpath:
         to get all elemental path for each StopNode in Origin
         :param origin: CityNode origin
         :param destination: CityNode destination
-        :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode) = Label). Each List[ExtendedNodes]
-        represent a elemental path to connect origin and destination.
+        :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode] = Label, dic[ExtendedNode] =
+        List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect origin and destination.
+        List[ExtendedEdge] represent all successors edge for each ExtendedNode.
         """
         # we run hyperpath algorithm
         successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
@@ -329,7 +344,7 @@ class Hyperpath:
         """
         String with the representation of the hyperpath for a OD pair
         :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
-         path to connect origin and destination.
+        path to connect a origin and destination.
         :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
         with weight equivalent to the travel time
         :return: String with the representation of the hyperpath for a OD pair
@@ -355,8 +370,10 @@ class Hyperpath:
         """
         get information about all hyperpath and label for all OD pair with trips in OD matrix
         :param OD_matrix:  OD matrix get from Demand object
-        :return: dic[origin][destination][mode]= List[List[ExtendedNodes]] Each List[ExtendedNodes]
-        represent a elemental path to connect origin and destination
+        :return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
+        dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
+        [ExtendedNode] = List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect a origin
+        and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
         """
         hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
         labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
@@ -379,12 +396,22 @@ class Hyperpath:
 
                         hyperpaths_od, label, successor = self.get_hyperpath_OD(origin, destination)
 
-                        for node in label:
-                            labels[origin][destination][node] = label[node]
+                        for city_node in nodes:
+                            labels[origin][destination][city_node] = label[city_node]
+                            for stop_node in nodes[city_node]:
+                                labels[origin][destination][stop_node] = label[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    labels[origin][destination][route_node] = label[route_node]
 
-                        for node in successor:
-                            for suc in successor[node]:
-                                successors[origin][destination][node].append(suc)
+                        for city_node in nodes:
+                            for suc in successor[city_node]:
+                                successors[origin][destination][city_node].append(suc)
+                            for stop_node in nodes[city_node]:
+                                for suc in successor[stop_node]:
+                                    successors[origin][destination][stop_node].append(suc)
+                                for route_node in nodes[city_node][stop_node]:
+                                    for suc in successor[route_node]:
+                                        successors[origin][destination][route_node].append(suc)
 
                         for stop in hyperpaths_od:
                             for elemental_path in hyperpaths_od[stop]:
@@ -392,11 +419,18 @@ class Hyperpath:
 
         else:
             raise TransportNetworkIsNotValidException(
-                "each OD pair with trips must have at least one path between origin and destination")
+                "each OD pair with trips must have at least one path between origin and destination and no more of 2 TransportMode defined")
 
         return hyperpaths, labels, successors
 
     def string_all_hyperpaths(self, hyperpaths, labels, successors):
+        """
+        to get a string with a summary of the all hyperpaths for all OD pair with trips.
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :return: string with a summary of the all hyperpaths for all OD pair with trips.
+        """
 
         line = "\n"
 
