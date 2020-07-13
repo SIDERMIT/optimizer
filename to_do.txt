@@ -5,12 +5,8 @@ Realizar ejemplos en jupyter notebook
 extended graph:
 falta testear metodo __str__
 
-network:
-salto no puede ser mayor a n/2 redondeado hacia abajo
-
-
 hyper_path:
-falta testear
+falta testear metodos de printeo
 
 Opcionales:
 1-Implementar heap binaria en hyperpath
