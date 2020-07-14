@@ -47,7 +47,7 @@ class test_hyper_path(unittest.TestCase):
         :return:
         """
 
-        graph_obj = Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2000)
+        graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
 
         [bus_obj, _] = TransportMode.get_default_modes()
 
@@ -93,7 +93,7 @@ class test_hyper_path(unittest.TestCase):
         :return:
         """
 
-        graph_obj = Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2000)
+        graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
 
         [bus_obj, metro_obj] = TransportMode.get_default_modes()
 
@@ -149,7 +149,7 @@ class test_hyper_path(unittest.TestCase):
         :return:
         """
 
-        graph_obj = Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2000)
+        graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
 
         demand_obj = Demand.build_from_parameters(graph_obj, y=1000, a=0.5, alpha=1 / 3, beta=1 / 3)
         OD_matrix = demand_obj.get_matrix()

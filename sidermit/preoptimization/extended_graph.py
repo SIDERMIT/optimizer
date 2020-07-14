@@ -537,7 +537,7 @@ class ExtendedGraph:
                                 y_prev = y
                                 break
 
-                t = distance / 1000 / v
+                t = distance / v
 
                 edge = ExtendedEdge(len(route_edges), previous_route_node, route_node,
                                     t, float('inf'), ExtendedEdgesType.ROUTE)

@@ -447,10 +447,10 @@ class Hyperpath:
         for origin in hyperpaths:
             for destination in hyperpaths[origin]:
                 for stop in hyperpaths[origin][destination]:
-                    line += "origin: {}, destination: {}, vij: {}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n".format(
-                        vij[origin][destination],
+                    line += "origin: {}, destination: {}, vij: {:.2f}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n".format(
                         origin.graph_node.name,
                         destination.graph_node.name,
+                        vij[origin][destination],
                         stop.mode.name, labels[origin][destination][stop],
                         len(hyperpaths[origin][
                                 destination][stop]), len(successors[origin][destination][stop]))
