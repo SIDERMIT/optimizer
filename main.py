@@ -166,7 +166,7 @@ hyperpath_obj = Hyperpath(extended_graph, passenger_obj)
 # print(hyperpath_obj.string_hyperpath_graph(successors, label, frequencies))
 
 # obtenemos hiperrutas
-hyperpath_OD, label, successor = hyperpath_obj.get_hyperpath_OD(P1, CBD)
+hyperpath_OD, label, successor, frecuencies = hyperpath_obj.get_hyperpath_OD(P1, CBD)
 string_HP_OD = hyperpath_obj.string_hyperpaths_OD(hyperpath_OD, label)
 print(string_HP_OD)
 
@@ -174,13 +174,13 @@ print("Penalidad de transbordo: {} [min]".format(passenger_obj.spt))
 
 # hyperpath_obj.plot(hyperpath_OD)
 
-hyperpaths, labels, successors, vij = hyperpath_obj.get_all_hyperpaths(OD_matrix)
+hyperpaths, labels, successors, frequency, vij = hyperpath_obj.get_all_hyperpaths(OD_matrix)
 print(hyperpath_obj.string_all_hyperpaths(hyperpaths, labels, successors, vij))
 
 
 from sidermit.preoptimization import Assignment
 
-assignment_obj = Assignment.get_origin_stop_node_assignment(hyperpaths, labels, vij, 2, 4, 3, 1)
+assignment = Assignment.get_origin_stop_node_assignment(hyperpaths, labels, vij, 2, 4, 3, 1)
 
 #
 # graph_obj = Graph.build_from_parameters(n=2, l=10000, g=0.5, p=2000)

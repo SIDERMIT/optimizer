@@ -2,3 +2,6 @@ pandas==1.0.4
 matplotlib==3.2.1
 networkx~=2.4
 Flake8==3.8.3
+sidermit~=1.0.0
+setuptools~=47.1.1
+scipy~=1.4.1
