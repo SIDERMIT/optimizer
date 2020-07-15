@@ -132,7 +132,7 @@ class test_hyper_path(unittest.TestCase):
 
         hyper_path_obj = Hyperpath(extended_graph_obj, passenger_obj)
 
-        hyperpaths_od, label, successors = hyper_path_obj.get_hyperpath_OD(P1, P2)
+        hyperpaths_od, label, successors, frequencies = hyper_path_obj.get_hyperpath_OD(P1, P2)
 
         self.assertEqual(label[P1], float("inf"))
         self.assertEqual(label[P2], 0)
@@ -191,7 +191,7 @@ class test_hyper_path(unittest.TestCase):
 
         hyper_path_obj = Hyperpath(extended_graph_obj, passenger_obj)
 
-        hyperpaths, labels, successors, vij = hyper_path_obj.get_all_hyperpaths(OD_matrix)
+        hyperpaths, labels, successors, frequencies, vij = hyper_path_obj.get_all_hyperpaths(OD_matrix)
 
         self.assertEqual(round(labels[P1][SC2][stop_bus], 5), 1.25238)
         self.assertEqual(round(labels[P1][SC2][stop_metro], 5), 0.71071 + 0.05)

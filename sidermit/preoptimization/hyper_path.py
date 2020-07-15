@@ -343,7 +343,7 @@ class Hyperpath:
             for elemental_path in hyperpath_stop:
                 hyperpaths_od[stop].append(elemental_path)
 
-        return hyperpaths_od, label, successors
+        return hyperpaths_od, label, successors, frequencies
 
     @staticmethod
     def string_hyperpaths_OD(hyperpaths_od, label):
@@ -378,12 +378,14 @@ class Hyperpath:
         :param OD_matrix:  OD matrix get from Demand object
         :return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
         dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
-        [ExtendedNode] = List[ExtendedEdge], dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
+        [ExtendedNode] = List[ExtendedEdge], dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]
+        , dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
         and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
         """
         hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
         labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
         successors = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
         Vij = defaultdict(lambda: defaultdict(list))
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
@@ -401,7 +403,7 @@ class Hyperpath:
                             if str(destination_id) == str(city_node.graph_node.id):
                                 destination = city_node
 
-                        hyperpaths_od, label, successor = self.get_hyperpath_OD(origin, destination)
+                        hyperpaths_od, label, successor, frequencies = self.get_hyperpath_OD(origin, destination)
 
                         for city_node in nodes:
                             labels[origin][destination][city_node] = label[city_node]
@@ -420,6 +422,13 @@ class Hyperpath:
                                     for suc in successor[route_node]:
                                         successors[origin][destination][route_node].append(suc)
 
+                        for city_node in nodes:
+                            frequency[origin][destination][city_node] = frequencies[city_node]
+                            for stop_node in nodes[city_node]:
+                                frequency[origin][destination][stop_node] = frequencies[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    frequency[origin][destination][route_node] = frequencies[route_node]
+
                         for stop in hyperpaths_od:
                             for elemental_path in hyperpaths_od[stop]:
                                 hyperpaths[origin][destination][stop].append(elemental_path)
@@ -430,7 +439,7 @@ class Hyperpath:
             raise TransportNetworkIsNotValidException(
                 "each OD pair with trips must have at least one path between origin and destination and no more of 2 TransportMode defined in the network")
 
-        return hyperpaths, labels, successors, Vij
+        return hyperpaths, labels, successors, frequency, Vij
 
     def string_all_hyperpaths(self, hyperpaths, labels, successors, vij):
         """
