@@ -1,4 +1,5 @@
 from collections import defaultdict
+from sidermit.preoptimization import CityNode, StopNode, RouteNode
 
 
 class Assignment:
@@ -10,6 +11,9 @@ class Assignment:
     def get_origin_stop_node_assignment(hyperpaths, labels, Vij, p, vp, spa, spv):
         """
         to distribute trips of all OD pair in each StopNode of the Origin
+        :param vp: Walking speed [km/h]
+        :param spv: Subjetive value of in-vehicle time savings [US$/h]
+        :param spa: Subjetive value of access time savings [US$/h]
         :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]].
         Each List[ExtendedNodes] represent a elemental path.
         :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label [
@@ -24,8 +28,6 @@ class Assignment:
             for destination in hyperpaths[origin]:
 
                 vij = Vij[origin][destination]
-
-                list_stop = []
 
                 # paradero de d = 1
                 stop1 = None
@@ -54,7 +56,7 @@ class Assignment:
                     if stop1 is not None:
                         assignment[origin][destination][stop1] = 100
                         print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
-                    else:
+                    if stop2 is not None:
                         assignment[origin][destination][stop2] = 100
                         print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                 # existen ambas paradas
@@ -107,7 +109,7 @@ class Assignment:
                         else:
                             # calculamos caminata de indiferencia
                             d = vp * (labels[origin][destination][stop1] - labels[origin][destination][stop2]) / (
-                                        spa / spv)
+                                    spa / spv)
 
                             # necesitamos posicion del primer paradero stop2 a la derecha del centro
                             position = (p / stop2.mode.d) * 0.5
@@ -126,3 +128,69 @@ class Assignment:
                                 print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
                                                                                   assignment[origin][destination][
                                                                                       stop2]))
+        return assignment
+
+    def get_alighting_and_boarding_stop_route(self, Vij, hyperpaths, successors, frequencies, assignment, f):
+        """
+        to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes
+        :param successors: dic[origin: CityNode][destination: CityNode]
+        [ExtendedNode] = List[ExtendedEdge], List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
+        :param frequencies: dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr].
+        :param Vij: dic[origin: CityNode][destination: CityNode] = vij [pax/hr]
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]. Each
+        List[ExtendedNodes] represent a elemental path to connect a origin and destination
+        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+        :param f: dic[route_id] = frequency [veh/hr]
+        :return: dic[route: Route][stop: StopNode] = pax [pax/veh]
+        """
+
+        z = defaultdict(lambda: defaultdict(float))
+        v = defaultdict(lambda: defaultdict(float))
+
+        for origin in hyperpaths:
+            for destination in hyperpaths[origin]:
+                # viajes del par OD
+                vij = Vij[origin][destination]
+                for stop in hyperpaths[origin][destination]:
+                    # viajes de todas las rutas elementales que salen de esta parada
+                    vod_s = vij * assignment[origin][destination][stop]
+
+                    paths = []
+
+                    for suc in successors[origin][destination][stop]:
+                        nodej = suc.nodej
+                        paths.append((stop, nodej, vod_s))
+
+                    while len(paths) != 0:
+                        nodei, nodej, pax = paths.pop(0)
+
+                        dis_pax = pax
+
+                        if isinstance(nodei, StopNode):
+                            # reportar subidas
+                            if isinstance(nodej, RouteNode):
+                                dis_pax = pax * f[nodej.route.id] / frequencies[nodei]
+
+                                z[nodej][nodei] = z[nodej][nodei] + dis_pax
+
+                        if isinstance(nodei, RouteNode):
+                            # reportar bajadas
+                            if isinstance(nodej, StopNode):
+                                v[nodej][nodei] = v[nodej][nodei] + dis_pax
+
+                        # agregar nuevos elementos a paths, salvo que hayan llegado a destino
+                        if isinstance(nodej, StopNode) and nodej.city_node == destination:
+                            continue
+
+                        else:
+                            for suc in successors[origin][destination][nodej]:
+                                paths.append((nodej, suc.nodej, dis_pax))
+
+        for route_node in z:
+            for stop_node in z[route_node]:
+                z[route_node][stop_node] = z[route_node][stop_node] / (f[route_node.route.id] * stop_node.mode.d)
+        for route_node in v:
+            for stop_node in v[route_node]:
+                v[route_node][stop_node] = v[route_node][stop_node] / (f[route_node.route.id] * stop_node.mode.d)
+
+        return z, v
