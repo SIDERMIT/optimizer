@@ -130,7 +130,7 @@ class Assignment:
                                                                                       stop2]))
         return assignment
 
-    def get_alighting_and_boarding_stop_route(self, Vij, hyperpaths, successors, frequencies, assignment, f):
+    def get_alighting_and_boarding(self, Vij, hyperpaths, successors, assignment, f):
         """
         to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes
         :param successors: dic[origin: CityNode][destination: CityNode]
@@ -144,16 +144,19 @@ class Assignment:
         :return: dic[route: Route][stop: StopNode] = pax [pax/veh]
         """
 
-        z = defaultdict(lambda: defaultdict(float))
-        v = defaultdict(lambda: defaultdict(float))
+        z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        v = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
         for origin in hyperpaths:
             for destination in hyperpaths[origin]:
                 # viajes del par OD
-                vij = Vij[origin][destination]
+                vod = Vij[origin][destination]
                 for stop in hyperpaths[origin][destination]:
                     # viajes de todas las rutas elementales que salen de esta parada
-                    vod_s = vij * assignment[origin][destination][stop]
+                    vod_s = vod * assignment[origin][destination][stop]
+
+                    if vod_s == 0:
+                        continue
 
                     paths = []
 
@@ -169,14 +172,20 @@ class Assignment:
                         if isinstance(nodei, StopNode):
                             # reportar subidas
                             if isinstance(nodej, RouteNode):
-                                dis_pax = pax * f[nodej.route.id] / frequencies[nodei]
 
-                                z[nodej][nodei] = z[nodej][nodei] + dis_pax
+                                f_acum = 0
+
+                                for suc in successors[origin][destination][nodei]:
+                                    f_acum += f[suc.nodej.route.id]
+
+                                dis_pax = pax * (f[nodej.route.id] / f_acum)
+
+                                z[nodej.route.id][nodej.direction][nodei] += dis_pax
 
                         if isinstance(nodei, RouteNode):
                             # reportar bajadas
                             if isinstance(nodej, StopNode):
-                                v[nodej][nodei] = v[nodej][nodei] + dis_pax
+                                v[nodei.route.id][nodei.direction][nodej] += dis_pax
 
                         # agregar nuevos elementos a paths, salvo que hayan llegado a destino
                         if isinstance(nodej, StopNode) and nodej.city_node == destination:
@@ -186,11 +195,19 @@ class Assignment:
                             for suc in successors[origin][destination][nodej]:
                                 paths.append((nodej, suc.nodej, dis_pax))
 
-        for route_node in z:
-            for stop_node in z[route_node]:
-                z[route_node][stop_node] = z[route_node][stop_node] / (f[route_node.route.id] * stop_node.mode.d)
-        for route_node in v:
-            for stop_node in v[route_node]:
-                v[route_node][stop_node] = v[route_node][stop_node] / (f[route_node.route.id] * stop_node.mode.d)
+        for route_id in z:
+            for direction in z[route_id]:
+                for stop_node in z[route_id][direction]:
+                    if f[route_id] == 0:
+                        continue
+                    else:
+                        z[route_id][direction][stop_node] = z[route_id][direction][stop_node] / (f[route_id] * stop_node.mode.d)
+        for route_id in v:
+            for direction in v[route_id]:
+                for stop_node in v[route_id][direction]:
+                    if f[route_id] == 0:
+                        continue
+                    else:
+                        v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (f[route_id] * stop_node.mode.d)
 
         return z, v

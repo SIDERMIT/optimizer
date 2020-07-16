@@ -22,7 +22,7 @@ class Hyperpath:
     def network_validator(self, OD_matrix):
         """
         to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
-        each OD pair with trips. Also this must has until 2 TransportMode
+        each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
         :param OD_matrix: OD matrix get from Demand object
         :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
         """
