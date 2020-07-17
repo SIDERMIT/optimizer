@@ -411,6 +411,27 @@ class Graph:
 
             return df_file
 
+    def get_edges_distance(self):
+        """
+        to get a dictionary with the edge distance of a nodes pair
+        :return: dic[nodei_id][nodej_id] = float [km]
+        """
+
+        edge_distance = defaultdict(lambda: defaultdict(float))
+
+        for edge in self.__edges:
+            nodei = edge.node1
+            nodej = edge.node2
+
+            xi = nodei.x
+            yi = nodei.y
+            xj = nodej.x
+            yj = nodej.y
+
+            edge_distance[str(nodei.id)][str(nodej.id)] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
+
+        return edge_distance
+
     @staticmethod
     def get_angle(x: float, y: float):
         """

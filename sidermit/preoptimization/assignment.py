@@ -141,7 +141,7 @@ class Assignment:
         List[ExtendedNodes] represent a elemental path to connect a origin and destination
         :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
         :param f: dic[route_id] = frequency [veh/hr]
-        :return: dic[route: Route][stop: StopNode] = pax [pax/veh]
+        :return: dic[route_id][direction][stop: StopNode] = pax [pax/veh], dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         """
 
         z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
