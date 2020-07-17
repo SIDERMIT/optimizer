@@ -8,7 +8,7 @@ class Assignment:
         pass
 
     @staticmethod
-    def get_origin_stop_node_assignment(hyperpaths, labels, Vij, p, vp, spa, spv):
+    def get_assignment(hyperpaths, labels, Vij, p, vp, spa, spv):
         """
         to distribute trips of all OD pair in each StopNode of the Origin
         :param vp: Walking speed [km/h]
@@ -103,7 +103,7 @@ class Assignment:
                                 print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     else:
                         # si parametro d de stop2 es impar
-                        if stop2.d % 2 == 1:
+                        if stop2.mode.d % 2 == 1:
                             assignment[origin][destination][stop2] = 100
                             print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                         else:
@@ -130,7 +130,8 @@ class Assignment:
                                                                                       stop2]))
         return assignment
 
-    def get_alighting_and_boarding(self, Vij, hyperpaths, successors, assignment, f):
+    @staticmethod
+    def get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f):
         """
         to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes
         :param successors: dic[origin: CityNode][destination: CityNode]
@@ -153,7 +154,7 @@ class Assignment:
                 vod = Vij[origin][destination]
                 for stop in hyperpaths[origin][destination]:
                     # viajes de todas las rutas elementales que salen de esta parada
-                    vod_s = vod * assignment[origin][destination][stop]
+                    vod_s = vod * assignment[origin][destination][stop] / 100
 
                     if vod_s == 0:
                         continue
@@ -201,13 +202,42 @@ class Assignment:
                     if f[route_id] == 0:
                         continue
                     else:
-                        z[route_id][direction][stop_node] = z[route_id][direction][stop_node] / (f[route_id] * stop_node.mode.d)
+                        z[route_id][direction][stop_node] = z[route_id][direction][stop_node] / (
+                                f[route_id] * stop_node.mode.d)
         for route_id in v:
             for direction in v[route_id]:
                 for stop_node in v[route_id][direction]:
                     if f[route_id] == 0:
                         continue
                     else:
-                        v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (f[route_id] * stop_node.mode.d)
+                        v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (
+                                f[route_id] * stop_node.mode.d)
 
         return z, v
+
+    @staticmethod
+    def str_boarding_alighting(z, v):
+        """
+        to print boarding and alighting
+        :param z:
+        :param v:
+        :return:
+        """
+        line = "\nBoarding and Alighting information:"
+        for route_id in z:
+            line += "\nNew route: {}".format(route_id)
+            line += "\n\tBoarding:"
+            for direction in z[route_id]:
+                line += "\n\t\tDirection: {}".format(direction)
+                for stop_node in z[route_id][direction]:
+                    line += "\n\t\t\tStop {}-{}: {:.2f}[pax/veh]".format(stop_node.mode.name,
+                                                                         stop_node.city_node.graph_node.name,
+                                                                         z[route_id][direction][stop_node])
+            line += "\n\tAlighting:"
+            for direction in v[route_id]:
+                line += "\n\t\tDirection: {}".format(direction)
+                for stop_node in v[route_id][direction]:
+                    line += "\n\t\t\tStop {}-{}: {:.2f}[pax/veh]".format(stop_node.mode.name,
+                                                                         stop_node.city_node.graph_node.name,
+                                                                         v[route_id][direction][stop_node])
+        return line

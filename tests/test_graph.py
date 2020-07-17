@@ -43,6 +43,18 @@ class test_graph(unittest.TestCase):
         self.assertEqual(len(g.get_nodes()), 7)
         self.assertEqual(len(g.get_edges()), 18)
 
+    def test_get_edges_distance(self):
+        """
+        to test get_edges_distance method of class Graph
+        :return:
+        """
+        graph_obj = graph.Graph.build_from_parameters(2, 10, 0.5, 2)
+
+        edge_distance = graph_obj.get_edges_distance()
+
+        self.assertEqual(edge_distance[str(1)][str(2)], 5)
+        self.assertEqual(edge_distance[str(2)][str(0)], 10)
+
     def test_Node_Exceptions(self):
         """
         to test exceptions class Node
