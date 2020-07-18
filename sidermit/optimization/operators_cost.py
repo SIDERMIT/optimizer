@@ -2,8 +2,6 @@ from collections import defaultdict
 
 
 class OperatorsCost:
-    def __init__(self):
-        pass
 
     @staticmethod
     def lines_travel_time(routes, edge_distance):
@@ -62,13 +60,34 @@ class OperatorsCost:
 
             tc = line_travel_time[route_id]
 
-            for stop in z[route_id]["I"]:
-                tc += t * z[route_id]["I"][stop]
-            for stop in v[route_id]["I"]:
-                tc += t * v[route_id]["I"][stop]
-            for stop in z[route_id]["R"]:
-                tc += t * z[route_id]["R"][stop]
-            for stop in v[route_id]["R"]:
-                tc += t * v[route_id]["R"][stop]
+            if route.mode.bya == 0:
+
+                for stop in z[route_id]["I"]:
+                    tc += t * z[route_id]["I"][stop]
+                for stop in v[route_id]["I"]:
+                    tc += t * v[route_id]["I"][stop]
+                for stop in z[route_id]["R"]:
+                    tc += t * z[route_id]["R"][stop]
+                for stop in v[route_id]["R"]:
+                    tc += t * v[route_id]["R"][stop]
+
+            if route.mode.bya == 1:
+                processed_stop_i = []
+                processed_stop_r = []
+
+                for stop in z[route_id]["I"]:
+                    processed_stop_i.append(stop)
+                    tc += t * max(z[route_id]["I"][stop], v[route_id]["I"][stop])
+                for stop in v[route_id]["I"]:
+                    if stop not in processed_stop_i:
+                        tc += t * max(z[route_id]["I"][stop], v[route_id]["I"][stop])
+                for stop in z[route_id]["R"]:
+                    processed_stop_r.append(stop)
+                    tc += t * max(z[route_id]["R"][stop], v[route_id]["R"][stop])
+                for stop in v[route_id]["R"]:
+                    if stop not in processed_stop_r:
+                        tc += t * max(z[route_id]["R"][stop], v[route_id]["R"][stop])
 
             cycle_time[route_id] = tc
+
+        return cycle_time
