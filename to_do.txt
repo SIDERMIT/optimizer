@@ -2,11 +2,17 @@ General:
 Agregar docstring
 Realizar ejemplos en jupyter notebook
 
+MODULOS
+
 extended graph:
-falta testear metodo __str__
+falta testear metodos de printeo
 
 hyper_path:
 falta testear metodos de printeo
+
+Al finalizar:
+1-Agregar metodos específicos a rutas circulares (tramo mas cargado)
+2-Agregar coloración de nodos por zona
 
 Opcionales:
 1-Implementar heap binaria en hyperpath
@@ -16,8 +22,6 @@ Futuros:
 1-Incorporar mas modos de transporte
 2-Incorporar mas periferias
 3-Interaccion entre ciudades
-
-
 
 Observaciones:
 1- Escenario exclusivo se omite por ahora pues involucra muchas atenciones, cambios en la interfaz y existe invalidacion
@@ -29,46 +33,3 @@ de grafos por ejemplo con rutas radiales cortas y largas exclusivas. Falta espec
 el cumplimiento de tal requisito
 
 
-                    casos:
-                        1. parada con modo de parametro d = 1 (stop1) es de etiqueta min:
-
-                            calculamos caminata de indiferencia:
-                            d = vp * (label[stop2] - label[stop1]) / (Pa/Pv)
-
-                            caminata de indiferencia es mayor a la zona de influencia de stop1
-                            if d >= p/2:
-                                asignar to do a stop1
-                            caminata de indiferencia es menor a la zona de influencia de stop1
-                            else:
-
-                                zona de influencia de cada stop_2
-                                zona_stop_2 = p/d_stop2
-
-                                # encontraremos linea de stop 2
-                                position = 0
-                                # reconoceremos posición de todos los paraderos ubicado a la derecha de stop1
-                                for i in range(int(d/2)):
-                                    if i == 0:
-                                        pos = zona_stop_2/2
-                                    else:
-                                        pos = pos + zona_stop_2
-                                     # encontramos un paradero de stop2 que esta ubicado mas lejos que la distancia de indiferencia
-                                    if pos > d:
-                                        asignar a stop1: (2d + (pos-d))/p
-                                        asignar a stop2: ((pos-d) + (p - 2*pos))/p= 100 - asignacion a stop1
-
-                                        break
-                                # si no se encontro paradero mas lejos a la distancia de indiferencia asignar to do a stop1
-                                if pos < d:
-                                   asignar to do a stop1
-
-                        2. parada con modo de parametro d = 1 (stop1) no es de etiqueta min:
-
-                            if stop2.d es impar:
-                                 asignar to do a stop2
-                            else:
-                                calculamos caminata de indiferencia:
-                                d = vp * (label[stop1] - label[stop2]) / (Pa/Pv)
-
-                                if d
-                        3. etiquetas son iguales
