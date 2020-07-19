@@ -1,5 +1,6 @@
 from collections import defaultdict
 from sidermit.preoptimization import CityNode, StopNode, RouteNode
+from sidermit.publictransportsystem import RouteType
 
 
 class Assignment:
@@ -27,15 +28,13 @@ class Assignment:
         for origin in hyperpaths:
             for destination in hyperpaths[origin]:
 
-                vij = Vij[origin][destination]
-
                 # paradero de d = 1
                 stop1 = None
                 # otro paradero ( su d puede ser o no 1)
                 stop2 = None
 
-                print("origin: {}, destination: {}, vij: {:.2f}".format(origin.graph_node.name,
-                                                                        destination.graph_node.name, vij))
+                # print("origin: {}, destination: {}, vij: {:.2f}".format(origin.graph_node.name,
+                #                                                         destination.graph_node.name, vij))
 
                 # encontramos paradero de d = 1
                 for stop in hyperpaths[origin][destination]:
@@ -47,15 +46,15 @@ class Assignment:
                     else:
                         stop2 = stop
 
-                    print(
-                        "\tmode: {}, label: {:.2f}, node: {}".format(stop.mode.name, labels[origin][destination][stop],
-                                                                     stop.city_node.graph_node.name))
+                    # print(
+                    #     "\tmode: {}, label: {:.2f}, node: {}".format(stop.mode.name, labels[origin][destination][stop],
+                    #                                                  stop.city_node.graph_node.name))
 
                 # solo tiene una parada
                 if stop1 is None or stop2 is None:
                     if stop1 is not None:
                         assignment[origin][destination][stop1] = 100
-                        print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
+                        # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     if stop2 is not None:
                         assignment[origin][destination][stop2] = 100
                         print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
@@ -90,22 +89,22 @@ class Assignment:
                                     assignment[origin][destination][stop1] = (2 * d + (position - d)) / p * 100
                                     assignment[origin][destination][stop2] = 100 - assignment[origin][destination][
                                         stop1]
-                                    print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
-                                                                                      assignment[origin][destination][
-                                                                                          stop1]))
-                                    print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
-                                                                                      assignment[origin][destination][
-                                                                                          stop2]))
+                                    # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
+                                    #                                                   assignment[origin][destination][
+                                    #                                                       stop1]))
+                                    # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
+                                    #                                                   assignment[origin][destination][
+                                    #                                                       stop2]))
                                     break
                             # si no se encontro paradero mas lejos a la distancia de indiferencia asignar to do a stop1
                             if position < d:
                                 assignment[origin][destination][stop1] = 100
-                                print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
+                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     else:
                         # si parametro d de stop2 es impar
                         if stop2.mode.d % 2 == 1:
                             assignment[origin][destination][stop2] = 100
-                            print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
+                            # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                         else:
                             # calculamos caminata de indiferencia
                             d = vp * (labels[origin][destination][stop1] - labels[origin][destination][stop2]) / (
@@ -116,18 +115,18 @@ class Assignment:
 
                             if d >= position:
                                 assignment[origin][destination][stop2] = 100
-                                print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
+                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                             else:
                                 assignment[origin][destination][stop1] = (position - d) / p * 100
                                 assignment[origin][destination][stop2] = 100 - assignment[origin][destination][
                                     stop1]
 
-                                print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
-                                                                                  assignment[origin][destination][
-                                                                                      stop1]))
-                                print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
-                                                                                  assignment[origin][destination][
-                                                                                      stop2]))
+                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
+                                #                                                   assignment[origin][destination][
+                                #                                                       stop1]))
+                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
+                                #                                                   assignment[origin][destination][
+                                #                                                       stop2]))
         return assignment
 
     @staticmethod
@@ -241,3 +240,69 @@ class Assignment:
                                                                          stop_node.city_node.graph_node.name,
                                                                          v[route_id][direction][stop_node])
         return line
+
+    @staticmethod
+    def most_loaded_section_constrains(routes, z, v, k):
+        """
+        to get constrains to optimization problem with respect to most loaded section for each routes
+        :param routes:
+        :param z:
+        :param v:
+        :return:
+        """
+
+        constrains = []
+
+        for route in routes:
+            if route._type != RouteType.CIRCULAR:
+                pass
+            else:
+                kmax = route.mode.kmax
+                route_id = route.id
+                node_sequence_i = route.nodes_sequence_i
+                node_sequence_r = route.nodes_sequence_r
+
+                max_loaded_section = 0
+
+                prev_loaded = 0
+
+                for i in node_sequence_i:
+
+                    zi = 0
+                    vi = 0
+
+                    for stop_node in z[route_id]["I"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            zi = z[route_id]["I"][stop_node]
+                    for stop_node in v[route_id]["I"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            vi = v[route_id]["I"][stop_node]
+
+                    prev_loaded += zi - vi
+
+                    if prev_loaded > max_loaded_section:
+                        max_loaded_section = prev_loaded
+
+                prev_loaded = 0
+
+                for i in node_sequence_r:
+
+                    zi = 0
+                    vi = 0
+
+                    for stop_node in z[route_id]["R"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            zi = z[route_id]["R"][stop_node]
+                    for stop_node in v[route_id]["R"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            vi = v[route_id]["R"][stop_node]
+
+                    prev_loaded += zi - vi
+
+                    if prev_loaded > max_loaded_section:
+                        max_loaded_section = prev_loaded
+
+                constrains.append(max_loaded_section - k[route_id])
+                constrains.append(k[route_id] - kmax)
+
+        return constrains

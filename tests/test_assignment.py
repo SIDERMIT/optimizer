@@ -40,24 +40,14 @@ class test_graph(unittest.TestCase):
                                                   vp=passenger_obj.va, spa=passenger_obj.spa,
                                                   spv=passenger_obj.spv)
 
-        f = defaultdict(float)
-        for route in network_obj.get_routes():
-            f[route.id] = 28
-
         nodes = extended_graph_obj.get_extended_graph_nodes()
 
         P1 = None
         SC1 = None
         CBD = None
-        SC2 = None
-        P2 = None
 
         stop_bus_p1 = None
-        stop_bus_sc1 = None
-        stop_bus_cbd = None
-
         stop_metro_p1 = None
-        stop_metro_sc1 = None
 
         for city_node in nodes:
             if city_node.graph_node.name == "P_1":
@@ -66,29 +56,19 @@ class test_graph(unittest.TestCase):
                 SC1 = city_node
             if city_node.graph_node.name == "CBD":
                 CBD = city_node
-            if city_node.graph_node.name == "SC_2":
-                SC2 = city_node
-            if city_node.graph_node.name == "P_2":
-                P2 = city_node
 
             for stop_node in nodes[city_node]:
                 if stop_node.mode.name == "bus":
                     if city_node.graph_node.name == "P_1":
                         stop_bus_p1 = stop_node
-                    if city_node.graph_node.name == "SC_1":
-                        stop_bus_sc1 = stop_node
-                    if city_node.graph_node.name == "CBD":
-                        stop_bus_cbd = stop_node
+
                 if stop_node.mode.name == "metro":
                     if city_node.graph_node.name == "P_1":
                         stop_metro_p1 = stop_node
-                    if city_node.graph_node.name == "SC_1":
-                        stop_metro_sc1 = stop_node
 
         self.assertEqual(round(OD_assignment[P1][CBD][stop_bus_p1], 2), 100)
         self.assertEqual(round(OD_assignment[P1][SC1][stop_bus_p1], 2), 49.88)
         self.assertEqual(round(OD_assignment[P1][SC1][stop_metro_p1], 2), 50.12)
-
 
     def test_get_alighting_and_boarding(self):
         """
