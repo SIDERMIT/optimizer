@@ -19,11 +19,11 @@ class test_extended_graph(unittest.TestCase):
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
-        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        # train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         feeder_routes = network.get_feeder_routes(bus_obj)
         radial_routes = network.get_radial_routes(metro_obj)
-        circular_routes = network.get_circular_routes(train_obj)
+        circular_routes = network.get_circular_routes(bus_obj)
 
         for route in feeder_routes:
             network.add_route(route)
@@ -79,15 +79,15 @@ class test_extended_graph(unittest.TestCase):
                 ten_route_city = ten_route_city + 1
 
         self.assertEqual(len(one_stop), 1)
-        self.assertEqual(len(two_stop), 5)
-        self.assertEqual(len(three_stop), 5)
+        self.assertEqual(len(two_stop), 10)
+        self.assertEqual(len(three_stop), 0)
 
         self.assertEqual(four_route_city, 5)
         self.assertEqual(six_route_city, 5)
         self.assertEqual(ten_route_city, 1)
 
         self.assertEqual(one_route_stop, 0)
-        self.assertEqual(two_route_stop, 25)
+        self.assertEqual(two_route_stop, 15)
         self.assertEqual(ten_route_stop, 1)
 
     def test_build_nodes(self):
@@ -98,11 +98,11 @@ class test_extended_graph(unittest.TestCase):
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
-        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        # train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         feeder_routes = network.get_feeder_routes(bus_obj)
         radial_routes = network.get_radial_routes(metro_obj)
-        circular_routes = network.get_circular_routes(train_obj)
+        circular_routes = network.get_circular_routes(bus_obj)
 
         for route in feeder_routes:
             network.add_route(route)
@@ -119,7 +119,7 @@ class test_extended_graph(unittest.TestCase):
         route_nodes = ExtendedGraph.build_route_nodes(network.get_routes(), stop_nodes)
 
         self.assertEqual(len(city_nodes), 11)
-        self.assertEqual(len(stop_nodes), 26)
+        self.assertEqual(len(stop_nodes), 21)
         self.assertEqual(len(route_nodes), 60)
 
     def test_extended_graph_nodes(self):
@@ -132,11 +132,11 @@ class test_extended_graph(unittest.TestCase):
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
-        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        # train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         feeder_routes = network.get_feeder_routes(bus_obj)
         radial_routes = network.get_radial_routes(metro_obj)
-        circular_routes = network.get_circular_routes(train_obj)
+        circular_routes = network.get_circular_routes(bus_obj)
 
         for route in feeder_routes:
             network.add_route(route)
@@ -161,7 +161,7 @@ class test_extended_graph(unittest.TestCase):
                     n_route = n_route + 1
 
         self.assertEqual(n_city, 11)
-        self.assertEqual(n_stop, 26)
+        self.assertEqual(n_stop, 21)
         self.assertEqual(n_route, 60)
 
     def test_build_edges(self):
@@ -174,11 +174,11 @@ class test_extended_graph(unittest.TestCase):
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
-        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        # train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         feeder_routes = network.get_feeder_routes(bus_obj)
         radial_routes = network.get_radial_routes(metro_obj)
-        circular_routes = network.get_circular_routes(train_obj)
+        circular_routes = network.get_circular_routes(bus_obj)
 
         for route in feeder_routes:
             network.add_route(route)
@@ -206,7 +206,7 @@ class test_extended_graph(unittest.TestCase):
         alighting_edges = ExtendedGraph.build_alighting_edges(extended_graph_nodes, passenger_obj.spt)
         route_edges = ExtendedGraph.build_route_edges(extended_graph_nodes)
 
-        self.assertEqual(len(access_edges), 52)
+        self.assertEqual(len(access_edges), 42)
         self.assertEqual(len(boarding_edges), 40)
         self.assertEqual(len(alighting_edges), 40)
         self.assertEqual(len(route_edges), 40)
@@ -221,11 +221,11 @@ class test_extended_graph(unittest.TestCase):
         mode_manager = TransportModeManager()
         bus_obj = mode_manager.get_mode("bus")
         metro_obj = mode_manager.get_mode("metro")
-        train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+        # train_obj = TransportMode("train", 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
 
         feeder_routes = network.get_feeder_routes(bus_obj)
         radial_routes = network.get_radial_routes(metro_obj, express=True)
-        circular_routes = network.get_circular_routes(train_obj)
+        circular_routes = network.get_circular_routes(bus_obj)
 
         for route in feeder_routes:
             network.add_route(route)
@@ -254,7 +254,7 @@ class test_extended_graph(unittest.TestCase):
             if edge.type == ExtendedEdgesType.ROUTE:
                 n_route = n_route + 1
 
-        self.assertEqual(n_access, 42)
+        self.assertEqual(n_access, 32)
         self.assertEqual(n_boarding, 30)
         self.assertEqual(n_alighting, 30)
         self.assertEqual(n_route, 30)

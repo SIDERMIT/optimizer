@@ -4,6 +4,11 @@ Realizar ejemplos en jupyter notebook
 
 MODULOS
 
+network:
+se incorporó metodo de agregar modo de transporte a la red con validacion de numero de modos de transporte creados y
+ademas de metodo de remove modo de transporte, falta testear
+
+
 extended graph:
 falta testear metodos de printeo
 

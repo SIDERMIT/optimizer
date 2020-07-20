@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 
 from sidermit.city import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
-from sidermit.publictransportsystem import TransportMode
+from sidermit.publictransportsystem import TransportMode, TransportModeManager
 
 import math
 
@@ -189,6 +189,7 @@ class TransportNetwork:
         self.__graph_obj = graph_obj
         self.__routes = []
         self.__routes_id = []
+        self.__modes = []
 
     def __edges_validator(self, node_list):
         """
@@ -201,6 +202,9 @@ class TransportNetwork:
             if not self.__graph_obj.edge_exist(node_list[i], node_list[j]):
                 raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
+
+    def get_modes(self):
+        return self.__modes
 
     def get_routes(self):
         """
@@ -221,6 +225,49 @@ class TransportNetwork:
         else:
             raise RouteIdNotFoundException("route_id not found")
 
+    def add_transport_mode(self, mode: TransportMode):
+        """
+        to add a transport mode in the network
+        :return:
+        """
+
+        if mode not in self.__modes:
+
+            mode_manager = TransportModeManager(add_default_mode=False)
+
+            list_mode = [mode]
+
+            for modes in self.__modes:
+                if modes not in list_mode:
+                    list_mode.append(modes)
+
+            for modes in list_mode:
+                mode_manager.add_mode(modes)
+
+            if mode_manager.is_valid_to_assignment_step():
+                self.__modes.append(mode)
+            else:
+                raise TransportModeException(
+                    "only 2 transport mode can be defined and at least one should have d parameter = 1")
+
+    def remove_transport_mode(self, mode: TransportMode):
+        """
+        to remove a transport mode in the network and all lines defined with that transport mode
+        :return:
+        """
+
+        list_mode = []
+
+        for modes in self.__modes:
+            if modes != mode:
+                list_mode.append(modes)
+
+        self.__modes = list_mode
+
+        for route in self.__routes:
+            if route.mode == mode:
+                self.remove_route(route.id)
+
     def add_route(self, route_obj: Route):
         """
         to add a specific route in routes list
@@ -236,6 +283,7 @@ class TransportNetwork:
 
         if self.__edges_validator(nodes_sequence_i) or self.__edges_validator(nodes_sequence_r):
             if route_id not in self.__routes_id:
+                self.add_transport_mode(route_obj.mode)
                 self.__routes.append(route_obj)
                 self.__routes_id.append(route_id)
             else:
