@@ -1,6 +1,7 @@
 from sidermit.publictransportsystem import RouteType
 from sidermit.city import Graph
 
+
 class Constrains:
 
     @staticmethod
@@ -76,16 +77,40 @@ class Constrains:
         return eq_constrains, ineq_constrains
 
     @staticmethod
-    def fmax_constrains(graph_obj: Graph, routes, list_mode):
+    def fmax_constrains(graph_obj: Graph, routes, list_mode, f):
+        """
+        to get constrains about fmax in each edge in the network with respect to capacity in stop of the each mode
+        :param graph_obj:
+        :param routes:
+        :param list_mode:
+        :param f:
+        :return:
+        """
+
+        ineq_constrain = []
 
         edges = graph_obj.get_edges()
 
         for edge in edges:
-            nodei = edge.node1
-            nodej = edge.node2
+            nodei = edge.node1.id
+            nodej = edge.node2.id
             for mode in list_mode:
                 fmax = mode.fmax
+                sum_f = 0
                 for route in routes:
                     if route.mode == mode:
-                        pass
+                        if f[route.id] != 0:
+                            node_sequence_i = route.nodes_sequence_i
+                            node_sequence_r = route.nodes_sequence_r
 
+                            for i in range(len(node_sequence_i) - 1):
+                                j = i + 1
+                                if str(nodei) == str(node_sequence_i[i]) and str(nodej) == str(node_sequence_i[j]):
+                                    sum_f += f[route.id] / mode.d
+
+                            for i in range(len(node_sequence_r) - 1):
+                                j = i + 1
+                                if str(nodei) == str(node_sequence_r[i]) and str(nodej) == str(node_sequence_r[j]):
+                                    sum_f += f[route.id] / mode.d
+                ineq_constrain.append(sum_f - fmax)
+        return ineq_constrain
