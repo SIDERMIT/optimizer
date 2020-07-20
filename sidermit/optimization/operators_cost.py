@@ -91,3 +91,35 @@ class OperatorsCost:
             cycle_time[route_id] = tc
 
         return cycle_time
+
+    @staticmethod
+    def get_operators_cost(routes, cycle_time, f, k):
+        """
+        to get operators cost give a frequencies and boarding size for all lines
+        :param routes:
+        :param cycle_time:
+        :param f:
+        :param k:
+        :return:
+        """
+
+        CO = 0
+
+        for route in routes:
+            route_id = route.id
+
+            f_r = f[route_id]
+
+            if f_r == 0:
+                continue
+
+            k_r = k[route_id]
+            tc_r = cycle_time[route_id]
+
+            mode = route.mode
+            c0 = mode.co
+            c1 = mode.c1
+
+            CO += (c0 + c1 * k_r) * f_r * tc_r
+
+        return CO
