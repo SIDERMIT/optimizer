@@ -1,6 +1,6 @@
 from collections import defaultdict
-from sidermit.preoptimization import CityNode, StopNode, RouteNode
-from sidermit.publictransportsystem import RouteType
+
+from sidermit.preoptimization import StopNode, RouteNode
 
 
 class Assignment:
@@ -46,9 +46,8 @@ class Assignment:
                     else:
                         stop2 = stop
 
-                    # print(
-                    #     "\tmode: {}, label: {:.2f}, node: {}".format(stop.mode.name, labels[origin][destination][stop],
-                    #                                                  stop.city_node.graph_node.name))
+                    # print( "\tmode: {}, label: {:.2f}, node: {}".format(stop.mode.name, labels[origin][
+                    # destination][stop], stop.city_node.graph_node.name))
 
                 # solo tiene una parada
                 if stop1 is None or stop2 is None:
@@ -84,7 +83,8 @@ class Assignment:
                                     position = zona_stop_2 / 2
                                 else:
                                     position = position + zona_stop_2
-                                # encontramos un paradero de stop2 que esta ubicado mas lejos que la distancia de indiferencia
+                                # encontramos un paradero de stop2 que esta ubicado mas lejos que la distancia de
+                                # indiferencia
                                 if position > d:
                                     assignment[origin][destination][stop1] = (2 * d + (position - d)) / p * 100
                                     assignment[origin][destination][stop2] = 100 - assignment[origin][destination][
@@ -132,16 +132,15 @@ class Assignment:
     @staticmethod
     def get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f):
         """
-        to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes
-        :param successors: dic[origin: CityNode][destination: CityNode]
-        [ExtendedNode] = List[ExtendedEdge], List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
-        :param frequencies: dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr].
-        :param Vij: dic[origin: CityNode][destination: CityNode] = vij [pax/hr]
-        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]. Each
-        List[ExtendedNodes] represent a elemental path to connect a origin and destination
-        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
-        :param f: dic[route_id] = frequency [veh/hr]
-        :return: dic[route_id][direction][stop: StopNode] = pax [pax/veh], dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes :param
+        successors: dic[origin: CityNode][destination: CityNode] [ExtendedNode] = List[ExtendedEdge],
+        List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair. :param frequencies: dic[
+        origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]. :param Vij: dic[origin: CityNode][
+        destination: CityNode] = vij [pax/hr] :param hyperpaths: Dic[origin: CityNode][destination: CityNode][
+        StopNode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental path to connect a
+        origin and destination :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] =
+        %V_OD :param f: dic[route_id] = frequency [veh/hr] :return: dic[route_id][direction][stop: StopNode] = pax [
+        pax/veh], dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         """
 
         z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
@@ -240,69 +239,3 @@ class Assignment:
                                                                          stop_node.city_node.graph_node.name,
                                                                          v[route_id][direction][stop_node])
         return line
-
-    @staticmethod
-    def most_loaded_section_constrains(routes, z, v, k):
-        """
-        to get constrains to optimization problem with respect to most loaded section for each routes
-        :param routes:
-        :param z:
-        :param v:
-        :return:
-        """
-
-        constrains = []
-
-        for route in routes:
-            if route._type != RouteType.CIRCULAR:
-                pass
-            else:
-                kmax = route.mode.kmax
-                route_id = route.id
-                node_sequence_i = route.nodes_sequence_i
-                node_sequence_r = route.nodes_sequence_r
-
-                max_loaded_section = 0
-
-                prev_loaded = 0
-
-                for i in node_sequence_i:
-
-                    zi = 0
-                    vi = 0
-
-                    for stop_node in z[route_id]["I"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            zi = z[route_id]["I"][stop_node]
-                    for stop_node in v[route_id]["I"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route_id]["I"][stop_node]
-
-                    prev_loaded += zi - vi
-
-                    if prev_loaded > max_loaded_section:
-                        max_loaded_section = prev_loaded
-
-                prev_loaded = 0
-
-                for i in node_sequence_r:
-
-                    zi = 0
-                    vi = 0
-
-                    for stop_node in z[route_id]["R"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            zi = z[route_id]["R"][stop_node]
-                    for stop_node in v[route_id]["R"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route_id]["R"][stop_node]
-
-                    prev_loaded += zi - vi
-
-                    if prev_loaded > max_loaded_section:
-                        max_loaded_section = prev_loaded
-
-                constrains.append(max_loaded_section - k[route_id])
-                constrains.append(k[route_id] - kmax)
-
-        return constrains
