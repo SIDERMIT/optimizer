@@ -36,7 +36,7 @@ class test_graph(unittest.TestCase):
         hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(
             OD_matrix=demand_obj.get_matrix())
 
-        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, Vij=Vij, p=2,
+        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, p=2,
                                                   vp=passenger_obj.va, spa=passenger_obj.spa,
                                                   spv=passenger_obj.spv)
 
@@ -98,7 +98,7 @@ class test_graph(unittest.TestCase):
         hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(
             OD_matrix=demand_obj.get_matrix())
 
-        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, Vij=Vij, p=2,
+        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, p=2,
                                                   vp=passenger_obj.va, spa=passenger_obj.spa,
                                                   spv=passenger_obj.spv)
 

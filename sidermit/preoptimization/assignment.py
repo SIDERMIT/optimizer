@@ -9,7 +9,7 @@ class Assignment:
         pass
 
     @staticmethod
-    def get_assignment(hyperpaths, labels, Vij, p, vp, spa, spv):
+    def get_assignment(hyperpaths, labels, p, vp, spa, spv):
         """
         to distribute trips of all OD pair in each StopNode of the Origin
         :param vp: Walking speed [km/h]
@@ -18,7 +18,6 @@ class Assignment:
         :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]].
         Each List[ExtendedNodes] represent a elemental path.
         :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label [
-        :param Vij: dic[origin: CityNode][destination: CityNode] = vij
         :param p: width [m] of all CityNode
         :return: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
         """
