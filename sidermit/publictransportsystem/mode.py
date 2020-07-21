@@ -13,7 +13,6 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
 
 # from typing import List
 
-
 def mode_property(property_name, comp_function, exception_instance,
                   docstring=None):
     def getter(self):

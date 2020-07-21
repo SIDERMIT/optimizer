@@ -1,5 +1,4 @@
-from scipy.optimize import minimize, NonlinearConstraint, SR1
-import matplotlib.pyplot as plt
+from scipy.optimize import minimize, NonlinearConstraint
 import numpy as np
 import math
 
