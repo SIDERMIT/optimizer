@@ -66,7 +66,7 @@ class Assignment:
                         # caminata de indiferencia es mayor a la zona de influencia de stop1
                         if d >= p / 2:
                             assignment[origin][destination][stop1] = 100
-                            print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
+                            # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
 
                         # caminata de indiferencia es menor a la zona de influencia de stop1
                         else:
