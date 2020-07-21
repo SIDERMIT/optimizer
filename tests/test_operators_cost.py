@@ -7,7 +7,7 @@ from sidermit.publictransportsystem import Passenger, TransportMode, TransportNe
 from sidermit.optimization import OperatorsCost
 
 
-class test_graph(unittest.TestCase):
+class test_operators_cost(unittest.TestCase):
 
     def test_lines_travel_time(self):
         """
@@ -82,3 +82,35 @@ class test_graph(unittest.TestCase):
         self.assertEqual(round(line_cycle_time["R_bus_1"], 7), 1.5008008)
         self.assertEqual(line_cycle_time["l1"], 0)
 
+    def test_get_operators_cost(self):
+        """
+        to test operators cost method
+        :return:
+        """
+
+        graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
+        [bus_obj, metro_obj] = TransportMode.get_default_modes()
+
+        network_obj = TransportNetwork(graph_obj=graph_obj)
+
+        feeder_routes_metro = network_obj.get_feeder_routes(mode_obj=metro_obj)
+        radial_routes_bus = network_obj.get_radial_routes(mode_obj=bus_obj)
+
+        for route in feeder_routes_metro:
+            network_obj.add_route(route)
+
+        for route in radial_routes_bus:
+            network_obj.add_route(route)
+
+        f = defaultdict(float)
+        k = defaultdict(float)
+
+        line_cycle_time = defaultdict(float)
+        for route in network_obj.get_routes():
+            f[route.id] = 28
+            k[route.id] = 100
+            line_cycle_time[route.id] = 10
+
+        cost = OperatorsCost.get_operators_cost(network_obj.get_routes(), line_cycle_time, f, k)
+
+        self.assertEqual(cost, 75331.2)

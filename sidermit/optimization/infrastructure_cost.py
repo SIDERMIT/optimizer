@@ -23,13 +23,31 @@ class InfrastructureCost:
         mode_distance = defaultdict(float)
 
         for edge in edges:
-            d_e = edges_distance[str(edge.node1)][str(edge.node2)]
+            d_e = edges_distance[str(edge.node1.id)][str(edge.node2.id)]
             for mode in list_modes:
                 for route in routes:
                     if route.mode == mode:
                         if f[route.id] != 0:
-                            mode_distance[mode] += d_e * mode.d
-                            break
+                            node_sequence_i = route.nodes_sequence_i
+                            node_sequence_r = route.nodes_sequence_r
+
+                            sum = False
+                            for i in range(len(node_sequence_i) - 1):
+                                j = i + 1
+                                if str(node_sequence_i[i]) == str(edge.node1.id) and str(node_sequence_i[j]) == str(edge.node2.id):
+                                    mode_distance[mode] += d_e * mode.d
+                                    sum = True
+                                    break
+                            if sum is True:
+                                break
+                            for i in range(len(node_sequence_r) - 1):
+                                j = i + 1
+                                if str(node_sequence_r[i]) == str(edge.node1.id) and str(node_sequence_r[j]) == str(edge.node2.id):
+                                    mode_distance[mode] += d_e * mode.d
+                                    sum = True
+                                    break
+                            if sum is True:
+                                break
 
         return mode_distance
 
