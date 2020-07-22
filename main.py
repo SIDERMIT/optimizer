@@ -37,7 +37,7 @@ for route in diametral_routes_bus4:
 for route in diametral_routes_bus3:
     f[route.id] = 48.0203401589406
 for route in radial_routes_bus:
-    f[route.id] = 0.0000000301
+    f[route.id] = 0.0000000301844242487092
 
 extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
                                    frequency_routes=f)
@@ -56,3 +56,5 @@ z, v = Assignment.get_alighting_and_boarding(Vij=Vij, hyperpaths=hyperpaths, suc
                                              assignment=OD_assignment, f=f)
 
 print(Assignment.str_boarding_alighting(z, v))
+
+

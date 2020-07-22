@@ -55,7 +55,7 @@ class Assignment:
                         # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     if stop2 is not None:
                         assignment[origin][destination][stop2] = 100
-                        print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
+                        # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                 # existen ambas paradas
                 else:
                     # paradero con d = 1 es de etiqueta minima
@@ -200,7 +200,7 @@ class Assignment:
                         continue
                     else:
                         z[route_id][direction][stop_node] = z[route_id][direction][stop_node] / (
-                                f[route_id] * stop_node.mode.d)
+                                f[route_id])
         for route_id in v:
             for direction in v[route_id]:
                 for stop_node in v[route_id][direction]:
@@ -208,7 +208,7 @@ class Assignment:
                         continue
                     else:
                         v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (
-                                f[route_id] * stop_node.mode.d)
+                                f[route_id])
 
         return z, v
 

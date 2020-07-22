@@ -133,12 +133,12 @@ class test_graph(unittest.TestCase):
                     if city_node.graph_node.name == "SC_1":
                         stop_metro_sc1 = stop_node
 
-        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_p1], 2), 0.19)
-        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_sc1], 2), 0.22)
-        self.assertEqual(round(z["R_bus_1"]["R"][stop_bus_cbd], 2), 0.19)
-        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_cbd], 2), 0.37)
-        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_sc1], 2), 0.04)
-        self.assertEqual(round(v["R_bus_1"]["R"][stop_bus_sc1], 2), 0.19)
+        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_p1], 2), 0.74)
+        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_sc1], 2), 0.89)
+        self.assertEqual(round(z["R_bus_1"]["R"][stop_bus_cbd], 2), 0.74)
+        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_cbd], 2), 1.49)
+        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_sc1], 2), 0.15)
+        self.assertEqual(round(v["R_bus_1"]["R"][stop_bus_sc1], 2), 0.74)
         self.assertEqual(round(z["F_metro_1"]["I"][stop_metro_p1], 2), 0.15)
         self.assertEqual(round(v["F_metro_1"]["I"][stop_metro_sc1], 2), 0.15)
         self.assertEqual(round(z["F_metro_1"]["R"][stop_metro_sc1], 2), 0)

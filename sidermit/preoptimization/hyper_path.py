@@ -69,7 +69,7 @@ class Hyperpath:
         build the entire graph to connect the origin and destination with the hyperpath algorithm
         :param node_city_origin: origin CityNode
         :param node_city_destination: destination CityNode
-        :return: successors, label, frequencies
+        :return: successors , label, frequencies
         """
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()

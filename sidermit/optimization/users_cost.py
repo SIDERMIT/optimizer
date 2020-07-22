@@ -5,7 +5,7 @@ from sidermit.publictransportsystem import Passenger
 class UsersCost:
 
     @staticmethod
-    def resources_consumer(hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f):
+    def resources_consumer(hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, vp, f):
         ta = 0
         tv = 0
         te = 0
@@ -31,7 +31,8 @@ class UsersCost:
                         paths.append((stop, nodej, vod_s))
 
                     # reportar ta inicial (lateral y tecnologico
-                    ta += vod_s * stop.mode.tat / 60
+                    ta += vod_s * (stop.mode.tat / 60 + assignment[origin][destination][
+                        stop] / 100 * origin.graph_node.width / 4 * vp)
 
                     while len(paths) != 0:
                         nodei, nodej, pax = paths.pop(0)
@@ -53,7 +54,7 @@ class UsersCost:
 
                                 dis_pax = pax * (f[nodej.route.id] / f_acum)
 
-                                te += dis_pax * nodei.mode.theta / f_acum
+                                te += dis_pax * nodei.mode.theta / (f_acum / nodej.route.mode.d)
 
                         # reportar tv
                         if isinstance(nodei, RouteNode):
@@ -86,7 +87,7 @@ class UsersCost:
     def get_users_cost(self, hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f,
                        passenger_obj: Passenger):
         ta, te, tv, t = self.resources_consumer(hyperpaths, Vij, assignment, successors,
-                                                extended_graph, f)
+                                                extended_graph, passenger_obj.va, f)
         pa = passenger_obj.pa
         pv = passenger_obj.pv
         pw = passenger_obj.spw

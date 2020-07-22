@@ -19,7 +19,7 @@ class Constrains:
         ineq_constrains = []
 
         for route in routes:
-            if route._type != RouteType.CIRCULAR:
+            if route._type == RouteType.CIRCULAR:
                 pass
             else:
                 kmax = route.mode.kmax
@@ -113,4 +113,5 @@ class Constrains:
                                 if str(nodei) == str(node_sequence_r[i]) and str(nodej) == str(node_sequence_r[j]):
                                     sum_f += f[route.id] / mode.d
                 ineq_constrain.append(sum_f - fmax)
+        print(ineq_constrain)
         return ineq_constrain

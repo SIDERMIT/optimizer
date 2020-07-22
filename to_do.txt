@@ -19,6 +19,16 @@ Al finalizar:
 1-Agregar metodos específicos a rutas circulares (tramo mas cargado)
 2-Agregar coloración de nodos por zona
 
+extensiones
+1. mas periferias
+2. mas modos
+3. grafo generico
+4. asignación lateral por logit
+5. congestion en vehiculo
+6. congestion de vehiculos particulares
+7. tarificacion
+8. diseño automatizado de redes
+
 Opcionales:
 1-Implementar heap binaria en hyperpath
 2-Generar actualización de arcos boarding en vez de reconstruir grafo extendido en cada etapa del optimizador
