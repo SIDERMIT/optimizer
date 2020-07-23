@@ -68,12 +68,10 @@ class test_constrains(unittest.TestCase):
         self.assertEqual(eq_k, [-90, -90, -90, -90, -90, -90])
         self.assertEqual(ineq_k, [-60, -60, -60, -60, -1340, -1340])
 
-    def test_most_loaded_section_constrains(self):
+    def test_fmax_constrains(self):
 
         graph_obj = Graph.build_from_parameters(2, 10, 1, 2)
-        demand_obj = Demand.build_from_parameters(graph_obj, 10000, 0.5, 1 / 3, 1 / 3)
 
-        passenger_obj = Passenger.get_default_passenger()
         network_obj = TransportNetwork(graph_obj)
         [bus_obj, metro_obj] = TransportMode.get_default_modes()
         radial_bus = network_obj.get_radial_routes(bus_obj)

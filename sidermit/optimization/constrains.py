@@ -115,3 +115,4 @@ class Constrains:
                 ineq_constrain.append(sum_f - fmax)
         print(ineq_constrain)
         return ineq_constrain
+
