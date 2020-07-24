@@ -113,6 +113,6 @@ class Constrains:
                                 if str(nodei) == str(node_sequence_r[i]) and str(nodej) == str(node_sequence_r[j]):
                                     sum_f += f[route.id] / mode.d
                 ineq_constrain.append(sum_f - fmax)
-        print(ineq_constrain)
+
         return ineq_constrain
 

@@ -8,7 +8,7 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
     NameIsNotValidExceptions, KmaxIsNotValidExceptions, \
     TatIsNotValidExceptions, DIsNotValidExceptions, ByaIsNotValidExceptions, \
     ThetaIsNotValidExceptions, ModeDoesNotExistExceptions, \
-    ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException
+    ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException, FiniIsNotValidException
 
 
 # from typing import List
@@ -49,6 +49,8 @@ class TransportMode:
         "You must give a value >=0 for tat"), docstring="Technological access time [min]")
     d = mode_property('_d', operator.lt, DIsNotValidExceptions(
         "You must give a value >=0 for d"), docstring="Parallel lines")
+    fini = mode_property('_fini', operator.lt, FiniIsNotValidException(
+        "You must give a value >=0 for d"), docstring="Initial frequency")
 
     @name.setter
     def name(self, value):
@@ -72,7 +74,7 @@ class TransportMode:
 
     def __init__(self, name: str, bya: int, co: float, c1: float, c2: float,
                  v: float, t: float, fmax: float, kmax: float, theta: float,
-                 tat: float, d: int):
+                 tat: float, d: int, fini: float):
         self.name = name
         self.bya = bya
         self.co = co
@@ -85,6 +87,7 @@ class TransportMode:
         self.theta = theta
         self.tat = tat
         self.d = d
+        self.fini = fini
 
     @staticmethod
     def get_default_modes():  # -> List[TransportMode]:
@@ -93,9 +96,9 @@ class TransportMode:
         :return: List[TransportMode]
         """
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
-                                           150, 160, 0.7, 0, 4)
+                                           150, 160, 0.7, 0, 4, 28)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
-                                             40, 0.33, 40, 1440, 0.5, 1, 1)
+                                             40, 0.33, 40, 1440, 0.5, 1, 1, 28)
 
         return [bus_transport_mode, metro_transport_mode]
 

@@ -336,6 +336,10 @@ class NameIsNotValidExceptions(TransportModeException):
     pass
 
 
+class FiniIsNotValidException(TransportModeException):
+    pass
+
+
 class AddModeExceptions(TransportModeException):
     pass
 

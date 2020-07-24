@@ -124,7 +124,7 @@ class ExtendedGraph:
             frequency_routes = defaultdict(float)
 
             for route in routes:
-                frequency_routes[route.id] = 28
+                frequency_routes[route.id] = route.mode.fini
 
         # list with all city_nodes
         city_nodes = self.build_city_nodes(graph_obj)
