@@ -419,41 +419,41 @@ class TransportNetworkTest(unittest.TestCase):
         with self.assertRaises(exceptions.ModeIsNotValidException):
             t.get_tangencial_routes(mode_obj="bus", jump=6, short=True, express=True)
 
-    def test_plot(self):
-        """
-        to test plot method
-        :return: 
-        """
-        g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0,
-                                              angles=[10, 50, 150, 180, 270,
-                                                      300, 320], etha=0.5,
-                                              etha_zone=3,
-                                              Hi=[1, 2, 1, 1, 1, 0.5, 3],
-                                              Gi=[1, 2, 1, 1, 1, 3, 2])
-
-        t = TransportNetwork(g)
-        m = TransportModeManager()
-        bus = m.get_mode("bus")
-        routes = t.get_radial_routes(bus)
-
-        for route in routes:
-            t.add_route(route)
-
-        # save figure in path
-        t.plot(os.path.join(self.data_path, 'figure2_test.png'))
-        file_obj = Path(os.path.join(self.data_path, 'figure2_test.png'))
-        # test
-        self.assertTrue(file_obj.is_file())
-        # to compare figure with a test figure
-        self.assertTrue(
-            filecmp.cmp(os.path.join(self.data_path, 'figure1_test.png'),
-                        os.path.join(self.data_path, "figure2_test.png")))
-
-        # remove file
-        os.remove(os.path.join(self.data_path, 'figure2_test.png'))
-
-        with self.assertRaises(exceptions.RouteIdNotFoundException):
-            t.plot(os.path.join(self.data_path, 'figure_test2.png'),
-                   list_routes=["506"])
-            # remove file
-            os.remove(os.path.join(self.data_path, 'figure2_test.png'))
+    # def test_plot(self):
+    #     """
+    #     to test plot method
+    #     :return:
+    #     """
+    #     g = graph.Graph.build_from_parameters(7, 1000, 0.5, 0,
+    #                                           angles=[10, 50, 150, 180, 270,
+    #                                                   300, 320], etha=0.5,
+    #                                           etha_zone=3,
+    #                                           Hi=[1, 2, 1, 1, 1, 0.5, 3],
+    #                                           Gi=[1, 2, 1, 1, 1, 3, 2])
+    #
+    #     t = TransportNetwork(g)
+    #     m = TransportModeManager()
+    #     bus = m.get_mode("bus")
+    #     routes = t.get_radial_routes(bus)
+    #
+    #     for route in routes:
+    #         t.add_route(route)
+    #
+    #     # save figure in path
+    #     t.plot(os.path.join(self.data_path, 'figure2_test.png'))
+    #     file_obj = Path(os.path.join(self.data_path, 'figure2_test.png'))
+    #     # test
+    #     self.assertTrue(file_obj.is_file())
+    #     # to compare figure with a test figure
+    #     self.assertTrue(
+    #         filecmp.cmp(os.path.join(self.data_path, 'figure1_test.png'),
+    #                     os.path.join(self.data_path, "figure2_test.png")))
+    #
+    #     # remove file
+    #     os.remove(os.path.join(self.data_path, 'figure2_test.png'))
+    #
+    #     with self.assertRaises(exceptions.RouteIdNotFoundException):
+    #         t.plot(os.path.join(self.data_path, 'figure_test2.png'),
+    #                list_routes=["506"])
+    #         # remove file
+    #         os.remove(os.path.join(self.data_path, 'figure2_test.png'))
