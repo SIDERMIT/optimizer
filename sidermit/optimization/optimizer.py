@@ -3,31 +3,66 @@ from .users_cost import UsersCost
 from .operators_cost import OperatorsCost
 from .constrains import Constrains
 from sidermit.publictransportsystem import Passenger
-from sidermit.preoptimization import ExtendedGraph
 
 from scipy.optimize import minimize, NonlinearConstraint
 from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportNetwork
-from sidermit.preoptimization import Assignment
+from sidermit.preoptimization import Assignment, Hyperpath, ExtendedGraph
 
 from collections import defaultdict
 
 
 class Optimizer:
-    def __init__(self, graph_obj: Graph, passenger_obj: Passenger, network_obj: TransportNetwork):
+    def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork):
+
+        # definimos ciudad
         self.graph_obj = graph_obj
+        _, _, _, self.p, _, _, _, _, _ = self.graph_obj.get_parameters()
+        # definimos demanda
+        self.demand_obj = demand_obj
+        # definimos pasajeros
         self.passenger_obj = passenger_obj
+        self.vp = self.passenger_obj.va
+        self.spa = self.passenger_obj.spa
+        self.spv = self.passenger_obj.spv
+        self.sPTP = self.passenger_obj.spt
+
+        # definimos red de transporte
         self.network_obj = network_obj
 
+        # definimos frecuencia inicial
         self.fini, self.f_opt, self.lines_position = self.fini(network_obj)
 
-    def get_k(self, routes, z, v):
+    @staticmethod
+    def fini(network_obj: TransportNetwork):
+        fini = defaultdict(float)
+        fopt = []
+        lines_position = defaultdict(None)
+        n = 0
+        for route in network_obj.get_routes():
+            fini[route.id] = route.mode.fini
+            fopt.append(route.mode.fini)
+            lines_position[n] = route.id
+            n += 1
+
+        return fini, fopt, lines_position
+
+    def fopt_to_f(self, fopt):
+        f = defaultdict(float)
+        n = 0
+        for fr in fopt:
+            f[self.lines_position[n]] = fr
+            n += 1
+        return f
+
+    @staticmethod
+    def get_k(routes, z, v):
         most_loaded_section = Assignment.most_loaded_section(routes, z, v)
         k = defaultdict(float)
         for route_id in most_loaded_section:
             k[route_id] = most_loaded_section[route_id]
         return k
-        
+
     def operators_cost(self, z, v, f, k):
         operators_cost_obj = OperatorsCost()
 
@@ -50,37 +85,36 @@ class Optimizer:
                                             self.passenger_obj)
         return cost
 
-    def constrains(self, z, v, f, k):
+    def constrains(self, z, v, f):
+
+        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+
         constrains_obj = Constrains()
 
-        eq_k, ineq_k = constrains_obj.most_loaded_section_constrains(self.network_obj.get_routes(), z, v, k)
+        ineq_k = constrains_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
         ineq_f = constrains_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
                                                 self.network_obj.get_modes(), f)
 
-        return eq_k, ineq_k, ineq_f
-
-    @staticmethod
-    def fini(network_obj: TransportNetwork):
-        fini = defaultdict(float)
-        fopt = []
-        lines_position = defaultdict(int)
-        n = 0
-        for route in network_obj.get_routes():
-            fini[route.id] = 28
-            fopt.append(28)
-            lines_position[route.id] = n
-            n += 1
-
-        return fini, fopt, lines_position
-
-    def fopt_to_f(self, fopt):
-        pass
-
-    def kinit(self, f):
-        pass
-
-    def fopt_in_f(self, fopt):
-        pass
+        return ineq_k, ineq_f
 
     def VRC(self, fopt):
-        pass
+
+        f = self.fopt_to_f(fopt)
+
+        extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, f)
+        hyperpath_obj = Hyperpath(extended_graph_obj, self.passenger_obj)
+
+        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(self.demand_obj.get_matrix())
+
+        assignment = Assignment.get_assignment(hyperpaths, labels, self.p, self.vp, self.spa, self.spv)
+        z, v = Assignment.get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f)
+
+        k = self.get_k(self.network_obj.get_routes(), z, v)
+
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(hyperpaths, Vij, assignment, successors, extended_graph_obj, f)
+
+        return CO + CI + CU
+
+

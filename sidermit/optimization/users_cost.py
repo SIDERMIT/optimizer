@@ -90,7 +90,7 @@ class UsersCost:
                                                 extended_graph, passenger_obj.va, f)
         pa = passenger_obj.pa
         pv = passenger_obj.pv
-        pw = passenger_obj.spw
+        pw = passenger_obj.pw
         pt = passenger_obj.pt
 
         return ta * pa + te * pw + tv * pv + t * pt
