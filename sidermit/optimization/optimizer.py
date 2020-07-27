@@ -8,6 +8,7 @@ from sidermit.preoptimization import ExtendedGraph
 from scipy.optimize import minimize, NonlinearConstraint
 from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportNetwork
+from sidermit.preoptimization import Assignment
 
 from collections import defaultdict
 
@@ -18,10 +19,15 @@ class Optimizer:
         self.passenger_obj = passenger_obj
         self.network_obj = network_obj
 
-        self.f, self.f_opt, self.lines_position = self.finit(network_obj)
+        self.fini, self.f_opt, self.lines_position = self.fini(network_obj)
 
-
-
+    def get_k(self, routes, z, v):
+        most_loaded_section = Assignment.most_loaded_section(routes, z, v)
+        k = defaultdict(float)
+        for route_id in most_loaded_section:
+            k[route_id] = most_loaded_section[route_id]
+        return k
+        
     def operators_cost(self, z, v, f, k):
         operators_cost_obj = OperatorsCost()
 
@@ -54,18 +60,18 @@ class Optimizer:
         return eq_k, ineq_k, ineq_f
 
     @staticmethod
-    def finit(network_obj: TransportNetwork):
-        f = defaultdict(float)
+    def fini(network_obj: TransportNetwork):
+        fini = defaultdict(float)
         fopt = []
         lines_position = defaultdict(int)
         n = 0
         for route in network_obj.get_routes():
-            f[route.id] = 28
+            fini[route.id] = 28
             fopt.append(28)
             lines_position[route.id] = n
             n += 1
 
-        return f, fopt, lines_position
+        return fini, fopt, lines_position
 
     def fopt_to_f(self, fopt):
         pass

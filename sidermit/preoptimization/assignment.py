@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 from sidermit.preoptimization import StopNode, RouteNode
+from sidermit.publictransportsystem import RouteType
 
 
 class Assignment:
@@ -200,7 +201,7 @@ class Assignment:
                         continue
                     else:
                         z[route_id][direction][stop_node] = z[route_id][direction][stop_node] / (
-                                f[route_id])
+                            f[route_id])
         for route_id in v:
             for direction in v[route_id]:
                 for stop_node in v[route_id][direction]:
@@ -208,7 +209,7 @@ class Assignment:
                         continue
                     else:
                         v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (
-                                f[route_id])
+                            f[route_id])
 
         return z, v
 
@@ -238,3 +239,71 @@ class Assignment:
                                                                          stop_node.city_node.graph_node.name,
                                                                          v[route_id][direction][stop_node])
         return line
+
+    @staticmethod
+    def most_loaded_section(routes, z, v):
+        """
+        to get  most loaded section for each routes
+        :param routes:
+        :param z:
+        :param v:
+        :return:
+        """
+
+        most_loaded_section = defaultdict(float)
+
+        for route in routes:
+            if route._type == RouteType.CIRCULAR:
+                pass
+            else:
+                route_id = route.id
+                node_sequence_i = route.nodes_sequence_i
+                node_sequence_r = route.nodes_sequence_r
+
+                max_loaded_section = 0
+
+                prev_loaded = 0
+
+                for i in node_sequence_i:
+
+                    zi = 0
+                    vi = 0
+
+                    for stop_node in z[route_id]["I"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            zi = z[route_id]["I"][stop_node]
+                            break
+                    for stop_node in v[route_id]["I"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            vi = v[route_id]["I"][stop_node]
+                            break
+
+                    prev_loaded += zi - vi
+
+                    if prev_loaded > max_loaded_section:
+                        max_loaded_section = prev_loaded
+
+                prev_loaded = 0
+
+                for i in node_sequence_r:
+
+                    zi = 0
+                    vi = 0
+
+                    for stop_node in z[route_id]["R"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            zi = z[route_id]["R"][stop_node]
+                            break
+                    for stop_node in v[route_id]["R"]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            vi = v[route_id]["R"][stop_node]
+                            break
+
+                    prev_loaded += zi - vi
+
+                    if prev_loaded > max_loaded_section:
+                        max_loaded_section = prev_loaded
+
+                most_loaded_section[route_id] = max_loaded_section
+
+        return most_loaded_section
