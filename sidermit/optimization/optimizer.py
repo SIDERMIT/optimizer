@@ -1,13 +1,13 @@
 from .infrastructure_cost import InfrastructureCost
 from .users_cost import UsersCost
 from .operators_cost import OperatorsCost
-from .constrains import Constrains
 from sidermit.publictransportsystem import Passenger
 
 from scipy.optimize import minimize, NonlinearConstraint
 from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportNetwork
 from sidermit.preoptimization import Assignment, Hyperpath, ExtendedGraph
+from sidermit.optimization import Constrains
 
 from collections import defaultdict
 
@@ -117,4 +117,22 @@ class Optimizer:
 
         return CO + CI + CU
 
+    def get_constrains(self, fopt):
 
+        f = self.fopt_to_f(fopt)
+
+        extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, f)
+        hyperpath_obj = Hyperpath(extended_graph_obj, self.passenger_obj)
+
+        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(self.demand_obj.get_matrix())
+
+        assignment = Assignment.get_assignment(hyperpaths, labels, self.p, self.vp, self.spa, self.spv)
+        z, v = Assignment.get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f)
+
+        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+        constrain_obj = Constrains()
+        ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+        ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                               self.network_obj.get_modes(), f)
+
+        return ineq_k, ineq_f
