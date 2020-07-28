@@ -1,6 +1,4 @@
-from .infrastructure_cost import InfrastructureCost
-from .users_cost import UsersCost
-from .operators_cost import OperatorsCost
+from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.publictransportsystem import Passenger
 
 from scipy.optimize import minimize, NonlinearConstraint
@@ -31,15 +29,14 @@ class Optimizer:
         self.network_obj = network_obj
 
         # definimos frecuencia inicial
-        self.fini, self.f_opt, self.lines_position = self.fini(network_obj)
+        self.fini, self.f_opt, self.lines_position = self.fini()
 
-    @staticmethod
-    def fini(network_obj: TransportNetwork):
+    def fini(self):
         fini = defaultdict(float)
         fopt = []
         lines_position = defaultdict(None)
         n = 0
-        for route in network_obj.get_routes():
+        for route in self.network_obj.get_routes():
             fini[route.id] = route.mode.fini
             fopt.append(route.mode.fini)
             lines_position[n] = route.id
