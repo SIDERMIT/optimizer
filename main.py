@@ -1,5 +1,5 @@
 from sidermit.city import Graph, Demand
-from sidermit.preoptimization import ExtendedGraph, Hyperpath, Assignment
+from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath, Assignment
 from sidermit.publictransportsystem import TransportNetwork, Passenger, TransportMode
 
 from collections import defaultdict

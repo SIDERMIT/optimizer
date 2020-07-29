@@ -4,7 +4,7 @@ import networkx as nx
 from matplotlib import pyplot as plt
 
 from sidermit.exceptions import *
-from sidermit.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType
+from sidermit.optimization.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType
 from sidermit.publictransportsystem import Passenger, TransportModeManager
 
 

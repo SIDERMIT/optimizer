@@ -2,7 +2,7 @@ import unittest
 from collections import defaultdict
 
 from sidermit.city import Graph, Demand
-from sidermit.preoptimization import ExtendedGraph, Hyperpath, Assignment
+from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath, Assignment
 from sidermit.publictransportsystem import Passenger, TransportMode, TransportNetwork
 
 

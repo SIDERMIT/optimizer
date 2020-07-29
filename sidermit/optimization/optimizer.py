@@ -1,10 +1,9 @@
 from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.publictransportsystem import Passenger
 
-from scipy.optimize import minimize, NonlinearConstraint
 from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportNetwork
-from sidermit.preoptimization import Assignment, Hyperpath, ExtendedGraph
+from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph
 from sidermit.optimization import Constrains
 
 from collections import defaultdict

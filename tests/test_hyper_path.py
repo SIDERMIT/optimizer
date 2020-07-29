@@ -1,8 +1,7 @@
 import unittest
 
-from sidermit.exceptions import *
 from sidermit.city import Graph, Demand
-from sidermit.preoptimization import ExtendedGraph, ExtendedEdgesType, Hyperpath, StopNode
+from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath
 from sidermit.publictransportsystem import *
 
 

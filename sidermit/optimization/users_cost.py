@@ -1,4 +1,4 @@
-from sidermit.preoptimization import RouteNode, StopNode, ExtendedGraph, CityNode
+from sidermit.optimization.preoptimization import RouteNode, StopNode, ExtendedGraph, CityNode
 from sidermit.publictransportsystem import Passenger
 
 

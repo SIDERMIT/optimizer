@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from sidermit.preoptimization import StopNode, RouteNode
+from sidermit.optimization.preoptimization import StopNode, RouteNode
 from sidermit.publictransportsystem import RouteType
 
 

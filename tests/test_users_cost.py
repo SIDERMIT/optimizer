@@ -4,7 +4,7 @@ from collections import defaultdict
 from sidermit.city import Demand
 from sidermit.city import Graph
 from sidermit.optimization import UsersCost
-from sidermit.preoptimization import ExtendedGraph, Hyperpath, Assignment
+from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath, Assignment
 from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
 
 
