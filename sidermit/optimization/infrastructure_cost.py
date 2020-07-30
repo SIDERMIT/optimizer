@@ -22,6 +22,8 @@ class InfrastructureCost:
 
         mode_distance = defaultdict(float)
 
+        edge_list = []
+
         for edge in edges:
             d_e = edges_distance[str(edge.node1.id)][str(edge.node2.id)]
             for mode in list_modes:
@@ -34,16 +36,22 @@ class InfrastructureCost:
                             sum = False
                             for i in range(len(node_sequence_i) - 1):
                                 j = i + 1
-                                if str(node_sequence_i[i]) == str(edge.node1.id) and str(node_sequence_i[j]) == str(edge.node2.id):
+                                if str(node_sequence_i[i]) == str(edge.node1.id) and str(node_sequence_i[j]) == str(
+                                        edge.node2.id) and (str(edge.node1.id), str(edge.node2.id)) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
+                                    edge_list.append((str(edge.node1.id), str(edge.node2.id)))
+                                    edge_list.append((str(edge.node2.id), str(edge.node1.id)))
                                     sum = True
                                     break
                             if sum is True:
                                 break
                             for i in range(len(node_sequence_r) - 1):
                                 j = i + 1
-                                if str(node_sequence_r[i]) == str(edge.node1.id) and str(node_sequence_r[j]) == str(edge.node2.id):
+                                if str(node_sequence_r[i]) == str(edge.node1.id) and str(node_sequence_r[j]) == str(
+                                        edge.node2.id) and (str(edge.node1.id), str(edge.node2.id)) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
+                                    edge_list.append((str(edge.node1.id), str(edge.node2.id)))
+                                    edge_list.append((str(edge.node2.id), str(edge.node1.id)))
                                     sum = True
                                     break
                             if sum is True:

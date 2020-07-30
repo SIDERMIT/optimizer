@@ -31,8 +31,8 @@ class test_infrastructure_cost(unittest.TestCase):
 
         mode_distance = CI_obj.get_mode_network_distance(graph_obj, network_obj, f=f)
 
-        self.assertEqual(mode_distance[bus_obj], 320)
-        self.assertEqual(mode_distance[metro_obj], 40)
+        self.assertEqual(mode_distance[bus_obj], 160)
+        self.assertEqual(mode_distance[metro_obj], 20)
 
     def test_get_infrastruture_cost(self):
 
@@ -57,4 +57,4 @@ class test_infrastructure_cost(unittest.TestCase):
 
         CI = CI_obj.get_infrastruture_cost(graph_obj, network_obj, f=f)
 
-        self.assertEqual(CI, 37326.0)
+        self.assertEqual(CI, 18663.0)

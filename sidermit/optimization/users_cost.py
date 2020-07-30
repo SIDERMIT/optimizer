@@ -32,7 +32,7 @@ class UsersCost:
 
                     # reportar ta inicial (lateral y tecnologico
                     ta += vod_s * (stop.mode.tat / 60 + assignment[origin][destination][
-                        stop] / 100 * origin.graph_node.width / 4 * vp)
+                        stop] / 100 * origin.graph_node.width / (4 * vp * stop.mode.d))
 
                     while len(paths) != 0:
                         nodei, nodej, pax = paths.pop(0)
