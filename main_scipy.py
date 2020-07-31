@@ -6,8 +6,8 @@ from sidermit.optimization import Optimizer
 from sidermit.publictransportsystem import Passenger, TransportMode
 from sidermit.publictransportsystem import TransportNetwork
 
-graph_obj = Graph.build_from_parameters(2, 10, 0.5, 2)
-demand_obj = Demand.build_from_parameters(graph_obj, 100, 0.5, 1 / 3, 1 / 3)
+graph_obj = Graph.build_from_parameters(8, 10, 0.5, 2)
+demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.5, 1 / 3, 1 / 3)
 passenger_obj = Passenger.get_default_passenger()
 [bus_obj, metro_obj] = TransportMode.get_default_modes()
 network_obj = TransportNetwork(graph_obj)
@@ -20,7 +20,7 @@ for route in feeder_bus:
 for route in radial_metro:
     network_obj.add_route(route)
 
-opt = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj)
+opt = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
 fo = opt.f_opt
 
 
@@ -42,11 +42,15 @@ def con(fopt):
 
 constr_func = lambda fopt: np.array(con(fopt))
 
-nonlin_con = NonlinearConstraint(constr_func, 0., np.inf)
+lb = [-1 * np.inf] * 112
+ub = [0] * 112
+nonlin_con = NonlinearConstraint(constr_func, lb=lb, ub=ub)
 
 from scipy.optimize import Bounds
 
-bounds = Bounds([0, 0, 0, 0], [float('inf'), float('inf'), float('inf'), float('inf')])
+bounds = Bounds(lb=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                ub=[np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf, np.inf,
+                    np.inf, np.inf, np.inf, np.inf])
 
 res = minimize(fun, fo, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
 

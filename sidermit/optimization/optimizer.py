@@ -10,7 +10,8 @@ from collections import defaultdict
 
 
 class Optimizer:
-    def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork):
+    def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork,
+                 f=None):
 
         # definimos ciudad
         self.graph_obj = graph_obj
@@ -27,16 +28,40 @@ class Optimizer:
         # definimos red de transporte
         self.network_obj = network_obj
 
-        # definimos frecuencia inicial
-        self.fini, self.f_opt, self.lines_position = self.fini()
+        # definimos frecuencia
+        if f is None:
+            self.f, self.f_opt, self.lines_position = self.f0()
+        else:
+            self.f, self.f_opt, self.lines_position = self.fini(f)
 
-    def fini(self):
+        self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, self.f)
+        self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
+
+        self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = self.hyperpath_obj.get_all_hyperpaths(
+            self.demand_obj.get_matrix())
+
+        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.spa, self.spv)
+
+    def f0(self):
         fini = defaultdict(float)
         fopt = []
         lines_position = defaultdict(None)
         n = 0
         for route in self.network_obj.get_routes():
             fini[route.id] = route.mode.fini
+            fopt.append(route.mode.fini)
+            lines_position[n] = route.id
+            n += 1
+
+        return fini, fopt, lines_position
+
+    def fini(self, f):
+        fini = defaultdict(float)
+        fopt = []
+        lines_position = defaultdict(None)
+        n = 0
+        for route in self.network_obj.get_routes():
+            fini[route.id] = f[route.id]
             fopt.append(route.mode.fini)
             lines_position[n] = route.id
             n += 1
@@ -97,19 +122,12 @@ class Optimizer:
 
         f = self.fopt_to_f(fopt)
 
-        extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, f)
-        hyperpath_obj = Hyperpath(extended_graph_obj, self.passenger_obj)
-
-        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(self.demand_obj.get_matrix())
-
-        assignment = Assignment.get_assignment(hyperpaths, labels, self.p, self.vp, self.spa, self.spv)
-        z, v = Assignment.get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f)
-
+        z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
         k = self.get_k(self.network_obj.get_routes(), z, v)
 
         CO = self.operators_cost(z, v, f, k)
         CI = self.infrastructure_cost(f)
-        CU = self.user_cost(hyperpaths, Vij, assignment, successors, extended_graph_obj, f)
+        CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f)
 
         return CO + CI + CU
 
@@ -117,13 +135,7 @@ class Optimizer:
 
         f = self.fopt_to_f(fopt)
 
-        extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, f)
-        hyperpath_obj = Hyperpath(extended_graph_obj, self.passenger_obj)
-
-        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(self.demand_obj.get_matrix())
-
-        assignment = Assignment.get_assignment(hyperpaths, labels, self.p, self.vp, self.spa, self.spv)
-        z, v = Assignment.get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f)
+        z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
 
         most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
         constrain_obj = Constrains()
