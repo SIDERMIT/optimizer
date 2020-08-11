@@ -337,7 +337,7 @@ class test_graph(unittest.TestCase):
                                               Gi=[2, 0.5],
                                               Hi=[2, 0.5])
         # write file
-        g.graph_to_pajek_file(os.path.join(self.data_path, filename), graph.GraphFileFormat.PAJEK)
+        g.graph_to_pajek_file(os.path.join(self.data_path, filename), graph.GraphContentFormat.PAJEK)
         file_obj = Path(os.path.join(self.data_path, filename))
 
         # test build
