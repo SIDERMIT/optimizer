@@ -1,6 +1,7 @@
 General:
-Agregar docstring
-Realizar ejemplos en jupyter notebook
+- Agregar docstring
+- Realizar ejemplos en jupyter notebook
+- Quitar prints, si no son necesarios quitar y si lo son usar logging
 
 MODULOS
 
@@ -8,6 +9,24 @@ network:
 se incorporó metodo de agregar modo de transporte a la red con validacion de numero de modos de transporte creados y
 ademas de metodo de remove modo de transporte, falta testear
 
+Hay prints que se ejecutan como parte de la salida, en ese caso se debe usar
+un logger y hacer print a través de el, esto da control a los usuarios que usan
+la librería de poder tomar ese mensaje y verlo cuando ellos quieran o direccionarlo a un archivo
+ ejemplo:
+
+ en el archivo (fuera de las clases y debajo de los imports) escribir:
+
+ import logging
+ logger = logging.getLevelName(__name__)
+
+ luego, en los lugares donde queremos informar algo hacemos:
+ logger.info('esto es un mensaje de información')
+ logger.warning('esto es un mensaje de advertencia')
+ logger.debug('esto es un mensaje de debug')
+ logger.error('esto es un mensaje de error')
+
+ los loggers tienen varios niveles, depende de lo que se quiera informar es el
+ que se debe usar
 
 extended graph:
 falta testear metodos de printeo
