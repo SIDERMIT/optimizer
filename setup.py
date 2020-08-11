@@ -12,10 +12,10 @@ setup(
     download_url='https://github.com/SIDERMIT/optimizer/archive/v0.0.1.tar.gz',
     keywords=['public transport', 'optimize'],
     install_requires=[
-        'pandas==1.0.5',
-        'matplotlib==3.3.0',
-        'networkx==2.4',
-        'scipy==1.5.2',
+        'pandas>=1.0.5',
+        'matplotlib>=3.3.0',
+        'networkx>=2.4',
+        'scipy>=1.5.2',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',
