@@ -175,3 +175,20 @@ class Optimizer:
         res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
 
         return res
+
+    @staticmethod
+    def print_information_internal_optimization(res):
+
+        success = res.success
+        status = res.status
+        message = res.message
+        new_f = res.x
+        constr_violation = res.constr_violation
+
+        line = "Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}".format(
+            success, status, message, new_f, constr_violation)
+        print(line)
+        return line
+
+    def external_optimization(self):
+        pass

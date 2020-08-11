@@ -24,7 +24,9 @@ for route in radial_metro:
 opt = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
 
 res = opt.internal_optimization()
+
 print(res)
+line = opt.print_information_internal_optimization(res)
 
 
 
