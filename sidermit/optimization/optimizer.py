@@ -8,6 +8,9 @@ from sidermit.optimization import Constrains
 
 from collections import defaultdict
 
+import numpy as np
+from scipy.optimize import minimize, NonlinearConstraint, Bounds
+
 
 class Optimizer:
     def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork,
@@ -41,6 +44,9 @@ class Optimizer:
             self.demand_obj.get_matrix())
 
         self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.spa, self.spv)
+
+        self.len_constrains = len(self.get_constrains(self.f_opt))
+        self.len_var = len(self.f_opt)
 
     def f0(self):
         fini = defaultdict(float)
@@ -100,10 +106,10 @@ class Optimizer:
         cost = infrastructure_cost_obj.get_infrastruture_cost(self.graph_obj, self.network_obj, f)
         return cost
 
-    def user_cost(self, hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f):
+    def user_cost(self, hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f, z, v):
         user_cost_obj = UsersCost()
         cost = user_cost_obj.get_users_cost(hyperpaths, Vij, assignment, successors, extended_graph, f,
-                                            self.passenger_obj)
+                                            self.passenger_obj, z, v)
         return cost
 
     def constrains(self, z, v, f):
@@ -127,8 +133,11 @@ class Optimizer:
 
         CO = self.operators_cost(z, v, f, k)
         CI = self.infrastructure_cost(f)
-        CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f)
+        CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
+                            v)
 
+        print("f: {}".format(fopt))
+        print("VRC: {}".format(CO + CI + CU))
         return CO + CI + CU
 
     def get_constrains(self, fopt):
@@ -143,4 +152,26 @@ class Optimizer:
         ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
                                                self.network_obj.get_modes(), f)
 
-        return ineq_k, ineq_f
+        con = []
+        for c in ineq_k:
+            con.append(c)
+        for c in ineq_f:
+            con.append(c)
+
+        return con
+
+    def internal_optimization(self):
+
+        constr_func = lambda fopt: np.array(self.get_constrains(fopt))
+
+        lb = [-1 * np.inf] * self.len_constrains
+        ub = [0] * self.len_constrains
+        nonlin_con = NonlinearConstraint(constr_func, lb=lb, ub=ub)
+
+        lb = [0] * self.len_var
+        ub = [np.inf] * self.len_var
+
+        bounds = Bounds(lb=lb, ub=ub)
+        res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
+
+        return res
