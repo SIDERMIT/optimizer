@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 from sidermit.exceptions import *
 
 
-class GraphFileFormat(Enum):
+class GraphContentFormat(Enum):
     """
     Supported format for reading files in the construction of the city graph.
     Pajek reference: https://gephi.org/users/supported-graph-formats/pajek-net-format/
@@ -201,7 +201,7 @@ class Graph:
                 return True
         return False
 
-    def export_graph(self, format: GraphFileFormat):
+    def export_graph(self, format: GraphContentFormat):
         """
         to get a string with graph nodes information in a specific format file
         :param format:
@@ -209,7 +209,7 @@ class Graph:
         """
 
         line = ""
-        if format == GraphFileFormat.PAJEK:
+        if format == GraphContentFormat.PAJEK:
             line = "*vertices {}{}".format(len(self.__nodes), "\n")
 
             for node_obj in self.__nodes:
@@ -226,7 +226,7 @@ class Graph:
                                                                node_obj.width)
         return line
 
-    def graph_to_pajek_file(self, file_path, format: GraphFileFormat):
+    def graph_to_pajek_file(self, file_path, format: GraphContentFormat):
         """
         write city graph data to file using Pajek format
         :param format:
@@ -375,10 +375,10 @@ class Graph:
         return graph_obj
 
     @staticmethod
-    def __pajekfile_to_dataframe(file_path):
+    def __pajekfile_to_dataframe(data):
         """
-        convert pajek file to dataframe
-        :param file_path: file_path of the pajek file
+        convert string pajek to dataframe
+        :param data: string data in  pajek format
         :return:
         """
 
@@ -392,40 +392,43 @@ class Graph:
         col_zone = []
         col_width = []
 
-        with open(file_path, mode='r', encoding='utf-8') as f_obj:
-            n_nodes = 0
-            for line in f_obj.readlines():
-                if line.lower().startswith("*vertices"):
-                    _, n_nodes = line.split()
-                    n_nodes = int(n_nodes)
-                    continue
-                if n_nodes > 0:
-                    if len(line.split()) == 7:
-                        node_id, name, x, y, node_type, zone, width = line.split()
-                        if node_type != "CBD" and node_type != "SC" and node_type != "P":
-                            raise NodeTypeIsNotValidException("Node type is not valid. Try with CBD, SC or P")
-                        col_id.append(node_id)
-                        col_name.append(name)
-                        col_x.append(x)
-                        col_y.append(y)
-                        col_type.append(node_type)
-                        col_zone.append(zone)
-                        col_width.append(width)
+        f_obj = data.split("\n")
 
-                        n_nodes = n_nodes - 1
-                    else:
-                        raise PajekFormatIsNotValidException("each node line must provide information about [id] ["
-                                                             "name] [x] [y] [type] [zone] [width]")
+        # print(f_obj)
 
-            df_file["node_id"] = col_id
-            df_file["name"] = col_name
-            df_file["x"] = col_x
-            df_file["y"] = col_y
-            df_file["type"] = col_type
-            df_file["zone"] = col_zone
-            df_file["width"] = col_width
+        n_nodes = 0
+        for line in f_obj:
+            if line.lower().startswith("*vertices"):
+                _, n_nodes = line.split()
+                n_nodes = int(n_nodes)
+                continue
+            if n_nodes > 0:
+                if len(line.split()) == 7:
+                    node_id, name, x, y, node_type, zone, width = line.split()
+                    if node_type != "CBD" and node_type != "SC" and node_type != "P":
+                        raise NodeTypeIsNotValidException("Node type is not valid. Try with CBD, SC or P")
+                    col_id.append(node_id)
+                    col_name.append(name)
+                    col_x.append(x)
+                    col_y.append(y)
+                    col_type.append(node_type)
+                    col_zone.append(zone)
+                    col_width.append(width)
 
-            return df_file
+                    n_nodes = n_nodes - 1
+                else:
+                    raise PajekFormatIsNotValidException("each node line must provide information about [id] ["
+                                                         "name] [x] [y] [type] [zone] [width]")
+
+        df_file["node_id"] = col_id
+        df_file["name"] = col_name
+        df_file["x"] = col_x
+        df_file["y"] = col_y
+        df_file["type"] = col_type
+        df_file["zone"] = col_zone
+        df_file["width"] = col_width
+
+        return df_file
 
     def get_edges_distance(self):
         """
@@ -490,24 +493,24 @@ class Graph:
         return x, y
 
     @staticmethod
-    def build_from_file(file_path, file_format=GraphFileFormat.PAJEK):
+    def build_from_content(data, content_format: GraphContentFormat):
         """
-        to build a city graph with pajek file information
-        :param file_path:
-        :param file_format: default and only supported value is PAJEK
-        :return: Graph instance
+        :param data:
+        :param content_format:
+        :return:
         """
         graph_obj = Graph()
 
-        if file_format == GraphFileFormat.PAJEK:
+        if content_format == GraphContentFormat.PAJEK:
 
-            df_file = graph_obj.__pajekfile_to_dataframe(file_path)
+            df_file = graph_obj.__pajekfile_to_dataframe(data)
 
             df_file = df_file.sort_values(["zone", "type"], ascending=[True, True])
 
             lines_accepted = list(range(1, 10001, 2))
 
             if not len(df_file["node_id"]) in lines_accepted:
+                # print(len(df_file["node_id"]))
                 raise LineNumberInFileIsNotValidException("The number of lines in the file must be 2n+1 or "
                                                           "file is very big (until 5000 zones accepted)")
 
@@ -631,6 +634,25 @@ class Graph:
         graph_obj.__angles = angles
         graph_obj.__Gi = Gi
         graph_obj.__Hi = Hi
+
+        return graph_obj
+
+    @staticmethod
+    def build_from_file(file_path, file_format=GraphContentFormat.PAJEK):
+        """
+        to build a city graph with pajek file information
+        :param file_path:
+        :param file_format: default and only supported value is PAJEK
+        :return: Graph instance
+        """
+
+        graph_obj = Graph()
+
+        with open(file_path, mode='r', encoding='utf-8') as f_obj:
+            data = f_obj.read()
+            # print(data)
+
+            graph_obj = graph_obj.build_from_content(data, file_format)
 
         return graph_obj
 
