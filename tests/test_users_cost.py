@@ -40,15 +40,17 @@ class test_users_cost(unittest.TestCase):
                                                   spv=passenger_obj.spv)
 
         f = defaultdict(float)
+        z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        v = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
         for route in network_obj.get_routes():
             f[route.id] = 28
 
         CU_obj = UsersCost()
         ta, te, tv, t = CU_obj.resources_consumer(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj,
-                                                  passenger_obj.va, f)
+                                                  passenger_obj.va, f, z, v)
 
-        self.assertEqual(round(ta, 4), 3.4296)
+        self.assertEqual(round(ta, 4), 3.3963)
         self.assertEqual(round(te, 4), 13.4805)
         self.assertEqual(round(tv, 4), 73.9559)
         self.assertEqual(round(t, 4), 41.6667)
@@ -82,11 +84,14 @@ class test_users_cost(unittest.TestCase):
                                                   spv=passenger_obj.spv)
 
         f = defaultdict(float)
+        z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        v = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
         for route in network_obj.get_routes():
             f[route.id] = 28
 
         CU_obj = UsersCost()
-        CU = CU_obj.get_users_cost(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj, f, passenger_obj)
+        CU = CU_obj.get_users_cost(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj, f, passenger_obj, z,
+                                   v)
 
-        self.assertEqual(round(CU, 4), 971.3704)
+        self.assertEqual(round(CU, 4), 971.0964)
