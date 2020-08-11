@@ -201,27 +201,43 @@ class Graph:
                 return True
         return False
 
-    def graph_to_pajek(self, file_path):
+    def export_graph(self, format: GraphFileFormat):
+        """
+        to get a string with graph nodes information in a specific format file
+        :param format:
+        :return: string with graph nodes information in a specific format file
+        """
+
+        line = ""
+        if format == GraphFileFormat.PAJEK:
+            line = "*vertices {}{}".format(len(self.__nodes), "\n")
+
+            for node_obj in self.__nodes:
+                node_type = None
+                if isinstance(node_obj, CBD):
+                    node_type = 'CBD'
+                elif isinstance(node_obj, Periphery):
+                    node_type = 'P'
+                elif isinstance(node_obj, Subcenter):
+                    node_type = 'SC'
+
+                line += "{0} {1} {2} {3} {4} {5} {6}\n".format(node_obj.id, node_obj.name, node_obj.x, node_obj.y,
+                                                               node_type, node_obj.zone_id,
+                                                               node_obj.width)
+        return line
+
+    def graph_to_pajek_file(self, file_path, format: GraphFileFormat):
         """
         write city graph data to file using Pajek format
+        :param format:
         :param file_path: file path
         :return: None
         """
 
         file = open(file_path, 'w')
-        file.write("*vertices {}{}".format(len(self.__nodes), "\n"))
-        for node_obj in self.__nodes:
-            node_type = None
-            if isinstance(node_obj, CBD):
-                node_type = 'CBD'
-            elif isinstance(node_obj, Periphery):
-                node_type = 'P'
-            elif isinstance(node_obj, Subcenter):
-                node_type = 'SC'
+        string_file = self.export_graph(format)
+        file.write(string_file)
 
-            file.write("{0} {1} {2} {3} {4} {5} {6}\n".
-                       format(node_obj.id, node_obj.name, node_obj.x, node_obj.y, node_type, node_obj.zone_id,
-                              node_obj.width))
         file.close()
 
     @staticmethod
