@@ -5,7 +5,7 @@ from sidermit.publictransportsystem import Passenger
 class UsersCost:
 
     @staticmethod
-    def resources_consumer(hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, vp, f):
+    def resources_consumer(hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, vp, f, z, v):
         ta = 0
         tv = 0
         te = 0
@@ -30,7 +30,7 @@ class UsersCost:
                         nodej = suc.nodej
                         paths.append((stop, nodej, vod_s))
 
-                    # reportar ta inicial (lateral y tecnologico
+                    # reportar ta inicial (lateral y tecnologico)
                     ta += vod_s * (stop.mode.tat / 60 + assignment[origin][destination][
                         stop] / 100 * origin.graph_node.width / (4 * vp * stop.mode.d))
 
@@ -38,7 +38,7 @@ class UsersCost:
                         nodei, nodej, pax = paths.pop(0)
 
                         # evita continuar si llegaste a destino
-                        if isinstance(nodei, CityNode) and nodei == destination:
+                        if isinstance(nodei, StopNode) and nodei.city_node == destination:
                             continue
 
                         dis_pax = pax
@@ -52,7 +52,7 @@ class UsersCost:
                                 for suc in successors[origin][destination][nodei]:
                                     f_acum += f[suc.nodej.route.id]
 
-                                dis_pax = pax * (f[nodej.route.id] / f_acum)
+                                dis_pax = dis_pax * (f[nodej.route.id] / f_acum)
 
                                 te += dis_pax * nodei.mode.theta / (f_acum / nodej.route.mode.d)
 
@@ -64,11 +64,40 @@ class UsersCost:
                                         tv += dis_pax * edge.t
                                         break
 
-                        # reportar transbordos
+                        # reportar transbordos y tv de bajada
                         if isinstance(nodei, RouteNode):
                             if isinstance(nodej, StopNode):
+                                # transbordos
                                 if nodej.city_node != destination:
                                     t += dis_pax
+
+                                # para tiempo de viaje adicional por esperar la bajada del vehiculo
+                                nodei_id = nodei.prev_route_node.stop_node.city_node.graph_node.id
+                                nodej_id = nodei.stop_node.city_node.graph_node.id
+
+                                stop_sequence_i = nodei.route.stops_sequence_i
+
+                                index = 0
+                                index_i = 0
+                                index_j = 0
+
+                                for node_id in stop_sequence_i:
+                                    if str(node_id) == str(nodei_id):
+                                        index_i = index
+                                    if str(node_id) == str(nodej_id):
+                                        index_j = index
+                                    index = index + 1
+
+                                tb = nodei.route.mode.t / 3600
+                                # verificamos si es del sentido de ida
+                                if index_i < index_j:
+                                    pax_b = v[nodei.route.id]["I"][nodej]
+                                    tv += (pax_b * 0.5 * tb) * dis_pax
+
+                                # sentido de vuelta
+                                else:
+                                    pax_b = v[nodei.route.id]["R"][nodej]
+                                    tv += (pax_b * 0.5 * tb) * dis_pax
 
                         # reportar ta
                         if isinstance(nodei, StopNode):
@@ -79,15 +108,66 @@ class UsersCost:
                                 ta += nodej.mode.tat / 60
 
                         # agregamos elementos faltantes a las rutas
+                        # si nodo i, nodo j y nodo k (new suc ) son de rutas entonces
                         for suc in successors[origin][destination][nodej]:
+                            # agrega elementos para continuar rutas elementales
                             paths.append((nodej, suc.nodej, dis_pax))
+
+                            # sumaremos tv producido por la espera de los que se bajan en paraderos cuando el ind sigue
+                            # en ruta
+                                            #cbd                                 #SC                             #p
+                            if isinstance(nodei, RouteNode) and isinstance(nodej, RouteNode) and isinstance(suc.nodej,
+                                                                                                            RouteNode):
+                                bya = nodei.route.mode.bya
+                                tb = nodei.route.mode.t / 3600
+                                # determinamos dirección
+                                nodei_id = nodei.stop_node.city_node.graph_node.id
+                                nodej_id = nodej.stop_node.city_node.graph_node.id
+
+                                stop_sequence_i = nodei.route.stops_sequence_i
+
+                                index = 0
+                                index_i = 0
+                                index_j = 0
+
+                                for node_id in stop_sequence_i:
+                                    if str(node_id) == str(nodei_id):
+                                        index_i = index
+                                    if str(node_id) == str(nodej_id):
+                                        index_j = index
+                                    index = index + 1
+
+                                # verificamos si es del sentido de ida
+                                if index_i < index_j:
+                                    # simultaneo
+                                    if bya == 1:
+                                        pasajeros = max(z[nodei.route.id]["I"][nodej.stop_node],
+                                                        v[nodei.route.id]["I"][nodej.stop_node])
+                                        tv += pasajeros * tb * dis_pax
+                                    # secuencial
+                                    if bya == 0:
+                                        pasajeros = z[nodei.route.id]["I"][nodej.stop_node] + v[nodei.route.id]["I"][
+                                            nodej.stop_node]
+                                        tv += pasajeros * tb * dis_pax
+                                # sentido de vuelta
+                                else:
+                                    # simultaneo
+                                    if bya == 1:
+                                        pasajeros = max(z[nodei.route.id]["R"][nodej.stop_node],
+                                                        v[nodei.route.id]["R"][nodej.stop_node])
+                                        tv += pasajeros * tb * dis_pax
+                                    # secuencial
+                                    if bya == 0:
+                                        pasajeros = z[nodei.route.id]["R"][nodej.stop_node] + v[nodei.route.id]["R"][
+                                            nodej.stop_node]
+                                        tv += pasajeros * tb * dis_pax
 
         return ta, te, tv, t
 
     def get_users_cost(self, hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f,
-                       passenger_obj: Passenger):
+                       passenger_obj: Passenger, z, v):
         ta, te, tv, t = self.resources_consumer(hyperpaths, Vij, assignment, successors,
-                                                extended_graph, passenger_obj.va, f)
+                                                extended_graph, passenger_obj.va, f, z, v)
         pa = passenger_obj.pa
         pv = passenger_obj.pv
         pw = passenger_obj.pw

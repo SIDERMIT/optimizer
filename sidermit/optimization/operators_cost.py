@@ -28,7 +28,7 @@ class OperatorsCost:
 
                 tv += edge_distance[nodei_id][nodej_id] / route.mode.v
 
-            # recorremos secuencia de ida
+            # recorremos secuencia de vuelta
             for i in range(len(node_sequence_r) - 1):
                 j = i + 1
 
@@ -60,6 +60,7 @@ class OperatorsCost:
 
             tc = line_travel_time[route_id]
 
+            # secuancial
             if route.mode.bya == 0:
 
                 for stop in z[route_id]["I"]:
@@ -71,6 +72,7 @@ class OperatorsCost:
                 for stop in v[route_id]["R"]:
                     tc += t * v[route_id]["R"][stop]
 
+            # simultaneo
             if route.mode.bya == 1:
                 processed_stop_i = []
                 processed_stop_r = []
