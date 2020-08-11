@@ -3,13 +3,13 @@ from setuptools import setup, find_packages
 setup(
     name='sidermit',
     packages=find_packages(exclude=['tests', 'examples']),
-    version='0.0.1',
+    version='0.0.2',
     license='gpl-3.0',
     description='optimize public transport system on a city graph based on one CBD and zones',
     author='Felipe Vera',
     author_email='fvera@transapp.cl',
     url='https://github.com/SIDERMIT/optimizer',
-    download_url='https://github.com/SIDERMIT/optimizer/archive/v0.0.1.tar.gz',
+    download_url='https://github.com/SIDERMIT/optimizer/archive/v0.0.2.tar.gz',
     keywords=['public transport', 'optimize'],
     install_requires=[
         'pandas>=1.0.5',
