@@ -1,15 +1,14 @@
-from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
-from sidermit.publictransportsystem import Passenger
-
-from sidermit.city import Graph, Demand
-from sidermit.publictransportsystem import TransportNetwork
-from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph
-from sidermit.optimization import Constrains
-
 from collections import defaultdict
 
 import numpy as np
 from scipy.optimize import minimize, NonlinearConstraint, Bounds
+
+from sidermit.city import Graph, Demand
+from sidermit.optimization import Constrains
+from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
+from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph
+from sidermit.publictransportsystem import Passenger
+from sidermit.publictransportsystem import TransportNetwork
 
 
 class Optimizer:
@@ -32,10 +31,7 @@ class Optimizer:
         self.network_obj = network_obj
 
         # definimos frecuencia
-        if f is None:
-            self.f, self.f_opt, self.lines_position = self.f0()
-        else:
-            self.f, self.f_opt, self.lines_position = self.fini(f)
+        self.f, self.f_opt, self.lines_position = self.f0(f)
 
         self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, self.f)
         self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
@@ -48,29 +44,23 @@ class Optimizer:
         self.len_constrains = len(self.get_constrains(self.f_opt))
         self.len_var = len(self.f_opt)
 
-    def f0(self):
+    def f0(self, f=None):
         fini = defaultdict(float)
         fopt = []
         lines_position = defaultdict(None)
         n = 0
-        for route in self.network_obj.get_routes():
-            fini[route.id] = route.mode.fini
-            fopt.append(route.mode.fini)
-            lines_position[n] = route.id
-            n += 1
-
-        return fini, fopt, lines_position
-
-    def fini(self, f):
-        fini = defaultdict(float)
-        fopt = []
-        lines_position = defaultdict(None)
-        n = 0
-        for route in self.network_obj.get_routes():
-            fini[route.id] = f[route.id]
-            fopt.append(route.mode.fini)
-            lines_position[n] = route.id
-            n += 1
+        if f is None:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = route.mode.fini
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
+        else:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = f[route.id]
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
 
         return fini, fopt, lines_position
 
@@ -136,8 +126,8 @@ class Optimizer:
         CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
                             v)
 
-        print("f: {}".format(fopt))
-        print("VRC: {}".format(CO + CI + CU))
+        # print("f: {}".format(fopt))
+        # print("VRC: {}".format(CO + CI + CU))
         return CO + CI + CU
 
     def get_constrains(self, fopt):
@@ -173,6 +163,7 @@ class Optimizer:
 
         bounds = Bounds(lb=lb, ub=ub)
         res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
+        self.print_information_internal_optimization(res)
 
         return res
 
@@ -190,5 +181,46 @@ class Optimizer:
         print(line)
         return line
 
-    def external_optimization(self):
-        pass
+    @staticmethod
+    def f_distance(prev_f, new_f):
+        dif = 0
+        for i in range(len(prev_f)):
+            dif += (prev_f[i] - new_f[i]) ** len(prev_f)
+        dif = dif ** (1 / len(prev_f))
+        print("f_norm_distance: {}".format(dif))
+        return dif
+
+    def tolerance(self, prev_f, new_f, tol=0.01):
+
+        if tol > abs(self.f_distance(prev_f, new_f)):
+            return True
+
+        return False
+
+    @staticmethod
+    def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                              network_obj: TransportNetwork,
+                              f=None, tolerance=0.01):
+
+        list_res = []
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        # inicialización
+        list_res.append((opt_obj.f_opt, "initialization", 1, "initialization", 0))
+
+        # primera iteracion
+        res = opt_obj.internal_optimization()
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation))
+
+        pre_f, _, _, _, _ = list_res[0]
+        new_f, _, _, _, _ = list_res[1]
+
+        # mientras criterio de tolerancia externo se cumpla
+        while not opt_obj.tolerance(pre_f, new_f, tolerance):
+            pre_f = new_f
+            dic_new_f = opt_obj.fopt_to_f(new_f)
+            opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
+            res = opt_obj.internal_optimization()
+            list_res.append((res.x, res.success, res.status, res.message, res.constr_violation))
+            new_f = res.x
+        return list_res

@@ -21,12 +21,13 @@ for route in feeder_bus:
 for route in radial_metro:
     network_obj.add_route(route)
 
-opt = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
+# podemos agregar numero de iteraciones
+list_res = Optimizer.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
 
-res = opt.internal_optimization()
+print(list_res)
 
-print(res)
-line = opt.print_information_internal_optimization(res)
+# print(res)
+# line = opt.print_information_internal_optimization(res)
 
 
 
