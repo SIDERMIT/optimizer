@@ -1,7 +1,29 @@
 from collections import defaultdict
+from typing import List
 
+from sidermit.optimization.preoptimization import ExtendedEdge, ExtendedNode
 from sidermit.optimization.preoptimization import StopNode, RouteNode
-from sidermit.publictransportsystem import RouteType
+from sidermit.publictransportsystem import RouteType, Route
+
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+list_suc = defaultdict(List[ExtendedEdge])
+list_lab = defaultdict(float)
+list_f = defaultdict(float)
+list_elemental_path = List[ExtendedNode]
+defaultdict_elemental_path = defaultdict(List[list_elemental_path])
+
+dic_hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(List[list_elemental_path])))
+dic_labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_successors = defaultdict(lambda: defaultdict(lambda: defaultdict(List[ExtendedEdge])))
+dic_frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_Vij = defaultdict(lambda: defaultdict(float))
+dic_assigment = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_f = defaultdict(float)
+
+dic_boarding = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_alighting = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+
+dic_loaded_section = defaultdict(float)
 
 
 class Assignment:
@@ -10,7 +32,8 @@ class Assignment:
         pass
 
     @staticmethod
-    def get_assignment(hyperpaths, labels, p, vp, spa, spv):
+    def get_assignment(hyperpaths: dic_hyperpaths, labels: dic_labels, p: float, vp: float, spa: float,
+                       spv: float) -> dic_assigment:
         """
         to distribute trips of all OD pair in each StopNode of the Origin
         :param vp: Walking speed [km/h]
@@ -130,7 +153,8 @@ class Assignment:
         return assignment
 
     @staticmethod
-    def get_alighting_and_boarding(Vij, hyperpaths, successors, assignment, f):
+    def get_alighting_and_boarding(Vij: dic_Vij, hyperpaths: dic_hyperpaths, successors: dic_successors,
+                                   assignment: dic_assigment, f: dic_f) -> (dic_boarding, dic_alighting):
         """
         to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes :param
         successors: dic[origin: CityNode][destination: CityNode] [ExtendedNode] = List[ExtendedEdge],
@@ -214,11 +238,11 @@ class Assignment:
         return z, v
 
     @staticmethod
-    def str_boarding_alighting(z, v):
+    def str_boarding_alighting(z: dic_boarding, v: dic_alighting) -> str:
         """
         to print boarding and alighting
-        :param z:
-        :param v:
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         :return:
         """
         line = "\nBoarding and Alighting information:"
@@ -241,13 +265,13 @@ class Assignment:
         return line
 
     @staticmethod
-    def most_loaded_section(routes, z, v):
+    def most_loaded_section(routes: List[Route], z: dic_boarding, v: dic_alighting) -> dic_loaded_section:
         """
         to get  most loaded section for each routes
-        :param routes:
-        :param z:
-        :param v:
-        :return:
+        :param routes: List[Route]
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: dic[route_id] = pax [pax/veh]
         """
 
         most_loaded_section = defaultdict(float)

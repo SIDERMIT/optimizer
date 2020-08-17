@@ -1,4 +1,5 @@
 from collections import defaultdict
+from typing import List
 
 import networkx as nx
 from matplotlib import pyplot as plt
@@ -7,8 +8,6 @@ from sidermit.exceptions import *
 from sidermit.optimization.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType, \
     ExtendedEdge, ExtendedNode
 from sidermit.publictransportsystem import Passenger, TransportModeManager
-
-from typing import List
 
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
 list_suc = defaultdict(List[ExtendedEdge])
