@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import math
 from collections import defaultdict
 from enum import Enum
@@ -308,7 +310,7 @@ class Graph:
 
     @staticmethod
     def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha=None, etha_zone=None,
-                              angles=None, Gi=None, Hi=None):
+                              angles=None, Gi=None, Hi=None) -> Graph:
         """
         to build a city graph with parameters information
         :param n: zone numbers.
@@ -503,11 +505,11 @@ class Graph:
         return x, y
 
     @staticmethod
-    def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK):
+    def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK) -> Graph:
         """
         :param data:
         :param content_format:
-        :return:
+        :return: Graph
         """
         graph_obj = Graph()
 
@@ -648,7 +650,7 @@ class Graph:
         return graph_obj
 
     @staticmethod
-    def build_from_file(file_path, file_format=GraphContentFormat.PAJEK):
+    def build_from_file(file_path, file_format=GraphContentFormat.PAJEK) -> Graph:
         """
         to build a city graph with pajek file information
         :param file_path:

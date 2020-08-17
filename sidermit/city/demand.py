@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections import defaultdict
 
 import pandas as pd
@@ -117,7 +119,7 @@ class Demand:
         return True
 
     @staticmethod
-    def build_from_parameters(graph_obj: Graph, y: float, a: float, alpha: float, beta: float):
+    def build_from_parameters(graph_obj: Graph, y: float, a: float, alpha: float, beta: float) -> Demand:
         """
         to build OD matrix with symmetric parameters
         :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
@@ -208,7 +210,7 @@ class Demand:
         return demand_obj
 
     @staticmethod
-    def build_from_file(graph_obj: Graph, file_path):
+    def build_from_file(graph_obj: Graph, file_path) -> Demand:
         """
         to build OD matrix from file
         :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
