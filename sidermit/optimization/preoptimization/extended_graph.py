@@ -1,9 +1,10 @@
 from collections import defaultdict
 from enum import Enum
+from typing import List
 
 from sidermit.city import Graph
-from sidermit.publictransportsystem.network import RouteType
 from sidermit.publictransportsystem import TransportMode, Route
+from sidermit.publictransportsystem.network import RouteType
 
 
 #                                    Representation extended graph
@@ -106,9 +107,14 @@ class ExtendedEdgesType(Enum):
     ROUTE = 4
 
 
+defaultdict_float = defaultdict(float)
+defaultdict2_route_node = defaultdict(lambda: defaultdict(List[RouteNode]))
+defaultdict2_route_direction = defaultdict(lambda: defaultdict(List[Route, str]))
+
+
 class ExtendedGraph:
 
-    def __init__(self, graph_obj: Graph, routes, sPTP: float, frequency_routes=None):
+    def __init__(self, graph_obj: Graph, routes: List[Route], sPTP: float, frequency_routes: defaultdict_float = None):
         """
         class to create extended graph that agglomerates the city graph information and transport routes in the network.
         It incorporates the penalty of the transfer of the passenger and the frequencies of the routes for
@@ -206,14 +212,14 @@ class ExtendedGraph:
                             t)
         return line
 
-    def get_extended_graph_nodes(self):
+    def get_extended_graph_nodes(self) -> defaultdict2_route_node:
         """
         to get extended nodes associated to the graph
         :return: dictionary: dic[CityNode][StopNode] = List[RouteNode]
         """
         return self.__extended_graph_nodes
 
-    def get_extended_graph_edges(self):
+    def get_extended_graph_edges(self) -> List[ExtendedEdge]:
         """
         to get extended edges associated to the graph
         :return: List[ExtendedEdges]
@@ -221,7 +227,7 @@ class ExtendedGraph:
         return self.__extended_graph_edges
 
     @staticmethod
-    def build_city_nodes(graph_obj: Graph):
+    def build_city_nodes(graph_obj: Graph) -> List[CityNode]:
         """
         to build CityNodes in the extended graph
         :param graph_obj: Graph object
@@ -234,7 +240,7 @@ class ExtendedGraph:
         return city_nodes
 
     @staticmethod
-    def build_tree_graph(routes, city_nodes):
+    def build_tree_graph(routes: List[Route], city_nodes: List[CityNode]) -> defaultdict2_route_direction:
         """
         to build auxiliary structure for construction of the extended graph
         :param routes: routes in the network associated
@@ -271,7 +277,7 @@ class ExtendedGraph:
         return tree_graph
 
     @staticmethod
-    def build_stop_nodes(tree_graph):
+    def build_stop_nodes(tree_graph: defaultdict2_route_direction) -> List[StopNode]:
         """
         to build StopNode in extended graph
         :param tree_graph: dic[CityNode][TransportMode] = List(Route, direction = "I" or "R")
@@ -289,7 +295,7 @@ class ExtendedGraph:
         return stop_nodes
 
     @staticmethod
-    def build_route_nodes(routes, stop_nodes):
+    def build_route_nodes(routes: List[Route], stop_nodes: List[StopNode]) -> List[RouteNode]:
         """
         to build route nodes in extended graph
         :param routes: list of routes in network associated
@@ -367,7 +373,7 @@ class ExtendedGraph:
         return route_nodes
 
     @staticmethod
-    def build_extended_graph_nodes(route_nodes):
+    def build_extended_graph_nodes(route_nodes: List[RouteNode]) -> defaultdict2_route_node:
         """
         to build extended graph node structure
         :param route_nodes: List[RouteNode]
@@ -384,7 +390,7 @@ class ExtendedGraph:
         return extended_graph_nodes
 
     @staticmethod
-    def build_access_edges(extended_graph_nodes):
+    def build_access_edges(extended_graph_nodes: defaultdict2_route_node) -> List[ExtendedEdge]:
         """
         to build access edges in extended graph
         :param extended_graph_nodes: dictionary: dic[CityNode][StopNode] = List[RouteNode]
@@ -402,7 +408,8 @@ class ExtendedGraph:
         return access_edges
 
     @staticmethod
-    def build_boarding_edges(extended_graph_nodes, frequency_routes):
+    def build_boarding_edges(extended_graph_nodes: defaultdict2_route_node, frequency_routes: defaultdict_float) -> \
+            List[ExtendedEdge]:
         """
         to build boarding edges in extended graph
         :param extended_graph_nodes: dic[CityNode][StopNode] = List[RouteNode]
@@ -437,7 +444,7 @@ class ExtendedGraph:
         return boarding_edges
 
     @staticmethod
-    def build_alighting_edges(extended_graph_nodes, sPTP):
+    def build_alighting_edges(extended_graph_nodes: defaultdict2_route_node, sPTP: float) -> List[ExtendedEdge]:
         """
         to build extended alighting edges
         :param extended_graph_nodes: dic[CityNode][StopNode] = List[RouteNode]
@@ -472,7 +479,7 @@ class ExtendedGraph:
         return alighting_edges
 
     @staticmethod
-    def build_route_edges(extended_graph_nodes):
+    def build_route_edges(extended_graph_nodes: defaultdict2_route_node) -> List[ExtendedEdge]:
         """
         to build extended routes edges
         :param extended_graph_nodes: dic[CityNode][StopNode] = List[RouteNode]
