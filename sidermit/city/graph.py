@@ -385,7 +385,7 @@ class Graph:
         return graph_obj
 
     @staticmethod
-    def __pajekfile_to_dataframe(data):
+    def __pajekfile_to_dataframe(data) -> pd.DataFrame:
         """
         convert string pajek to dataframe
         :param data: string data in  pajek format
