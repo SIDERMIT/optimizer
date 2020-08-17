@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import operator
 
 from sidermit.exceptions import VaIsNotValidExceptions, \
@@ -40,7 +42,7 @@ class Passenger:
         "You must give a value >= 0 for spt"), docstring="Subjetive pure transfer penalty [EIV]")
 
     def __init__(self, va: float, pv: float, pw: float, pa: float, pt: float,
-                 spv: float, spw: float, spa: float, spt: float) -> None:
+                 spv: float, spw: float, spa: float, spt: float):
         self.va = va
         self.pv = pv
         self.pw = pw
@@ -52,7 +54,7 @@ class Passenger:
         self.spt = spt
 
     @staticmethod
-    def get_default_passenger():
+    def get_default_passenger() -> Passenger:
         """
         to get passenger with default values
         :return: Passenger
