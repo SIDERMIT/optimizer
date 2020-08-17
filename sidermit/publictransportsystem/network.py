@@ -1,5 +1,7 @@
+import math
 from collections import defaultdict
 from enum import Enum
+from typing import List
 
 import networkx as nx
 import pandas as pd
@@ -8,8 +10,6 @@ from matplotlib import pyplot as plt
 from sidermit.city import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
 from sidermit.publictransportsystem import TransportMode, TransportModeManager
-
-import math
 
 
 class RouteType(Enum):
@@ -25,8 +25,7 @@ class RouteType(Enum):
 class Route:
 
     def __init__(self, route_id, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
-                 stops_sequence_i: str,
-                 stops_sequence_r: str, _type=RouteType.CUSTOM):
+                 stops_sequence_i: str, stops_sequence_r: str, _type: RouteType = RouteType.CUSTOM):
         """
         to defined a route
         :param route_id: route id
@@ -70,7 +69,7 @@ class Route:
                 self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
 
     def parameters_validator(self, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
-                             stops_sequence_i: str, stops_sequence_r: str):
+                             stops_sequence_i: str, stops_sequence_r: str) -> bool:
         """
         to check all parameters
         :param mode_obj: TransportMode object. Means of transport of the route
@@ -94,7 +93,7 @@ class Route:
                     return True
 
     @staticmethod
-    def sequences_to_string(sequence_list):
+    def sequences_to_string(sequence_list: List[str]) -> str:
         """
         convert a node id sequence list to a string
         :param sequence_list: node id sequence list
@@ -109,7 +108,7 @@ class Route:
         return line
 
     @staticmethod
-    def sequences_to_list(sequence: str):
+    def sequences_to_list(sequence: str) -> List[str]:
         """
         convert a string of node id sequence to a list
         :param sequence: String
@@ -127,7 +126,7 @@ class Route:
         return nodes
 
     @staticmethod
-    def stops_validator(nodes_list, stops_list):
+    def stops_validator(nodes_list: List[str], stops_list: List[str]) -> bool:
         """
         to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
         nodes are stops
@@ -148,7 +147,7 @@ class Route:
         return True
 
     @staticmethod
-    def direction_validator(nodes_list_i, nodes_list_r):
+    def direction_validator(nodes_list_i: List[str], nodes_list_r: List[str]) -> bool:
         """
         to check if both direction of a route form a cycle
         :param nodes_list_i: list of node sequence (forward direction)
@@ -161,7 +160,7 @@ class Route:
         return True
 
     @staticmethod
-    def sequences_validator(sequence):
+    def sequences_validator(sequence: List[str]) -> bool:
         """
         to check if sequence have a loop
         :param sequence: list of node sequence
@@ -191,7 +190,7 @@ class TransportNetwork:
         self.__routes_id = []
         self.__modes = []
 
-    def __edges_validator(self, node_list):
+    def __edges_validator(self, node_list: List[str]) -> bool:
         """
         to check if each edges in a node_sequences list exist in the graph object
         :param node_list: list of nodes
@@ -203,17 +202,17 @@ class TransportNetwork:
                 raise NodeSequencesIsNotValidException("Node sequences is not valid because a edge does not exist")
         return True
 
-    def get_modes(self):
+    def get_modes(self) -> List[TransportMode]:
         return self.__modes
 
-    def get_routes(self):
+    def get_routes(self) -> List[Route]:
         """
         to get all routes
         :return: List[Route]
         """
         return self.__routes
 
-    def get_route(self, route_id):
+    def get_route(self, route_id) -> Route:
         """
         to get a specific route by a route_id
         :param route_id: route id
@@ -228,6 +227,7 @@ class TransportNetwork:
     def add_transport_mode(self, mode: TransportMode):
         """
         to add a transport mode in the network
+        :param mode: TransportMode
         :return:
         """
 
@@ -253,6 +253,7 @@ class TransportNetwork:
     def remove_transport_mode(self, mode: TransportMode):
         """
         to remove a transport mode in the network and all lines defined with that transport mode
+        :param mode: TransportMode
         :return:
         """
 
@@ -334,7 +335,7 @@ class TransportNetwork:
 
         df_transit_network.to_csv(file_path, sep=";", index=False)
 
-    def get_circular_routes(self, mode_obj: TransportMode):
+    def get_circular_routes(self, mode_obj: TransportMode) -> List[Route]:
         """
         to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
         subcenter nodes.
@@ -378,7 +379,7 @@ class TransportNetwork:
 
         return [route1, route2]
 
-    def get_feeder_routes(self, mode_obj: TransportMode):
+    def get_feeder_routes(self, mode_obj: TransportMode) -> List[Route]:
         """
         to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc for I direction and sc-p for R direction.
@@ -409,7 +410,7 @@ class TransportNetwork:
 
         return routes
 
-    def get_radial_routes(self, mode_obj: TransportMode, short=False, express=False):
+    def get_radial_routes(self, mode_obj: TransportMode, short: bool = False, express: bool = False) -> List[Route]:
         """
         to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd for I direction and cbd-sc-p for R direction.
@@ -460,7 +461,8 @@ class TransportNetwork:
 
         return routes
 
-    def get_diametral_routes(self, mode_obj: TransportMode, jump: int, short=False, express=False):
+    def get_diametral_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                             express: bool = False) -> List[Route]:
         """
         to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-cbd-sc'-p' for I direction and p'-sc'-cbd-sc-p for R direction. p' and sc' are periphery and subcenter
@@ -539,7 +541,8 @@ class TransportNetwork:
 
         return routes
 
-    def get_tangencial_routes(self, mode_obj: TransportMode, jump: int, short=False, express=False):
+    def get_tangencial_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                              express: bool = False) -> List[Route]:
         """
         to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
         p-sc-sc'-...-sc''-p'' for I direction and p''-sc''-...-sc'-sc-p for R direction. sc', ..., sc'' are subcenter
