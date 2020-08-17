@@ -183,6 +183,13 @@ class test_graph(unittest.TestCase):
         self.assertEqual(len(g.get_edges()), 4)
         self.assertEqual(len(g.get_zones()), 1)
 
+        n, L, g, P, etha, etha_zone, angles, Gi, Hi = g.get_parameters()
+
+        self.assertEqual(n, 1)
+        self.assertEqual(L, 1000)
+        self.assertEqual(g, 0.5)
+        self.assertEqual(P, 0)
+
         g = graph.Graph.build_from_parameters(1, 1000, 0.5, 0, angles=[10])
 
         self.assertEqual(len(g.get_nodes()), 3)

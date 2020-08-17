@@ -1,6 +1,7 @@
 import math
 from collections import defaultdict
 from enum import Enum
+from typing import List
 
 import networkx as nx
 import pandas as pd
@@ -162,6 +163,15 @@ class Edge:
         self.node2 = node2
 
 
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+coor = (float, float)
+vector = List[float]
+parameters = (int, float, float, float, float, int, vector, vector, vector)
+zones = List[Zone]
+nodes = List[Node]
+edges = List[Edge]
+
+
 class Graph:
 
     def __init__(self):
@@ -189,7 +199,7 @@ class Graph:
         self.__Gi = None
         self.__Hi = None
 
-    def edge_exist(self, id_i, id_j):
+    def edge_exist(self, id_i, id_j) -> bool:
         """
         to check if edge with origin node id = id_i and destination node id = id_j exist
         :param id_i:
@@ -201,7 +211,7 @@ class Graph:
                 return True
         return False
 
-    def export_graph(self, format: GraphContentFormat):
+    def export_graph(self, format: GraphContentFormat = GraphContentFormat.PAJEK) -> str:
         """
         to get a string with graph nodes information in a specific format file
         :param format:
@@ -226,7 +236,7 @@ class Graph:
                                                                node_obj.width)
         return line
 
-    def graph_to_pajek_file(self, file_path, format: GraphContentFormat):
+    def graph_to_pajek_file(self, file_path, format: GraphContentFormat = GraphContentFormat.PAJEK):
         """
         write city graph data to file using Pajek format
         :param format:
@@ -242,7 +252,7 @@ class Graph:
 
     @staticmethod
     def parameters_validator(n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None,
-                             Hi=None):
+                             Hi=None) -> bool:
         """
         to validate symmetric and asymmetric graph construction parameters.
         :param n: zone numbers.
@@ -297,8 +307,8 @@ class Graph:
         return True
 
     @staticmethod
-    def build_from_parameters(n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None,
-                              Hi=None):
+    def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha=None, etha_zone=None,
+                              angles=None, Gi=None, Hi=None):
         """
         to build a city graph with parameters information
         :param n: zone numbers.
@@ -313,7 +323,7 @@ class Graph:
         List with asymmetry ratio for each zone with values >=0
         :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
         List with asymmetry ratio for each zone with values >=0
-        :return:
+        :return: Graph
         """
 
         graph_obj = Graph()
@@ -379,7 +389,7 @@ class Graph:
         """
         convert string pajek to dataframe
         :param data: string data in  pajek format
-        :return:
+        :return: Dataframe panda
         """
 
         # read pajek file as a Dataframe
@@ -430,10 +440,10 @@ class Graph:
 
         return df_file
 
-    def get_edges_distance(self):
+    def get_edges_distance(self) -> defaultdict2_float:
         """
         to get a dictionary with the edge distance of a nodes pair
-        :return: dic[nodei_id][nodej_id] = float [km]
+        :return: dic[nodei_id][nodej_id] = float [km]; defaultdict(lambda: defaultdict(float))
         """
 
         edge_distance = defaultdict(lambda: defaultdict(float))
@@ -452,7 +462,7 @@ class Graph:
         return edge_distance
 
     @staticmethod
-    def get_angle(x: float, y: float):
+    def get_angle(x: float, y: float) -> float:
         """
         to get angle of a vector with coor (0,0,x,y)  with respect to x+
         :param x:
@@ -482,7 +492,7 @@ class Graph:
         return angle_in_degree
 
     @staticmethod
-    def get_xy(radius, angle):
+    def get_xy(radius, angle) -> coor:
         """
         to get x, y with radius and angle parameters
         :param radius:
@@ -493,7 +503,7 @@ class Graph:
         return x, y
 
     @staticmethod
-    def build_from_content(data, content_format: GraphContentFormat):
+    def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK):
         """
         :param data:
         :param content_format:
@@ -666,7 +676,7 @@ class Graph:
         self.__nodes_id.append(cbd_node.id)
         self.__nodes.append(cbd_node)
 
-    def __add_zone(self, node_periphery, node_subcenter, zone_id=None):
+    def __add_zone(self, node_periphery: Periphery, node_subcenter: Subcenter, zone_id=None):
         """
         to add zone in the graph
         :param node_periphery:
@@ -689,7 +699,7 @@ class Graph:
         # must build all the edges
         self.__build_edges()
 
-    def __add_nodes(self, node_periphery, node_subcenter):
+    def __add_nodes(self, node_periphery: Periphery, node_subcenter: Subcenter):
         """
         to add periphery and subcenter belonging to a zone
         :param node_periphery:
@@ -763,7 +773,7 @@ class Graph:
                 self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
                 self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
 
-    def __add_edge(self, edge):
+    def __add_edge(self, edge: Edge):
         """
         to add a edge in the graph
         :param edge:
@@ -904,7 +914,7 @@ class Graph:
         # must build all the edges
         self.__build_edges()
 
-    def get_cbd(self):
+    def get_cbd(self) -> CBD:
         """
         to get CBD node defined in the graph
         :return: CBD node
@@ -916,7 +926,7 @@ class Graph:
                 break
         return cbd
 
-    def get_parameters(self):
+    def get_parameters(self) -> parameters:
         """
         to get tuple with symmetric and asymmetric parameters n, L, g, P, etha, etha_zone, angles, Gi, Hi
         :return: n, L, g, P, etha, etha_zone, angles, Gi, Hi
@@ -924,28 +934,28 @@ class Graph:
         return (self.__n, self.__l, self.__g, self.__p, self.__etha,
                 self.__etha_zone, self.__angles, self.__Gi, self.__Hi)
 
-    def get_n(self):
+    def get_n(self) -> int:
         """
         to get parameters of numbers of zones
         :return: n
         """
         return self.__n
 
-    def get_zones(self):
+    def get_zones(self) -> zones:
         """
         to get all the zones built
         :return: list of zones
         """
         return self.__zones
 
-    def get_nodes(self):
+    def get_nodes(self) -> nodes:
         """
         to get all the nodes built
         :return: list of nodes
         """
         return self.__nodes
 
-    def get_edges(self):
+    def get_edges(self) -> edges:
         """
         to get all the edges built
         :return: list of edges
