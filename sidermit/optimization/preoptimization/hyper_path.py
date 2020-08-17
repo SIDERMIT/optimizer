@@ -4,8 +4,24 @@ import networkx as nx
 from matplotlib import pyplot as plt
 
 from sidermit.exceptions import *
-from sidermit.optimization.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType
+from sidermit.optimization.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType, \
+    ExtendedEdge, ExtendedNode
 from sidermit.publictransportsystem import Passenger, TransportModeManager
+
+from typing import List
+
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+list_suc = defaultdict(List[ExtendedEdge])
+list_lab = defaultdict(float)
+list_f = defaultdict(float)
+list_elemental_path = List[ExtendedNode]
+defaultdict_elemental_path = defaultdict(List[list_elemental_path])
+
+dic_hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(List[list_elemental_path])))
+dic_labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_successors = defaultdict(lambda: defaultdict(lambda: defaultdict(List[ExtendedEdge])))
+dic_frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_Vij = defaultdict(lambda: defaultdict(float))
 
 
 class Hyperpath:
@@ -19,7 +35,7 @@ class Hyperpath:
         self.extended_graph_obj = extended_graph_obj
         self.passenger_obj = passenger_obj
 
-    def network_validator(self, OD_matrix):
+    def network_validator(self, OD_matrix: defaultdict2_float) -> bool:
         """
         to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
         each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
@@ -64,7 +80,8 @@ class Hyperpath:
 
         return mode_manager.is_valid_to_assignment_step()
 
-    def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode):
+    def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode) -> (
+            list_suc, list_lab, list_f):
         """
         build the entire graph to connect the origin and destination with the hyperpath algorithm
         :param node_city_origin: origin CityNode
@@ -164,7 +181,7 @@ class Hyperpath:
                     if frequencies[i] == 0 and labels[i] == float('inf'):
                         # print(edge.type)
                         successor[i].append(edge)
-                        labels[i] = (theta * self.passenger_obj.spw / self.passenger_obj.spv + edge.f * t_i) / (edge.f)
+                        labels[i] = (theta * self.passenger_obj.spw / self.passenger_obj.spv + edge.f * t_i) / edge.f
                         frequencies[i] = frequencies[i] + edge.f
                     # previously assigned label
                     else:
@@ -237,7 +254,7 @@ class Hyperpath:
         return successors, label, frequencies
 
     @staticmethod
-    def string_hyperpath_graph(successors, label, frequencies):
+    def string_hyperpath_graph(successors: list_suc, label: list_lab, frequencies: list_f) -> str:
         """
         String with the representation of the hyperpath graph
         :param successors: dic[ExtendedNode] = List[ExtendedNode]. Dictionary that gives the relation of successor
@@ -289,7 +306,8 @@ class Hyperpath:
                     label[node], line_successor, line_frequency)
         return line
 
-    def get_hyperpath_OD(self, origin: CityNode, destination: CityNode):
+    def get_hyperpath_OD(self, origin: CityNode, destination: CityNode) -> (
+            defaultdict_elemental_path, list_lab, list_suc):
         """
         to get all elemental path for each StopNode in Origin
         :param origin: CityNode origin
@@ -309,9 +327,8 @@ class Hyperpath:
         # for each StopNode in Origin
         for stop in nodes[origin]:
             # hyperpath in the StopNode
-            hyperpath_stop = []
+            hyperpath_stop = [[origin, stop]]
             # we initialize hyperpath
-            hyperpath_stop.append([origin, stop])
 
             while True:
                 # stop condition that each elemental path has reached the destination
@@ -346,7 +363,7 @@ class Hyperpath:
         return hyperpaths_od, label, successors, frequencies
 
     @staticmethod
-    def string_hyperpaths_OD(hyperpaths_od, label):
+    def string_hyperpaths_OD(hyperpaths_od: defaultdict_elemental_path, label: list_lab) -> str:
         """
         String with the representation of the hyperpath for a OD pair
         :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
@@ -372,7 +389,8 @@ class Hyperpath:
                                                                                label[node])
         return line
 
-    def get_all_hyperpaths(self, OD_matrix):
+    def get_all_hyperpaths(self, OD_matrix: defaultdict2_float) -> (
+            dic_hyperpaths, dic_labels, dic_successors, dic_frequency, dic_Vij):
         """
         get information about all hyperpath and label for all OD pair with trips in OD matrix
         :param OD_matrix:  OD matrix get from Demand object
@@ -441,7 +459,9 @@ class Hyperpath:
 
         return hyperpaths, labels, successors, frequency, Vij
 
-    def string_all_hyperpaths(self, hyperpaths, labels, successors, vij):
+    @staticmethod
+    def string_all_hyperpaths(hyperpaths: dic_hyperpaths, labels: dic_labels, successors: dic_successors,
+                              vij: dic_Vij) -> str:
         """
         to get a string with a summary of the all hyperpaths for all OD pair with trips.
         :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
@@ -467,7 +487,7 @@ class Hyperpath:
         return line
 
     @staticmethod
-    def plot(hyperpaths_od):
+    def plot(hyperpaths_od: defaultdict_elemental_path):
         """
         plot alls hyperpaths for a OD pair
         :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
