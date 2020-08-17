@@ -8,39 +8,41 @@ from sidermit.publictransportsystem import Passenger, TransportMode, TransportNe
 
 class test_graph(unittest.TestCase):
 
-    def test_assignment(self):
-        """
-        test assignment method of class Assignment
-        :return:
-        """
+    def setUp(self) -> None:
         graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
         demand_obj = Demand.build_from_parameters(graph_obj=graph_obj, y=100, a=0.5, alpha=1 / 3, beta=1 / 3)
         passenger_obj = Passenger.get_default_passenger()
         [bus_obj, metro_obj] = TransportMode.get_default_modes()
 
-        network_obj = TransportNetwork(graph_obj=graph_obj)
+        self.network_obj = TransportNetwork(graph_obj=graph_obj)
 
-        feeder_routes_metro = network_obj.get_feeder_routes(mode_obj=metro_obj)
-        radial_routes_bus = network_obj.get_radial_routes(mode_obj=bus_obj)
+        feeder_routes_metro = self.network_obj.get_feeder_routes(mode_obj=metro_obj)
+        radial_routes_bus = self.network_obj.get_radial_routes(mode_obj=bus_obj)
 
         for route in feeder_routes_metro:
-            network_obj.add_route(route_obj=route)
+            self.network_obj.add_route(route_obj=route)
 
         for route in radial_routes_bus:
-            network_obj.add_route(route_obj=route)
+            self.network_obj.add_route(route_obj=route)
 
-        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
-                                           frequency_routes=None)
-        hyperpath_obj = Hyperpath(extended_graph_obj=extended_graph_obj, passenger_obj=passenger_obj)
+        self.extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=self.network_obj.get_routes(),
+                                                sPTP=passenger_obj.spt, frequency_routes=None)
+        hyperpath_obj = Hyperpath(extended_graph_obj=self.extended_graph_obj, passenger_obj=passenger_obj)
 
-        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(
+        self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = hyperpath_obj.get_all_hyperpaths(
             OD_matrix=demand_obj.get_matrix())
 
-        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, p=2,
-                                                  vp=passenger_obj.va, spa=passenger_obj.spa,
-                                                  spv=passenger_obj.spv)
+        self.OD_assignment = Assignment.get_assignment(hyperpaths=self.hyperpaths, labels=self.labels, p=2,
+                                                       vp=passenger_obj.va, spa=passenger_obj.spa,
+                                                       spv=passenger_obj.spv)
 
-        nodes = extended_graph_obj.get_extended_graph_nodes()
+    def test_assignment(self):
+        """
+        test assignment method of class Assignment
+        :return:
+        """
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
 
         P1 = None
         SC1 = None
@@ -66,50 +68,25 @@ class test_graph(unittest.TestCase):
                     if city_node.graph_node.name == "P_1":
                         stop_metro_p1 = stop_node
 
-        self.assertEqual(round(OD_assignment[P1][CBD][stop_bus_p1], 2), 100)
-        self.assertEqual(round(OD_assignment[P1][SC1][stop_bus_p1], 2), 49.88)
-        self.assertEqual(round(OD_assignment[P1][SC1][stop_metro_p1], 2), 50.12)
+        self.assertEqual(round(self.OD_assignment[P1][CBD][stop_bus_p1], 2), 100)
+        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_bus_p1], 2), 49.88)
+        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_metro_p1], 2), 50.12)
 
     def test_get_alighting_and_boarding(self):
         """
         to test get_alighting_and_boarding of class get_alighting_and_boarding
         :return:
         """
-        graph_obj = Graph.build_from_parameters(n=2, l=10, g=0.5, p=2)
-        demand_obj = Demand.build_from_parameters(graph_obj=graph_obj, y=100, a=0.5, alpha=1 / 3, beta=1 / 3)
-        passenger_obj = Passenger.get_default_passenger()
-        [bus_obj, metro_obj] = TransportMode.get_default_modes()
-
-        network_obj = TransportNetwork(graph_obj=graph_obj)
-
-        feeder_routes_metro = network_obj.get_feeder_routes(mode_obj=metro_obj)
-        radial_routes_bus = network_obj.get_radial_routes(mode_obj=bus_obj)
-
-        for route in feeder_routes_metro:
-            network_obj.add_route(route_obj=route)
-
-        for route in radial_routes_bus:
-            network_obj.add_route(route_obj=route)
-
-        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
-                                           frequency_routes=None)
-        hyperpath_obj = Hyperpath(extended_graph_obj=extended_graph_obj, passenger_obj=passenger_obj)
-
-        hyperpaths, labels, successors, frequency, Vij = hyperpath_obj.get_all_hyperpaths(
-            OD_matrix=demand_obj.get_matrix())
-
-        OD_assignment = Assignment.get_assignment(hyperpaths=hyperpaths, labels=labels, p=2,
-                                                  vp=passenger_obj.va, spa=passenger_obj.spa,
-                                                  spv=passenger_obj.spv)
 
         f = defaultdict(float)
-        for route in network_obj.get_routes():
+        for route in self.network_obj.get_routes():
             f[route.id] = 28
 
-        z, v = Assignment.get_alighting_and_boarding(Vij=Vij, hyperpaths=hyperpaths, successors=successors,
-                                                     assignment=OD_assignment, f=f)
+        z, v = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
+                                                     successors=self.successors,
+                                                     assignment=self.OD_assignment, f=f)
 
-        nodes = extended_graph_obj.get_extended_graph_nodes()
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
 
         stop_bus_p1 = None
         stop_bus_sc1 = None
@@ -142,3 +119,25 @@ class test_graph(unittest.TestCase):
         self.assertEqual(round(z["F_metro_1"]["I"][stop_metro_p1], 2), 0.15)
         self.assertEqual(round(v["F_metro_1"]["I"][stop_metro_sc1], 2), 0.15)
         self.assertEqual(round(z["F_metro_1"]["R"][stop_metro_sc1], 2), 0)
+
+    def test_most_loaded_section(self):
+        """
+        to test most_loaded_section class assignment
+        :return:
+        """
+
+        f = defaultdict(float)
+        for route in self.network_obj.get_routes():
+            f[route.id] = 28
+
+        z, v = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
+                                                     successors=self.successors,
+                                                     assignment=self.OD_assignment, f=f)
+
+        loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+
+        self.assertEqual(len(loaded_section), 4)
+        self.assertEqual(loaded_section['F_metro_1'], loaded_section['F_metro_2'])
+        self.assertEqual(loaded_section['F_metro_1'], 0.1491638321995465)
+        self.assertEqual(loaded_section['R_bus_1'], loaded_section['R_bus_2'])
+        self.assertEqual(loaded_section['R_bus_1'], 1.4880952380952381)
