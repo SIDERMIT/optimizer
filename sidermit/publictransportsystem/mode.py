@@ -1,6 +1,7 @@
-# from __future__ import annotations
+from __future__ import annotations
 
 import operator
+from typing import List
 
 from sidermit.exceptions import CoIsNotValidExceptions, \
     C1IsNotValidExceptions, C2IsNotValidExceptions, VIsNotValidExceptions, \
@@ -10,8 +11,6 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
     ThetaIsNotValidExceptions, ModeDoesNotExistExceptions, \
     ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException, FiniIsNotValidException
 
-
-# from typing import List
 
 def mode_property(property_name, comp_function, exception_instance,
                   docstring=None):
@@ -90,7 +89,7 @@ class TransportMode:
         self.fini = fini
 
     @staticmethod
-    def get_default_modes():  # -> List[TransportMode]:
+    def get_default_modes() -> List[TransportMode]:
         """
         to get bus and metro mode of transport with default values
         :return: List[TransportMode]
@@ -104,7 +103,7 @@ class TransportMode:
 
 
 class TransportModeManager:
-    def __init__(self, add_default_mode=True):
+    def __init__(self, add_default_mode: bool=True):
         """
         transport mode manager
         :param add_default_mode: (default: True) True to initialize list of modes with bus and metro with
@@ -120,7 +119,7 @@ class TransportModeManager:
             self.__modes.append(metro_obj)
             self.__list_name.append(metro_obj.name)
 
-    def is_valid_to_assignment_step(self):
+    def is_valid_to_assignment_step(self) -> bool:
         """
         to check that list of modes is valid to optimization. There should be only one or two transport mode.
         If there are two transport mode, one of them must have parameter d equal to 1
@@ -135,7 +134,7 @@ class TransportModeManager:
                     return True
         return False
 
-    def get_mode(self, name):
+    def get_mode(self, name: str) -> TransportMode:
         """
         to get a specific mode by name
         :param name: mode name
@@ -148,21 +147,21 @@ class TransportModeManager:
             mode = self.__modes[i]
             return mode
 
-    def get_modes(self):
+    def get_modes(self) -> List[TransportMode]:
         """
         to get all modes
         :return: List[TransportMode]
         """
         return self.__modes
 
-    def get_modes_names(self):
+    def get_modes_names(self) -> List[str]:
         """
         to get list_name of modes
         :return: List[names]
         """
         return self.__list_name
 
-    def add_mode(self, mode_obj):
+    def add_mode(self, mode_obj: TransportMode):
         """
         to add a new mode
         :param mode_obj: TransportMode
@@ -177,7 +176,7 @@ class TransportModeManager:
         self.__modes.append(mode_obj)
         self.__list_name.append(mode_obj.name)
 
-    def remove_mode(self, name):
+    def remove_mode(self, name: str):
         """
         to delete a mode by name
         :param name: mode name
