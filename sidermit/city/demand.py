@@ -5,6 +5,8 @@ import pandas as pd
 from sidermit.city.graph import Graph, CBD, Periphery, Subcenter
 from sidermit.exceptions import *
 
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+
 
 class Demand:
 
@@ -76,7 +78,7 @@ class Demand:
         else:
             raise OriginIdDoesNotFoundException("id origin does not found")
 
-    def get_matrix(self):
+    def get_matrix(self) -> defaultdict2_float:
         """
         Get last OD matrix saved
         :return:
@@ -84,7 +86,7 @@ class Demand:
         return self.__matrix
 
     @staticmethod
-    def parameters_validator(y: float, a: float, alpha: float, beta: float):
+    def parameters_validator(y: float, a: float, alpha: float, beta: float) -> bool:
         """
         to validate construction parameters of symmetric OD matrix
         :param y: total demand
