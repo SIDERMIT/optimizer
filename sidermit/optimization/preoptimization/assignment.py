@@ -56,9 +56,6 @@ class Assignment:
                 # otro paradero ( su d puede ser o no 1)
                 stop2 = None
 
-                # print("origin: {}, destination: {}, vij: {:.2f}".format(origin.graph_node.name,
-                #                                                         destination.graph_node.name, vij))
-
                 # encontramos paradero de d = 1
                 for stop in hyperpaths[origin][destination]:
                     if stop.mode.d == 1:
@@ -69,17 +66,12 @@ class Assignment:
                     else:
                         stop2 = stop
 
-                    # print( "\tmode: {}, label: {:.2f}, node: {}".format(stop.mode.name, labels[origin][
-                    # destination][stop], stop.city_node.graph_node.name))
-
                 # solo tiene una parada
                 if stop1 is None or stop2 is None:
                     if stop1 is not None:
                         assignment[origin][destination][stop1] = 100
-                        # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     if stop2 is not None:
                         assignment[origin][destination][stop2] = 100
-                        # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                 # existen ambas paradas
                 else:
                     # paradero con d = 1 es de etiqueta minima
@@ -90,7 +82,6 @@ class Assignment:
                         # caminata de indiferencia es mayor a la zona de influencia de stop1
                         if d >= p / 2:
                             assignment[origin][destination][stop1] = 100
-                            # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
 
                         # caminata de indiferencia es menor a la zona de influencia de stop1
                         else:
@@ -112,22 +103,14 @@ class Assignment:
                                     assignment[origin][destination][stop1] = (2 * d + (position - d)) / p * 100
                                     assignment[origin][destination][stop2] = 100 - assignment[origin][destination][
                                         stop1]
-                                    # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
-                                    #                                                   assignment[origin][destination][
-                                    #                                                       stop1]))
-                                    # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
-                                    #                                                   assignment[origin][destination][
-                                    #                                                       stop2]))
                                     break
                             # si no se encontro paradero mas lejos a la distancia de indiferencia asignar to do a stop1
                             if position < d:
                                 assignment[origin][destination][stop1] = 100
-                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name, 100))
                     else:
                         # si parametro d de stop2 es impar
                         if stop2.mode.d % 2 == 1:
                             assignment[origin][destination][stop2] = 100
-                            # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                         else:
                             # calculamos caminata de indiferencia
                             d = vp * (labels[origin][destination][stop1] - labels[origin][destination][stop2]) / (
@@ -138,18 +121,10 @@ class Assignment:
 
                             if d >= position:
                                 assignment[origin][destination][stop2] = 100
-                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name, 100))
                             else:
                                 assignment[origin][destination][stop1] = (position - d) / p * 100
                                 assignment[origin][destination][stop2] = 100 - assignment[origin][destination][
                                     stop1]
-
-                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop1.mode.name,
-                                #                                                   assignment[origin][destination][
-                                #                                                       stop1]))
-                                # print("\t\tmode {} assignment [%]: {:.2f}".format(stop2.mode.name,
-                                #                                                   assignment[origin][destination][
-                                #                                                       stop2]))
         return assignment
 
     @staticmethod

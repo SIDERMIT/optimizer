@@ -1,15 +1,22 @@
 from collections import defaultdict
+from typing import List
+
+from sidermit.publictransportsystem import Route
+
+defaultdict_float = defaultdict(float)
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+defaultdict3_float = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
 
 class OperatorsCost:
 
     @staticmethod
-    def lines_travel_time(routes, edge_distance):
+    def lines_travel_time(routes: List[Route], edge_distance: defaultdict2_float) -> defaultdict_float:
         """
         to get a dictionary with travel times for all lines defined in the network
-        :param edge_distance:
-        :param routes:
-        :return:
+        :param edge_distance: dict with edge distance [m], with 2 keys dic[nodei_id][nodej_id]= distance [m]
+        :param routes: list of Route object
+        :return: dict with time on board [hr] of vehicle for each route_id
         """
         line_travel_time = defaultdict(float)
 
@@ -42,14 +49,15 @@ class OperatorsCost:
         return line_travel_time
 
     @staticmethod
-    def get_cycle_time(z, v, routes, line_travel_time):
+    def get_cycle_time(z: defaultdict3_float, v: defaultdict3_float, routes: List[Route],
+                       line_travel_time: defaultdict_float) -> defaultdict_float:
         """
         to get cycle time of all routes in the network
-        :param z:
-        :param v:
-        :param routes:
-        :param line_travel_time:
-        :return:
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param routes: list of Route object
+        :param line_travel_time: dict with time on board of vehicle for each route_id
+        :return: dict with cycle time [hr] for each route_id
         """
 
         cycle_time = defaultdict(float)
@@ -95,14 +103,15 @@ class OperatorsCost:
         return cycle_time
 
     @staticmethod
-    def get_operators_cost(routes, cycle_time, f, k):
+    def get_operators_cost(routes: List[Route], cycle_time: defaultdict_float, f: defaultdict_float,
+                           k: defaultdict_float) -> float:
         """
         to get operators cost give a frequencies and boarding size for all lines
-        :param routes:
-        :param cycle_time:
-        :param f:
-        :param k:
-        :return:
+        :param routes: list Route object
+        :param cycle_time: dict with cycle time [hr] for each route_id
+        :param f: dic[route_id] = frequency [veh/hr]
+        :param k: dic[route_id] = frequency [pax/veh]
+        :return: float, operators cost
         """
 
         CO = 0
