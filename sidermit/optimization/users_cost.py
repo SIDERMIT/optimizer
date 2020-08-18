@@ -1,11 +1,50 @@
-from sidermit.optimization.preoptimization import RouteNode, StopNode, ExtendedGraph, CityNode
+from collections import defaultdict
+from typing import List
+
+from sidermit.optimization.preoptimization import RouteNode, StopNode, ExtendedGraph, CityNode, ExtendedEdge, \
+    ExtendedNode
 from sidermit.publictransportsystem import Passenger
+
+defaultdict_float = defaultdict(float)
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+defaultdict3_float = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+list_elemental_path = List[ExtendedNode]
+defaultdict_elemental_path = defaultdict(List[list_elemental_path])
+
+dic_hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(List[list_elemental_path])))
+dic_labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_successors = defaultdict(lambda: defaultdict(lambda: defaultdict(List[ExtendedEdge])))
+dic_frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_Vij = defaultdict(lambda: defaultdict(float))
+dic_assigment = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_f = defaultdict(float)
+
+dic_boarding = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_alighting = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+
+dic_loaded_section = defaultdict(float)
 
 
 class UsersCost:
 
     @staticmethod
-    def resources_consumer(hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, vp, f, z, v):
+    def resources_consumer(hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment,
+                           successors: dic_successors, extended_graph: ExtendedGraph, vp: float, f: defaultdict_float,
+                           z: defaultdict2_float, v: defaultdict3_float) -> (float, float, float, int):
+        """
+        to get resources consumer for all passenger in transport network access time, waiting time,
+        time on board of vehicle, numbers of transfer
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param Vij: dic[origin: CityNode][destination: CityNode] = vij
+        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param extended_graph: ExtendedGraph object
+        :param vp: passenger velocity [km/hr]
+        :param f: dict with frequency [veh/hr] for each route_id
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: (access time, waiting time, time on boad, numbers of transfers): (float, float, float, int)
+        """
         ta = 0
         tv = 0
         te = 0
@@ -115,7 +154,7 @@ class UsersCost:
 
                             # sumaremos tv producido por la espera de los que se bajan en paraderos cuando el ind sigue
                             # en ruta
-                                            #cbd                                 #SC                             #p
+                            # cbd                                 #SC                             #p
                             if isinstance(nodei, RouteNode) and isinstance(nodej, RouteNode) and isinstance(suc.nodej,
                                                                                                             RouteNode):
                                 bya = nodei.route.mode.bya
@@ -164,8 +203,22 @@ class UsersCost:
 
         return ta, te, tv, t
 
-    def get_users_cost(self, hyperpaths, Vij, assignment, successors, extended_graph: ExtendedGraph, f,
-                       passenger_obj: Passenger, z, v):
+    def get_users_cost(self, hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment,
+                       successors: dic_successors, extended_graph: ExtendedGraph, f: defaultdict_float,
+                       passenger_obj: Passenger, z: defaultdict3_float, v: defaultdict3_float) -> float:
+        """
+        to get users cost
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param Vij: dic[origin: CityNode][destination: CityNode] = vij
+        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param extended_graph: ExtendedGraph object
+        :param f: dict with frequency [veh/hr] for each route_id
+        :param passenger_obj: Passenger obj
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: float, users cost
+        """
         ta, te, tv, t = self.resources_consumer(hyperpaths, Vij, assignment, successors,
                                                 extended_graph, passenger_obj.va, f, z, v)
         pa = passenger_obj.pa
