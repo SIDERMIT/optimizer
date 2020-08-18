@@ -1,10 +1,16 @@
+from collections import defaultdict
+from typing import List
+
 from sidermit.city import Graph
+from sidermit.publictransportsystem import Route, TransportMode
+
+defaultdict_float = defaultdict(float)
 
 
 class Constrains:
 
     @staticmethod
-    def most_loaded_section_constrains(routes, most_loaded_section):
+    def most_loaded_section_constrains(routes: List[Route], most_loaded_section: defaultdict_float) -> List[float]:
         """
         to get constrains to optimization problem with respect to most loaded section for each routes
         :param most_loaded_section:
@@ -23,7 +29,8 @@ class Constrains:
         return ineq_constrains
 
     @staticmethod
-    def fmax_constrains(graph_obj: Graph, routes, list_mode, f):
+    def fmax_constrains(graph_obj: Graph, routes: List[Route], list_mode: List[TransportMode], f: defaultdict_float) -> \
+            List[float]:
         """
         to get constrains about fmax in each edge in the network with respect to capacity in stop of the each mode
         :param graph_obj:
