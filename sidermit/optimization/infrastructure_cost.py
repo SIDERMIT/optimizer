@@ -3,16 +3,19 @@ from collections import defaultdict
 from sidermit.city import Graph
 from sidermit.publictransportsystem import TransportNetwork
 
+defaultdict_float = defaultdict(float)
+
 
 class InfrastructureCost:
     @staticmethod
-    def get_mode_network_distance(graph_obj: Graph, network_obj: TransportNetwork, f):
+    def get_mode_network_distance(graph_obj: Graph, network_obj: TransportNetwork,
+                                  f: defaultdict_float) -> defaultdict_float:
         """
         to get total distance builded in each transport mode
-        :param network_obj:
-        :param graph_obj:
-        :param f:
-        :return:
+        :param network_obj: TransportNetwork object
+        :param graph_obj: Graph object
+        :param f: dict with frequency for each route_id
+        :return: ddict with total distance for each mode in transport network
         """
         edges = graph_obj.get_edges()
         edges_distance = graph_obj.get_edges_distance()
@@ -33,7 +36,7 @@ class InfrastructureCost:
                             node_sequence_i = route.nodes_sequence_i
                             node_sequence_r = route.nodes_sequence_r
 
-                            sum = False
+                            ver_sum = False
                             for i in range(len(node_sequence_i) - 1):
                                 j = i + 1
                                 if str(node_sequence_i[i]) == str(edge.node1.id) and str(node_sequence_i[j]) == str(
@@ -41,9 +44,9 @@ class InfrastructureCost:
                                     mode_distance[mode] += d_e * mode.d
                                     edge_list.append((str(edge.node1.id), str(edge.node2.id)))
                                     edge_list.append((str(edge.node2.id), str(edge.node1.id)))
-                                    sum = True
+                                    ver_sum = True
                                     break
-                            if sum is True:
+                            if ver_sum is True:
                                 break
                             for i in range(len(node_sequence_r) - 1):
                                 j = i + 1
@@ -52,21 +55,21 @@ class InfrastructureCost:
                                     mode_distance[mode] += d_e * mode.d
                                     edge_list.append((str(edge.node1.id), str(edge.node2.id)))
                                     edge_list.append((str(edge.node2.id), str(edge.node1.id)))
-                                    sum = True
+                                    ver_sum = True
                                     break
-                            if sum is True:
+                            if ver_sum is True:
                                 break
 
         return mode_distance
 
     @staticmethod
-    def get_infrastruture_cost(graph_obj: Graph, network_obj: TransportNetwork, f):
+    def get_infrastruture_cost(graph_obj: Graph, network_obj: TransportNetwork, f: defaultdict_float) -> float:
         """
         to get infrastruture cost
-        :param f:
-        :param graph_obj:
-        :param network_obj:
-        :return:
+        :param network_obj: TransportNetwork object
+        :param graph_obj: Graph object
+        :param f: dict with frequency for each route_id
+        :return: infrastruture cost
         """
 
         infrastruture_cost_obj = InfrastructureCost()
