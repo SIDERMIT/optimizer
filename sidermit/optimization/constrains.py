@@ -13,9 +13,9 @@ class Constrains:
     def most_loaded_section_constrains(routes: List[Route], most_loaded_section: defaultdict_float) -> List[float]:
         """
         to get constrains to optimization problem with respect to most loaded section for each routes
-        :param most_loaded_section:
-        :param routes:
-        :return:
+        :param most_loaded_section: dict with most loaded section for each route_id
+        :param routes: list of Route object
+        :return: list with constrains
         """
 
         ineq_constrains = []
@@ -33,11 +33,11 @@ class Constrains:
             List[float]:
         """
         to get constrains about fmax in each edge in the network with respect to capacity in stop of the each mode
-        :param graph_obj:
-        :param routes:
-        :param list_mode:
-        :param f:
-        :return:
+        :param graph_obj: Graph object
+        :param routes: list of Route object
+        :param list_mode: list TransportMode object
+        :param f: dict with frequency for each route_id
+        :return: list with constrains
         """
 
         ineq_constrain = []
