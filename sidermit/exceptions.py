@@ -3,6 +3,11 @@ class SIDERMITException(Exception):
     pass
 
 
+# Optimizer exception
+class OptimizerException(SIDERMITException):
+    pass
+
+
 # Graph exception
 class GraphException(SIDERMITException):
     pass
@@ -450,4 +455,16 @@ class RouteIsNotvalidException(TransportNetworkException):
 
 
 class TransportNetworkIsNotValidException(HyperpathException):
+    pass
+
+
+class ConstraintViolationException(OptimizerException):
+    pass
+
+
+class NegativeFrequencyException(OptimizerException):
+    pass
+
+
+class NoOptimalSolutionFoundException(OptimizerException):
     pass

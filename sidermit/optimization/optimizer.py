@@ -5,6 +5,7 @@ import numpy as np
 from scipy.optimize import minimize, NonlinearConstraint, Bounds, OptimizeResult
 
 from sidermit.city import Graph, Demand
+from sidermit.exceptions import *
 from sidermit.optimization import Constrains
 from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph, ExtendedNode, ExtendedEdge
@@ -58,10 +59,13 @@ class Optimizer:
         self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, self.f)
         self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
 
+        # en este punto se debería levantar exception de que la red tiene mas de dos modos defnidos
+        # o que existe un par OD con viaje y sin conexion
         self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = self.hyperpath_obj.get_all_hyperpaths(
             self.demand_obj.get_matrix())
 
-        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.spa, self.spv)
+        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.spa,
+                                                    self.spv)
 
         self.len_constrains = len(self.get_constrains(self.f_opt))
         self.len_var = len(self.f_opt)
@@ -310,6 +314,28 @@ class Optimizer:
         return False
 
     @staticmethod
+    def status_optimization(list_res):
+        """
+        to get a information about status of external optimization
+        :param list_res:List[(fopt, success, status, message, constr_violation)]
+        :return:
+        """
+        fopt, success, status, message, constr_violation = list_res[len(list_res) - 1]
+
+        for f in fopt:
+            if f < -0.1:
+                raise NegativeFrequencyException("Solution with negative frequency. You can try with other fini")
+
+        if abs(constr_violation) > 0.1:
+            raise ConstraintViolationException(
+                "Maximum constraint violation at the solution {}. You can try with other fini".format(constr_violation))
+
+        if status == 0 or status == 3:
+            raise NoOptimalSolutionFoundException("No optimal solution was found. You can try with other fini")
+
+        return True
+
+    @staticmethod
     def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                               network_obj: TransportNetwork,
                               f: defaultdict_float = None, tolerance: float = 0.01):
@@ -328,14 +354,14 @@ class Optimizer:
 
         opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
         # inicialización
-        list_res.append((opt_obj.f_opt, "initialization", 1, "initialization", 0))
+        list_res.append((opt_obj.f_opt, "initialization", -1, "initialization", -1, -1))
 
         # primera iteracion
         res = opt_obj.internal_optimization()
-        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation))
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.cg_stop_cond))
 
-        pre_f, _, _, _, _ = list_res[0]
-        new_f, _, _, _, _ = list_res[1]
+        pre_f, _, _, _, _, _ = list_res[0]
+        new_f, _, _, _, _, _ = list_res[1]
 
         # mientras criterio de tolerancia externo se cumpla
         while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
@@ -345,4 +371,6 @@ class Optimizer:
             res = opt_obj.internal_optimization()
             list_res.append((res.x, res.success, res.status, res.message, res.constr_violation))
             new_f = res.x
-        return list_res
+
+        if opt_obj.status_optimization(list_res):
+            return list_res

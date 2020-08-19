@@ -10,7 +10,6 @@ graph_obj = Graph.build_from_parameters(8, 10, 0.85, 2)
 demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.78, 1 / 4, 0.22)
 passenger_obj = Passenger.get_default_passenger()
 [bus_obj, metro_obj] = TransportMode.get_default_modes()
-bus_obj.bya = 0
 network_obj = TransportNetwork(graph_obj)
 
 diametral_larga4 = network_obj.get_diametral_routes(bus_obj, 4)
