@@ -29,6 +29,8 @@ tangencial_corta2 = network_obj.get_tangencial_routes(bus_obj, 2, short=True)
 routes = [diametral_larga4, diametral_larga3, tangencial_larga1, tangencial_larga2, radial, alimentadora, radialc,
           diametral_corta4, diametral_corta3, diametral_corta2, tangencial_corta1, tangencial_corta2]
 
+routes = [alimentadora, radialc]
+
 for route_type in routes:
     for route in route_type:
         network_obj.add_route(route)
