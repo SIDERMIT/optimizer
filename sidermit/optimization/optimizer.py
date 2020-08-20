@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from collections import defaultdict
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 from scipy.optimize import minimize, NonlinearConstraint, Bounds, OptimizeResult
@@ -43,6 +45,7 @@ class Optimizer:
         _, _, _, self.p, _, _, _, _, _ = self.graph_obj.get_parameters()
         # definimos demanda
         self.demand_obj = demand_obj
+        self.total_trips = demand_obj.get_total_trips()
         # definimos pasajeros
         self.passenger_obj = passenger_obj
         self.vp = self.passenger_obj.va
@@ -261,7 +264,7 @@ class Optimizer:
 
         bounds = Bounds(lb=lb, ub=ub)
         res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
-        self.print_information_internal_optimization(res)
+        print(self.print_information_internal_optimization(res))
 
         return res
 
@@ -278,10 +281,10 @@ class Optimizer:
         message = res.message
         new_f = res.x
         constr_violation = res.constr_violation
+        fun = res.fun
 
-        line = "Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}".format(
-            success, status, message, new_f, constr_violation)
-        print(line)
+        line = "Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}\n\tVRC: {}".format(
+            success, status, message, new_f, constr_violation, fun)
         return line
 
     @staticmethod
@@ -314,13 +317,13 @@ class Optimizer:
         return False
 
     @staticmethod
-    def status_optimization(list_res):
+    def status_optimization(list_res) -> bool:
         """
         to get a information about status of external optimization
-        :param list_res:List[(fopt, success, status, message, constr_violation)]
-        :return:
+        :param list_res:List[(fopt, success, status, message, constr_violation, vrc)]
+        :return: true if status is success, exceptions if not
         """
-        fopt, success, status, message, constr_violation = list_res[len(list_res) - 1]
+        fopt, success, status, message, constr_violation, fun = list_res[len(list_res) - 1]
 
         for f in fopt:
             if f < -0.1:
@@ -338,16 +341,17 @@ class Optimizer:
     @staticmethod
     def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                               network_obj: TransportNetwork,
-                              f: defaultdict_float = None, tolerance: float = 0.01):
+                              f: defaultdict_float = None, tolerance: float = 0.01) -> List[Tuple]:
         """
-
+        method to do external optimization process, several iterations of internal optimization with fixed
+        hyperpaths in each
         :param graph_obj: Graph object
         :param demand_obj: Demand object
         :param passenger_obj: Passenger object
         :param network_obj: TransportNetwork object
         :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
         :param tolerance: float, tolerance to external optimization
-        :return: List[(fopt, success, status, message, constr_violation)]
+        :return: List[(fopt, success, status, message, constr_violation, vrc)]
         """
 
         list_res = []
@@ -358,7 +362,7 @@ class Optimizer:
 
         # primera iteracion
         res = opt_obj.internal_optimization()
-        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.cg_stop_cond))
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
 
         pre_f, _, _, _, _, _ = list_res[0]
         new_f, _, _, _, _, _ = list_res[1]
@@ -369,8 +373,90 @@ class Optimizer:
             dic_new_f = opt_obj.fopt_to_f(new_f)
             opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
             res = opt_obj.internal_optimization()
-            list_res.append((res.x, res.success, res.status, res.message, res.constr_violation))
+            list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
             new_f = res.x
 
         if opt_obj.status_optimization(list_res):
             return list_res
+
+    @staticmethod
+    def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                             network_obj: TransportNetwork,
+                             f: defaultdict_float = None, tolerance: float = 0.01) -> Tuple:
+        """
+        obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
+        :param graph_obj: Graph object
+        :param demand_obj: Demand object
+        :param passenger_obj: Passenger object
+        :param network_obj: TransportNetwork object
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+        :param tolerance: float, tolerance to external optimization
+        :return: fopt, success, status, message, constr_violation, vrc
+        """
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        list_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f, tolerance)
+
+        print(opt_obj.string_network_optimization(list_res[len(list_res) - 1]))
+
+        return list_res[len(list_res) - 1]
+
+    def string_network_optimization(self, res: Tuple) -> str:
+        """
+        get a str summary about last external optimization in network_optimization
+        :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return:
+        """
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+
+        line = "\n\nOptimization Results"
+        line += "\nSuccess: {}".format(success)
+        line += "\nStatus: {}".format(status)
+        line += "\nMessage: {}".format(message)
+        line += "\nMax constrain violation: {}".format(constr_violation)
+        line += "\nVRC: {}".format(vrc)
+        line += "\n\nFrequency information [veh/hr]: "
+        for route_id in f:
+            line += "\n\t{}: {:.2f}".format(route_id, f[route_id])
+
+        return line
+
+    def last_iteration(self, res: Tuple):
+        """
+        return last network optimized with optimization result
+        :param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary
+        """
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+        final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
+        z, v = Assignment.get_alighting_and_boarding(final_optimizer.Vij, final_optimizer.hyperpaths,
+                                                     final_optimizer.successors, final_optimizer.assignment, f)
+        k = self.get_k(final_optimizer.network_obj.get_routes(), z, v)
+        return final_optimizer, z, v, k
+
+    def overall_results(self, res: Tuple) -> Tuple:
+        """
+        to get overall cost results per pax
+        :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return: Tuple, (VRC: float, CO: float, CI: float, CU: float, )
+        """
+        fopt, success, status, message, constr_violation, vrc = res
+        final_optimizer, z, v, k = self.last_iteration(res)
+
+        f = self.fopt_to_f(fopt)
+
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
+                            final_optimizer.successors, final_optimizer.extended_graph_obj, f, z,
+                            v)
+        VRC = CO + CI + CU
+
+        ta, te, tv, t = UsersCost.resources_consumer(final_optimizer.hyperpaths, final_optimizer.Vij,
+                                                     final_optimizer.assignment, final_optimizer.successors,
+                                                     final_optimizer.extended_graph_obj,
+                                                     final_optimizer.passenger_obj.va, f, z, v)
+
+        return VRC / self.total_trips, CO / self.total_trips, CI / self.total_trips, CU / self.total_trips, tv / self.total_trips * 60, te / self.total_trips * 60, ta / self.total_trips * 60, t / self.total_trips

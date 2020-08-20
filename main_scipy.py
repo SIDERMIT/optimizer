@@ -35,9 +35,12 @@ for route_type in routes:
         network_obj.add_route(route)
 
 # podemos agregar numero de iteraciones
-list_res = Optimizer.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
+opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
+res = opt_obj.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f=None, tolerance=0.01)
+print(opt_obj.overall_results(res))
 
-print(list_res)
+# print(list_res)
+
 
 # graph_obj = Graph.build_from_parameters(8, 10, 0.5, 2)
 # demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.5, 1 / 3, 1 / 3)

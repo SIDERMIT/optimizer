@@ -25,8 +25,17 @@ class Demand:
         # matrix with demand information
         # dictionary structure [node_idO][node_idD] = vij
         self.__matrix = defaultdict(lambda: defaultdict(float))
+        # total trips
+        self.total_trips = 0
         # initialization of matriz with zero trips in all OD pairs
         self.__build_default_matrix()
+
+    def get_total_trips(self)->float:
+        """
+        to get total trips in all OD pair
+        :return:
+        """
+        return self.total_trips
 
     def matrix_to_file(self, file_path):
         """
@@ -74,6 +83,7 @@ class Demand:
 
         if self.__matrix.get(str(origin_node_id)):
             if str(destination_node_id) in self.__matrix[str(origin_node_id)]:
+                self.total_trips = self.total_trips - self.__matrix[str(origin_node_id)][str(destination_node_id)] + vij
                 self.__matrix[str(origin_node_id)][str(destination_node_id)] = vij
             else:
                 raise DestinationIdDoesNotFoundException("id destination does not found")
