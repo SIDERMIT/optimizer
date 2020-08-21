@@ -438,25 +438,86 @@ class Optimizer:
 
     def overall_results(self, res: Tuple) -> Tuple:
         """
-        to get overall cost results per pax
-        :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
-        :return: Tuple, (VRC: float, CO: float, CI: float, CU: float, )
+        to get overall cost results per passenger
+        :param res: optimization result: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return: Tuple, (VRC [USD$/hr-pax]: float, CO [USD$/hr-pax]: float, CI [USD$/hr-pax]: float,
+        CU [USD$/hr-pax]: float, tv [min/pax]: float, tw [min/pax]: float, ta[min/pax]: float, T [transfer/pax]: float,
+        B [veh/mode]: dic[TransportMode] = float [veh], K [pax/veh]: dic[TransportMode] = float [pax/veh],
+        L: dic[TransportMode]=int [lines])
         """
         fopt, success, status, message, constr_violation, vrc = res
         final_optimizer, z, v, k = self.last_iteration(res)
 
         f = self.fopt_to_f(fopt)
 
+        # resultados de costos
         CO = self.operators_cost(z, v, f, k)
         CI = self.infrastructure_cost(f)
         CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
-                            final_optimizer.successors, final_optimizer.extended_graph_obj, f, z,
-                            v)
+                            final_optimizer.successors, final_optimizer.extended_graph_obj, f, z, v)
         VRC = CO + CI + CU
 
+        # resultados de usuarios
         ta, te, tv, t = UsersCost.resources_consumer(final_optimizer.hyperpaths, final_optimizer.Vij,
                                                      final_optimizer.assignment, final_optimizer.successors,
                                                      final_optimizer.extended_graph_obj,
                                                      final_optimizer.passenger_obj.va, f, z, v)
 
-        return VRC / self.total_trips, CO / self.total_trips, CI / self.total_trips, CU / self.total_trips, tv / self.total_trips * 60, te / self.total_trips * 60, ta / self.total_trips * 60, t / self.total_trips
+        # resultados de modos
+        travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                           final_optimizer.graph_obj.get_edges_distance())
+        cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        B = defaultdict(float)
+        L = defaultdict(int)
+
+        K_list = defaultdict(list)
+        K = defaultdict(float)
+
+        for route in self.network_obj.get_routes():
+            if f[route.id] > 0:
+                B[route.mode] += f[route.id] * cycle_time_line[route.id]
+                L[route.mode] += route.mode.d
+                K_list[route.mode].append(k[route.id])
+
+        for mode in K_list:
+            l = K_list[mode]
+            K[mode] = sum(l) / len(l)
+
+        return VRC / self.total_trips, CO / self.total_trips, CI / self.total_trips, CU / self.total_trips, \
+               tv / self.total_trips * 60, te / self.total_trips * 60, ta / self.total_trips * 60, \
+               t / self.total_trips, B, K, L
+
+    def string_overall_results(self, overall_results: Tuple) -> str:
+        """
+        to get a string to print overall results in console
+        :param overall_results: Tuple, (VRC [USD$/hr-pax]: float, CO [USD$/hr-pax]: float, CI [USD$/hr-pax]: float,
+        CU [USD$/hr-pax]: float, tv [min/pax]: float, tw [min/pax]: float, ta[min/pax]: float, T [transfer/pax]: float,
+        B [veh/mode]: dic[TransportMode] = float [veh], K [pax/veh]: dic[TransportMode] = float [pax/veh],
+        L: dic[TransportMode]=int [lines])
+        :return: string to print overall results in console
+        """
+        vrc, co, ci, cu, tv, te, ta, t, b, k, l = overall_results
+
+        line = "\n\nObjective function VRC [USD$/hr-pax]: {:.2f}".format(vrc)
+        line += "\nOperators cost [USD$/hr-pax]        : {:.2f}".format(co)
+        line += "\nInfrastructure cost [USD$/hr-pax]   : {:.2f}".format(ci)
+        line += "\nUsers cost [USD$/hr-pax]            : {:.2f}".format(cu)
+
+        line += "\n\nResources consumer for users"
+        line += "\nTime on board vehicle [min/pax]: {:.2f}".format(tv)
+        line += "\nWaiting time [min/pax]         : {:.2f}".format(te)
+        line += "\nAccess time [min/pax]          : {:.2f}".format(ta)
+        line += "\ntotal travel time [min/pax]    : {:.2f}".format(tv + ta + te)
+        line += "\nTransfers [transfers/pax]      : {:.2f}".format(t)
+
+        line += "\n\n"
+        line += "Transport mode information: {}".format(len(b))
+
+        for mode in b:
+            line += "\n\n\tMode name: {}".format(mode.name)
+            line += "\n\tB [veh]      : {:.2f}".format(b[mode])
+            line += "\n\tK [pax/veh]  : {:.2f}".format(k[mode])
+            line += "\n\tL [lines]    : {}".format(l[mode])
+
+        return line

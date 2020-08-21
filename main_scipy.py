@@ -37,7 +37,7 @@ for route_type in routes:
 # podemos agregar numero de iteraciones
 opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f=None)
 res = opt_obj.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f=None, tolerance=0.01)
-print(opt_obj.overall_results(res))
+print(opt_obj.string_overall_results(opt_obj.overall_results(res)))
 
 # print(list_res)
 
