@@ -2,7 +2,7 @@ from collections import defaultdict
 from enum import Enum
 from typing import List
 
-from sidermit.city import Graph
+from sidermit.city import Graph, Node
 from sidermit.publictransportsystem import TransportMode, Route
 from sidermit.publictransportsystem.network import RouteType
 
@@ -36,7 +36,7 @@ class ExtendedNode:
 
 class CityNode(ExtendedNode):
 
-    def __init__(self, city_node_id, graph_node):
+    def __init__(self, city_node_id, graph_node: Node):
         """
         extended node with graph node information
         :param city_node_id: node id
