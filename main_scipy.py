@@ -40,6 +40,8 @@ res = opt_obj.network_optimization(graph_obj, demand_obj, passenger_obj, network
 print(opt_obj.string_overall_results(opt_obj.overall_results(res)))
 network_results = opt_obj.network_results(res)
 print(opt_obj.string_network_results(network_results))
+
+opt_obj.write_file_network_results("output.csv", network_results)
 # print(list_res)
 
 

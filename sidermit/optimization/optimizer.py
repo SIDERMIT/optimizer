@@ -548,14 +548,38 @@ class Optimizer:
                                                                                   charge_min, sub_table_i, sub_table_r)
         return line
 
-    def overall_results(self, res: Tuple) -> Tuple:
+    def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:
+        """
+        to write output file with result of optimization transport network
+        :param output_network_results: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float,
+        cycle_time [hr]: float, CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
+        sub_table_i: List[(node_i, node_j, lambda)]
+        :return: None
+        """
+        string_lines = self.string_network_results(output_network_results)
+        file = open(file_path, 'w')
+        file.write(string_lines)
+        file.close()
+
+    def overall_results(self, res: Tuple) -> defaultdict:
         """
         to get overall cost results per passenger
         :param res: optimization result: Tuple, (fopt, success, status, message, constr_violation, vrc)
-        :return: Tuple, (VRC [USD$/hr-pax]: float, CO [USD$/hr-pax]: float, CI [USD$/hr-pax]: float,
-        CU [USD$/hr-pax]: float, tv [min/pax]: float, tw [min/pax]: float, ta[min/pax]: float, T [transfer/pax]: float,
-        B [veh/mode]: dic[TransportMode] = float [veh], K [pax/veh]: dic[TransportMode] = float [pax/veh],
-        L: dic[TransportMode]=int [lines])
+        :return: defaultdict:
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
         """
         fopt, success, status, message, constr_violation, vrc = res
         final_optimizer, z, v, k = self.last_iteration(res)
@@ -596,21 +620,52 @@ class Optimizer:
             l = K_list[mode]
             K[mode] = sum(l) / len(l)
 
-        return VRC / self.total_trips, CO / self.total_trips, CI / self.total_trips, CU / self.total_trips, \
-               tv / self.total_trips * 60, te / self.total_trips * 60, ta / self.total_trips * 60, \
-               t / self.total_trips, B, K, L
+        output = defaultdict(None)
+        output["VRC"] = VRC / self.total_trips
+        output["operators_cost"] = CO / self.total_trips
+        output["infrastructure_cost"] = CI / self.total_trips
+        output["users_cost"] = CU / self.total_trips
+        output["travel_time_on_board"] = tv / self.total_trips * 60
+        output["waiting time"] = te / self.total_trips * 60
+        output["access_time"] = ta / self.total_trips * 60
+        output["transfers"] = t / self.total_trips
+        output["vehicles_mode"] = B
+        output["vehicle_capacity_mode"] = K
+        output["lines_mode"] = L
+        return output
 
     @staticmethod
-    def string_overall_results(overall_results: Tuple) -> str:
+    def string_overall_results(overall_results: defaultdict) -> str:
         """
         to get a string to print overall results in console
-        :param overall_results: Tuple, (VRC [USD$/hr-pax]: float, CO [USD$/hr-pax]: float, CI [USD$/hr-pax]: float,
-        CU [USD$/hr-pax]: float, tv [min/pax]: float, tw [min/pax]: float, ta[min/pax]: float, T [transfer/pax]: float,
-        B [veh/mode]: dic[TransportMode] = float [veh], K [pax/veh]: dic[TransportMode] = float [pax/veh],
-        L: dic[TransportMode]=int [lines])
+        :param overall_results: defaultdict
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
         :return: string to print overall results in console
         """
-        vrc, co, ci, cu, tv, te, ta, t, b, k, l = overall_results
+        vrc = overall_results["VRC"]
+        co = overall_results["operators_cost"]
+        ci = overall_results["infrastructure_cost"]
+        cu = overall_results["users_cost"]
+        tv = overall_results["travel_time_on_board"]
+        te = overall_results["waiting time"]
+        ta = overall_results["access_time"]
+        t = overall_results["transfers"]
+        b = overall_results["vehicles_mode"]
+        k = overall_results["vehicle_capacity_mode"]
+        l = overall_results["lines_mode"]
 
         line = "\n\nObjective function VRC [USD$/hr-pax]: {:.2f}".format(vrc)
         line += "\nOperators cost [USD$/hr-pax]        : {:.2f}".format(co)
