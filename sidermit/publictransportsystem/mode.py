@@ -49,7 +49,7 @@ class TransportMode:
     d = mode_property('_d', operator.lt, DIsNotValidExceptions(
         "You must give a value >=0 for d"), docstring="Parallel lines")
     fini = mode_property('_fini', operator.lt, FiniIsNotValidException(
-        "You must give a value >=0 for d"), docstring="Initial frequency")
+        "You must give a value >=0 for d"), docstring="Initial frequency [veh/h]")
 
     @name.setter
     def name(self, value):
