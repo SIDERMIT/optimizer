@@ -69,7 +69,7 @@ class Demand:
             for destination_node in self.__graph_obj.get_nodes():
                 self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
 
-    def change_vij(self, origin_node_id, destination_node_id, vij: float):
+    def change_vij(self, origin_node_id: str, destination_node_id: str, vij: float):
         """
         Change trip value to a OD pair
         :param origin_node_id:
