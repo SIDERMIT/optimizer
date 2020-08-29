@@ -134,7 +134,7 @@ class test_graph(unittest.TestCase):
                                                      successors=self.successors,
                                                      assignment=self.OD_assignment, f=f)
 
-        loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+        loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
 
         self.assertEqual(len(loaded_section), 4)
         self.assertEqual(loaded_section['F_metro_1'], loaded_section['F_metro_2'])

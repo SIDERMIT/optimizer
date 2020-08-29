@@ -6,29 +6,30 @@ from sidermit.optimization import Optimizer
 from sidermit.publictransportsystem import Passenger, TransportMode
 from sidermit.publictransportsystem import TransportNetwork
 
-graph_obj = Graph.build_from_parameters(8, 10, 0.85, 2)
+graph_obj = Graph.build_from_parameters(4, 10, 0.85, 2)
 demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.78, 1 / 4, 0.22)
 passenger_obj = Passenger.get_default_passenger()
 [bus_obj, metro_obj] = TransportMode.get_default_modes()
 network_obj = TransportNetwork(graph_obj)
 
-diametral_larga4 = network_obj.get_diametral_routes(bus_obj, 4)
-diametral_larga3 = network_obj.get_diametral_routes(bus_obj, 3)
-tangencial_larga1 = network_obj.get_tangencial_routes(bus_obj, 1)
-tangencial_larga2 = network_obj.get_tangencial_routes(bus_obj, 2)
+# diametral_larga4 = network_obj.get_diametral_routes(bus_obj, 4)
+# diametral_larga3 = network_obj.get_diametral_routes(bus_obj, 3)
+# tangencial_larga1 = network_obj.get_tangencial_routes(bus_obj, 1)
+# tangencial_larga2 = network_obj.get_tangencial_routes(bus_obj, 2)
 radial = network_obj.get_radial_routes(bus_obj)
 alimentadora = network_obj.get_feeder_routes(bus_obj)
 radialc = network_obj.get_radial_routes(bus_obj, short=True)
-diametral_corta4 = network_obj.get_diametral_routes(bus_obj, 4, short=True)
-diametral_corta3 = network_obj.get_diametral_routes(bus_obj, 3, short=True)
-diametral_corta2 = network_obj.get_diametral_routes(bus_obj, 2, short=True)
-tangencial_corta1 = network_obj.get_tangencial_routes(bus_obj, 1, short=True)
-tangencial_corta2 = network_obj.get_tangencial_routes(bus_obj, 2, short=True)
+# diametral_corta4 = network_obj.get_diametral_routes(bus_obj, 4, short=True)
+# diametral_corta3 = network_obj.get_diametral_routes(bus_obj, 3, short=True)
+# diametral_corta2 = network_obj.get_diametral_routes(bus_obj, 2, short=True)
+# tangencial_corta1 = network_obj.get_tangencial_routes(bus_obj, 1, short=True)
+# tangencial_corta2 = network_obj.get_tangencial_routes(bus_obj, 2, short=True)
+circular = network_obj.get_circular_routes(bus_obj)
 
-routes = [diametral_larga4, diametral_larga3, tangencial_larga1, tangencial_larga2, radial, alimentadora, radialc,
-          diametral_corta4, diametral_corta3, diametral_corta2, tangencial_corta1, tangencial_corta2]
+# routes = [diametral_larga4, diametral_larga3, tangencial_larga1, tangencial_larga2, radial, alimentadora, radialc,
+#           diametral_corta4, diametral_corta3, diametral_corta2, tangencial_corta1, tangencial_corta2, circular]
 
-routes = [alimentadora, radialc]
+routes = [alimentadora, radialc, radial, circular]
 
 for route_type in routes:
     for route in route_type:

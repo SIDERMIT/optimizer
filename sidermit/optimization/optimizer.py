@@ -12,7 +12,7 @@ from sidermit.optimization import Constrains
 from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph, ExtendedNode, ExtendedEdge
 from sidermit.publictransportsystem import Passenger
-from sidermit.publictransportsystem import TransportNetwork, Route
+from sidermit.publictransportsystem import TransportNetwork, Route, RouteType
 
 defaultdict_float = defaultdict(float)
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
@@ -112,15 +112,17 @@ class Optimizer:
         return f
 
     @staticmethod
-    def get_k(routes: List[Route], z: defaultdict3_float, v: defaultdict3_float) -> defaultdict_float:
+    def get_k(routes: List[Route], z: defaultdict3_float, v: defaultdict3_float,
+              f: defaultdict_float) -> defaultdict_float:
         """
 
         :param routes: List[Route]
+        :param f: dic[route_id]= frequency [veh/hr]
         :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-        :return:
+        :return: k: dic[route_id] = vehicle capacity [pax/veh]
         """
-        most_loaded_section = Assignment.most_loaded_section(routes, z, v)
+        most_loaded_section = Assignment.most_loaded_section(routes, z, v, f)
         k = defaultdict(float)
         for route_id in most_loaded_section:
             k[route_id] = most_loaded_section[route_id]
@@ -186,7 +188,7 @@ class Optimizer:
         :return: (k_ineq_constrains, f_ineq_constrains)
         """
 
-        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
 
         constrains_obj = Constrains()
 
@@ -206,7 +208,7 @@ class Optimizer:
         f = self.fopt_to_f(fopt)
 
         z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
-        k = self.get_k(self.network_obj.get_routes(), z, v)
+        k = self.get_k(self.network_obj.get_routes(), z, v, f)
 
         CO = self.operators_cost(z, v, f, k)
         CI = self.infrastructure_cost(f)
@@ -228,7 +230,7 @@ class Optimizer:
 
         z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
 
-        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v)
+        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
         constrain_obj = Constrains()
         ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
         ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
@@ -433,7 +435,7 @@ class Optimizer:
         final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
         z, v = Assignment.get_alighting_and_boarding(final_optimizer.Vij, final_optimizer.hyperpaths,
                                                      final_optimizer.successors, final_optimizer.assignment, f)
-        k = self.get_k(final_optimizer.network_obj.get_routes(), z, v)
+        k = self.get_k(final_optimizer.network_obj.get_routes(), z, v, f)
         return final_optimizer, z, v, k
 
     def network_results(self, res: Tuple) -> List[Tuple]:
@@ -456,6 +458,7 @@ class Optimizer:
         cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
 
         for route in final_optimizer.network_obj.get_routes():
+
             b = cycle_time_line[route.id] * f[route.id]
             nodes_sequence_i = route.nodes_sequence_i
             nodes_sequence_r = route.nodes_sequence_r
@@ -463,72 +466,143 @@ class Optimizer:
             charge_i = []
             charge_r = []
             total_b = 0
-            # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-            for node_id in nodes_sequence_i:
-                bool_add = False
-                for stopnode in z[route.id]["I"]:
-                    if str(stopnode.city_node.graph_node.id) == str(node_id):
-                        pax_b = z[route.id]["I"][stopnode]
-                        pax_a = v[route.id]["I"][stopnode]
-                        total_pax += pax_b - pax_a
-                        total_b += pax_b
+
+            # caso circular
+            if route._type == RouteType.CIRCULAR:
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) > 0:
+                    node_sequence = nodes_sequence_i
+                    direction = "I"
+                # circular con sentido de vuelta
+                else:
+                    node_sequence = nodes_sequence_r
+                    direction = "R"
+
+                qi = [0]
+                for i in node_sequence:
+                    zi = 0
+                    vi = 0
+                    for stop_node in z[route.id][direction]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            zi = z[route.id][direction][stop_node]
+                            break
+                    for stop_node in v[route.id][direction]:
+                        if str(stop_node.city_node.graph_node.id) == str(i):
+                            vi = v[route.id][direction][stop_node]
+                            break
+                    new_qi = qi[len(qi) - 1] + zi * f[route.id] - vi * f[route.id]
+                    qi.append(new_qi)
+                q = min(qi)
+                ki = []
+                for i in range(len(qi)):
+                    if i == 0:
+                        continue
+                    ki.append((qi[i] - q) / f[route.id])
+
+                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                        total_b * f[route.id])
+
+                charge_min = float("inf")
+
+                sub_table = []
+                sub_table_i = []
+                sub_table_r = []
+
+                node_i = ""
+                charge_ij = ""
+                for i in range(len(node_sequence)):
+                    if i == 0:
+                        node_i = node_sequence[i]
+                        charge_ij = ki[i]
+                        continue
+                    else:
+                        node_j = node_sequence[i]
+                        sub_table.append((node_i, node_j, charge_ij))
+                        if charge_min > charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = ki[i]
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) > 0:
+                    sub_table_i = sub_table
+                # circular con sentido de vuelta
+                else:
+                    sub_table_r = sub_table
+
+                output.append((
+                    route.id, f[route.id], k[route.id], b, cycle_time_line[route.id] * 60, co, charge_min, sub_table_i,
+                    sub_table_r))
+            else:
+                # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+                for node_id in nodes_sequence_i:
+                    bool_add = False
+                    for stopnode in z[route.id]["I"]:
+                        if str(stopnode.city_node.graph_node.id) == str(node_id):
+                            pax_b = z[route.id]["I"][stopnode]
+                            pax_a = v[route.id]["I"][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+                            # print(str(node_id), total_pax, k[route.id], route.id)
+                            charge_i.append((str(node_id), total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
                         charge_i.append((str(node_id), total_pax / k[route.id]))
-                        bool_add = True
-                        break
-                if bool_add is False:
-                    charge_i.append((str(node_id), total_pax / k[route.id]))
 
-            for node_id in nodes_sequence_r:
-                bool_add = False
-                for stopnode in z[route.id]["R"]:
-                    if str(stopnode.city_node.graph_node.id) == str(node_id):
-                        pax_b = z[route.id]["R"][stopnode]
-                        pax_a = v[route.id]["R"][stopnode]
-                        total_pax += pax_b - pax_a
-                        total_b += pax_b
+                for node_id in nodes_sequence_r:
+                    bool_add = False
+                    for stopnode in z[route.id]["R"]:
+                        if str(stopnode.city_node.graph_node.id) == str(node_id):
+                            pax_b = z[route.id]["R"][stopnode]
+                            pax_a = v[route.id]["R"][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+                            # print(str(node_id), total_pax, k[route.id], route.id)
+                            charge_r.append((str(node_id), total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
                         charge_r.append((str(node_id), total_pax / k[route.id]))
-                        bool_add = True
-                        break
-                if bool_add is False:
-                    charge_r.append((str(node_id), total_pax / k[route.id]))
 
-            co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
-                    total_b * f[route.id])
+                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                        total_b * f[route.id])
 
-            charge_min = float("inf")
-            sub_table_i = []
-            node_i = ""
-            charge_ij = ""
-            for node_j, charge in charge_i:
-                if node_i == "":
-                    node_i = node_j
-                    charge_ij = charge
-                    continue
-                else:
-                    sub_table_i.append((node_i, node_j, charge_ij))
-                    if charge_min > charge_ij:
-                        charge_min = charge_ij
-                    node_i = node_j
-                    charge_ij = charge
+                charge_min = float("inf")
+                sub_table_i = []
+                node_i = ""
+                charge_ij = ""
+                for node_j, charge in charge_i:
+                    if node_i == "":
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_i.append((node_i, node_j, charge_ij))
+                        if charge_min > charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
 
-            sub_table_r = []
-            node_i = ""
-            charge_ij = ""
-            for node_j, charge in charge_r:
-                if node_i == "":
-                    node_i = node_j
-                    charge_ij = charge
-                    continue
-                else:
-                    sub_table_r.append((node_i, node_j, charge_ij))
-                    if charge_min > charge_ij:
-                        charge_min = charge_ij
-                    node_i = node_j
-                    charge_ij = charge
+                sub_table_r = []
+                node_i = ""
+                charge_ij = ""
+                for node_j, charge in charge_r:
+                    if node_i == "":
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_r.append((node_i, node_j, charge_ij))
+                        if charge_min > charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
 
-            output.append((
-                route.id, f[route.id], k[route.id], b, cycle_time_line[route.id] * 60, co, charge_min, sub_table_i,
-                sub_table_r))
+                output.append((
+                    route.id, f[route.id], k[route.id], b, cycle_time_line[route.id] * 60, co, charge_min, sub_table_i,
+                    sub_table_r))
 
         return output
 
@@ -551,6 +625,7 @@ class Optimizer:
     def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:
         """
         to write output file with result of optimization transport network
+        :param file_path: file path
         :param output_network_results: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float,
         cycle_time [hr]: float, CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
         sub_table_i: List[(node_i, node_j, lambda)]

@@ -242,7 +242,7 @@ class Assignment:
 
     @staticmethod
     def most_loaded_section(routes: List[Route], z: dic_boarding, v: dic_alighting,
-                            f: list_f = None) -> dic_loaded_section:
+                            f: list_f) -> dic_loaded_section:
         """
         to get  most loaded section for each routes
         :param f: dic[route_id] = frequency [veh/hr]
@@ -288,8 +288,10 @@ class Assignment:
                     qi.append(new_qi)
                 q = min(qi)
                 ki_max = 0
-                for load in qi:
-                    ki = (load - q) / f[route_id]
+                for i in range(len(qi)):
+                    if i == 0:
+                        continue
+                    ki = (qi[i] - q) / f[route_id]
                     if ki > ki_max:
                         ki_max = ki
                 most_loaded_section[route_id] = ki_max
