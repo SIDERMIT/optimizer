@@ -12,7 +12,7 @@ from sidermit.optimization import Constrains
 from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph, ExtendedNode, ExtendedEdge
 from sidermit.publictransportsystem import Passenger
-from sidermit.publictransportsystem import TransportNetwork, Route, RouteType
+from sidermit.publictransportsystem import TransportNetwork, RouteType
 
 defaultdict_float = defaultdict(float)
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
@@ -114,7 +114,6 @@ class Optimizer:
     @staticmethod
     def get_k(loaded_section_route: defaultdict3_float) -> defaultdict_float:
         """
-        :param routes: List[Route]
         :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         :return: k: dic[route_id] = vehicle capacity [pax/veh]
         """
@@ -174,17 +173,16 @@ class Optimizer:
                                             self.passenger_obj, z, v)
         return cost
 
-    def constrains(self, z: defaultdict3_float, v: defaultdict3_float, f: defaultdict_float) -> (
+    def constrains(self, loaded_section_route: defaultdict3_float, f: defaultdict_float) -> (
             List[float], List[float]):
         """
         to get k constrains and f constrains
-        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         :param f: dict with frequency [veh/hr] for each route_id
         :return: (k_ineq_constrains, f_ineq_constrains)
         """
 
-        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
 
         constrains_obj = Constrains()
 
@@ -426,15 +424,17 @@ class Optimizer:
         """
         return last network optimized with optimization result
         :param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
-        :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary
+        :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route
         """
         fopt, success, status, message, constr_violation, vrc = res
         f = self.fopt_to_f(fopt)
         final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
-        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij, final_optimizer.hyperpaths,
-                                                     final_optimizer.successors, final_optimizer.assignment, f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij,
+                                                                           final_optimizer.hyperpaths,
+                                                                           final_optimizer.successors,
+                                                                           final_optimizer.assignment, f)
         k = self.get_k(loaded_section_route)
-        return final_optimizer, z, v, k
+        return final_optimizer, z, v, k, loaded_section_route
 
     def network_results(self, res: Tuple) -> List[Tuple]:
         """
@@ -447,7 +447,8 @@ class Optimizer:
         output = []
 
         fopt, success, status, message, constr_violation, vrc = res
-        final_optimizer, z, v, k = self.last_iteration(res)
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+        print(loaded_section_route)
         f = self.fopt_to_f(fopt)
 
         # resultados de modos
@@ -480,36 +481,22 @@ class Optimizer:
                     node_sequence = nodes_sequence_r
                     direction = "R"
 
-                qi = [0]
+                load_i = []
                 for i in node_sequence:
-                    zi = 0
-                    vi = 0
                     for stop_node in z[route.id][direction]:
                         if str(stop_node.city_node.graph_node.id) == str(i):
                             total_b += z[route.id][direction][stop_node]
-                            zi = z[route.id][direction][stop_node]
                             break
-                    for stop_node in v[route.id][direction]:
+                    for stop_node in loaded_section_route[route.id][direction]:
                         if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route.id][direction][stop_node]
+                            load_i.append(loaded_section_route[route.id][direction][stop_node])
                             break
-                    print(zi)
-                    print(vi)
-                    new_qi = qi[len(qi) - 1] + (zi - vi) * f[route.id]
-                    qi.append(new_qi)
-
-                print(qi)
-                q = min(qi)
-                ki = []
-                for i in range(len(qi)):
-                    if i == 0:
-                        continue
-                    ki.append((qi[i] - q) / f[route.id])
+                print(load_i)
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                         total_b * f[route.id])
 
-                charge_min = float("inf")
+                charge_min = min(load_i/max(load_i))
 
                 sub_table = []
                 sub_table_i = []
@@ -520,15 +507,13 @@ class Optimizer:
                 for i in range(len(node_sequence)):
                     if i == 0:
                         node_i = node_sequence[i]
-                        charge_ij = ki[i]
+                        charge_ij = load_i[i] / max(load_i)
                         continue
                     else:
                         node_j = node_sequence[i]
                         sub_table.append((node_i, node_j, charge_ij))
-                        if charge_min > charge_ij:
-                            charge_min = charge_ij
                         node_i = node_j
-                        charge_ij = ki[i]
+                        charge_ij = load_i[i] / max(load_i)
 
                 # circular con sentido de ida
                 if len(nodes_sequence_i) > 0:
@@ -663,7 +648,7 @@ class Optimizer:
         lines_mode : dic[TransportMode]=int [lines])
         """
         fopt, success, status, message, constr_violation, vrc = res
-        final_optimizer, z, v, k = self.last_iteration(res)
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
 
         f = self.fopt_to_f(fopt)
 
