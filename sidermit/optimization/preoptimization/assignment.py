@@ -6,6 +6,7 @@ from sidermit.optimization.preoptimization import StopNode, RouteNode
 from sidermit.publictransportsystem import RouteType, Route
 
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
+defaultdict3_float = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 list_suc = defaultdict(List[ExtendedEdge])
 list_lab = defaultdict(float)
 list_f = defaultdict(float)
@@ -139,12 +140,17 @@ class Assignment:
         Each List[ExtendedNodes] represent a elemental path to connect a origin and destination
         :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] =%V_OD
         :param f: dic[route_id] = frequency [veh/hr]
-        :return: dic[route_id][direction][stop: StopNode] = pax [pax/veh],
-         dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: (z,v,loaded_section_route)
+        z = dic[route_id][direction][stop: StopNode] = pax [pax/veh],
+        v = dic[route_id][direction][stop: StopNode] = pax [pax/veh],
+        loaded_section_route = dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         """
-
+        # dic[route_id][direction][stop: StopNode] = pax[pax / veh]
         z = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        # dic[route_id][direction][stop: StopNode] = pax[pax / veh]
         v = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        # dic[route_id][direction][stop: StopNode] = pax[pax / veh]
+        loaded_section_route = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
         for origin in hyperpaths:
             for destination in hyperpaths[origin]:
@@ -157,8 +163,9 @@ class Assignment:
                     if vod_s == 0:
                         continue
 
+                    # cosntruye las rutas elementales del par OD que surgen de la parada
                     paths = []
-
+                    # constituida de tuplas, noodei, nodoj, vij
                     for suc in successors[origin][destination][stop]:
                         nodej = suc.nodej
                         paths.append((stop, nodej, vod_s))
@@ -168,10 +175,11 @@ class Assignment:
 
                         dis_pax = pax
 
+                        # arco de subida
                         if isinstance(nodei, StopNode):
-                            # reportar subidas
                             if isinstance(nodej, RouteNode):
-
+                                # cambia la distribucion de pasajeros
+                                # aumentan las subidas
                                 f_acum = 0
 
                                 for suc in successors[origin][destination][nodei]:
@@ -181,10 +189,16 @@ class Assignment:
 
                                 z[nodej.route.id][nodej.direction][nodei] += dis_pax
 
+                        # arco de bajada
                         if isinstance(nodei, RouteNode):
-                            # reportar bajadas
                             if isinstance(nodej, StopNode):
+                                # aumentan las bajadas
                                 v[nodei.route.id][nodei.direction][nodej] += dis_pax
+                        # arco de ruta
+                        if isinstance(nodei, RouteNode):
+                            if isinstance(nodej, RouteNode):
+                                # aumentan las cargas por tramo
+                                loaded_section_route[nodei.route.id][nodei.direction][nodei.stop_node] += dis_pax
 
                         # agregar nuevos elementos a paths, salvo que hayan llegado a destino
                         if isinstance(nodej, StopNode) and nodej.city_node == destination:
@@ -211,7 +225,16 @@ class Assignment:
                         v[route_id][direction][stop_node] = v[route_id][direction][stop_node] / (
                             f[route_id])
 
-        return z, v
+        for route_id in loaded_section_route:
+            for direction in loaded_section_route[route_id]:
+                for stop_node in loaded_section_route[route_id][direction]:
+                    if f[route_id] == 0:
+                        continue
+                    else:
+                        loaded_section_route[route_id][direction][stop_node] = \
+                            loaded_section_route[route_id][direction][stop_node] / (f[route_id])
+
+        return z, v, loaded_section_route
 
     @staticmethod
     def str_boarding_alighting(z: dic_boarding, v: dic_alighting) -> str:
@@ -241,8 +264,28 @@ class Assignment:
         return line
 
     @staticmethod
-    def most_loaded_section(routes: List[Route], z: dic_boarding, v: dic_alighting,
-                            f: list_f) -> dic_loaded_section:
+    def most_loaded_section(loaded_section_route: defaultdict3_float) -> dic_loaded_section:
+        """
+        to get  most loaded section for each routes
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: dic[route_id] = pax [pax/veh]
+        """
+
+        most_loaded_section = defaultdict(float)
+        for route_id in loaded_section_route:
+            max_load = 0
+            for direction in loaded_section_route[route_id]:
+                for stop_node in loaded_section_route[route_id][direction]:
+                    if loaded_section_route[route_id][direction][stop_node] > max_load:
+                        max_load = loaded_section_route[route_id][direction][stop_node]
+
+            most_loaded_section[route_id] = max_load
+
+        return most_loaded_section
+
+    @staticmethod
+    def most_loaded_section_2(routes: List[Route], z: dic_boarding, v: dic_alighting,
+                              f: list_f) -> dic_loaded_section:
         """
         to get  most loaded section for each routes
         :param f: dic[route_id] = frequency [veh/hr]
@@ -284,7 +327,7 @@ class Assignment:
                         if str(stop_node.city_node.graph_node.id) == str(i):
                             vi = v[route_id][direction][stop_node]
                             break
-                    new_qi = qi[len(qi) - 1] + zi * f[route_id] - vi * f[route_id]
+                    new_qi = qi[len(qi) - 1] + (zi - vi) * f[route_id]
                     qi.append(new_qi)
                 q = min(qi)
                 ki_max = 0

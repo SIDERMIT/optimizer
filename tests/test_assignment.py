@@ -82,9 +82,9 @@ class test_graph(unittest.TestCase):
         for route in self.network_obj.get_routes():
             f[route.id] = 28
 
-        z, v = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
-                                                     successors=self.successors,
-                                                     assignment=self.OD_assignment, f=f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
+                                                                           successors=self.successors,
+                                                                           assignment=self.OD_assignment, f=f)
 
         nodes = self.extended_graph_obj.get_extended_graph_nodes()
 
@@ -130,14 +130,14 @@ class test_graph(unittest.TestCase):
         for route in self.network_obj.get_routes():
             f[route.id] = 28
 
-        z, v = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
-                                                     successors=self.successors,
-                                                     assignment=self.OD_assignment, f=f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(Vij=self.Vij, hyperpaths=self.hyperpaths,
+                                                                           successors=self.successors,
+                                                                           assignment=self.OD_assignment, f=f)
 
-        loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
+        loaded_section = Assignment.most_loaded_section(loaded_section_route)
 
         self.assertEqual(len(loaded_section), 4)
         self.assertEqual(loaded_section['F_metro_1'], loaded_section['F_metro_2'])
         self.assertEqual(loaded_section['F_metro_1'], 0.1491638321995465)
         self.assertEqual(loaded_section['R_bus_1'], loaded_section['R_bus_2'])
-        self.assertEqual(loaded_section['R_bus_1'], 1.4880952380952381)
+        self.assertEqual(loaded_section['R_bus_1'], 1.4880952380952384)

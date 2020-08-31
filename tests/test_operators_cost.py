@@ -70,8 +70,9 @@ class test_operators_cost(unittest.TestCase):
         for route in network_obj.get_routes():
             f[route.id] = 28
 
-        z, v = Assignment.get_alighting_and_boarding(Vij=Vij, hyperpaths=hyperpaths, successors=successors,
-                                                     assignment=OD_assignment, f=f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(Vij=Vij, hyperpaths=hyperpaths,
+                                                                           successors=successors,
+                                                                           assignment=OD_assignment, f=f)
 
         lines_travel_time = OperatorsCost.lines_travel_time(routes=network_obj.get_routes(),
                                                             edge_distance=graph_obj.get_edges_distance())

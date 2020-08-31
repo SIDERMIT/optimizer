@@ -112,17 +112,13 @@ class Optimizer:
         return f
 
     @staticmethod
-    def get_k(routes: List[Route], z: defaultdict3_float, v: defaultdict3_float,
-              f: defaultdict_float) -> defaultdict_float:
+    def get_k(loaded_section_route: defaultdict3_float) -> defaultdict_float:
         """
-
         :param routes: List[Route]
-        :param f: dic[route_id]= frequency [veh/hr]
-        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
         :return: k: dic[route_id] = vehicle capacity [pax/veh]
         """
-        most_loaded_section = Assignment.most_loaded_section(routes, z, v, f)
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
         k = defaultdict(float)
         for route_id in most_loaded_section:
             k[route_id] = most_loaded_section[route_id]
@@ -207,8 +203,9 @@ class Optimizer:
 
         f = self.fopt_to_f(fopt)
 
-        z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
-        k = self.get_k(self.network_obj.get_routes(), z, v, f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
+        k = self.get_k(loaded_section_route)
 
         CO = self.operators_cost(z, v, f, k)
         CI = self.infrastructure_cost(f)
@@ -228,9 +225,10 @@ class Optimizer:
 
         f = self.fopt_to_f(fopt)
 
-        z, v = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors, self.assignment, f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
 
-        most_loaded_section = Assignment.most_loaded_section(self.network_obj.get_routes(), z, v, f)
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
         constrain_obj = Constrains()
         ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
         ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
@@ -433,9 +431,9 @@ class Optimizer:
         fopt, success, status, message, constr_violation, vrc = res
         f = self.fopt_to_f(fopt)
         final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
-        z, v = Assignment.get_alighting_and_boarding(final_optimizer.Vij, final_optimizer.hyperpaths,
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij, final_optimizer.hyperpaths,
                                                      final_optimizer.successors, final_optimizer.assignment, f)
-        k = self.get_k(final_optimizer.network_obj.get_routes(), z, v, f)
+        k = self.get_k(loaded_section_route)
         return final_optimizer, z, v, k
 
     def network_results(self, res: Tuple) -> List[Tuple]:
@@ -459,12 +457,15 @@ class Optimizer:
 
         for route in final_optimizer.network_obj.get_routes():
 
+            # flota de buses
             b = cycle_time_line[route.id] * f[route.id]
             nodes_sequence_i = route.nodes_sequence_i
             nodes_sequence_r = route.nodes_sequence_r
+            # carga que hay en los tramos
             total_pax = 0
             charge_i = []
             charge_r = []
+            # total de subidas a la ruta
             total_b = 0
 
             # caso circular
@@ -485,14 +486,19 @@ class Optimizer:
                     vi = 0
                     for stop_node in z[route.id][direction]:
                         if str(stop_node.city_node.graph_node.id) == str(i):
+                            total_b += z[route.id][direction][stop_node]
                             zi = z[route.id][direction][stop_node]
                             break
                     for stop_node in v[route.id][direction]:
                         if str(stop_node.city_node.graph_node.id) == str(i):
                             vi = v[route.id][direction][stop_node]
                             break
-                    new_qi = qi[len(qi) - 1] + zi * f[route.id] - vi * f[route.id]
+                    print(zi)
+                    print(vi)
+                    new_qi = qi[len(qi) - 1] + (zi - vi) * f[route.id]
                     qi.append(new_qi)
+
+                print(qi)
                 q = min(qi)
                 ki = []
                 for i in range(len(qi)):
