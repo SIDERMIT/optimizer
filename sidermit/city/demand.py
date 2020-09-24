@@ -67,9 +67,9 @@ class Demand:
         """
         for origin_node in self.__graph_obj.get_nodes():
             for destination_node in self.__graph_obj.get_nodes():
-                self.__matrix[str(origin_node.id)][str(destination_node.id)] = 0
+                self.__matrix[origin_node.id][destination_node.id] = 0
 
-    def change_vij(self, origin_node_id: str, destination_node_id: str, vij: float):
+    def change_vij(self, origin_node_id: int, destination_node_id: int, vij: float):
         """
         Change trip value to a OD pair
         :param origin_node_id:
@@ -81,10 +81,10 @@ class Demand:
         if vij < 0:
             raise TripsValueIsNotValidException("trips value must be >= 0")
 
-        if self.__matrix.get(str(origin_node_id)):
-            if str(destination_node_id) in self.__matrix[str(origin_node_id)]:
-                self.total_trips = self.total_trips - self.__matrix[str(origin_node_id)][str(destination_node_id)] + vij
-                self.__matrix[str(origin_node_id)][str(destination_node_id)] = vij
+        if self.__matrix.get(origin_node_id):
+            if destination_node_id in self.__matrix[origin_node_id]:
+                self.total_trips = self.total_trips - self.__matrix[origin_node_id][destination_node_id] + vij
+                self.__matrix[origin_node_id][destination_node_id] = vij
             else:
                 raise DestinationIdDoesNotFoundException("id destination does not found")
         else:
@@ -241,7 +241,7 @@ class Demand:
                 else:
                     if len(line.split(",")) == 3:
                         origin_id, destination_id, vij = line.split(",")
-                        demand_obj.change_vij(str(origin_id), str(destination_id), float(vij))
+                        demand_obj.change_vij(int(origin_id), int(destination_id), float(vij))
                     else:
                         raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
                                                             "destination_id] [vij]")
