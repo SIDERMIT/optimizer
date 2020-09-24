@@ -40,14 +40,15 @@ pip install sidermit
 ```
 to upgrade package add option `--upgrade`
 
-## Change package
+## Upgrade package in pip repository
 
 Process:
 1. Update code 
 2. Push changes to github repository
 3. Create new release on github
-4. Adapt setup.py (new download_url and version)
-5. run twine command:
+4. Adapt setup.py (new download_url and version) and commit changes
+5. Remove `dist` folder
+6. run twine command:
 
 ```
 python setup.py sdist
