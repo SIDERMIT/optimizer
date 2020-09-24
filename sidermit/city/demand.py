@@ -241,7 +241,10 @@ class Demand:
                 else:
                     if len(line.split(",")) == 3:
                         origin_id, destination_id, vij = line.split(",")
-                        demand_obj.change_vij(int(origin_id), int(destination_id), float(vij))
+                        try:
+                            demand_obj.change_vij(int(origin_id), int(destination_id), float(vij))
+                        except ValueError:
+                            raise NodeIdDemandIsNotAnInteger("Node id must be a integer")
                     else:
                         raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
                                                             "destination_id] [vij]")

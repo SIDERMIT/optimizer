@@ -231,6 +231,10 @@ class NodeIdIsNotAnInteger(GraphException):
     pass
 
 
+class NodeIdDemandIsNotAnInteger(DemandException):
+    pass
+
+
 class ZoneIdIsNotAnInteger(GraphException):
     pass
 

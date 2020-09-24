@@ -75,6 +75,9 @@ class test_graph(unittest.TestCase):
 
         self.assertEqual(len(d.get_matrix()), 7)
 
+        with self.assertRaises(exceptions.NodeIdDemandIsNotAnInteger):
+            demand.Demand.build_from_file(g, os.path.join(self.data_path, 'test_stringid.csv'))
+
     def test_matrix_to_file(self):
         """
         to test matrix_to_file method
