@@ -261,7 +261,7 @@ class Optimizer:
         ub = [np.inf] * self.len_var
 
         bounds = Bounds(lb=lb, ub=ub)
-        res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.2, bounds=bounds)
+        res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.01, bounds=bounds)
         print(self.print_information_internal_optimization(res))
 
         return res
@@ -448,7 +448,6 @@ class Optimizer:
 
         fopt, success, status, message, constr_violation, vrc = res
         final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
-        print(loaded_section_route)
         f = self.fopt_to_f(fopt)
 
         # resultados de modos
@@ -491,7 +490,6 @@ class Optimizer:
                         if str(stop_node.city_node.graph_node.id) == str(i):
                             load_i.append(loaded_section_route[route.id][direction][stop_node])
                             break
-                print(load_i)
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                         total_b * f[route.id])
