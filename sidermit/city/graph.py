@@ -419,13 +419,21 @@ class Graph:
                     node_id, name, x, y, node_type, zone, width = line.split()
                     if node_type != "CBD" and node_type != "SC" and node_type != "P":
                         raise NodeTypeIsNotValidException("Node type is not valid. Try with CBD, SC or P")
-                    col_id.append(node_id)
+
                     col_name.append(name)
                     col_x.append(x)
                     col_y.append(y)
                     col_type.append(node_type)
-                    col_zone.append(zone)
                     col_width.append(width)
+
+                    try:
+                        col_id.append(int(node_id))
+                    except ValueError:
+                        raise NodeIdIsNotAnInteger("node id must be a integer")
+                    try:
+                        col_zone.append(int(zone))
+                    except ValueError:
+                        raise ZoneIdIsNotAnInteger("zode id must be a integer")
 
                     n_nodes = n_nodes - 1
                 else:

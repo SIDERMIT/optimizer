@@ -227,6 +227,14 @@ class NameIsNotDefinedException(GraphException):
     pass
 
 
+class NodeIdIsNotAnInteger(GraphException):
+    pass
+
+
+class ZoneIdIsNotAnInteger(GraphException):
+    pass
+
+
 # Demand Exceptions
 class GraphIsNotValidException(DemandException):
     pass
