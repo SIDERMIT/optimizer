@@ -483,25 +483,25 @@ class Optimizer:
                 load_i = []
                 for i in node_sequence:
                     for stop_node in z[route.id][direction]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
+                        if stop_node.city_node.graph_node.id == i:
                             total_b += z[route.id][direction][stop_node]
                             break
                     for stop_node in loaded_section_route[route.id][direction]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
+                        if stop_node.city_node.graph_node.id == i:
                             load_i.append(loaded_section_route[route.id][direction][stop_node])
                             break
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                         total_b * f[route.id])
 
-                charge_min = min(load_i/max(load_i))
+                charge_min = min(load_i / max(load_i))
 
                 sub_table = []
                 sub_table_i = []
                 sub_table_r = []
 
-                node_i = ""
-                charge_ij = ""
+                node_i = None
+                charge_ij = None
                 for i in range(len(node_sequence)):
                     if i == 0:
                         node_i = node_sequence[i]
@@ -528,42 +528,42 @@ class Optimizer:
                 for node_id in nodes_sequence_i:
                     bool_add = False
                     for stopnode in z[route.id]["I"]:
-                        if str(stopnode.city_node.graph_node.id) == str(node_id):
+                        if stopnode.city_node.graph_node.id == node_id:
                             pax_b = z[route.id]["I"][stopnode]
                             pax_a = v[route.id]["I"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
                             # print(str(node_id), total_pax, k[route.id], route.id)
-                            charge_i.append((str(node_id), total_pax / k[route.id]))
+                            charge_i.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
-                        charge_i.append((str(node_id), total_pax / k[route.id]))
+                        charge_i.append((node_id, total_pax / k[route.id]))
 
                 for node_id in nodes_sequence_r:
                     bool_add = False
                     for stopnode in z[route.id]["R"]:
-                        if str(stopnode.city_node.graph_node.id) == str(node_id):
+                        if stopnode.city_node.graph_node.id == node_id:
                             pax_b = z[route.id]["R"][stopnode]
                             pax_a = v[route.id]["R"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
                             # print(str(node_id), total_pax, k[route.id], route.id)
-                            charge_r.append((str(node_id), total_pax / k[route.id]))
+                            charge_r.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
-                        charge_r.append((str(node_id), total_pax / k[route.id]))
+                        charge_r.append((node_id, total_pax / k[route.id]))
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                         total_b * f[route.id])
 
                 charge_min = float("inf")
                 sub_table_i = []
-                node_i = ""
-                charge_ij = ""
+                node_i = None
+                charge_ij = None
                 for node_j, charge in charge_i:
-                    if node_i == "":
+                    if node_i == None:
                         node_i = node_j
                         charge_ij = charge
                         continue
@@ -575,10 +575,10 @@ class Optimizer:
                         charge_ij = charge
 
                 sub_table_r = []
-                node_i = ""
-                charge_ij = ""
+                node_i = None
+                charge_ij = None
                 for node_j, charge in charge_r:
-                    if node_i == "":
+                    if node_i == None:
                         node_i = node_j
                         charge_ij = charge
                         continue
