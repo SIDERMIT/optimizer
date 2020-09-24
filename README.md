@@ -48,6 +48,7 @@ Process:
 3. Create new release on github
 4. Adapt setup.py (new download_url and version) and commit changes
 5. Remove `dist` folder
+1. Install `twine` library
 6. run twine command:
 
 ```
