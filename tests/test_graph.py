@@ -33,7 +33,7 @@ class test_graph(unittest.TestCase):
         self.test_nodeIdStringExceptions = os.path.join(self.data_path,
                                                         'test_node_id_string_exceptions.PAJEK')
         self.test_ZoneIdStringExceptions = os.path.join(self.data_path,
-                                                        'test_Zone_id_string_exceptions.PAJEK')
+                                                        'test_zone_id_string_exceptions.PAJEK')
 
     def test_exceptions_string_in_pajek(self):
         """
