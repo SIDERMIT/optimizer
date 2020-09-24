@@ -40,7 +40,7 @@ pip install sidermit
 ```
 to upgrade package add option `--upgrade`
 
-## Change package
+## Update package
 
 Process:
 1. Update code 
