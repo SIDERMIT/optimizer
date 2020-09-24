@@ -6,7 +6,8 @@ from sidermit.optimization import Optimizer
 from sidermit.publictransportsystem import Passenger, TransportMode
 from sidermit.publictransportsystem import TransportNetwork
 
-graph_obj = Graph.build_from_parameters(4, 10, 0.85, 2)
+graph_obj = Graph.build_from_parameters(4, 10, 0.85, 2, etha=0.5, etha_zone=3, angles=[50, 75, 180, 250])
+graph_obj.plot("city.png")
 demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.78, 1 / 4, 0.22)
 passenger_obj = Passenger.get_default_passenger()
 [bus_obj, metro_obj] = TransportMode.get_default_modes()
@@ -24,12 +25,12 @@ radialc = network_obj.get_radial_routes(bus_obj, short=True)
 # diametral_corta2 = network_obj.get_diametral_routes(bus_obj, 2, short=True)
 # tangencial_corta1 = network_obj.get_tangencial_routes(bus_obj, 1, short=True)
 # tangencial_corta2 = network_obj.get_tangencial_routes(bus_obj, 2, short=True)
-circular = network_obj.get_circular_routes(bus_obj)
+circular = network_obj.get_circular_routes(metro_obj)
 
 # routes = [diametral_larga4, diametral_larga3, tangencial_larga1, tangencial_larga2, radial, alimentadora, radialc,
 #           diametral_corta4, diametral_corta3, diametral_corta2, tangencial_corta1, tangencial_corta2, circular]
 
-routes = [alimentadora, radialc, radial, circular]
+routes = [alimentadora, radial, circular]
 
 for route_type in routes:
     for route in route_type:
