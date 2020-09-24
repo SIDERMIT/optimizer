@@ -126,7 +126,7 @@ class Route:
         return nodes
 
     @staticmethod
-    def stops_validator(nodes_list: List[str], stops_list: List[str]) -> bool:
+    def stops_validator(nodes_list: List[int], stops_list: List[int]) -> bool:
         """
         to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
         nodes are stops
@@ -147,7 +147,7 @@ class Route:
         return True
 
     @staticmethod
-    def direction_validator(nodes_list_i: List[str], nodes_list_r: List[str]) -> bool:
+    def direction_validator(nodes_list_i: List[int], nodes_list_r: List[int]) -> bool:
         """
         to check if both direction of a route form a cycle
         :param nodes_list_i: list of node sequence (forward direction)
@@ -160,7 +160,7 @@ class Route:
         return True
 
     @staticmethod
-    def sequences_validator(sequence: List[str]) -> bool:
+    def sequences_validator(sequence: List[int]) -> bool:
         """
         to check if sequence have a loop
         :param sequence: list of node sequence
@@ -689,13 +689,13 @@ class TransportNetwork:
         edges_graph = []
         position = defaultdict(list)
         for edge in self.__graph_obj.get_edges():
-            edges_graph.append((str(edge.node1.id), str(edge.node2.id)))
-            if not position.get(str(edge.node1.id)):
-                position[str(edge.node1.id)].append(edge.node1.x)
-                position[str(edge.node1.id)].append(edge.node1.y)
-            if not position.get(str(edge.node2.id)):
-                position[str(edge.node2.id)].append(edge.node2.x)
-                position[str(edge.node2.id)].append(edge.node2.y)
+            edges_graph.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
 
         # nodes information and positions
         info_cbd = []
@@ -722,16 +722,16 @@ class TransportNetwork:
         for cbd in info_cbd:
             x_cbd.append(cbd.x)
             y_cbd.append(cbd.y)
-            id_cbd.append(str(cbd.id))
+            id_cbd.append(cbd.id)
 
         for sc in info_sc:
             x_sc.append(sc.x)
             y_sc.append(sc.y)
-            id_sc.append(str(sc.id))
+            id_sc.append(sc.id)
         for p in info_p:
             x_p.append(p.x)
             y_p.append(p.y)
-            id_p.append(str(p.id))
+            id_p.append(p.id)
 
         # edges routes and stops
         edges_i = []
@@ -773,15 +773,12 @@ class TransportNetwork:
         # plot p, Sc and CBD
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_p, node_color='red', node_size=300)
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_sc, node_color='blue', node_size=300)
-        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
-                               node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple', node_size=300)
         # plot stops
         if direction is None or direction == "I":
-            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_i, node_color='yellow',
-                                   node_size=300)
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_i, node_color='yellow', node_size=300)
         if direction is None or direction == "R":
-            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_r, node_color='yellow',
-                                   node_size=300)
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_r, node_color='yellow', node_size=300)
         # plot labels
         nx.draw_networkx_labels(G, position)
         # plot edges city
