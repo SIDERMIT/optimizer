@@ -67,8 +67,8 @@ class test_graph(unittest.TestCase):
 
         edge_distance = graph_obj.get_edges_distance()
 
-        self.assertEqual(edge_distance[str(1)][str(2)], 5)
-        self.assertEqual(edge_distance[str(2)][str(0)], 10)
+        self.assertEqual(edge_distance[1][2], 5)
+        self.assertEqual(edge_distance[2][0], 10)
 
     def test_Node_Exceptions(self):
         """

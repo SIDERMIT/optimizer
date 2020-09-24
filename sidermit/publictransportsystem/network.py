@@ -102,9 +102,9 @@ class Route:
         line = ""
         for node in sequence_list:
             if line == "":
-                line = line + node
+                line = line + str(node)
             else:
-                line = line + "," + node
+                line = line + "," + str(node)
         return line
 
     @staticmethod
@@ -121,7 +121,7 @@ class Route:
 
         for node in nodes:
             i = nodes.index(node)
-            nodes[i] = node.rstrip("\n")
+            nodes[i] = int(node.rstrip("\n"))
 
         return nodes
 

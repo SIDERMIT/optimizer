@@ -209,7 +209,7 @@ class Graph:
         :return: True if edge exist, False if not.
         """
         for edge in self.__edges:
-            if str(edge.node1.id) == str(id_i) and str(edge.node2.id) == str(id_j):
+            if edge.node1.id == id_i and edge.node2.id == id_j:
                 return True
         return False
 
@@ -467,7 +467,7 @@ class Graph:
             xj = nodej.x
             yj = nodej.y
 
-            edge_distance[str(nodei.id)][str(nodej.id)] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
+            edge_distance[nodei.id][nodej.id] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
 
         return edge_distance
 

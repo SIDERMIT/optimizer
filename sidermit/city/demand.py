@@ -187,9 +187,9 @@ class Demand:
                     origin_node_obj = None
                     destination_node_obj = None
                     for node in demand_obj.__graph_obj.get_nodes():
-                        if str(node.id) == str(origin_node_id):
+                        if node.id == origin_node_id:
                             origin_node_obj = node
-                        if str(node.id) == str(destination_node_id):
+                        if node.id == destination_node_id:
                             destination_node_obj = node
 
                     # CBD does not generate trips

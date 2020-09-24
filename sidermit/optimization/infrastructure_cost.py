@@ -28,7 +28,7 @@ class InfrastructureCost:
         edge_list = []
 
         for edge in edges:
-            d_e = edges_distance[str(edge.node1.id)][str(edge.node2.id)]
+            d_e = edges_distance[edge.node1.id][edge.node2.id]
             for mode in list_modes:
                 for route in routes:
                     if route.mode == mode:
@@ -39,22 +39,22 @@ class InfrastructureCost:
                             ver_sum = False
                             for i in range(len(node_sequence_i) - 1):
                                 j = i + 1
-                                if str(node_sequence_i[i]) == str(edge.node1.id) and str(node_sequence_i[j]) == str(
-                                        edge.node2.id) and (str(edge.node1.id), str(edge.node2.id)) not in edge_list:
+                                if node_sequence_i[i] == edge.node1.id and node_sequence_i[j] == edge.node2.id and (
+                                edge.node1.id, edge.node2.id) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
-                                    edge_list.append((str(edge.node1.id), str(edge.node2.id)))
-                                    edge_list.append((str(edge.node2.id), str(edge.node1.id)))
+                                    edge_list.append((edge.node1.id, edge.node2.id))
+                                    edge_list.append((edge.node2.id, edge.node1.id))
                                     ver_sum = True
                                     break
                             if ver_sum is True:
                                 break
                             for i in range(len(node_sequence_r) - 1):
                                 j = i + 1
-                                if str(node_sequence_r[i]) == str(edge.node1.id) and str(node_sequence_r[j]) == str(
-                                        edge.node2.id) and (str(edge.node1.id), str(edge.node2.id)) not in edge_list:
+                                if node_sequence_r[i] == edge.node1.id and node_sequence_r[j] == edge.node2.id and (
+                                edge.node1.id, edge.node2.id) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
-                                    edge_list.append((str(edge.node1.id), str(edge.node2.id)))
-                                    edge_list.append((str(edge.node2.id), str(edge.node1.id)))
+                                    edge_list.append((edge.node1.id, edge.node2.id))
+                                    edge_list.append((edge.node2.id, edge.node1.id))
                                     ver_sum = True
                                     break
                             if ver_sum is True:

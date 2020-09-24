@@ -30,8 +30,8 @@ class OperatorsCost:
             for i in range(len(node_sequence_i) - 1):
                 j = i + 1
 
-                nodei_id = str(node_sequence_i[i])
-                nodej_id = str(node_sequence_i[j])
+                nodei_id = node_sequence_i[i]
+                nodej_id = node_sequence_i[j]
 
                 tv += edge_distance[nodei_id][nodej_id] / route.mode.v
 
@@ -39,8 +39,8 @@ class OperatorsCost:
             for i in range(len(node_sequence_r) - 1):
                 j = i + 1
 
-                nodei_id = str(node_sequence_r[i])
-                nodej_id = str(node_sequence_r[j])
+                nodei_id = node_sequence_r[i]
+                nodej_id = node_sequence_r[j]
 
                 tv += edge_distance[nodei_id][nodej_id] / route.mode.v
 
