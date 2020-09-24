@@ -67,7 +67,7 @@ class Demand:
         """
         for origin_node in self.__graph_obj.get_nodes():
             for destination_node in self.__graph_obj.get_nodes():
-                self.__matrix[origin_node.id][destination_node.id] = 0
+                self.__matrix[int(origin_node.id)][int(destination_node.id)] = 0
 
     def change_vij(self, origin_node_id: int, destination_node_id: int, vij: float):
         """

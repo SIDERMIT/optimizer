@@ -144,7 +144,7 @@ class Zone:
 
 class Edge:
 
-    def __init__(self, edge_id, node1, node2):
+    def __init__(self, edge_id: int, node1, node2):
         """
         Graph edge. Allowed edges are: [Periphery - Subcenter], [Subcenter - Periphery], [Subcenter - Subcenter],
         [Subcenter - CBD], [CBD - Subcenter]
