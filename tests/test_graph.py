@@ -30,6 +30,21 @@ class test_graph(unittest.TestCase):
         self.test_nodeIdExceptions = os.path.join(self.data_path,
                                                   'test_nodeIdExceptions.PAJEK')
 
+        self.test_nodeIdStringExceptions = os.path.join(self.data_path,
+                                                        'test_node_id_string_exceptions.PAJEK')
+        self.test_ZoneIdStringExceptions = os.path.join(self.data_path,
+                                                        'test_Zone_id_string_exceptions.PAJEK')
+
+    def test_exceptions_string_in_pajek(self):
+        """
+        test exceptions string to node id and zone id in pajek
+        :return:
+        """
+        with self.assertRaises(exceptions.NodeIdIsNotAnInteger):
+            graph.Graph.build_from_file(self.test_nodeIdStringExceptions)
+        with self.assertRaises(exceptions.ZoneIdIsNotAnInteger):
+            graph.Graph.build_from_file(self.test_ZoneIdStringExceptions)
+
     def test_get_method(self):
         """
         test methods get class graph

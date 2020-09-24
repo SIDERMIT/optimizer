@@ -433,7 +433,7 @@ class Graph:
                     try:
                         col_zone.append(int(zone))
                     except ValueError:
-                        raise ZoneIdIsNotAnInteger("zode id must be a integer")
+                        raise ZoneIdIsNotAnInteger("zone id must be a integer")
 
                     n_nodes = n_nodes - 1
                 else:
