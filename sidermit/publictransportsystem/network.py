@@ -760,7 +760,7 @@ class TransportNetwork:
                 for i in range(len(stop_i)):
                     if stop_i[i] not in stops_i:
                         stops_i.append(stop_i[i])
-                for i in range(len(stops_r)):
+                for i in range(len(stop_r)):
                     if stop_r[i] not in stops_r:
                         stops_r.append(stop_r[i])
 

@@ -5,7 +5,6 @@ from sidermit.publictransportsystem import TransportNetwork, Passenger, Transpor
 
 from collections import defaultdict
 
-
 # graph_obj = Graph.build_from_parameters(n=8, l=10, g=0.85, p=2)
 # demand_obj = Demand.build_from_parameters(graph_obj=graph_obj, y=100000, a=0.78, alpha=0.25, beta=0.22)
 # passenger_obj = Passenger.get_default_passenger()
@@ -85,3 +84,15 @@ from collections import defaultdict
 # print(tiempo_viaje)
 # print(tiempo_ciclo)
 # print(CO_obj.get_operators_cost(network_obj.get_routes(), tiempo_ciclo, f, k))
+
+from sidermit.city import demand, graph
+
+graph_obj = graph.Graph.build_from_parameters(n=4, l=2, g=3, p=4)
+demand_obj = demand.Demand.build_from_parameters(graph_obj, y=1, a=1, alpha=0.1, beta=0.8)
+
+matrix = demand_obj.get_matrix()
+print(matrix)
+
+for origin in matrix:
+    for destination in matrix[origin]:
+        print("o: {}, d: {}, vij: {}".format(origin, destination, matrix[origin][destination]))
