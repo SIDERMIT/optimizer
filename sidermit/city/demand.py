@@ -30,7 +30,7 @@ class Demand:
         # initialization of matriz with zero trips in all OD pairs
         self.__build_default_matrix()
 
-    def get_total_trips(self)->float:
+    def get_total_trips(self) -> float:
         """
         to get total trips in all OD pair
         :return:

@@ -103,7 +103,7 @@ class TransportMode:
 
 
 class TransportModeManager:
-    def __init__(self, add_default_mode: bool=True):
+    def __init__(self, add_default_mode: bool = True):
         """
         transport mode manager
         :param add_default_mode: (default: True) True to initialize list of modes with bus and metro with

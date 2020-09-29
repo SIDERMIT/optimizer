@@ -108,7 +108,7 @@ class Route:
         return line
 
     @staticmethod
-    def sequences_to_list(sequence: str) -> List[str]:
+    def sequences_to_list(sequence: str) -> List[int]:
         """
         convert a string of node id sequence to a list
         :param sequence: String
@@ -117,11 +117,11 @@ class Route:
         if sequence == "":
             return []
 
-        nodes = sequence.split(",")
+        nodes_split = sequence.split(",")
+        nodes = []
 
-        for node in nodes:
-            i = nodes.index(node)
-            nodes[i] = int(node.rstrip("\n"))
+        for node in nodes_split:
+            nodes.append(int(node.rstrip("\n")))
 
         return nodes
 
@@ -190,7 +190,7 @@ class TransportNetwork:
         self.__routes_id = []
         self.__modes = []
 
-    def __edges_validator(self, node_list: List[str]) -> bool:
+    def __edges_validator(self, node_list: List[int]) -> bool:
         """
         to check if each edges in a node_sequences list exist in the graph object
         :param node_list: list of nodes
@@ -333,7 +333,7 @@ class TransportNetwork:
         df_transit_network["stops_sequence_i"] = col_stops_sequence_i
         df_transit_network["stops_sequence_r"] = col_stops_sequence_r
 
-        df_transit_network.to_csv(file_path, sep=";", index=False)
+        df_transit_network.to_csv(file_path, sep=";", index=False, encoding="utf-8")
 
     def get_circular_routes(self, mode_obj: TransportMode) -> List[Route]:
         """
@@ -773,12 +773,15 @@ class TransportNetwork:
         # plot p, Sc and CBD
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_p, node_color='red', node_size=300)
         nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_sc, node_color='blue', node_size=300)
-        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple', node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=id_cbd, node_color='purple',
+                               node_size=300)
         # plot stops
         if direction is None or direction == "I":
-            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_i, node_color='yellow', node_size=300)
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_i, node_color='yellow',
+                                   node_size=300)
         if direction is None or direction == "R":
-            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_r, node_color='yellow', node_size=300)
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap('Set2'), nodelist=stops_r, node_color='yellow',
+                                   node_size=300)
         # plot labels
         nx.draw_networkx_labels(G, position)
         # plot edges city

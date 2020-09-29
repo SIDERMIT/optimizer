@@ -216,7 +216,7 @@ class Graph:
     def export_graph(self, format: GraphContentFormat = GraphContentFormat.PAJEK) -> str:
         """
         to get a string with graph nodes information in a specific format file
-        :param format:
+        :param format: GraphContentFormat
         :return: string with graph nodes information in a specific format file
         """
 

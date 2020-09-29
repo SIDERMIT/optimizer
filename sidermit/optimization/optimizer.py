@@ -494,7 +494,7 @@ class Optimizer:
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                         total_b * f[route.id])
 
-                charge_min = min(load_i / max(load_i))
+                charge_min = min(load_i) / max(load_i)
 
                 sub_table = []
                 sub_table_i = []
@@ -563,7 +563,7 @@ class Optimizer:
                 node_i = None
                 charge_ij = None
                 for node_j, charge in charge_i:
-                    if node_i == None:
+                    if node_i is None:
                         node_i = node_j
                         charge_ij = charge
                         continue
@@ -578,7 +578,7 @@ class Optimizer:
                 node_i = None
                 charge_ij = None
                 for node_j, charge in charge_r:
-                    if node_i == None:
+                    if node_i is None:
                         node_i = node_j
                         charge_ij = charge
                         continue
@@ -621,7 +621,7 @@ class Optimizer:
         :return: None
         """
         string_lines = self.string_network_results(output_network_results)
-        file = open(file_path, 'w')
+        file = open(file_path, 'w', encoding='utf-8')
         file.write(string_lines)
         file.close()
 

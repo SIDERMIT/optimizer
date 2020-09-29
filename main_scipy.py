@@ -6,7 +6,7 @@ from sidermit.optimization import Optimizer
 from sidermit.publictransportsystem import Passenger, TransportMode
 from sidermit.publictransportsystem import TransportNetwork
 
-graph_obj = Graph.build_from_parameters(4, 10, 0.85, 2, etha=0.5, etha_zone=3, angles=[50, 75, 180, 250])
+graph_obj = Graph.build_from_parameters(4, 10, 0.85, 2)
 graph_obj.plot("city.png")
 demand_obj = Demand.build_from_parameters(graph_obj, 100000, 0.78, 1 / 4, 0.22)
 passenger_obj = Passenger.get_default_passenger()
