@@ -263,11 +263,17 @@ class Demand:
         demand_obj = Demand(graph_obj)
         nodes = graph_obj.get_nodes()
 
+        if len(nodes) != len(matrix):
+            raise DemandMatrixIsNotValidException("Matrix should have rows equal to number of nodes")
         for i in range(len(matrix)):
+            if len(nodes) != len(matrix[i]):
+                raise DemandMatrixIsNotValidException("Matrix should have columns equal to number of nodes")
             for j in range(len(matrix[i])):
                 origin_node_id = nodes[i].id
                 destination_node_id = nodes[j].id
                 vij = matrix[i][j]
+                if vij < 0:
+                    raise VijIsNotValidException("Vij should be >=0")
 
                 demand_obj.change_vij(origin_node_id, destination_node_id, vij)
 

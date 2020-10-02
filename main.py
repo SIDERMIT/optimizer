@@ -85,9 +85,7 @@ from collections import defaultdict
 # print(tiempo_ciclo)
 # print(CO_obj.get_operators_cost(network_obj.get_routes(), tiempo_ciclo, f, k))
 
-from sidermit.publictransportsystem import Route, TransportMode
+from sidermit.city import Demand, Graph
 
-[bus, metro] = TransportMode.get_default_modes()
-
-R = Route("a", metro, "1,2", "2,1", "1,2", "2,1")
-print(R)
+graph_obj = Graph.build_from_parameters(1, 1, 1, 0.5)
+demand_obj = Demand.build_from_content(graph_obj, [[1, 2, -1], [1, 2, 0], [1, 2, 0]])

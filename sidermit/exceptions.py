@@ -235,6 +235,14 @@ class NodeIdDemandIsNotAnInteger(DemandException):
     pass
 
 
+class VijIsNotValidException(DemandException):
+    pass
+
+
+class DemandMatrixIsNotValidException(DemandException):
+    pass
+
+
 class ZoneIdIsNotAnInteger(GraphException):
     pass
 
