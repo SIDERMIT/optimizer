@@ -249,3 +249,26 @@ class Demand:
                         raise FileFormatIsNotValidException("each line must provide information about [origin_id] ["
                                                             "destination_id] [vij]")
         return demand_obj
+
+    @staticmethod
+    def build_from_content(graph_obj: Graph, matrix) -> Demand:
+        """
+
+        :param graph_obj: city graph object, necessary to recognize the id of the created nodes and compatibility
+        with that of the OD matrix.
+        :param matrix: List[List[float]]
+        :return: Demand object
+        """
+
+        demand_obj = Demand(graph_obj)
+        nodes = graph_obj.get_nodes()
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                origin_node_id = nodes[i].id
+                destination_node_id = nodes[j].id
+                vij = matrix[i][j]
+
+                demand_obj.change_vij(origin_node_id, destination_node_id, vij)
+
+        return demand_obj
