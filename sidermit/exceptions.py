@@ -410,6 +410,14 @@ class RouteIdIsNotValidException(TransportNetworkException):
     pass
 
 
+class NodeSequenceIsNotValidException(TransportNetworkException):
+    pass
+
+
+class StopSequenceIsNotValidException(TransportNetworkException):
+    pass
+
+
 class ModeNameIsNotValidException(TransportNetworkException):
     pass
 
