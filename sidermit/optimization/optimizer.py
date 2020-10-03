@@ -690,7 +690,7 @@ class Optimizer:
         output["infrastructure_cost"] = CI / self.total_trips
         output["users_cost"] = CU / self.total_trips
         output["travel_time_on_board"] = tv / self.total_trips * 60
-        output["waiting time"] = te / self.total_trips * 60
+        output["waiting_time"] = te / self.total_trips * 60
         output["access_time"] = ta / self.total_trips * 60
         output["transfers"] = t / self.total_trips
         output["vehicles_mode"] = B
@@ -724,7 +724,7 @@ class Optimizer:
         ci = overall_results["infrastructure_cost"]
         cu = overall_results["users_cost"]
         tv = overall_results["travel_time_on_board"]
-        te = overall_results["waiting time"]
+        te = overall_results["waiting_time"]
         ta = overall_results["access_time"]
         t = overall_results["transfers"]
         b = overall_results["vehicles_mode"]
