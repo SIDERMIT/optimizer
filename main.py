@@ -85,7 +85,28 @@ from collections import defaultdict
 # print(tiempo_ciclo)
 # print(CO_obj.get_operators_cost(network_obj.get_routes(), tiempo_ciclo, f, k))
 
-from sidermit.city import Demand, Graph
+from sidermit.city import Graph, Demand
+from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
+from sidermit.optimization.optimizer import Optimizer
 
-graph_obj = Graph.build_from_parameters(1, 1, 1, 0.5)
-demand_obj = Demand.build_from_content(graph_obj, [[1, 2, -1], [1, 2, 0], [1, 2, 0]])
+n, l, g, p = 4, 2, 3, 4
+graph_obj = Graph.build_from_parameters(n, l, g, p)
+demand_obj = Demand.build_from_parameters(graph_obj, 10000, 0.9, 0.5, 0.5)
+network_obj = TransportNetwork(graph_obj)
+
+passenger_obj = Passenger(va=1, pv=1, pw=1, pa=1, pt=1, spv=1, spw=1, spa=1, spt=1)
+
+mode = TransportMode(name='mode', bya=1, co=1, c1=1, c2=1, v=1, t=1, fmax=40, kmax=100,
+                     theta=1, tat=1, d=1, fini=28)
+routes = network_obj.get_feeder_routes(mode) + network_obj.get_radial_routes(mode, short=True,
+                                                                             express=False) + network_obj.get_diametral_routes(
+    mode, short=True, express=False, jump=1) + network_obj.get_circular_routes(mode)
+
+for route in routes:
+    network_obj.add_route(route)
+
+opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj)
+
+res = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj)
+print(opt_obj.string_overall_results(opt_obj.overall_results(res)))
+print(opt_obj.string_network_results(opt_obj.network_results(res)))

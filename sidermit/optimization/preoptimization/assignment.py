@@ -23,6 +23,7 @@ dic_f = defaultdict(float)
 
 dic_boarding = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 dic_alighting = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_load = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
 
 dic_loaded_section = defaultdict(float)
 
@@ -130,7 +131,7 @@ class Assignment:
 
     @staticmethod
     def get_alighting_and_boarding(Vij: dic_Vij, hyperpaths: dic_hyperpaths, successors: dic_successors,
-                                   assignment: dic_assigment, f: dic_f) -> (dic_boarding, dic_alighting):
+                                   assignment: dic_assigment, f: dic_f) -> (dic_boarding, dic_alighting, dic_load):
         """
         to get two matrix (z and v) with alighting and boarding for vehicle in each stop of all routes
          :param successors: dic[origin: CityNode][destination: CityNode] [ExtendedNode] = List[ExtendedEdge],
@@ -280,110 +281,5 @@ class Assignment:
                         max_load = loaded_section_route[route_id][direction][stop_node]
 
             most_loaded_section[route_id] = max_load
-
-        return most_loaded_section
-
-    @staticmethod
-    def most_loaded_section_2(routes: List[Route], z: dic_boarding, v: dic_alighting,
-                              f: list_f) -> dic_loaded_section:
-        """
-        to get  most loaded section for each routes
-        :param f: dic[route_id] = frequency [veh/hr]
-        :param routes: List[Route]
-        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-        :return: dic[route_id] = pax [pax/veh]
-        """
-
-        most_loaded_section = defaultdict(float)
-
-        for route in routes:
-
-            route_id = route.id
-            node_sequence_i = route.nodes_sequence_i
-            node_sequence_r = route.nodes_sequence_r
-
-            # caso circular
-            if route._type == RouteType.CIRCULAR:
-
-                # circular con sentido de ida
-                if len(node_sequence_i) > 0:
-                    node_sequence = node_sequence_i
-                    direction = "I"
-                # circular con sentido de vuelta
-                else:
-                    node_sequence = node_sequence_r
-                    direction = "R"
-
-                qi = [0]
-                for i in node_sequence:
-                    zi = 0
-                    vi = 0
-                    for stop_node in z[route_id][direction]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            zi = z[route_id][direction][stop_node]
-                            break
-                    for stop_node in v[route_id][direction]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route_id][direction][stop_node]
-                            break
-                    new_qi = qi[len(qi) - 1] + (zi - vi) * f[route_id]
-                    qi.append(new_qi)
-                q = min(qi)
-                ki_max = 0
-                for i in range(len(qi)):
-                    if i == 0:
-                        continue
-                    ki = (qi[i] - q) / f[route_id]
-                    if ki > ki_max:
-                        ki_max = ki
-                most_loaded_section[route_id] = ki_max
-
-            # caso no circular
-            else:
-
-                max_loaded_section = 0
-                prev_loaded = 0
-
-                for i in node_sequence_i:
-                    zi = 0
-                    vi = 0
-
-                    for stop_node in z[route_id]["I"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            zi = z[route_id]["I"][stop_node]
-                            break
-                    for stop_node in v[route_id]["I"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route_id]["I"][stop_node]
-                            break
-
-                    prev_loaded += zi - vi
-
-                    if prev_loaded > max_loaded_section:
-                        max_loaded_section = prev_loaded
-
-                prev_loaded = 0
-
-                for i in node_sequence_r:
-
-                    zi = 0
-                    vi = 0
-
-                    for stop_node in z[route_id]["R"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            zi = z[route_id]["R"][stop_node]
-                            break
-                    for stop_node in v[route_id]["R"]:
-                        if str(stop_node.city_node.graph_node.id) == str(i):
-                            vi = v[route_id]["R"][stop_node]
-                            break
-
-                    prev_loaded += zi - vi
-
-                    if prev_loaded > max_loaded_section:
-                        max_loaded_section = prev_loaded
-
-                most_loaded_section[route_id] = max_loaded_section
 
         return most_loaded_section

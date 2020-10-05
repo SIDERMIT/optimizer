@@ -448,6 +448,7 @@ class Optimizer:
 
         fopt, success, status, message, constr_violation, vrc = res
         final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
         f = self.fopt_to_f(fopt)
 
         # resultados de modos
@@ -479,7 +480,6 @@ class Optimizer:
                 else:
                     node_sequence = nodes_sequence_r
                     direction = "R"
-
                 load_i = []
                 for i in node_sequence:
                     for stop_node in z[route.id][direction]:
@@ -491,10 +491,17 @@ class Optimizer:
                             load_i.append(loaded_section_route[route.id][direction][stop_node])
                             break
 
-                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
-                        total_b * f[route.id])
+                if total_b == 0:
+                    co = 0
+                else:
+                    co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                            total_b * f[route.id])
 
-                charge_min = min(load_i) / max(load_i)
+                if len(load_i) >= 1:
+                    charge_min = min(load_i) / max(load_i)
+                else:
+                    load_i = [1] * len(node_sequence)
+                    charge_min = 0
 
                 sub_table = []
                 sub_table_i = []
