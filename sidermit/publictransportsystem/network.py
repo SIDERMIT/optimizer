@@ -43,9 +43,11 @@ class Route:
         self.stops_sequence_i = None
         self.stops_sequence_r = None
         self._type = _type
-        if _type == RouteType.CUSTOM and (nodes_sequence_i is None or nodes_sequence_r is None):
+        if _type == RouteType.CUSTOM and (
+                nodes_sequence_i is None or nodes_sequence_r is None or nodes_sequence_i == "" or nodes_sequence_r == ""):
             raise NodeSequencesIsNotValidException("You should give a value for nodes_sequence_i and nodes_sequence_r")
-        if _type == RouteType.CUSTOM and (stops_sequence_i is None or stops_sequence_r is None):
+        if _type == RouteType.CUSTOM and (
+                stops_sequence_i is None or stops_sequence_r is None or stops_sequence_i == "" or stops_sequence_r == ""):
             raise StopSequenceIsNotValidException("You should give a value for stops_sequence_i and stops_sequence_r")
 
         if route_id is None:
