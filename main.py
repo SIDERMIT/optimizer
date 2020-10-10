@@ -89,18 +89,17 @@ from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
 from sidermit.optimization.optimizer import Optimizer
 
-n, l, g, p = 4, 2, 3, 4
+n, l, g, p = 4, 10, 0.85, 2
 graph_obj = Graph.build_from_parameters(n, l, g, p)
-demand_obj = Demand.build_from_parameters(graph_obj, 10000, 0.9, 0.5, 0.5)
+demand_obj = Demand.build_from_parameters(graph_obj, 300000, 0.5, 0.3, 0.3)
 network_obj = TransportNetwork(graph_obj)
 
-passenger_obj = Passenger(va=1, pv=1, pw=1, pa=1, pt=1, spv=1, spw=1, spa=1, spt=1)
+passenger_obj = Passenger(va=4, pv=1, pw=2, pa=3, pt=8, spv=1, spw=2, spa=3, spt=8)
 
-mode = TransportMode(name='mode', bya=1, co=1, c1=1, c2=1, v=1, t=1, fmax=40, kmax=100,
-                     theta=1, tat=1, d=1, fini=28)
-routes = network_obj.get_feeder_routes(mode) + network_obj.get_radial_routes(mode, short=True,
-                                                                             express=False) + network_obj.get_diametral_routes(
-    mode, short=True, express=False, jump=1) + network_obj.get_circular_routes(mode)
+[bus, metro] = TransportMode.get_default_modes()
+
+routes = network_obj.get_feeder_routes(metro) + network_obj.get_radial_routes(metro, short=True, express=False) \
+         + network_obj.get_diametral_routes(bus, short=True, express=False, jump=1)
 
 for route in routes:
     network_obj.add_route(route)

@@ -315,13 +315,18 @@ class Optimizer:
         return False
 
     @staticmethod
-    def status_optimization(list_res) -> bool:
+    def status_optimization(better_res) -> bool:
         """
         to get a information about status of external optimization
-        :param list_res:List[(fopt, success, status, message, constr_violation, vrc)]
+        :param better_res:(fopt, success, status, message, constr_violation, vrc)
         :return: true if status is success, exceptions if not
         """
-        fopt, success, status, message, constr_violation, fun = list_res[len(list_res) - 1]
+
+        if better_res is None:
+            raise NoOptimalSolutionFoundException(
+                "No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.")
+
+        fopt, success, status, message, constr_violation, fun = better_res
 
         for f in fopt:
             if f < -0.1:
@@ -329,17 +334,20 @@ class Optimizer:
 
         if abs(constr_violation) > 0.1:
             raise ConstraintViolationException(
-                "Maximum constraint violation at the solution {}. You can try with other fini".format(constr_violation))
+                "Maximum constraint violation at the solution {}. You can try with other fini or total demand is very large for the proposed network.".format(
+                    constr_violation))
 
         if status == 0 or status == 3:
-            raise NoOptimalSolutionFoundException("No optimal solution was found. You can try with other fini")
+            raise NoOptimalSolutionFoundException(
+                "No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.")
 
         return True
 
     @staticmethod
     def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                               network_obj: TransportNetwork,
-                              f: defaultdict_float = None, tolerance: float = 0.01) -> List[Tuple]:
+                              f: defaultdict_float = None, tolerance: float = 0.01,
+                              number_of_iteration: int = 5) -> Tuple:
         """
         method to do external optimization process, several iterations of internal optimization with fixed
         hyperpaths in each
@@ -349,7 +357,8 @@ class Optimizer:
         :param network_obj: TransportNetwork object
         :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
         :param tolerance: float, tolerance to external optimization
-        :return: List[(fopt, success, status, message, constr_violation, vrc)]
+        :param number_of_iteration: int, max. number of iterations
+        :return: (fopt, success, status, message, constr_violation, vrc)
         """
 
         list_res = []
@@ -365,22 +374,43 @@ class Optimizer:
         pre_f, _, _, _, _, _ = list_res[0]
         new_f, _, _, _, _, _ = list_res[1]
 
-        # mientras criterio de tolerancia externo se cumpla
-        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
+        iteration = 1
+        # mientras criterio de tolerancia externo no se cumpla o se llegue al maximo numero de iteraciones
+        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance) and iteration < number_of_iteration:
             pre_f = new_f
             dic_new_f = opt_obj.fopt_to_f(new_f)
             opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
             res = opt_obj.internal_optimization()
             list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
             new_f = res.x
+            iteration += 1
 
-        if opt_obj.status_optimization(list_res):
-            return list_res
+        better_result = opt_obj.get_better_result(list_res)
+
+        if opt_obj.status_optimization(better_result):
+            return better_result
+
+    @staticmethod
+    def get_better_result(list_res):
+        valid_result = []
+        for x, success, status, message, constr_violation, fun in list_res:
+            if status not in [0, 3, -1] and abs(constr_violation) < 0.1:
+                valid_result.append((x, success, status, message, constr_violation, fun))
+
+        better_result = None
+        max_fun = float("inf") * -1
+        for x, success, status, message, constr_violation, fun in valid_result:
+            if fun > max_fun:
+                max_fun = fun
+                better_result = (x, success, status, message, constr_violation, fun)
+
+        return better_result
 
     @staticmethod
     def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                              network_obj: TransportNetwork,
-                             f: defaultdict_float = None, tolerance: float = 0.01) -> Tuple:
+                             f: defaultdict_float = None, tolerance: float = 0.01,
+                             max_number_of_iteration: int = 5) -> Tuple:
         """
         obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
         :param graph_obj: Graph object
@@ -389,15 +419,17 @@ class Optimizer:
         :param network_obj: TransportNetwork object
         :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
         :param tolerance: float, tolerance to external optimization
+        :param max_number_of_iteration: int, max. number of iteration
         :return: fopt, success, status, message, constr_violation, vrc
         """
 
         opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
-        list_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f, tolerance)
+        better_result = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f, tolerance,
+                                                      number_of_iteration=max_number_of_iteration)
 
-        print(opt_obj.string_network_optimization(list_res[len(list_res) - 1]))
+        print(opt_obj.string_network_optimization(better_result))
 
-        return list_res[len(list_res) - 1]
+        return better_result
 
     def string_network_optimization(self, res: Tuple) -> str:
         """
