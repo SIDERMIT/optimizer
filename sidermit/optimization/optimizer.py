@@ -398,9 +398,9 @@ class Optimizer:
                 valid_result.append((x, success, status, message, constr_violation, fun))
 
         better_result = None
-        max_fun = float("inf") * -1
+        max_fun = float("inf")
         for x, success, status, message, constr_violation, fun in valid_result:
-            if fun > max_fun:
+            if fun < max_fun:
                 max_fun = fun
                 better_result = (x, success, status, message, constr_violation, fun)
 
