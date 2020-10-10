@@ -64,5 +64,24 @@ class test_constrains(unittest.TestCase):
         ineq_f = Constrains.fmax_constrains(graph_obj, network_obj.get_routes(), network_obj.get_modes(), f)
 
         self.assertEqual(ineq_f,
-                         [-136.0, -40, -136.0, -40, -143.0, -12.0, -143.0, -12.0, -150, -40, -150, -40, -136.0, -40,
-                          -136.0, -40, -143.0, -12.0, -143.0, -12.0])
+                         [-586.0,
+                          -40,
+                          -586.0,
+                          -40,
+                          -593.0,
+                          -12.0,
+                          -593.0,
+                          -12.0,
+                          -600,
+                          -40,
+                          -600,
+                          -40,
+                          -586.0,
+                          -40,
+                          -586.0,
+                          -40,
+                          -593.0,
+                          -12.0,
+                          -593.0,
+                          -12.0]
+                         )
