@@ -295,8 +295,8 @@ class Optimizer:
         """
         dif = 0
         for i in range(len(prev_f)):
-            dif += (prev_f[i] - new_f[i]) ** len(prev_f)
-        dif = dif ** (1 / len(prev_f))
+            dif += abs(prev_f[i] - new_f[i])
+        dif = dif  # ** (1 / len(prev_f))
         print("f_norm_distance: {}".format(dif))
         return dif
 
@@ -394,8 +394,14 @@ class Optimizer:
     def get_better_result(list_res):
         valid_result = []
         for x, success, status, message, constr_violation, fun in list_res:
-            if status not in [0, 3, -1] and abs(constr_violation) < 0.1:
-                valid_result.append((x, success, status, message, constr_violation, fun))
+            if status not in [0, 3, -1] and abs(constr_violation) < 0.001:
+                cond_f = True
+                for f in x:
+                    if f < 0:
+                        cond_f = False
+                        break
+                if cond_f:
+                    valid_result.append((x, success, status, message, constr_violation, fun))
 
         better_result = None
         max_fun = float("inf")
@@ -487,6 +493,9 @@ class Optimizer:
         travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
                                                            final_optimizer.graph_obj.get_edges_distance())
         cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        print("travel time\t", travel_time_line)
+        print("cycle time\t", cycle_time_line)
 
         for route in final_optimizer.network_obj.get_routes():
 
