@@ -120,7 +120,7 @@ class Route:
         :param sequence: String
         :return: List[node id]
         """
-        if sequence == "":
+        if sequence == "" or sequence is None:
             return []
 
         nodes_split = sequence.split(",")
@@ -140,6 +140,9 @@ class Route:
         :param stops_list: list of stops sequence
         :return: True if parameters are valid. Raise a exceptions if not
         """
+        if not stops_list:
+            raise StopSequenceIsNotValidException("stop sequence is not valid, this is empty")
+
         # to check if each stops be in node_sequences
         for stop in stops_list:
             if stop not in nodes_list:
@@ -160,6 +163,9 @@ class Route:
         :param nodes_list_r: list of node sequence (return direction)
         :return: True if parameters are valid. Raise a exceptions if not.
         """
+        if not nodes_list_i or not nodes_list_r:
+            raise NodeSequencesIsNotValidException("Node sequence is empty, this is not valid sequence")
+
         if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
                 nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
             raise NotCycleException("sequence of nodes of both directions do not form a cycle")
