@@ -274,6 +274,7 @@ class ExtendedGraph:
                                 tree_graph[city_node][mode_obj].append((route, "R"))
                         else:
                             tree_graph[city_node][mode_obj].append((route, "R"))
+
         return tree_graph
 
     @staticmethod
@@ -382,7 +383,6 @@ class ExtendedGraph:
 
         extended_graph_nodes = defaultdict(lambda: defaultdict(list))
         for route_node in route_nodes:
-            # print(route_node)
             stop_node = route_node.stop_node
             city_node = stop_node.city_node
             extended_graph_nodes[city_node][stop_node].append(route_node)

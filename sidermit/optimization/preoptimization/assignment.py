@@ -3,7 +3,6 @@ from typing import List
 
 from sidermit.optimization.preoptimization import ExtendedEdge, ExtendedNode
 from sidermit.optimization.preoptimization import StopNode, RouteNode
-from sidermit.publictransportsystem import RouteType, Route
 
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
 defaultdict3_float = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
