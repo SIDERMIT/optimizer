@@ -75,10 +75,6 @@ class TransportModeTest(unittest.TestCase):
         with self.assertRaises(exceptions.TatIsNotValidExceptions):
             TransportMode(name, bya, co, c1, c2, v, t, fmax, kmax, theta, None,
                           d, fini)
-        with self.assertRaises(exceptions.DIsNotValidExceptions):
-            TransportMode(name, bya, co, c1, c2, v, t, fmax,
-                          kmax, theta, tat, -1, fini)
-
         with self.assertRaises(exceptions.FiniIsNotValidException):
             TransportMode(name, bya, co, c1, c2, v, t, fmax,
                           kmax, theta, tat, d, -1)

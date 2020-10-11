@@ -81,12 +81,12 @@ class TransportMode:
         self.c2 = c2
         self.v = v
         self.t = t
-        self.fmax = fmax
+        self.fmax = fmax * d
         self.kmax = kmax
         self.theta = theta
         self.tat = tat
         self.d = d
-        self.fini = fini
+        self.fini = fini * d
 
     @staticmethod
     def get_default_modes() -> List[TransportMode]:
@@ -95,7 +95,7 @@ class TransportMode:
         :return: List[TransportMode]
         """
         bus_transport_mode = TransportMode("bus", 1, 8.61, 0.15, 0, 20, 2.5,
-                                           150 * 4, 160, 0.7, 0, 4, 28 * 4)
+                                           150, 160, 0.7, 0, 4, 28)
         metro_transport_mode = TransportMode("metro", 0, 80.91, 0.3, 933.15,
                                              40, 0.33, 40, 1440, 0.5, 1, 1, 28)
 
