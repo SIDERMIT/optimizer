@@ -50,9 +50,9 @@ class test_users_cost(unittest.TestCase):
         ta, te, tv, t = CU_obj.resources_consumer(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj,
                                                   passenger_obj.va, f, z, v)
 
-        self.assertEqual(round(ta, 4), 3.3963)
-        self.assertEqual(round(te, 4), 13.4805)
-        self.assertEqual(round(tv, 4), 73.9559)
+        self.assertEqual(round(ta, 4), 3.069)
+        self.assertEqual(round(te, 4), 13.9597)
+        self.assertEqual(round(tv, 4), 74.685)
         self.assertEqual(round(t, 4), 41.6667)
 
     def test_user_cost(self):
@@ -94,4 +94,4 @@ class test_users_cost(unittest.TestCase):
         CU = CU_obj.get_users_cost(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj, f, passenger_obj, z,
                                    v)
 
-        self.assertEqual(round(CU, 4), 971.0964)
+        self.assertEqual(round(CU, 4), 973.0301)

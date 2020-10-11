@@ -69,8 +69,8 @@ class test_graph(unittest.TestCase):
                         stop_metro_p1 = stop_node
 
         self.assertEqual(round(self.OD_assignment[P1][CBD][stop_bus_p1], 2), 100)
-        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_bus_p1], 2), 49.88)
-        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_metro_p1], 2), 50.12)
+        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_bus_p1], 2), 84.88)
+        self.assertEqual(round(self.OD_assignment[P1][SC1][stop_metro_p1], 2), 15.12)
 
     def test_get_alighting_and_boarding(self):
         """
@@ -110,14 +110,14 @@ class test_graph(unittest.TestCase):
                     if city_node.graph_node.name == "SC_1":
                         stop_metro_sc1 = stop_node
 
-        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_p1], 2), 0.74)
+        self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_p1], 2), 0.85)
         self.assertEqual(round(z["R_bus_1"]["I"][stop_bus_sc1], 2), 0.89)
         self.assertEqual(round(z["R_bus_1"]["R"][stop_bus_cbd], 2), 0.74)
         self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_cbd], 2), 1.49)
-        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_sc1], 2), 0.15)
+        self.assertEqual(round(v["R_bus_1"]["I"][stop_bus_sc1], 2), 0.25)
         self.assertEqual(round(v["R_bus_1"]["R"][stop_bus_sc1], 2), 0.74)
-        self.assertEqual(round(z["F_metro_1"]["I"][stop_metro_p1], 2), 0.15)
-        self.assertEqual(round(v["F_metro_1"]["I"][stop_metro_sc1], 2), 0.15)
+        self.assertEqual(round(z["F_metro_1"]["I"][stop_metro_p1], 2), 0.04)
+        self.assertEqual(round(v["F_metro_1"]["I"][stop_metro_sc1], 2), 0.04)
         self.assertEqual(round(z["F_metro_1"]["R"][stop_metro_sc1], 2), 0)
 
     def test_most_loaded_section(self):
@@ -138,6 +138,6 @@ class test_graph(unittest.TestCase):
 
         self.assertEqual(len(loaded_section), 4)
         self.assertEqual(loaded_section['F_metro_1'], loaded_section['F_metro_2'])
-        self.assertEqual(loaded_section['F_metro_1'], 0.1491638321995465)
+        self.assertEqual(loaded_section['F_metro_1'], 0.044997165532879815)
         self.assertEqual(loaded_section['R_bus_1'], loaded_section['R_bus_2'])
         self.assertEqual(loaded_section['R_bus_1'], 1.4880952380952384)

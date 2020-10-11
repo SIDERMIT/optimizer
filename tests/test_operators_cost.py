@@ -79,8 +79,8 @@ class test_operators_cost(unittest.TestCase):
 
         line_cycle_time = OperatorsCost.get_cycle_time(z, v, network_obj.get_routes(), lines_travel_time)
 
-        self.assertEqual(round(line_cycle_time["F_metro_1"], 7), 0.2500273)
-        self.assertEqual(round(line_cycle_time["R_bus_1"], 7), 1.5032033)
+        self.assertEqual(round(line_cycle_time["F_metro_1"], 7), 0.2500082)
+        self.assertEqual(round(line_cycle_time["R_bus_1"], 7), 1.5032756)
         self.assertEqual(line_cycle_time["l1"], 0)
 
     def test_get_operators_cost(self):
