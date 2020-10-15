@@ -494,9 +494,6 @@ class Optimizer:
                                                            final_optimizer.graph_obj.get_edges_distance())
         cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
 
-        print("travel time\t", travel_time_line)
-        print("cycle time\t", cycle_time_line)
-
         for route in final_optimizer.network_obj.get_routes():
 
             # flota de buses

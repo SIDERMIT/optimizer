@@ -389,10 +389,6 @@ class TransportNetwork:
         stops_sequence_i = nodes_sequence_i
         stops_sequence_r = nodes_sequence_r
 
-        print("get_circular_routes (network): nodes sequence")
-        print(nodes_sequence_i)
-        print(nodes_sequence_r)
-
         route1 = Route(route_id_i, mode_obj, nodes_sequence_i, "", stops_sequence_i, "", _type=RouteType.CIRCULAR)
         route2 = Route(route_id_r, mode_obj, "", nodes_sequence_r, "", stops_sequence_r, _type=RouteType.CIRCULAR)
 
