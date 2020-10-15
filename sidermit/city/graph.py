@@ -276,9 +276,9 @@ class Graph:
         if l < 0:
             raise LIsNotValidNumberException('L cannot be a negative number')
         if g < 0:
-            raise GIsNotValidNumberException('G cannot be a negative number')
+            raise GIsNotValidNumberException('g cannot be a negative number')
         if p < 0:
-            raise PIsNotValidNumberException('n cannot be a negative number')
+            raise PIsNotValidNumberException('p cannot be a negative number')
         if etha is None and etha_zone is not None:
             raise EthaValueRequiredException("must give value for etha")
         if etha is not None and etha_zone is None:
