@@ -554,7 +554,7 @@ class Optimizer:
                         continue
                     else:
                         node_j = node_sequence[i]
-                        sub_table.append((node_i, node_j, charge_ij))
+                        sub_table.append((node_i, node_j, abs(charge_ij)))
                         node_i = node_j
                         charge_ij = load_i[i] / max(load_i)
 
@@ -566,7 +566,8 @@ class Optimizer:
                     sub_table_r = sub_table
 
                 output.append((
-                    route.id, f[route.id], k[route.id], b, cycle_time_line[route.id] * 60, co, charge_min, sub_table_i,
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i,
                     sub_table_r))
             else:
                 # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
@@ -613,7 +614,7 @@ class Optimizer:
                         charge_ij = charge
                         continue
                     else:
-                        sub_table_i.append((node_i, node_j, charge_ij))
+                        sub_table_i.append((node_i, node_j, abs(charge_ij)))
                         if charge_min > charge_ij:
                             charge_min = charge_ij
                         node_i = node_j
@@ -628,14 +629,15 @@ class Optimizer:
                         charge_ij = charge
                         continue
                     else:
-                        sub_table_r.append((node_i, node_j, charge_ij))
+                        sub_table_r.append((node_i, node_j, abs(charge_ij)))
                         if charge_min > charge_ij:
                             charge_min = charge_ij
                         node_i = node_j
                         charge_ij = charge
 
                 output.append((
-                    route.id, f[route.id], k[route.id], b, cycle_time_line[route.id] * 60, co, charge_min, sub_table_i,
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i,
                     sub_table_r))
 
         return output
@@ -649,11 +651,13 @@ class Optimizer:
         sub_table_i: List[(node_i, node_j, lambda)]
         :return: str
         """
-        line = "route_id;f[veh/hr];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r"
+        line = "route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r"
 
-        for route_id, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
-            line += "\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, f, k, b, cycle_time, co,
-                                                                                  charge_min, sub_table_i, sub_table_r)
+        for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
+            line += "\n{};{:.2f};{:.2f}{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, F, f, k, b,
+                                                                                         cycle_time, co,
+                                                                                         charge_min, sub_table_i,
+                                                                                         sub_table_r)
         return line
 
     def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:
