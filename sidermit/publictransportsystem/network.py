@@ -499,7 +499,7 @@ class TransportNetwork:
         zones = self.__graph_obj.get_zones()
 
         if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
-            raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+            raise JumpIsNotValidException("jump must be a int in range (0 - (n° zones)/2)")
 
         end = len(zones)
         if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
@@ -577,7 +577,7 @@ class TransportNetwork:
         zones = self.__graph_obj.get_zones()
 
         if jump > len(zones) / 2 or jump <= 0 or not isinstance(jump, int):
-            raise JumpIsNotValidException("jump must be a int in range (0-n° zones)")
+            raise JumpIsNotValidException("jump must be a int in range (0 - (n° zones)/2)")
 
         end = len(zones)
         if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
