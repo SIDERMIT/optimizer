@@ -3,6 +3,7 @@ import unittest
 from sidermit.city import Graph, Demand
 from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath
 from sidermit.publictransportsystem import *
+from sidermit.exceptions import TransportNetworkException
 
 
 class test_hyper_path(unittest.TestCase):
@@ -29,7 +30,8 @@ class test_hyper_path(unittest.TestCase):
 
         hyper_path_obj = Hyperpath(extended_graph_obj, passenger_obj)
 
-        self.assertTrue(not hyper_path_obj.network_validator(OD_matrix))
+        with self.assertRaises(TransportNetworkException):
+            hyper_path_obj.network_validator(OD_matrix)
 
         for route in radial:
             network_obj.add_route(route)

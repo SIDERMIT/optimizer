@@ -64,7 +64,8 @@ class Hyperpath:
                             conection = True
                             break
                     if conection is False:
-                        return False
+                        raise TransportNetworkException(
+                            "par OD {}-{} without connection".format(origin_id, destination_id))
         # to check network must has until 2 TransportMode
         list_mode = []
         for city_node in nodes:
@@ -453,8 +454,7 @@ class Hyperpath:
                         Vij[origin][destination] = vij
 
         else:
-            raise TransportNetworkIsNotValidException(
-                "each OD pair with trips must have at least one path between origin and destination and no more of 2 TransportMode defined in the network")
+            raise TransportNetworkIsNotValidException("Network is not valid")
 
         return hyperpaths, labels, successors, frequency, Vij
 

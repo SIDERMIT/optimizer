@@ -22,7 +22,8 @@ class TransportModeTest(unittest.TestCase):
 
         m.remove_mode("metro")
 
-        self.assertTrue(not m.is_valid_to_assignment_step())
+        with self.assertRaises(exceptions.TransportNetworkException):
+            m.is_valid_to_assignment_step()
 
     def test_raises_mode_exceptions(self):
         """

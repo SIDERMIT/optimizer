@@ -9,7 +9,8 @@ from sidermit.exceptions import CoIsNotValidExceptions, \
     NameIsNotValidExceptions, KmaxIsNotValidExceptions, \
     TatIsNotValidExceptions, DIsNotValidExceptions, ByaIsNotValidExceptions, \
     ThetaIsNotValidExceptions, ModeDoesNotExistExceptions, \
-    ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException, FiniIsNotValidException
+    ModeNotFoundExceptions, AddModeExceptions, ModeIsNotValidException, FiniIsNotValidException, \
+    TransportNetworkException
 
 
 def mode_property(property_name, comp_function, exception_instance,
@@ -129,10 +130,14 @@ class TransportModeManager:
             return True
 
         if len(self.__modes) == 2:
+            cond_d = False
             for mode in self.__modes:
                 if mode.d == 1:
                     return True
-        return False
+            if not cond_d:
+                raise TransportNetworkException("Network must have 1 mode with parameter d = 1")
+
+        raise TransportNetworkException("Network must have 1 or 2 modes only defined")
 
     def get_mode(self, name: str) -> TransportMode:
         """
