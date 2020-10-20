@@ -567,10 +567,10 @@ class Optimizer:
 
                 output.append((
                     route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
-                    co, abs(charge_min), sub_table_i,
-                    sub_table_r))
+                    co, abs(charge_min), sub_table_i, sub_table_r))
             else:
                 # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+                total_pax = 0
                 for node_id in nodes_sequence_i:
                     bool_add = False
                     for stopnode in z[route.id]["I"]:
@@ -579,13 +579,15 @@ class Optimizer:
                             pax_a = v[route.id]["I"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
-                            # print(str(node_id), total_pax, k[route.id], route.id)
+                            # print(str(node_id), total_pax, k[route.id], route.id, "I")
                             charge_i.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
+                        # print(str(node_id), total_pax, k[route.id], route.id, "I", "no add")
                         charge_i.append((node_id, total_pax / k[route.id]))
 
+                total_pax = 0
                 for node_id in nodes_sequence_r:
                     bool_add = False
                     for stopnode in z[route.id]["R"]:
@@ -594,11 +596,12 @@ class Optimizer:
                             pax_a = v[route.id]["R"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
-                            # print(str(node_id), total_pax, k[route.id], route.id)
+                            # print(str(node_id), total_pax, k[route.id], route.id, "R")
                             charge_r.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
+                        # print(str(node_id), total_pax, k[route.id], route.id, "R", "no add")
                         charge_r.append((node_id, total_pax / k[route.id]))
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
@@ -637,8 +640,7 @@ class Optimizer:
 
                 output.append((
                     route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
-                    co, abs(charge_min), sub_table_i,
-                    sub_table_r))
+                    co, abs(charge_min), sub_table_i, sub_table_r))
 
         return output
 
@@ -655,9 +657,9 @@ class Optimizer:
 
         for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
             line += "\n{};{:.2f};{:.2f}{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, F, f, k, b,
-                                                                                         cycle_time, co,
-                                                                                         charge_min, sub_table_i,
-                                                                                         sub_table_r)
+                                                                                        cycle_time, co,
+                                                                                        charge_min, sub_table_i,
+                                                                                        sub_table_r)
         return line
 
     def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:

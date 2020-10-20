@@ -89,23 +89,31 @@ from sidermit.city import Graph, Demand
 from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
 from sidermit.optimization.optimizer import Optimizer
 
-n, l, g, p = 4, 10, 0.85, 2
+n, l, g, p = 4, 10, 0.5, 2
 graph_obj = Graph.build_from_parameters(n, l, g, p)
-demand_obj = Demand.build_from_parameters(graph_obj, 300000, 0.5, 0.3, 0.3)
+demand_obj = Demand.build_from_parameters(graph_obj, 25000, 0.5, 0.3, 0.3)
 network_obj = TransportNetwork(graph_obj)
 
-passenger_obj = Passenger(va=4, pv=1, pw=2, pa=3, pt=8, spv=1, spw=2, spa=3, spt=8)
+passenger_obj = Passenger(va=4, pv=2.74, pw=2 * 2.74, pa=3 * 2.74, pt=16, spv=2.74, spw=2 * 2.74, spa=3 * 2.74, spt=16)
 
 [bus, metro] = TransportMode.get_default_modes()
 
-routes = network_obj.get_feeder_routes(metro) + network_obj.get_radial_routes(metro, short=True, express=False) \
-         + network_obj.get_diametral_routes(bus, short=True, express=False, jump=1)
+d2_bus = network_obj.get_diametral_routes(bus, 2)
+d1_bus = network_obj.get_diametral_routes(bus, 1)
+t1_bus = network_obj.get_tangencial_routes(bus, 1)
+ds2_metro = network_obj.get_diametral_routes(metro, 2, True)
+r_bus = network_obj.get_radial_routes(bus)
+c = network_obj.get_circular_routes(bus)
+
+routes = r_bus + c # + t1_bus + d2_bus + d1_bus  + ds2_metro
 
 for route in routes:
     network_obj.add_route(route)
 
 opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj)
 
-res = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj)
+res = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=5)
 print(opt_obj.string_overall_results(opt_obj.overall_results(res)))
 print(opt_obj.string_network_results(opt_obj.network_results(res)))
+
+opt_obj.write_file_network_results("output.csv", opt_obj.network_results(res))
