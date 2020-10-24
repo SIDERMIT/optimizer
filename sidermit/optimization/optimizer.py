@@ -656,7 +656,7 @@ class Optimizer:
         line = "route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r"
 
         for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
-            line += "\n{};{:.2f};{:.2f}{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, F, f, k, b,
+            line += "\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, F, f, k, b,
                                                                                         cycle_time, co,
                                                                                         charge_min, sub_table_i,
                                                                                         sub_table_r)
