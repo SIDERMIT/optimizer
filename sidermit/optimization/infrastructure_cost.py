@@ -25,11 +25,10 @@ class InfrastructureCost:
 
         mode_distance = defaultdict(float)
 
-        edge_list = []
-
-        for edge in edges:
-            d_e = edges_distance[edge.node1.id][edge.node2.id]
-            for mode in list_modes:
+        for mode in list_modes:
+            edge_list = []
+            for edge in edges:
+                d_e = edges_distance[edge.node1.id][edge.node2.id]
                 for route in routes:
                     if route.mode == mode:
                         if f[route.id] != 0:
@@ -40,7 +39,7 @@ class InfrastructureCost:
                             for i in range(len(node_sequence_i) - 1):
                                 j = i + 1
                                 if node_sequence_i[i] == edge.node1.id and node_sequence_i[j] == edge.node2.id and (
-                                edge.node1.id, edge.node2.id) not in edge_list:
+                                        edge.node1.id, edge.node2.id) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
                                     edge_list.append((edge.node1.id, edge.node2.id))
                                     edge_list.append((edge.node2.id, edge.node1.id))
@@ -51,7 +50,7 @@ class InfrastructureCost:
                             for i in range(len(node_sequence_r) - 1):
                                 j = i + 1
                                 if node_sequence_r[i] == edge.node1.id and node_sequence_r[j] == edge.node2.id and (
-                                edge.node1.id, edge.node2.id) not in edge_list:
+                                        edge.node1.id, edge.node2.id) not in edge_list:
                                     mode_distance[mode] += d_e * mode.d
                                     edge_list.append((edge.node1.id, edge.node2.id))
                                     edge_list.append((edge.node2.id, edge.node1.id))
