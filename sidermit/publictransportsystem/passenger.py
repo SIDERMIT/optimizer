@@ -33,13 +33,13 @@ class Passenger:
     pt = passenger_property('_pt', operator.lt, PtIsNotValidExceptions(
         "You must give a value >= 0 for pt"), docstring="Pure transfer penalty [EIV]")
     spv = passenger_property('_spv', operator.lt, SpvIsNotValidExceptions(
-        "You must give a value >= 0 for spv"), docstring="Subjetive value of in-vehicle time savings [US$/h]")
+        "You must give a value >= 0 for spv"), docstring="Social value of in-vehicle time savings [US$/h]")
     spw = passenger_property('_spw', operator.lt, SpwIsNotValidExceptions(
-        "You must give a value >= 0 for spw"), docstring="Subjetive value of waiting time savings [US$/h]")
+        "You must give a value >= 0 for spw"), docstring="Social value of waiting time savings [US$/h]")
     spa = passenger_property('_spa', operator.lt, SpaIsNotValidExceptions(
-        "You must give a value >= 0 for spa"), docstring="Subjetive value of access time savings [US$/h]")
+        "You must give a value >= 0 for spa"), docstring="Social value of access time savings [US$/h]")
     spt = passenger_property('_spt', operator.lt, SptIsNotValidExceptions(
-        "You must give a value >= 0 for spt"), docstring="Subjetive pure transfer penalty [EIV]")
+        "You must give a value >= 0 for spt"), docstring="Social pure transfer penalty [EIV]")
 
     def __init__(self, va: float, pv: float, pw: float, pa: float, pt: float,
                  spv: float, spw: float, spa: float, spt: float):

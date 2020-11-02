@@ -162,7 +162,7 @@ class Hyperpath:
                     if edge.nodej.city_node == node_city_destination:
                         edge_t = 0
                 if edge.type == ExtendedEdgesType.ACCESS:
-                    edge_t = edge.t * self.passenger_obj.spa / self.passenger_obj.spv
+                    edge_t = edge.t * self.passenger_obj.pa / self.passenger_obj.pv
 
                 # equivalent to ~t_a
                 t_i = edge_t + min(labels[j], labels_inf[j])
@@ -181,7 +181,7 @@ class Hyperpath:
                     if frequencies[i] == 0 and labels[i] == float('inf'):
                         # print(edge.type)
                         successor[i].append(edge)
-                        labels[i] = (theta * self.passenger_obj.spw / self.passenger_obj.spv + edge.f * t_i) / edge.f
+                        labels[i] = (theta * self.passenger_obj.pw / self.passenger_obj.pv + edge.f * t_i) / edge.f
                         frequencies[i] = frequencies[i] + edge.f
                     # previously assigned label
                     else:
@@ -199,7 +199,7 @@ class Hyperpath:
                         if edge.nodej.city_node == node_city_destination:
                             edge_b_t = 0
                     if edge_b.type == ExtendedEdgesType.ACCESS:
-                        edge_b_t = edge_b.t * self.passenger_obj.spa / self.passenger_obj.spv
+                        edge_b_t = edge_b.t * self.passenger_obj.pa / self.passenger_obj.pv
 
                     # equivalent to ~t_b
                     t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
@@ -230,14 +230,14 @@ class Hyperpath:
                     label[stop_node] = labels[stop_node]
                     if city_node == node_city_origin:
                         label[stop_node] = labels[
-                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.spa / self.passenger_obj.spv
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
                     for suc in successor[stop_node]:
                         successors[stop_node].append(suc)
                 else:
                     label[stop_node] = labels_inf[stop_node]
                     if city_node == node_city_origin:
                         label[stop_node] = labels_inf[
-                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.spa / self.passenger_obj.spv
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
 
                     if successor_inf.get(stop_node):
                         successors[stop_node].append(successor_inf[stop_node])
