@@ -26,7 +26,7 @@ class test_graph(unittest.TestCase):
             self.network_obj.add_route(route_obj=route)
 
         self.extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=self.network_obj.get_routes(),
-                                                sPTP=passenger_obj.spt, frequency_routes=None)
+                                                TP=passenger_obj.pt, frequency_routes=None)
         hyperpath_obj = Hyperpath(extended_graph_obj=self.extended_graph_obj, passenger_obj=passenger_obj)
 
         self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = hyperpath_obj.get_all_hyperpaths(

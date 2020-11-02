@@ -28,7 +28,7 @@ class test_users_cost(unittest.TestCase):
         for route in radial_routes_bus:
             network_obj.add_route(route_obj=route)
 
-        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
+        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), TP=passenger_obj.pt,
                                            frequency_routes=None)
         hyperpath_obj = Hyperpath(extended_graph_obj=extended_graph_obj, passenger_obj=passenger_obj)
 
@@ -72,7 +72,7 @@ class test_users_cost(unittest.TestCase):
         for route in radial_routes_bus:
             network_obj.add_route(route_obj=route)
 
-        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
+        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), TP=passenger_obj.pt,
                                            frequency_routes=None)
         hyperpath_obj = Hyperpath(extended_graph_obj=extended_graph_obj, passenger_obj=passenger_obj)
 
@@ -94,4 +94,4 @@ class test_users_cost(unittest.TestCase):
         CU = CU_obj.get_users_cost(hyperpaths, Vij, OD_assignment, successors, extended_graph_obj, f, passenger_obj, z,
                                    v)
 
-        self.assertEqual(round(CU, 4), 973.0301)
+        self.assertEqual(round(CU, 4), 336.8079)

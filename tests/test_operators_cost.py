@@ -55,7 +55,7 @@ class test_operators_cost(unittest.TestCase):
         for route in radial_routes_bus:
             network_obj.add_route(route_obj=route)
 
-        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), sPTP=passenger_obj.spt,
+        extended_graph_obj = ExtendedGraph(graph_obj=graph_obj, routes=network_obj.get_routes(), TP=passenger_obj.pt,
                                            frequency_routes=None)
         hyperpath_obj = Hyperpath(extended_graph_obj=extended_graph_obj, passenger_obj=passenger_obj)
 
