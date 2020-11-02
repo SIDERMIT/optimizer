@@ -49,9 +49,9 @@ class Optimizer:
         # definimos pasajeros
         self.passenger_obj = passenger_obj
         self.vp = self.passenger_obj.va
-        self.spa = self.passenger_obj.spa
-        self.spv = self.passenger_obj.spv
-        self.sPTP = self.passenger_obj.spt
+        self.pa = self.passenger_obj.pa
+        self.pv = self.passenger_obj.pv
+        self.TP = self.passenger_obj.pt
 
         # definimos red de transporte
         self.network_obj = network_obj
@@ -59,7 +59,7 @@ class Optimizer:
         # definimos frecuencia
         self.f, self.f_opt, self.lines_position = self.f0(f)
 
-        self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.sPTP, self.f)
+        self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.TP, self.f)
         self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
 
         # en este punto se debería levantar exception de que la red tiene mas de dos modos defnidos
@@ -67,8 +67,8 @@ class Optimizer:
         self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = self.hyperpath_obj.get_all_hyperpaths(
             self.demand_obj.get_matrix())
 
-        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.spa,
-                                                    self.spv)
+        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.pa,
+                                                    self.pv)
 
         self.len_constrains = len(self.get_constrains(self.f_opt))
         self.len_var = len(self.f_opt)
@@ -706,6 +706,7 @@ class Optimizer:
         CI = self.infrastructure_cost(f)
         CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
                             final_optimizer.successors, final_optimizer.extended_graph_obj, f, z, v)
+
         VRC = CO + CI + CU
 
         # resultados de usuarios
