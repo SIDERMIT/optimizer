@@ -114,14 +114,14 @@ defaultdict2_route_direction = defaultdict(lambda: defaultdict(List[Route, str])
 
 class ExtendedGraph:
 
-    def __init__(self, graph_obj: Graph, routes: List[Route], sPTP: float, frequency_routes: defaultdict_float = None):
+    def __init__(self, graph_obj: Graph, routes: List[Route], TP: float, frequency_routes: defaultdict_float = None):
         """
         class to create extended graph that agglomerates the city graph information and transport routes in the network.
         It incorporates the penalty of the transfer of the passenger and the frequencies of the routes for
         the construction of edges
         :param graph_obj: Graph object
         :param routes: list of routes in network associated
-        :param sPTP: penalty of the transfer of the passenger in EIV
+        :param TP: penalty of the transfer of the passenger in EIV
         :param frequency_routes: defauldict(float) with key: route_id and value: frequency [veh/hr] of the route_id.
         Default value is a a dictionary with a frequency of 28 [veh/hr] for all routes
         """
@@ -152,7 +152,7 @@ class ExtendedGraph:
         # list with all boarding edges, edges between stop_node->route_node
         boarding_edges = self.build_boarding_edges(self.__extended_graph_nodes, frequency_routes)
         # list with all alighting edges, edges between route_node->stop_node
-        alighting_edges = self.build_alighting_edges(self.__extended_graph_nodes, sPTP)
+        alighting_edges = self.build_alighting_edges(self.__extended_graph_nodes, TP)
         # list with all routes edges, edges between route_node(i-1)->route_node(i)
         routes_edges = self.build_route_edges(self.__extended_graph_nodes)
 
