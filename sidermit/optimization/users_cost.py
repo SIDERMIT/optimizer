@@ -221,9 +221,9 @@ class UsersCost:
         """
         ta, te, tv, t = self.resources_consumer(hyperpaths, Vij, assignment, successors,
                                                 extended_graph, passenger_obj.va, f, z, v)
-        pa = passenger_obj.pa
-        pv = passenger_obj.pv
-        pw = passenger_obj.pw
-        pt = passenger_obj.pt
+        pa = passenger_obj.spa
+        pv = passenger_obj.spv
+        pw = passenger_obj.spw
+        pt = passenger_obj.spt
 
-        return ta * pa + te * pw + tv * pv + t * pt
+        return ta * pa + te * pw + tv * pv + t * pt / 60 * pv
