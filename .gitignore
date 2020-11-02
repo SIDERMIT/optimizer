@@ -130,7 +130,6 @@ dmypy.json
 
 .idea/
 
-
 # main
 main.py
 main_scipy.py
