@@ -79,7 +79,7 @@ class Demand:
         """
 
         if vij < 0:
-            raise TripsValueIsNotValidException("trips value must be >= 0")
+            raise TripsValueIsNotValidException("cell value should be >= 0")
 
         if self.__matrix.get(origin_node_id):
             if destination_node_id in self.__matrix[origin_node_id]:
@@ -273,7 +273,7 @@ class Demand:
                 destination_node_id = nodes[j].id
                 vij = matrix[i][j]
                 if vij < 0:
-                    raise VijIsNotValidException("Vij should be >=0")
+                    raise VijIsNotValidException("cell value should be >= 0")
 
                 demand_obj.change_vij(origin_node_id, destination_node_id, vij)
 

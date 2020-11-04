@@ -287,7 +287,7 @@ class Graph:
             if etha < 0 or etha > 1:
                 raise EthaValueIsNotValidException("etha value is not valid. Try with value belong in [0-1]")
             elif etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
-                raise EthaZoneValueIsNotValidException("etha zone is not valid. Try with value belong in [1,...,n]")
+                raise EthaZoneValueIsNotValidException("etha zone is not valid. Try with value belong in [1,...,{}]".format(n))
         if angles is not None:
             if len(angles) != n:
                 raise AngleListLengthIsNotValidException("must give angle value for all zones")
