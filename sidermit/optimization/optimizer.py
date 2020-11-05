@@ -77,6 +77,8 @@ class Optimizer:
         self.len_constrains = len(self.get_constrains(self.f_opt))
         self.len_var = len(self.f_opt)
 
+        self.better_res = None  # (fopt, success, status, message, constr_violation, vrc)
+
     def f0(self, f: defaultdict_float = None) -> (defaultdict_float, List[float], defaultdict_str):
         """
         to get a relation between f as a dictionary and f_opt as a list to the optimizer
@@ -423,7 +425,7 @@ class Optimizer:
     def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                              network_obj: TransportNetwork,
                              f: defaultdict_float = None, tolerance: float = 0.01,
-                             max_number_of_iteration: int = None) -> Tuple:
+                             max_number_of_iteration: int = None) -> Optimizer:
         """
         obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
         :param graph_obj: Graph object
@@ -435,16 +437,23 @@ class Optimizer:
         :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
         it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
         converges
-        :return: fopt, success, status, message, constr_violation, vrc
+        :return: opt_obj
         """
 
         opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
-        better_result = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f, tolerance,
-                                                      number_of_iteration=max_number_of_iteration)
+        opt_obj.better_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f,
+                                                           tolerance, number_of_iteration=max_number_of_iteration)
 
-        logger.info(opt_obj.string_network_optimization(better_result))
+        logger.info(opt_obj.string_network_optimization(opt_obj.better_res))
 
-        return better_result
+        return opt_obj
+
+    def get_optimization_value(self) -> Tuple:
+        """
+        to get optimization value saved
+        :return: (fopt, success, status, message, constr_violation, vrc)
+        """
+        return self.better_res
 
     def string_network_optimization(self, res: Tuple) -> str:
         """
