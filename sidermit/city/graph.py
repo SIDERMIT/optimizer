@@ -287,7 +287,8 @@ class Graph:
             if etha < 0 or etha > 1:
                 raise EthaValueIsNotValidException("etha value is not valid. Try with value belong in [0-1]")
             elif etha_zone <= 0 or etha_zone > n or not isinstance(etha_zone, int):
-                raise EthaZoneValueIsNotValidException("etha zone is not valid. Try with value belong in [1,...,{}]".format(n))
+                raise EthaZoneValueIsNotValidException(
+                    "etha zone is not valid. Try with value belong in [1,...,{}]".format(n))
         if angles is not None:
             if len(angles) != n:
                 raise AngleListLengthIsNotValidException("must give angle value for all zones")
@@ -309,22 +310,23 @@ class Graph:
         return True
 
     @staticmethod
-    def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha=None, etha_zone=None,
-                              angles=None, Gi=None, Hi=None) -> Graph:
+    def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha: float = None,
+                              etha_zone: int = None, angles: List[float] = None, Gi: List[float] = None,
+                              Hi: List[float] = None) -> Graph:
         """
         to build a city graph with parameters information
         :param n: zone numbers.
         :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
         :param g: (>=0) to represent average distance of peripheries (= l + g * l).
         :param p: node width in meters, takes part in the demand assignment considering lateral access time.
-        :param etha: [0-1] CBD eccentricity ratio.
-        :param etha_zone: CBD eccentricity direction zone
-        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
-        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
-        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
-        List with asymmetry ratio for each zone with values >=0
-        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
-        List with asymmetry ratio for each zone with values >=0
+        :param etha: float, optional value in range [0-1], CBD eccentricity ratio.
+        :param etha_zone: int, optional value, CBD eccentricity direction zone
+        :param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
+        angle for each zone. Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: List[float], optional parameters, asymmetry parameter of the distance from the subcenters to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values >=0
+        :param Hi: List[float], optional parameters, asymmetry parameter of the distance from the peripheries to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values >=0
         :return: Graph
         """
 
