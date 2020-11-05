@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import logging
 from collections import defaultdict
 from typing import List, Tuple
 
@@ -13,6 +14,9 @@ from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
 from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph, ExtendedNode, ExtendedEdge
 from sidermit.publictransportsystem import Passenger
 from sidermit.publictransportsystem import TransportNetwork, RouteType
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 defaultdict_float = defaultdict(float)
 defaultdict2_float = defaultdict(lambda: defaultdict(float))
@@ -210,8 +214,6 @@ class Optimizer:
         CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
                             v)
 
-        # print("f: {}".format(fopt))
-        # print("VRC: {}".format(CO + CI + CU))
         return CO + CI + CU
 
     def get_constrains(self, fopt: List[float]) -> List[float]:
@@ -262,12 +264,12 @@ class Optimizer:
 
         bounds = Bounds(lb=lb, ub=ub)
         res = minimize(self.VRC, self.f_opt, method='trust-constr', constraints=nonlin_con, tol=0.01, bounds=bounds)
-        print(self.print_information_internal_optimization(res))
+        logger.info(self.string_information_internal_optimization(res))
 
         return res
 
     @staticmethod
-    def print_information_internal_optimization(res: OptimizeResult) -> str:
+    def string_information_internal_optimization(res: OptimizeResult) -> str:
         """
         to get a string with information about internal optimization
         :param res: OptimizeResult
@@ -297,7 +299,7 @@ class Optimizer:
         for i in range(len(prev_f)):
             dif += abs(prev_f[i] - new_f[i])
         dif = dif  # ** (1 / len(prev_f))
-        print("f_norm_distance: {}".format(dif))
+        logger.info("f_norm_distance: {}".format(dif))
         return dif
 
     def external_optimization_tolerance(self, prev_f: List[float], new_f: List[float], tol: float = 0.01) -> bool:
@@ -440,7 +442,7 @@ class Optimizer:
         better_result = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f, tolerance,
                                                       number_of_iteration=max_number_of_iteration)
 
-        print(opt_obj.string_network_optimization(better_result))
+        logger.info(opt_obj.string_network_optimization(better_result))
 
         return better_result
 
@@ -586,12 +588,11 @@ class Optimizer:
                             pax_a = v[route.id]["I"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
-                            # print(str(node_id), total_pax, k[route.id], route.id, "I")
+
                             charge_i.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
-                        # print(str(node_id), total_pax, k[route.id], route.id, "I", "no add")
                         charge_i.append((node_id, total_pax / k[route.id]))
 
                 total_pax = 0
@@ -603,12 +604,11 @@ class Optimizer:
                             pax_a = v[route.id]["R"][stopnode]
                             total_pax += pax_b - pax_a
                             total_b += pax_b
-                            # print(str(node_id), total_pax, k[route.id], route.id, "R")
+
                             charge_r.append((node_id, total_pax / k[route.id]))
                             bool_add = True
                             break
                     if bool_add is False:
-                        # print(str(node_id), total_pax, k[route.id], route.id, "R", "no add")
                         charge_r.append((node_id, total_pax / k[route.id]))
 
                 co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
@@ -664,9 +664,9 @@ class Optimizer:
 
         for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
             line += "\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}".format(route_id, F, f, k, b,
-                                                                                        cycle_time, co,
-                                                                                        charge_min, sub_table_i,
-                                                                                        sub_table_r)
+                                                                                         cycle_time, co,
+                                                                                         charge_min, sub_table_i,
+                                                                                         sub_table_r)
         return line
 
     def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:
