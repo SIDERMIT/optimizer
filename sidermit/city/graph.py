@@ -219,10 +219,11 @@ class Graph:
         :param format: GraphContentFormat
         :return: string with graph nodes information in a specific format file
         """
-
         line = ""
         if format == GraphContentFormat.PAJEK:
-            line = "*vertices {}{}".format(len(self.__nodes), "\n")
+            line += "Content format: [node_id] [node_name] [x] [y] [node_type] [zone_id] [node_width]\n"
+            line += "Content format: each row provides have whitespace separated values\n\n"
+            line += "*vertices {}{}".format(len(self.__nodes), "\n")
 
             for node_obj in self.__nodes:
                 node_type = None

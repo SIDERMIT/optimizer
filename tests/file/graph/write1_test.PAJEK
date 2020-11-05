@@ -1,3 +1,6 @@
+Content format: [node_id] [node_name] [x] [y] [node_type] [zone_id] [node_width]
+Content format: each row provides have whitespace separated values
+
 *vertices 5
 0 CBD 984.807753012208 173.64817766693034 CBD 0 0
 1 P_1 2954.423259036624 520.944533000791 P 1 0
