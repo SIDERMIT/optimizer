@@ -317,9 +317,9 @@ class Graph:
         """
         to build a city graph with parameters information
         :param n: zone numbers.
-        :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+        :param l: average distance in km of subcenters to (0,0) of the Cartesian plane.
         :param g: (>=0) to represent average distance of peripheries (= l + g * l).
-        :param p: node width in meters, takes part in the demand assignment considering lateral access time.
+        :param p: node width in km, takes part in the demand assignment considering lateral access time.
         :param etha: float, optional value in range [0-1], CBD eccentricity ratio.
         :param etha_zone: int, optional value, CBD eccentricity direction zone
         :param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
