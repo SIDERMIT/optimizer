@@ -1,10 +1,3 @@
-from sidermit.city import Graph, Demand
-from sidermit.optimization.preoptimization import ExtendedGraph, Hyperpath, Assignment, StopNode
-from sidermit.optimization import Optimizer, InfrastructureCost, OperatorsCost, UsersCost
-from sidermit.publictransportsystem import TransportNetwork, Passenger, TransportMode
-
-from collections import defaultdict
-
 # graph_obj = Graph.build_from_parameters(n=8, l=10, g=0.85, p=2)
 # demand_obj = Demand.build_from_parameters(graph_obj=graph_obj, y=100000, a=0.78, alpha=0.25, beta=0.22)
 # passenger_obj = Passenger.get_default_passenger()
@@ -86,34 +79,72 @@ from collections import defaultdict
 # print(CO_obj.get_operators_cost(network_obj.get_routes(), tiempo_ciclo, f, k))
 
 from sidermit.city import Graph, Demand
-from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
 from sidermit.optimization.optimizer import Optimizer
+from sidermit.publictransportsystem import TransportMode, TransportNetwork, Passenger
 
-n, l, g, p = 4, 10, 0.5, 2
+n, l, g, p = 4, 10, 0.85, 2
 graph_obj = Graph.build_from_parameters(n, l, g, p)
-demand_obj = Demand.build_from_parameters(graph_obj, 25000, 0.5, 0.3, 0.3)
+demand_obj = Demand.build_from_parameters(graph_obj, 300000, 0.78, 0.25, 0.22)
 network_obj = TransportNetwork(graph_obj)
 
-passenger_obj = Passenger(va=4, pv=2.74, pw=2 * 2.74, pa=3 * 2.74, pt=16, spv=2.74, spw=2 * 2.74, spa=3 * 2.74, spt=16)
+va = 4
+pv = 2.74
+pw = 2 * 2.74
+pa = 3 * 2.74
+pt = 16
+spv = 2.74
+spw = 2 * 2.74
+spa = 3 * 2.74
+spt = 16
+
+passenger_obj = Passenger(va=va, pv=pv, pw=pw, pa=pa, pt=pt, spv=spv, spw=spw, spa=spa, spt=spt)
 
 [bus, metro] = TransportMode.get_default_modes()
+bus.c2 = 92.39
 
+# dc4_metro = network_obj.get_diametral_routes(metro, 4, True)
+# tc1_bus = network_obj.get_tangencial_routes(bus, 1, True)
+# tc2_bus = network_obj.get_tangencial_routes(bus, 2, True)
+# dc3_bus = network_obj.get_diametral_routes(bus, 3, True)
+# dc4_bus = network_obj.get_diametral_routes(bus, 4, True)
+# rc_bus = network_obj.get_radial_routes(bus, True)
+# r_bus = network_obj.get_radial_routes(bus)
+# f_bus = network_obj.get_feeder_routes(bus)
+# t1_bus = network_obj.get_tangencial_routes(bus, 1)
+# t2_bus = network_obj.get_tangencial_routes(bus, 2)
+# d3_bus = network_obj.get_diametral_routes(bus, 3)
+# d4_bus = network_obj.get_diametral_routes(bus, 4)
+# c_bus = network_obj.get_circular_routes(bus)
+#
+# routes = dc4_metro + tc1_bus + tc2_bus + dc3_bus + dc4_bus + rc_bus + r_bus + f_bus + t1_bus + t2_bus + d3_bus + d4_bus + c_bus
+
+c = network_obj.get_circular_routes(bus)
 d2_bus = network_obj.get_diametral_routes(bus, 2)
 d1_bus = network_obj.get_diametral_routes(bus, 1)
 t1_bus = network_obj.get_tangencial_routes(bus, 1)
 ds2_metro = network_obj.get_diametral_routes(metro, 2, True)
 r_bus = network_obj.get_radial_routes(bus)
-c = network_obj.get_circular_routes(bus)
 
-routes = r_bus + c # + t1_bus + d2_bus + d1_bus  + ds2_metro
+routes = r_bus + t1_bus + ds2_metro + d2_bus  # + d1_bus + c
 
 for route in routes:
     network_obj.add_route(route)
 
-opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj)
+# static method to run a optimization, return optimizer object
+# max_number_of_iteration set in 5
+opt_obj = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=1)
 
-res = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=5)
-print(opt_obj.string_overall_results(opt_obj.overall_results(res)))
-print(opt_obj.string_network_results(opt_obj.network_results(res)))
+# to get a data structure with overall results
+overall_result = opt_obj.get_overall_results()
+# to get a data structure with network results
+network_result = opt_obj.get_network_results()
 
-opt_obj.write_file_network_results("output.csv", opt_obj.network_results(res))
+# to get a string with overall results and print in console
+print(opt_obj.string_overall_results())
+# to get a string with network results and print in console
+print(opt_obj.string_network_results())
+
+# to get csv file with network results
+opt_obj.write_file_network_results("output.csv")
+
+

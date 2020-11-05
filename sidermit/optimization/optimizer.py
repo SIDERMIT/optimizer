@@ -432,7 +432,8 @@ class Optimizer:
         :param demand_obj: Demand object
         :param passenger_obj: Passenger object
         :param network_obj: TransportNetwork object
-        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency, if f is None then fini of
+        each TransportMode defined in TransportNetwork define f.
         :param tolerance: float, tolerance to external optimization
         :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
         it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
@@ -492,14 +493,18 @@ class Optimizer:
         k = self.get_k(loaded_section_route)
         return final_optimizer, z, v, k, loaded_section_route
 
-    def network_results(self, res: Tuple) -> List[Tuple]:
+    def get_network_results(self) -> List[Tuple]:
         """
         to get transport network results per line-direction
-        :param res: optimization result: Tuple, (fopt, success, status, message, constr_violation, vrc)
         :return: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float, cycle_time [hr]: float,
         CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
         sub_table_i: List[(node_i, node_j, lambda)]
         """
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException("not solution found in optimizer object")
+
         output = []
 
         fopt, success, status, message, constr_violation, vrc = res
@@ -660,15 +665,13 @@ class Optimizer:
 
         return output
 
-    @staticmethod
-    def string_network_results(output_network_results: List[Tuple]) -> str:
+    def string_network_results(self) -> str:
         """
         to get a string with network results
-        :param output_network_results: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float,
-        cycle_time [hr]: float, CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
-        sub_table_i: List[(node_i, node_j, lambda)]
         :return: str
         """
+
+        output_network_results = self.get_network_results()
         line = "route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r"
 
         for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
@@ -678,24 +681,20 @@ class Optimizer:
                                                                                          sub_table_r)
         return line
 
-    def write_file_network_results(self, file_path, output_network_results: List[Tuple]) -> None:
+    def write_file_network_results(self, file_path) -> None:
         """
         to write output file with result of optimization transport network
         :param file_path: file path
-        :param output_network_results: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float,
-        cycle_time [hr]: float, CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
-        sub_table_i: List[(node_i, node_j, lambda)]
         :return: None
         """
-        string_lines = self.string_network_results(output_network_results)
+        string_lines = self.string_network_results()
         file = open(file_path, 'w', encoding='utf-8')
         file.write(string_lines)
         file.close()
 
-    def overall_results(self, res: Tuple) -> defaultdict:
+    def get_overall_results(self) -> defaultdict:
         """
         to get overall cost results per passenger
-        :param res: optimization result: Tuple, (fopt, success, status, message, constr_violation, vrc)
         :return: defaultdict:
 
         Key [unit]: value type
@@ -712,6 +711,11 @@ class Optimizer:
         vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
         lines_mode : dic[TransportMode]=int [lines])
         """
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException("not solution found in optimizer object")
+
         fopt, success, status, message, constr_violation, vrc = res
         final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
 
@@ -766,11 +770,9 @@ class Optimizer:
         output["lines_mode"] = L
         return output
 
-    @staticmethod
-    def string_overall_results(overall_results: defaultdict) -> str:
+    def string_overall_results(self) -> str:
         """
         to get a string to print overall results in console
-        :param overall_results: defaultdict
 
         Key [unit]: value type
 
@@ -787,6 +789,8 @@ class Optimizer:
         lines_mode : dic[TransportMode]=int [lines])
         :return: string to print overall results in console
         """
+        overall_results = self.get_overall_results()
+
         vrc = overall_results["VRC"]
         co = overall_results["operators_cost"]
         ci = overall_results["infrastructure_cost"]
