@@ -347,7 +347,7 @@ class Optimizer:
     def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                               network_obj: TransportNetwork,
                               f: defaultdict_float = None, tolerance: float = 0.01,
-                              number_of_iteration: int = 5) -> Tuple:
+                              number_of_iteration: int = None) -> Tuple:
         """
         method to do external optimization process, several iterations of internal optimization with fixed
         hyperpaths in each
@@ -357,7 +357,9 @@ class Optimizer:
         :param network_obj: TransportNetwork object
         :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
         :param tolerance: float, tolerance to external optimization
-        :param number_of_iteration: int, max. number of iterations
+        :param number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
         :return: (fopt, success, status, message, constr_violation, vrc)
         """
 
@@ -376,7 +378,10 @@ class Optimizer:
 
         iteration = 1
         # mientras criterio de tolerancia externo no se cumpla o se llegue al maximo numero de iteraciones
-        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance) and iteration < number_of_iteration:
+        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
+            if number_of_iteration is not None:
+                if iteration > number_of_iteration:
+                    break
             pre_f = new_f
             dic_new_f = opt_obj.fopt_to_f(new_f)
             opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
@@ -416,7 +421,7 @@ class Optimizer:
     def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
                              network_obj: TransportNetwork,
                              f: defaultdict_float = None, tolerance: float = 0.01,
-                             max_number_of_iteration: int = 5) -> Tuple:
+                             max_number_of_iteration: int = None) -> Tuple:
         """
         obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
         :param graph_obj: Graph object
@@ -425,7 +430,9 @@ class Optimizer:
         :param network_obj: TransportNetwork object
         :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
         :param tolerance: float, tolerance to external optimization
-        :param max_number_of_iteration: int, max. number of iteration
+        :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
         :return: fopt, success, status, message, constr_violation, vrc
         """
 
