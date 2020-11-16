@@ -1,0 +1,1828 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>sidermit.optimization.preoptimization.hyper_path API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sidermit.optimization.preoptimization.hyper_path</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from collections import defaultdict
+from typing import List
+
+import networkx as nx
+from matplotlib import pyplot as plt
+
+from sidermit.exceptions import *
+from sidermit.optimization.preoptimization import ExtendedGraph, CityNode, StopNode, RouteNode, ExtendedEdgesType, \
+    ExtendedEdge, ExtendedNode
+from sidermit.publictransportsystem import Passenger, TransportModeManager
+
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+list_suc = defaultdict(List[ExtendedEdge])
+list_lab = defaultdict(float)
+list_f = defaultdict(float)
+list_elemental_path = List[ExtendedNode]
+defaultdict_elemental_path = defaultdict(List[list_elemental_path])
+
+dic_hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(List[list_elemental_path])))
+dic_labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_successors = defaultdict(lambda: defaultdict(lambda: defaultdict(List[ExtendedEdge])))
+dic_frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_Vij = defaultdict(lambda: defaultdict(float))
+
+
+class Hyperpath:
+
+    def __init__(self, extended_graph_obj: ExtendedGraph, passenger_obj: Passenger):
+        &#34;&#34;&#34;
+        class to Hyperpath algorithm
+        :param extended_graph_obj: ExtendedGraph object
+        :param passenger_obj: Passenger object
+        &#34;&#34;&#34;
+        self.extended_graph_obj = extended_graph_obj
+        self.passenger_obj = passenger_obj
+
+    def network_validator(self, OD_matrix: defaultdict2_float) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
+        each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
+        :param OD_matrix: OD matrix get from Demand object
+        :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
+        &#34;&#34;&#34;
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        # to check a path between all OD pair with trips
+        for origin_id in OD_matrix:
+            for destination_id in OD_matrix[origin_id]:
+                vij = OD_matrix[origin_id][destination_id]
+                if vij != 0:
+                    origin = None
+                    destination = None
+                    for city_node in nodes:
+                        if str(origin_id) == str(city_node.graph_node.id):
+                            origin = city_node
+                        if str(destination_id) == str(city_node.graph_node.id):
+                            destination = city_node
+
+                    _, label, _ = self.build_hyperpath_graph(origin, destination)
+
+                    # if there is a stop with a label != infinity, you can get from the origin to the destination
+                    conection = False
+                    for stop in nodes[origin]:
+                        if label[stop] != float(&#39;inf&#39;):
+                            conection = True
+                            break
+                    if conection is False:
+                        raise TransportNetworkException(
+                            &#34;par OD {}-{} without connection&#34;.format(origin_id, destination_id))
+        # to check network must has until 2 TransportMode
+        list_mode = []
+        for city_node in nodes:
+            for stop in nodes[city_node]:
+                if stop.mode not in list_mode:
+                    list_mode.append(stop.mode)
+
+        mode_manager = TransportModeManager(add_default_mode=False)
+
+        for mode in list_mode:
+            mode_manager.add_mode(mode)
+
+        return mode_manager.is_valid_to_assignment_step()
+
+    def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode) -&gt; (
+            list_suc, list_lab, list_f):
+        &#34;&#34;&#34;
+        build the entire graph to connect the origin and destination with the hyperpath algorithm
+        :param node_city_origin: origin CityNode
+        :param node_city_destination: destination CityNode
+        :return: successors , label, frequencies
+        &#34;&#34;&#34;
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        edges = self.extended_graph_obj.get_extended_graph_edges()
+
+        # we initialize node labels at infinity except for the destination with label 0
+        labels = defaultdict(float)
+        labels_inf = defaultdict(float)
+        # successors will be initialized empty
+        successor = defaultdict(list)
+        successor_inf = defaultdict(None)
+        # frequency will be initialized to zero
+        frequencies = defaultdict(float)
+        # list of processed nodes (with calculated strategy)
+        S = []
+
+        # we initialize parameters
+        # number of nodes in the extended graph
+        n_nodes = 0
+        for city_node in nodes:
+            if city_node == node_city_destination:
+                labels[city_node] = 0
+                labels_inf[city_node] = 0
+                frequencies[city_node] = 0
+                n_nodes = n_nodes + 1
+            else:
+                labels[city_node] = float(&#39;inf&#39;)
+                labels_inf[city_node] = float(&#39;inf&#39;)
+                frequencies[city_node] = 0
+                n_nodes = n_nodes + 1
+            for stop_node in nodes[city_node]:
+                labels[stop_node] = float(&#39;inf&#39;)
+                labels_inf[stop_node] = float(&#39;inf&#39;)
+                frequencies[stop_node] = 0
+                n_nodes = n_nodes + 1
+                for route_node in nodes[city_node][stop_node]:
+                    labels[route_node] = float(&#39;inf&#39;)
+                    labels_inf[route_node] = float(&#39;inf&#39;)
+                    frequencies[route_node] = 0
+                    n_nodes = n_nodes + 1
+
+        # while there are nodes that have not been processed
+        while len(S) != n_nodes:
+            # we find node with minimum label and that does not belong to S
+            min_label_node = None
+            min_label = float(&#39;inf&#39;)
+            for node in labels:
+                if node not in S:
+                    if min(labels[node], labels_inf[node]) &lt; min_label:
+                        min_label = min(labels[node], labels_inf[node])
+                        min_label_node = node
+            # node to be processed, initially equals destination
+            j = min_label_node
+            # update S
+            S.append(j)
+            # we must find all edges that end in j and whose beginning is not in S
+            edge_j = []
+            for edge in edges:
+                # we will remove the edges of access to the CityNode of origin
+                # because each StopNode in origin must have its own hyperpath
+                if edge.nodei == node_city_origin:
+                    continue
+                if edge.nodej == node_city_origin:
+                    continue
+                if edge.nodei not in S and edge.nodej == j:
+                    edge_j.append(edge)
+
+            # for edges we update the label of the origin node as: labeli = labelj + time_arco ij
+            for edge in edge_j:
+                # not to consider transfer penalty at origin and include a penalty of access time
+                edge_t = edge.t
+                if edge.type == ExtendedEdgesType.ALIGHTING:
+                    if edge.nodej.city_node == node_city_destination:
+                        edge_t = 0
+                if edge.type == ExtendedEdgesType.ACCESS:
+                    edge_t = edge.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+                # equivalent to ~t_a
+                t_i = edge_t + min(labels[j], labels_inf[j])
+                i = edge.nodei
+
+                # for all types of edges except boarding
+                if edge.f == float(&#39;inf&#39;) and t_i &lt; labels_inf[i]:
+                    successor_inf[i] = edge
+                    labels_inf[i] = t_i
+
+                # for  boarding edges
+                if edge.f &lt; float(&#39;inf&#39;) and t_i &lt; labels[i]:
+                    theta = i.mode.theta
+
+                    # initial case
+                    if frequencies[i] == 0 and labels[i] == float(&#39;inf&#39;):
+                        # print(edge.type)
+                        successor[i].append(edge)
+                        labels[i] = (theta * self.passenger_obj.pw / self.passenger_obj.pv + edge.f * t_i) / edge.f
+                        frequencies[i] = frequencies[i] + edge.f
+                    # previously assigned label
+                    else:
+                        successor[i].append(edge)
+                        labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
+                        frequencies[i] = frequencies[i] + edge.f
+
+                # we verify that all the successors of i remain optimal
+                for edge_b in successor[i]:
+                    if edge_b == edge:
+                        continue
+                    # not to consider transfer penalty at origin and include a penalty of access time
+                    edge_b_t = edge_b.t
+                    if edge_b.type == ExtendedEdgesType.ALIGHTING:
+                        if edge.nodej.city_node == node_city_destination:
+                            edge_b_t = 0
+                    if edge_b.type == ExtendedEdgesType.ACCESS:
+                        edge_b_t = edge_b.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+                    # equivalent to ~t_b
+                    t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
+
+                    # remove sub optimal edge in the successors list
+                    if t_ib &gt;= labels[i]:
+                        successor[i].remove(edge_b)
+                        labels[i] = (frequencies[i] * labels[i] - edge_b.f * t_ib) / (frequencies[i] - edge_b.f)
+                        frequencies[i] = frequencies[i] - edge_b.f
+
+        # we reduce successor lists and labels to a single list
+        successors = defaultdict(list)
+        label = defaultdict(float)
+
+        for city_node in nodes:
+            if labels[city_node] &lt; labels_inf[city_node]:
+                label[city_node] = labels[city_node]
+                for suc in successor[city_node]:
+                    successors[city_node].append(suc)
+            else:
+                label[city_node] = labels_inf[city_node]
+
+                if successor_inf.get(city_node):
+                    successors[city_node].append(successor_inf[city_node])
+
+            for stop_node in nodes[city_node]:
+                if labels[stop_node] &lt; labels_inf[stop_node]:
+                    label[stop_node] = labels[stop_node]
+                    if city_node == node_city_origin:
+                        label[stop_node] = labels[
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+                    for suc in successor[stop_node]:
+                        successors[stop_node].append(suc)
+                else:
+                    label[stop_node] = labels_inf[stop_node]
+                    if city_node == node_city_origin:
+                        label[stop_node] = labels_inf[
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+
+                    if successor_inf.get(stop_node):
+                        successors[stop_node].append(successor_inf[stop_node])
+                for route_node in nodes[city_node][stop_node]:
+                    if labels[route_node] &lt; labels_inf[route_node]:
+                        label[route_node] = labels[route_node]
+                        for suc in successor[route_node]:
+                            successors[route_node].append(suc)
+                    else:
+                        label[route_node] = labels_inf[route_node]
+                        if successor_inf.get(route_node):
+                            successors[route_node].append(successor_inf[route_node])
+
+        return successors, label, frequencies
+
+    @staticmethod
+    def string_hyperpath_graph(successors: list_suc, label: list_lab, frequencies: list_f) -&gt; str:
+        &#34;&#34;&#34;
+        String with the representation of the hyperpath graph
+        :param successors: dic[ExtendedNode] = List[ExtendedNode]. Dictionary that gives the relation of successor
+        nodes in the hyperpath
+        :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+        with weight equivalent to the travel time
+        :param frequencies: dic[ExtendedNode] = frequency. Dictionary that gives the cumulative frequency of all
+        successors for each ExtendedNode
+        :return: String with the representation of the hyperpath graph
+        &#34;&#34;&#34;
+        line = &#34;HyperPath Graph\n&#34;
+        for node in label:
+
+            line_frequency = frequencies[node]
+
+            line_successor = &#34;&#34;
+
+            for suc in successors[node]:
+                nodei = suc.nodei
+                nodej = suc.nodej
+                linei = &#34;&#34;
+                linej = &#34;&#34;
+                if isinstance(nodei, CityNode):
+                    linei += &#34;Citynode: {}&#34;.format(nodei.graph_node.name)
+                if isinstance(nodei, StopNode):
+                    linei += &#34;Stopnode {}: {}&#34;.format(nodei.mode.name, nodei.city_node.graph_node.name)
+                if isinstance(nodei, RouteNode):
+                    linei += &#34;Routenode {} {}: {}&#34;.format(nodei.route.id, nodei.direction,
+                                                          nodei.stop_node.city_node.graph_node.name)
+                if isinstance(nodej, CityNode):
+                    linej += &#34;Citynode: {}&#34;.format(nodej.graph_node.name)
+                if isinstance(nodej, StopNode):
+                    linej += &#34;Stopnode {}: {}&#34;.format(nodej.mode.name, nodej.city_node.graph_node.name)
+                if isinstance(nodej, RouteNode):
+                    linej += &#34;Routenode {} {}: {}&#34;.format(nodej.route.id, nodej.direction,
+                                                          nodej.stop_node.city_node.graph_node.name)
+
+                line_successor += &#34;[{}: {} - {}] &#34;.format(suc.type, linei, linej)
+
+            if isinstance(node, CityNode):
+                line += &#34;City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.graph_node.name, label[node], line_successor, line_frequency)
+            if isinstance(node, StopNode):
+                line += &#34;Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
+            if isinstance(node, RouteNode):
+                line += &#34;Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
+                    label[node], line_successor, line_frequency)
+        return line
+
+    def get_hyperpath_OD(self, origin: CityNode, destination: CityNode) -&gt; (
+            defaultdict_elemental_path, list_lab, list_suc):
+        &#34;&#34;&#34;
+        to get all elemental path for each StopNode in Origin
+        :param origin: CityNode origin
+        :param destination: CityNode destination
+        :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode] = Label, dic[ExtendedNode] =
+        List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect origin and destination.
+        List[ExtendedEdge] represent all successors edge for each ExtendedNode.
+        &#34;&#34;&#34;
+        # we run hyperpath algorithm
+        successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+        # dictionary with key: TransportMode and value all elemental path associated
+        hyperpaths_od = defaultdict(list)
+
+        # for each StopNode in Origin
+        for stop in nodes[origin]:
+            # hyperpath in the StopNode
+            hyperpath_stop = [[origin, stop]]
+            # we initialize hyperpath
+
+            while True:
+                # stop condition that each elemental path has reached the destination
+                end = True
+                for path in hyperpath_stop:
+                    # there is a elemental path that has not reached the destination
+                    if path[len(path) - 1] != destination:
+                        end = False
+                        break
+                if end:
+                    break
+
+                new_hyperpath_stop = []
+                # we add successors of those paths that have not reached the destination
+                for path in hyperpath_stop:
+                    # elemental path that has not reached the destination
+                    if path[len(path) - 1] != destination:
+                        # we add new elemental path as successors have the last node of the path analyzed
+                        for suc in successors[path[len(path) - 1]]:
+                            new_path = []
+                            new_path.extend(path)
+                            new_path.append(suc.nodej)
+                            new_hyperpath_stop.append(new_path)
+                    # path that arrived at destination
+                    else:
+                        new_hyperpath_stop.append(path)
+                hyperpath_stop = new_hyperpath_stop
+
+            for elemental_path in hyperpath_stop:
+                hyperpaths_od[stop].append(elemental_path)
+
+        return hyperpaths_od, label, successors, frequencies
+
+    @staticmethod
+    def string_hyperpaths_OD(hyperpaths_od: defaultdict_elemental_path, label: list_lab) -&gt; str:
+        &#34;&#34;&#34;
+        String with the representation of the hyperpath for a OD pair
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
+        path to connect a origin and destination.
+        :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+        with weight equivalent to the travel time
+        :return: String with the representation of the hyperpath for a OD pair
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        for stop in hyperpaths_od:
+            line += &#34;\n{} stop\n&#34;.format(stop.mode.name)
+            for path in hyperpaths_od[stop]:
+                line += &#34;\n\tNew Path:\n\t\t&#34;
+                for node in path:
+                    if isinstance(node, CityNode):
+                        line += &#34;[City_node {}: {:.4f}]\n\t\t&#34;.format(node.graph_node.name, label[node])
+                    if isinstance(node, StopNode):
+                        line += &#34;[Stop_node {} - {}: {:.4f}]\n\t\t&#34;.format(node.mode.name,
+                                                                           node.city_node.graph_node.name, label[node])
+                    if isinstance(node, RouteNode):
+                        line += &#34;[Route_node {} {} - {}: {:.4f}]\n\t\t&#34;.format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name,
+                                                                               label[node])
+        return line
+
+    def get_all_hyperpaths(self, OD_matrix: defaultdict2_float) -&gt; (
+            dic_hyperpaths, dic_labels, dic_successors, dic_frequency, dic_Vij):
+        &#34;&#34;&#34;
+        get information about all hyperpath and label for all OD pair with trips in OD matrix
+        :param OD_matrix:  OD matrix get from Demand object
+        :return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
+        dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
+        [ExtendedNode] = List[ExtendedEdge], dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]
+        , dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
+        and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
+        &#34;&#34;&#34;
+        hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        successors = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        Vij = defaultdict(lambda: defaultdict(list))
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+        if self.network_validator(OD_matrix):
+            for origin_id in OD_matrix:
+                for destination_id in OD_matrix[origin_id]:
+                    vij = OD_matrix[origin_id][destination_id]
+                    if vij != 0:
+                        origin = None
+                        destination = None
+                        for city_node in nodes:
+                            if str(origin_id) == str(city_node.graph_node.id):
+                                origin = city_node
+                            if str(destination_id) == str(city_node.graph_node.id):
+                                destination = city_node
+
+                        hyperpaths_od, label, successor, frequencies = self.get_hyperpath_OD(origin, destination)
+
+                        for city_node in nodes:
+                            labels[origin][destination][city_node] = label[city_node]
+                            for stop_node in nodes[city_node]:
+                                labels[origin][destination][stop_node] = label[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    labels[origin][destination][route_node] = label[route_node]
+
+                        for city_node in nodes:
+                            for suc in successor[city_node]:
+                                successors[origin][destination][city_node].append(suc)
+                            for stop_node in nodes[city_node]:
+                                for suc in successor[stop_node]:
+                                    successors[origin][destination][stop_node].append(suc)
+                                for route_node in nodes[city_node][stop_node]:
+                                    for suc in successor[route_node]:
+                                        successors[origin][destination][route_node].append(suc)
+
+                        for city_node in nodes:
+                            frequency[origin][destination][city_node] = frequencies[city_node]
+                            for stop_node in nodes[city_node]:
+                                frequency[origin][destination][stop_node] = frequencies[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    frequency[origin][destination][route_node] = frequencies[route_node]
+
+                        for stop in hyperpaths_od:
+                            for elemental_path in hyperpaths_od[stop]:
+                                hyperpaths[origin][destination][stop].append(elemental_path)
+
+                        Vij[origin][destination] = vij
+
+        else:
+            raise TransportNetworkIsNotValidException(&#34;Network is not valid&#34;)
+
+        return hyperpaths, labels, successors, frequency, Vij
+
+    @staticmethod
+    def string_all_hyperpaths(hyperpaths: dic_hyperpaths, labels: dic_labels, successors: dic_successors,
+                              vij: dic_Vij) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with a summary of the all hyperpaths for all OD pair with trips.
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param vij: dic[origin: CityNode][destination: CityNode] = vij
+        :return: string with a summary of the all hyperpaths for all OD pair with trips.
+        &#34;&#34;&#34;
+
+        line = &#34;\n&#34;
+
+        for origin in hyperpaths:
+            for destination in hyperpaths[origin]:
+                for stop in hyperpaths[origin][destination]:
+                    line += &#34;origin: {}, destination: {}, vij: {:.2f}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n&#34;.format(
+                        origin.graph_node.name,
+                        destination.graph_node.name,
+                        vij[origin][destination],
+                        stop.mode.name, labels[origin][destination][stop],
+                        len(hyperpaths[origin][
+                                destination][stop]), len(successors[origin][destination][stop]))
+
+        return line
+
+    @staticmethod
+    def plot(hyperpaths_od: defaultdict_elemental_path):
+        &#34;&#34;&#34;
+        plot alls hyperpaths for a OD pair
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
+        elemental path to connect origin and destination.
+        :return:
+        &#34;&#34;&#34;
+        city_nodes = []
+        stop_nodes = []
+        route_nodes = []
+        edges_graph = []
+        for stop in hyperpaths_od:
+            for path in hyperpaths_od[stop]:
+                prev_node = None
+                for node in path:
+                    if isinstance(node, CityNode):
+                        city_nodes.append(node.graph_node.name)
+                        if prev_node is None:
+                            prev_node = node.graph_node.name
+                        else:
+                            edges_graph.append((prev_node, node.graph_node.name))
+                            prev_node = node.graph_node.name
+                    if isinstance(node, StopNode):
+                        stop_nodes.append(&#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append(
+                                (prev_node, &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)))
+                            prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+
+                    if isinstance(node, RouteNode):
+                        route_nodes.append(&#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                               node.stop_node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append((prev_node, &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name)))
+                            prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+
+        G = nx.DiGraph()
+        G.add_nodes_from(city_nodes)
+        G.add_nodes_from(stop_nodes)
+        G.add_nodes_from(route_nodes)
+        G.add_edges_from(edges_graph)
+        pos = nx.spring_layout(G, scale=10)  # positions for all nodes
+
+        # nx.draw(G)
+        # # separate calls to draw labels, nodes and edges
+        # # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=city_nodes, node_color=&#39;yellow&#39;,
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stop_nodes, node_color=&#39;red&#39;,
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=route_nodes, node_color=&#39;green&#39;,
+                               node_size=200)
+        # # plot labels
+        nx.draw_networkx_labels(G, pos, font_size=6)
+        # # plot edges city
+        nx.draw_networkx_edges(G, pos, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.show()
+        # plt.savefig(file_path)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath"><code class="flex name class">
+<span>class <span class="ident">Hyperpath</span></span>
+<span>(</span><span>extended_graph_obj: <a title="sidermit.optimization.preoptimization.extended_graph.ExtendedGraph" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedGraph">ExtendedGraph</a>, passenger_obj: <a title="sidermit.publictransportsystem.passenger.Passenger" href="../../publictransportsystem/passenger.html#sidermit.publictransportsystem.passenger.Passenger">Passenger</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>class to Hyperpath algorithm
+:param extended_graph_obj: ExtendedGraph object
+:param passenger_obj: Passenger object</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Hyperpath:
+
+    def __init__(self, extended_graph_obj: ExtendedGraph, passenger_obj: Passenger):
+        &#34;&#34;&#34;
+        class to Hyperpath algorithm
+        :param extended_graph_obj: ExtendedGraph object
+        :param passenger_obj: Passenger object
+        &#34;&#34;&#34;
+        self.extended_graph_obj = extended_graph_obj
+        self.passenger_obj = passenger_obj
+
+    def network_validator(self, OD_matrix: defaultdict2_float) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
+        each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
+        :param OD_matrix: OD matrix get from Demand object
+        :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
+        &#34;&#34;&#34;
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        # to check a path between all OD pair with trips
+        for origin_id in OD_matrix:
+            for destination_id in OD_matrix[origin_id]:
+                vij = OD_matrix[origin_id][destination_id]
+                if vij != 0:
+                    origin = None
+                    destination = None
+                    for city_node in nodes:
+                        if str(origin_id) == str(city_node.graph_node.id):
+                            origin = city_node
+                        if str(destination_id) == str(city_node.graph_node.id):
+                            destination = city_node
+
+                    _, label, _ = self.build_hyperpath_graph(origin, destination)
+
+                    # if there is a stop with a label != infinity, you can get from the origin to the destination
+                    conection = False
+                    for stop in nodes[origin]:
+                        if label[stop] != float(&#39;inf&#39;):
+                            conection = True
+                            break
+                    if conection is False:
+                        raise TransportNetworkException(
+                            &#34;par OD {}-{} without connection&#34;.format(origin_id, destination_id))
+        # to check network must has until 2 TransportMode
+        list_mode = []
+        for city_node in nodes:
+            for stop in nodes[city_node]:
+                if stop.mode not in list_mode:
+                    list_mode.append(stop.mode)
+
+        mode_manager = TransportModeManager(add_default_mode=False)
+
+        for mode in list_mode:
+            mode_manager.add_mode(mode)
+
+        return mode_manager.is_valid_to_assignment_step()
+
+    def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode) -&gt; (
+            list_suc, list_lab, list_f):
+        &#34;&#34;&#34;
+        build the entire graph to connect the origin and destination with the hyperpath algorithm
+        :param node_city_origin: origin CityNode
+        :param node_city_destination: destination CityNode
+        :return: successors , label, frequencies
+        &#34;&#34;&#34;
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+        edges = self.extended_graph_obj.get_extended_graph_edges()
+
+        # we initialize node labels at infinity except for the destination with label 0
+        labels = defaultdict(float)
+        labels_inf = defaultdict(float)
+        # successors will be initialized empty
+        successor = defaultdict(list)
+        successor_inf = defaultdict(None)
+        # frequency will be initialized to zero
+        frequencies = defaultdict(float)
+        # list of processed nodes (with calculated strategy)
+        S = []
+
+        # we initialize parameters
+        # number of nodes in the extended graph
+        n_nodes = 0
+        for city_node in nodes:
+            if city_node == node_city_destination:
+                labels[city_node] = 0
+                labels_inf[city_node] = 0
+                frequencies[city_node] = 0
+                n_nodes = n_nodes + 1
+            else:
+                labels[city_node] = float(&#39;inf&#39;)
+                labels_inf[city_node] = float(&#39;inf&#39;)
+                frequencies[city_node] = 0
+                n_nodes = n_nodes + 1
+            for stop_node in nodes[city_node]:
+                labels[stop_node] = float(&#39;inf&#39;)
+                labels_inf[stop_node] = float(&#39;inf&#39;)
+                frequencies[stop_node] = 0
+                n_nodes = n_nodes + 1
+                for route_node in nodes[city_node][stop_node]:
+                    labels[route_node] = float(&#39;inf&#39;)
+                    labels_inf[route_node] = float(&#39;inf&#39;)
+                    frequencies[route_node] = 0
+                    n_nodes = n_nodes + 1
+
+        # while there are nodes that have not been processed
+        while len(S) != n_nodes:
+            # we find node with minimum label and that does not belong to S
+            min_label_node = None
+            min_label = float(&#39;inf&#39;)
+            for node in labels:
+                if node not in S:
+                    if min(labels[node], labels_inf[node]) &lt; min_label:
+                        min_label = min(labels[node], labels_inf[node])
+                        min_label_node = node
+            # node to be processed, initially equals destination
+            j = min_label_node
+            # update S
+            S.append(j)
+            # we must find all edges that end in j and whose beginning is not in S
+            edge_j = []
+            for edge in edges:
+                # we will remove the edges of access to the CityNode of origin
+                # because each StopNode in origin must have its own hyperpath
+                if edge.nodei == node_city_origin:
+                    continue
+                if edge.nodej == node_city_origin:
+                    continue
+                if edge.nodei not in S and edge.nodej == j:
+                    edge_j.append(edge)
+
+            # for edges we update the label of the origin node as: labeli = labelj + time_arco ij
+            for edge in edge_j:
+                # not to consider transfer penalty at origin and include a penalty of access time
+                edge_t = edge.t
+                if edge.type == ExtendedEdgesType.ALIGHTING:
+                    if edge.nodej.city_node == node_city_destination:
+                        edge_t = 0
+                if edge.type == ExtendedEdgesType.ACCESS:
+                    edge_t = edge.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+                # equivalent to ~t_a
+                t_i = edge_t + min(labels[j], labels_inf[j])
+                i = edge.nodei
+
+                # for all types of edges except boarding
+                if edge.f == float(&#39;inf&#39;) and t_i &lt; labels_inf[i]:
+                    successor_inf[i] = edge
+                    labels_inf[i] = t_i
+
+                # for  boarding edges
+                if edge.f &lt; float(&#39;inf&#39;) and t_i &lt; labels[i]:
+                    theta = i.mode.theta
+
+                    # initial case
+                    if frequencies[i] == 0 and labels[i] == float(&#39;inf&#39;):
+                        # print(edge.type)
+                        successor[i].append(edge)
+                        labels[i] = (theta * self.passenger_obj.pw / self.passenger_obj.pv + edge.f * t_i) / edge.f
+                        frequencies[i] = frequencies[i] + edge.f
+                    # previously assigned label
+                    else:
+                        successor[i].append(edge)
+                        labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
+                        frequencies[i] = frequencies[i] + edge.f
+
+                # we verify that all the successors of i remain optimal
+                for edge_b in successor[i]:
+                    if edge_b == edge:
+                        continue
+                    # not to consider transfer penalty at origin and include a penalty of access time
+                    edge_b_t = edge_b.t
+                    if edge_b.type == ExtendedEdgesType.ALIGHTING:
+                        if edge.nodej.city_node == node_city_destination:
+                            edge_b_t = 0
+                    if edge_b.type == ExtendedEdgesType.ACCESS:
+                        edge_b_t = edge_b.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+                    # equivalent to ~t_b
+                    t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
+
+                    # remove sub optimal edge in the successors list
+                    if t_ib &gt;= labels[i]:
+                        successor[i].remove(edge_b)
+                        labels[i] = (frequencies[i] * labels[i] - edge_b.f * t_ib) / (frequencies[i] - edge_b.f)
+                        frequencies[i] = frequencies[i] - edge_b.f
+
+        # we reduce successor lists and labels to a single list
+        successors = defaultdict(list)
+        label = defaultdict(float)
+
+        for city_node in nodes:
+            if labels[city_node] &lt; labels_inf[city_node]:
+                label[city_node] = labels[city_node]
+                for suc in successor[city_node]:
+                    successors[city_node].append(suc)
+            else:
+                label[city_node] = labels_inf[city_node]
+
+                if successor_inf.get(city_node):
+                    successors[city_node].append(successor_inf[city_node])
+
+            for stop_node in nodes[city_node]:
+                if labels[stop_node] &lt; labels_inf[stop_node]:
+                    label[stop_node] = labels[stop_node]
+                    if city_node == node_city_origin:
+                        label[stop_node] = labels[
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+                    for suc in successor[stop_node]:
+                        successors[stop_node].append(suc)
+                else:
+                    label[stop_node] = labels_inf[stop_node]
+                    if city_node == node_city_origin:
+                        label[stop_node] = labels_inf[
+                                               stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+
+                    if successor_inf.get(stop_node):
+                        successors[stop_node].append(successor_inf[stop_node])
+                for route_node in nodes[city_node][stop_node]:
+                    if labels[route_node] &lt; labels_inf[route_node]:
+                        label[route_node] = labels[route_node]
+                        for suc in successor[route_node]:
+                            successors[route_node].append(suc)
+                    else:
+                        label[route_node] = labels_inf[route_node]
+                        if successor_inf.get(route_node):
+                            successors[route_node].append(successor_inf[route_node])
+
+        return successors, label, frequencies
+
+    @staticmethod
+    def string_hyperpath_graph(successors: list_suc, label: list_lab, frequencies: list_f) -&gt; str:
+        &#34;&#34;&#34;
+        String with the representation of the hyperpath graph
+        :param successors: dic[ExtendedNode] = List[ExtendedNode]. Dictionary that gives the relation of successor
+        nodes in the hyperpath
+        :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+        with weight equivalent to the travel time
+        :param frequencies: dic[ExtendedNode] = frequency. Dictionary that gives the cumulative frequency of all
+        successors for each ExtendedNode
+        :return: String with the representation of the hyperpath graph
+        &#34;&#34;&#34;
+        line = &#34;HyperPath Graph\n&#34;
+        for node in label:
+
+            line_frequency = frequencies[node]
+
+            line_successor = &#34;&#34;
+
+            for suc in successors[node]:
+                nodei = suc.nodei
+                nodej = suc.nodej
+                linei = &#34;&#34;
+                linej = &#34;&#34;
+                if isinstance(nodei, CityNode):
+                    linei += &#34;Citynode: {}&#34;.format(nodei.graph_node.name)
+                if isinstance(nodei, StopNode):
+                    linei += &#34;Stopnode {}: {}&#34;.format(nodei.mode.name, nodei.city_node.graph_node.name)
+                if isinstance(nodei, RouteNode):
+                    linei += &#34;Routenode {} {}: {}&#34;.format(nodei.route.id, nodei.direction,
+                                                          nodei.stop_node.city_node.graph_node.name)
+                if isinstance(nodej, CityNode):
+                    linej += &#34;Citynode: {}&#34;.format(nodej.graph_node.name)
+                if isinstance(nodej, StopNode):
+                    linej += &#34;Stopnode {}: {}&#34;.format(nodej.mode.name, nodej.city_node.graph_node.name)
+                if isinstance(nodej, RouteNode):
+                    linej += &#34;Routenode {} {}: {}&#34;.format(nodej.route.id, nodej.direction,
+                                                          nodej.stop_node.city_node.graph_node.name)
+
+                line_successor += &#34;[{}: {} - {}] &#34;.format(suc.type, linei, linej)
+
+            if isinstance(node, CityNode):
+                line += &#34;City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.graph_node.name, label[node], line_successor, line_frequency)
+            if isinstance(node, StopNode):
+                line += &#34;Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
+            if isinstance(node, RouteNode):
+                line += &#34;Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                    node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
+                    label[node], line_successor, line_frequency)
+        return line
+
+    def get_hyperpath_OD(self, origin: CityNode, destination: CityNode) -&gt; (
+            defaultdict_elemental_path, list_lab, list_suc):
+        &#34;&#34;&#34;
+        to get all elemental path for each StopNode in Origin
+        :param origin: CityNode origin
+        :param destination: CityNode destination
+        :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode] = Label, dic[ExtendedNode] =
+        List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect origin and destination.
+        List[ExtendedEdge] represent all successors edge for each ExtendedNode.
+        &#34;&#34;&#34;
+        # we run hyperpath algorithm
+        successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+        # dictionary with key: TransportMode and value all elemental path associated
+        hyperpaths_od = defaultdict(list)
+
+        # for each StopNode in Origin
+        for stop in nodes[origin]:
+            # hyperpath in the StopNode
+            hyperpath_stop = [[origin, stop]]
+            # we initialize hyperpath
+
+            while True:
+                # stop condition that each elemental path has reached the destination
+                end = True
+                for path in hyperpath_stop:
+                    # there is a elemental path that has not reached the destination
+                    if path[len(path) - 1] != destination:
+                        end = False
+                        break
+                if end:
+                    break
+
+                new_hyperpath_stop = []
+                # we add successors of those paths that have not reached the destination
+                for path in hyperpath_stop:
+                    # elemental path that has not reached the destination
+                    if path[len(path) - 1] != destination:
+                        # we add new elemental path as successors have the last node of the path analyzed
+                        for suc in successors[path[len(path) - 1]]:
+                            new_path = []
+                            new_path.extend(path)
+                            new_path.append(suc.nodej)
+                            new_hyperpath_stop.append(new_path)
+                    # path that arrived at destination
+                    else:
+                        new_hyperpath_stop.append(path)
+                hyperpath_stop = new_hyperpath_stop
+
+            for elemental_path in hyperpath_stop:
+                hyperpaths_od[stop].append(elemental_path)
+
+        return hyperpaths_od, label, successors, frequencies
+
+    @staticmethod
+    def string_hyperpaths_OD(hyperpaths_od: defaultdict_elemental_path, label: list_lab) -&gt; str:
+        &#34;&#34;&#34;
+        String with the representation of the hyperpath for a OD pair
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
+        path to connect a origin and destination.
+        :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+        with weight equivalent to the travel time
+        :return: String with the representation of the hyperpath for a OD pair
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        for stop in hyperpaths_od:
+            line += &#34;\n{} stop\n&#34;.format(stop.mode.name)
+            for path in hyperpaths_od[stop]:
+                line += &#34;\n\tNew Path:\n\t\t&#34;
+                for node in path:
+                    if isinstance(node, CityNode):
+                        line += &#34;[City_node {}: {:.4f}]\n\t\t&#34;.format(node.graph_node.name, label[node])
+                    if isinstance(node, StopNode):
+                        line += &#34;[Stop_node {} - {}: {:.4f}]\n\t\t&#34;.format(node.mode.name,
+                                                                           node.city_node.graph_node.name, label[node])
+                    if isinstance(node, RouteNode):
+                        line += &#34;[Route_node {} {} - {}: {:.4f}]\n\t\t&#34;.format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name,
+                                                                               label[node])
+        return line
+
+    def get_all_hyperpaths(self, OD_matrix: defaultdict2_float) -&gt; (
+            dic_hyperpaths, dic_labels, dic_successors, dic_frequency, dic_Vij):
+        &#34;&#34;&#34;
+        get information about all hyperpath and label for all OD pair with trips in OD matrix
+        :param OD_matrix:  OD matrix get from Demand object
+        :return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
+        dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
+        [ExtendedNode] = List[ExtendedEdge], dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]
+        , dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
+        and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
+        &#34;&#34;&#34;
+        hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        successors = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+        Vij = defaultdict(lambda: defaultdict(list))
+
+        nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+        if self.network_validator(OD_matrix):
+            for origin_id in OD_matrix:
+                for destination_id in OD_matrix[origin_id]:
+                    vij = OD_matrix[origin_id][destination_id]
+                    if vij != 0:
+                        origin = None
+                        destination = None
+                        for city_node in nodes:
+                            if str(origin_id) == str(city_node.graph_node.id):
+                                origin = city_node
+                            if str(destination_id) == str(city_node.graph_node.id):
+                                destination = city_node
+
+                        hyperpaths_od, label, successor, frequencies = self.get_hyperpath_OD(origin, destination)
+
+                        for city_node in nodes:
+                            labels[origin][destination][city_node] = label[city_node]
+                            for stop_node in nodes[city_node]:
+                                labels[origin][destination][stop_node] = label[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    labels[origin][destination][route_node] = label[route_node]
+
+                        for city_node in nodes:
+                            for suc in successor[city_node]:
+                                successors[origin][destination][city_node].append(suc)
+                            for stop_node in nodes[city_node]:
+                                for suc in successor[stop_node]:
+                                    successors[origin][destination][stop_node].append(suc)
+                                for route_node in nodes[city_node][stop_node]:
+                                    for suc in successor[route_node]:
+                                        successors[origin][destination][route_node].append(suc)
+
+                        for city_node in nodes:
+                            frequency[origin][destination][city_node] = frequencies[city_node]
+                            for stop_node in nodes[city_node]:
+                                frequency[origin][destination][stop_node] = frequencies[stop_node]
+                                for route_node in nodes[city_node][stop_node]:
+                                    frequency[origin][destination][route_node] = frequencies[route_node]
+
+                        for stop in hyperpaths_od:
+                            for elemental_path in hyperpaths_od[stop]:
+                                hyperpaths[origin][destination][stop].append(elemental_path)
+
+                        Vij[origin][destination] = vij
+
+        else:
+            raise TransportNetworkIsNotValidException(&#34;Network is not valid&#34;)
+
+        return hyperpaths, labels, successors, frequency, Vij
+
+    @staticmethod
+    def string_all_hyperpaths(hyperpaths: dic_hyperpaths, labels: dic_labels, successors: dic_successors,
+                              vij: dic_Vij) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with a summary of the all hyperpaths for all OD pair with trips.
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param vij: dic[origin: CityNode][destination: CityNode] = vij
+        :return: string with a summary of the all hyperpaths for all OD pair with trips.
+        &#34;&#34;&#34;
+
+        line = &#34;\n&#34;
+
+        for origin in hyperpaths:
+            for destination in hyperpaths[origin]:
+                for stop in hyperpaths[origin][destination]:
+                    line += &#34;origin: {}, destination: {}, vij: {:.2f}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n&#34;.format(
+                        origin.graph_node.name,
+                        destination.graph_node.name,
+                        vij[origin][destination],
+                        stop.mode.name, labels[origin][destination][stop],
+                        len(hyperpaths[origin][
+                                destination][stop]), len(successors[origin][destination][stop]))
+
+        return line
+
+    @staticmethod
+    def plot(hyperpaths_od: defaultdict_elemental_path):
+        &#34;&#34;&#34;
+        plot alls hyperpaths for a OD pair
+        :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
+        elemental path to connect origin and destination.
+        :return:
+        &#34;&#34;&#34;
+        city_nodes = []
+        stop_nodes = []
+        route_nodes = []
+        edges_graph = []
+        for stop in hyperpaths_od:
+            for path in hyperpaths_od[stop]:
+                prev_node = None
+                for node in path:
+                    if isinstance(node, CityNode):
+                        city_nodes.append(node.graph_node.name)
+                        if prev_node is None:
+                            prev_node = node.graph_node.name
+                        else:
+                            edges_graph.append((prev_node, node.graph_node.name))
+                            prev_node = node.graph_node.name
+                    if isinstance(node, StopNode):
+                        stop_nodes.append(&#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append(
+                                (prev_node, &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)))
+                            prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+
+                    if isinstance(node, RouteNode):
+                        route_nodes.append(&#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                               node.stop_node.city_node.graph_node.name))
+                        if prev_node is None:
+                            prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+                        else:
+                            edges_graph.append((prev_node, &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                                               node.stop_node.city_node.graph_node.name)))
+                            prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                            node.stop_node.city_node.graph_node.name)
+
+        G = nx.DiGraph()
+        G.add_nodes_from(city_nodes)
+        G.add_nodes_from(stop_nodes)
+        G.add_nodes_from(route_nodes)
+        G.add_edges_from(edges_graph)
+        pos = nx.spring_layout(G, scale=10)  # positions for all nodes
+
+        # nx.draw(G)
+        # # separate calls to draw labels, nodes and edges
+        # # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=city_nodes, node_color=&#39;yellow&#39;,
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stop_nodes, node_color=&#39;red&#39;,
+                               node_size=200)
+        nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=route_nodes, node_color=&#39;green&#39;,
+                               node_size=200)
+        # # plot labels
+        nx.draw_networkx_labels(G, pos, font_size=6)
+        # # plot edges city
+        nx.draw_networkx_edges(G, pos, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.show()</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>hyperpaths_od: defaultdict(typing.List[typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedNode">ExtendedNode</a>]], {}))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>plot alls hyperpaths for a OD pair
+:param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
+elemental path to connect origin and destination.
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def plot(hyperpaths_od: defaultdict_elemental_path):
+    &#34;&#34;&#34;
+    plot alls hyperpaths for a OD pair
+    :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a
+    elemental path to connect origin and destination.
+    :return:
+    &#34;&#34;&#34;
+    city_nodes = []
+    stop_nodes = []
+    route_nodes = []
+    edges_graph = []
+    for stop in hyperpaths_od:
+        for path in hyperpaths_od[stop]:
+            prev_node = None
+            for node in path:
+                if isinstance(node, CityNode):
+                    city_nodes.append(node.graph_node.name)
+                    if prev_node is None:
+                        prev_node = node.graph_node.name
+                    else:
+                        edges_graph.append((prev_node, node.graph_node.name))
+                        prev_node = node.graph_node.name
+                if isinstance(node, StopNode):
+                    stop_nodes.append(&#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name))
+                    if prev_node is None:
+                        prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+                    else:
+                        edges_graph.append(
+                            (prev_node, &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)))
+                        prev_node = &#34;{} - {}&#34;.format(node.mode.name, node.city_node.graph_node.name)
+
+                if isinstance(node, RouteNode):
+                    route_nodes.append(&#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                           node.stop_node.city_node.graph_node.name))
+                    if prev_node is None:
+                        prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                        node.stop_node.city_node.graph_node.name)
+                    else:
+                        edges_graph.append((prev_node, &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                                           node.stop_node.city_node.graph_node.name)))
+                        prev_node = &#34;{} {} - {}&#34;.format(node.route.id, node.direction,
+                                                        node.stop_node.city_node.graph_node.name)
+
+    G = nx.DiGraph()
+    G.add_nodes_from(city_nodes)
+    G.add_nodes_from(stop_nodes)
+    G.add_nodes_from(route_nodes)
+    G.add_edges_from(edges_graph)
+    pos = nx.spring_layout(G, scale=10)  # positions for all nodes
+
+    # nx.draw(G)
+    # # separate calls to draw labels, nodes and edges
+    # # plot p, Sc and CBD
+    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=city_nodes, node_color=&#39;yellow&#39;,
+                           node_size=200)
+    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stop_nodes, node_color=&#39;red&#39;,
+                           node_size=200)
+    nx.draw_networkx_nodes(G, pos, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=route_nodes, node_color=&#39;green&#39;,
+                           node_size=200)
+    # # plot labels
+    nx.draw_networkx_labels(G, pos, font_size=6)
+    # # plot edges city
+    nx.draw_networkx_edges(G, pos, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+
+    plt.title(&#34;City graph&#34;)
+    plt.xlabel(&#34;X&#34;)
+    plt.ylabel(&#34;Y&#34;)
+    plt.gca().set_aspect(&#39;equal&#39;)
+    plt.show()</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_all_hyperpaths"><code class="name flex">
+<span>def <span class="ident">string_all_hyperpaths</span></span>(<span>hyperpaths: defaultdict(<function <lambda> at 0x106CD228>, {}), labels: defaultdict(<function <lambda> at 0x106CD270>, {}), successors: defaultdict(<function <lambda> at 0x106CD2B8>, {}), vij: defaultdict(<function <lambda> at 0x106CD348>, {})) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a string with a summary of the all hyperpaths for all OD pair with trips.
+:param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+:param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label
+:param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+:param vij: dic[origin: CityNode][destination: CityNode] = vij
+:return: string with a summary of the all hyperpaths for all OD pair with trips.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def string_all_hyperpaths(hyperpaths: dic_hyperpaths, labels: dic_labels, successors: dic_successors,
+                          vij: dic_Vij) -&gt; str:
+    &#34;&#34;&#34;
+    to get a string with a summary of the all hyperpaths for all OD pair with trips.
+    :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+    :param labels: dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label
+    :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+    :param vij: dic[origin: CityNode][destination: CityNode] = vij
+    :return: string with a summary of the all hyperpaths for all OD pair with trips.
+    &#34;&#34;&#34;
+
+    line = &#34;\n&#34;
+
+    for origin in hyperpaths:
+        for destination in hyperpaths[origin]:
+            for stop in hyperpaths[origin][destination]:
+                line += &#34;origin: {}, destination: {}, vij: {:.2f}\n\t mode: {}, label: {:.2f} [EIV], n° elemental paths: {}, n° elemental paths (successors): {}\n&#34;.format(
+                    origin.graph_node.name,
+                    destination.graph_node.name,
+                    vij[origin][destination],
+                    stop.mode.name, labels[origin][destination][stop],
+                    len(hyperpaths[origin][
+                            destination][stop]), len(successors[origin][destination][stop]))
+
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpath_graph"><code class="name flex">
+<span>def <span class="ident">string_hyperpath_graph</span></span>(<span>successors: defaultdict(typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedEdge" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedEdge">ExtendedEdge</a>], {}), label: defaultdict(<class 'float'>, {}), frequencies: defaultdict(<class 'float'>, {})) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>String with the representation of the hyperpath graph
+:param successors: dic[ExtendedNode] = List[ExtendedNode]. Dictionary that gives the relation of successor
+nodes in the hyperpath
+:param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+with weight equivalent to the travel time
+:param frequencies: dic[ExtendedNode] = frequency. Dictionary that gives the cumulative frequency of all
+successors for each ExtendedNode
+:return: String with the representation of the hyperpath graph</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def string_hyperpath_graph(successors: list_suc, label: list_lab, frequencies: list_f) -&gt; str:
+    &#34;&#34;&#34;
+    String with the representation of the hyperpath graph
+    :param successors: dic[ExtendedNode] = List[ExtendedNode]. Dictionary that gives the relation of successor
+    nodes in the hyperpath
+    :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+    with weight equivalent to the travel time
+    :param frequencies: dic[ExtendedNode] = frequency. Dictionary that gives the cumulative frequency of all
+    successors for each ExtendedNode
+    :return: String with the representation of the hyperpath graph
+    &#34;&#34;&#34;
+    line = &#34;HyperPath Graph\n&#34;
+    for node in label:
+
+        line_frequency = frequencies[node]
+
+        line_successor = &#34;&#34;
+
+        for suc in successors[node]:
+            nodei = suc.nodei
+            nodej = suc.nodej
+            linei = &#34;&#34;
+            linej = &#34;&#34;
+            if isinstance(nodei, CityNode):
+                linei += &#34;Citynode: {}&#34;.format(nodei.graph_node.name)
+            if isinstance(nodei, StopNode):
+                linei += &#34;Stopnode {}: {}&#34;.format(nodei.mode.name, nodei.city_node.graph_node.name)
+            if isinstance(nodei, RouteNode):
+                linei += &#34;Routenode {} {}: {}&#34;.format(nodei.route.id, nodei.direction,
+                                                      nodei.stop_node.city_node.graph_node.name)
+            if isinstance(nodej, CityNode):
+                linej += &#34;Citynode: {}&#34;.format(nodej.graph_node.name)
+            if isinstance(nodej, StopNode):
+                linej += &#34;Stopnode {}: {}&#34;.format(nodej.mode.name, nodej.city_node.graph_node.name)
+            if isinstance(nodej, RouteNode):
+                linej += &#34;Routenode {} {}: {}&#34;.format(nodej.route.id, nodej.direction,
+                                                      nodej.stop_node.city_node.graph_node.name)
+
+            line_successor += &#34;[{}: {} - {}] &#34;.format(suc.type, linei, linej)
+
+        if isinstance(node, CityNode):
+            line += &#34;City_node\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                node.graph_node.name, label[node], line_successor, line_frequency)
+        if isinstance(node, StopNode):
+            line += &#34;Stop_node\n\t-Mode_name: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                node.mode.name, node.city_node.graph_node.name, label[node], line_successor, line_frequency)
+        if isinstance(node, RouteNode):
+            line += &#34;Route_node\n\t-route_id: {}\n\t-direction: {}\n\t-Graph_node_name: {}\n\t-label: {:.2f}\n\t-Successor: {}\n\t-Frequencies: {:.2f}\n&#34;.format(
+                node.route.id, node.direction, node.stop_node.city_node.graph_node.name,
+                label[node], line_successor, line_frequency)
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpaths_OD"><code class="name flex">
+<span>def <span class="ident">string_hyperpaths_OD</span></span>(<span>hyperpaths_od: defaultdict(typing.List[typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedNode">ExtendedNode</a>]], {}), label: defaultdict(<class 'float'>, {})) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>String with the representation of the hyperpath for a OD pair
+:param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
+path to connect a origin and destination.
+:param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+with weight equivalent to the travel time
+:return: String with the representation of the hyperpath for a OD pair</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def string_hyperpaths_OD(hyperpaths_od: defaultdict_elemental_path, label: list_lab) -&gt; str:
+    &#34;&#34;&#34;
+    String with the representation of the hyperpath for a OD pair
+    :param hyperpaths_od: Dic[TransportMode] = List[List[ExtendedNodes]]. Each List[ExtendedNodes] represent a elemental
+    path to connect a origin and destination.
+    :param label: dic[ExtendedNode] = label. Dictionary that gives the label for each ExtendedNode in hours
+    with weight equivalent to the travel time
+    :return: String with the representation of the hyperpath for a OD pair
+    &#34;&#34;&#34;
+    line = &#34;&#34;
+    for stop in hyperpaths_od:
+        line += &#34;\n{} stop\n&#34;.format(stop.mode.name)
+        for path in hyperpaths_od[stop]:
+            line += &#34;\n\tNew Path:\n\t\t&#34;
+            for node in path:
+                if isinstance(node, CityNode):
+                    line += &#34;[City_node {}: {:.4f}]\n\t\t&#34;.format(node.graph_node.name, label[node])
+                if isinstance(node, StopNode):
+                    line += &#34;[Stop_node {} - {}: {:.4f}]\n\t\t&#34;.format(node.mode.name,
+                                                                       node.city_node.graph_node.name, label[node])
+                if isinstance(node, RouteNode):
+                    line += &#34;[Route_node {} {} - {}: {:.4f}]\n\t\t&#34;.format(node.route.id, node.direction,
+                                                                           node.stop_node.city_node.graph_node.name,
+                                                                           label[node])
+    return line</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.build_hyperpath_graph"><code class="name flex">
+<span>def <span class="ident">build_hyperpath_graph</span></span>(<span>self, node_city_origin: <a title="sidermit.optimization.preoptimization.extended_graph.CityNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.CityNode">CityNode</a>, node_city_destination: <a title="sidermit.optimization.preoptimization.extended_graph.CityNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.CityNode">CityNode</a>) ‑> (defaultdict(typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedEdge" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedEdge">ExtendedEdge</a>], {}), defaultdict(<class 'float'>, {}), defaultdict(<class 'float'>, {}))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>build the entire graph to connect the origin and destination with the hyperpath algorithm
+:param node_city_origin: origin CityNode
+:param node_city_destination: destination CityNode
+:return: successors , label, frequencies</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def build_hyperpath_graph(self, node_city_origin: CityNode, node_city_destination: CityNode) -&gt; (
+        list_suc, list_lab, list_f):
+    &#34;&#34;&#34;
+    build the entire graph to connect the origin and destination with the hyperpath algorithm
+    :param node_city_origin: origin CityNode
+    :param node_city_destination: destination CityNode
+    :return: successors , label, frequencies
+    &#34;&#34;&#34;
+
+    nodes = self.extended_graph_obj.get_extended_graph_nodes()
+    edges = self.extended_graph_obj.get_extended_graph_edges()
+
+    # we initialize node labels at infinity except for the destination with label 0
+    labels = defaultdict(float)
+    labels_inf = defaultdict(float)
+    # successors will be initialized empty
+    successor = defaultdict(list)
+    successor_inf = defaultdict(None)
+    # frequency will be initialized to zero
+    frequencies = defaultdict(float)
+    # list of processed nodes (with calculated strategy)
+    S = []
+
+    # we initialize parameters
+    # number of nodes in the extended graph
+    n_nodes = 0
+    for city_node in nodes:
+        if city_node == node_city_destination:
+            labels[city_node] = 0
+            labels_inf[city_node] = 0
+            frequencies[city_node] = 0
+            n_nodes = n_nodes + 1
+        else:
+            labels[city_node] = float(&#39;inf&#39;)
+            labels_inf[city_node] = float(&#39;inf&#39;)
+            frequencies[city_node] = 0
+            n_nodes = n_nodes + 1
+        for stop_node in nodes[city_node]:
+            labels[stop_node] = float(&#39;inf&#39;)
+            labels_inf[stop_node] = float(&#39;inf&#39;)
+            frequencies[stop_node] = 0
+            n_nodes = n_nodes + 1
+            for route_node in nodes[city_node][stop_node]:
+                labels[route_node] = float(&#39;inf&#39;)
+                labels_inf[route_node] = float(&#39;inf&#39;)
+                frequencies[route_node] = 0
+                n_nodes = n_nodes + 1
+
+    # while there are nodes that have not been processed
+    while len(S) != n_nodes:
+        # we find node with minimum label and that does not belong to S
+        min_label_node = None
+        min_label = float(&#39;inf&#39;)
+        for node in labels:
+            if node not in S:
+                if min(labels[node], labels_inf[node]) &lt; min_label:
+                    min_label = min(labels[node], labels_inf[node])
+                    min_label_node = node
+        # node to be processed, initially equals destination
+        j = min_label_node
+        # update S
+        S.append(j)
+        # we must find all edges that end in j and whose beginning is not in S
+        edge_j = []
+        for edge in edges:
+            # we will remove the edges of access to the CityNode of origin
+            # because each StopNode in origin must have its own hyperpath
+            if edge.nodei == node_city_origin:
+                continue
+            if edge.nodej == node_city_origin:
+                continue
+            if edge.nodei not in S and edge.nodej == j:
+                edge_j.append(edge)
+
+        # for edges we update the label of the origin node as: labeli = labelj + time_arco ij
+        for edge in edge_j:
+            # not to consider transfer penalty at origin and include a penalty of access time
+            edge_t = edge.t
+            if edge.type == ExtendedEdgesType.ALIGHTING:
+                if edge.nodej.city_node == node_city_destination:
+                    edge_t = 0
+            if edge.type == ExtendedEdgesType.ACCESS:
+                edge_t = edge.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+            # equivalent to ~t_a
+            t_i = edge_t + min(labels[j], labels_inf[j])
+            i = edge.nodei
+
+            # for all types of edges except boarding
+            if edge.f == float(&#39;inf&#39;) and t_i &lt; labels_inf[i]:
+                successor_inf[i] = edge
+                labels_inf[i] = t_i
+
+            # for  boarding edges
+            if edge.f &lt; float(&#39;inf&#39;) and t_i &lt; labels[i]:
+                theta = i.mode.theta
+
+                # initial case
+                if frequencies[i] == 0 and labels[i] == float(&#39;inf&#39;):
+                    # print(edge.type)
+                    successor[i].append(edge)
+                    labels[i] = (theta * self.passenger_obj.pw / self.passenger_obj.pv + edge.f * t_i) / edge.f
+                    frequencies[i] = frequencies[i] + edge.f
+                # previously assigned label
+                else:
+                    successor[i].append(edge)
+                    labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
+                    frequencies[i] = frequencies[i] + edge.f
+
+            # we verify that all the successors of i remain optimal
+            for edge_b in successor[i]:
+                if edge_b == edge:
+                    continue
+                # not to consider transfer penalty at origin and include a penalty of access time
+                edge_b_t = edge_b.t
+                if edge_b.type == ExtendedEdgesType.ALIGHTING:
+                    if edge.nodej.city_node == node_city_destination:
+                        edge_b_t = 0
+                if edge_b.type == ExtendedEdgesType.ACCESS:
+                    edge_b_t = edge_b.t * self.passenger_obj.pa / self.passenger_obj.pv
+
+                # equivalent to ~t_b
+                t_ib = min(labels[edge_b.nodej], labels_inf[edge_b.nodej]) + edge_b_t
+
+                # remove sub optimal edge in the successors list
+                if t_ib &gt;= labels[i]:
+                    successor[i].remove(edge_b)
+                    labels[i] = (frequencies[i] * labels[i] - edge_b.f * t_ib) / (frequencies[i] - edge_b.f)
+                    frequencies[i] = frequencies[i] - edge_b.f
+
+    # we reduce successor lists and labels to a single list
+    successors = defaultdict(list)
+    label = defaultdict(float)
+
+    for city_node in nodes:
+        if labels[city_node] &lt; labels_inf[city_node]:
+            label[city_node] = labels[city_node]
+            for suc in successor[city_node]:
+                successors[city_node].append(suc)
+        else:
+            label[city_node] = labels_inf[city_node]
+
+            if successor_inf.get(city_node):
+                successors[city_node].append(successor_inf[city_node])
+
+        for stop_node in nodes[city_node]:
+            if labels[stop_node] &lt; labels_inf[stop_node]:
+                label[stop_node] = labels[stop_node]
+                if city_node == node_city_origin:
+                    label[stop_node] = labels[
+                                           stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+                for suc in successor[stop_node]:
+                    successors[stop_node].append(suc)
+            else:
+                label[stop_node] = labels_inf[stop_node]
+                if city_node == node_city_origin:
+                    label[stop_node] = labels_inf[
+                                           stop_node] + stop_node.mode.tat / 60 * self.passenger_obj.pa / self.passenger_obj.pv
+
+                if successor_inf.get(stop_node):
+                    successors[stop_node].append(successor_inf[stop_node])
+            for route_node in nodes[city_node][stop_node]:
+                if labels[route_node] &lt; labels_inf[route_node]:
+                    label[route_node] = labels[route_node]
+                    for suc in successor[route_node]:
+                        successors[route_node].append(suc)
+                else:
+                    label[route_node] = labels_inf[route_node]
+                    if successor_inf.get(route_node):
+                        successors[route_node].append(successor_inf[route_node])
+
+    return successors, label, frequencies</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_all_hyperpaths"><code class="name flex">
+<span>def <span class="ident">get_all_hyperpaths</span></span>(<span>self, OD_matrix: defaultdict(<function <lambda> at 0x106CD1E0>, {})) ‑> (defaultdict(<function <lambda> at 0x106CD228>, {}), defaultdict(<function <lambda> at 0x106CD270>, {}), defaultdict(<function <lambda> at 0x106CD2B8>, {}), defaultdict(<function <lambda> at 0x106CD300>, {}), defaultdict(<function <lambda> at 0x106CD348>, {}))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get information about all hyperpath and label for all OD pair with trips in OD matrix
+:param OD_matrix:
+OD matrix get from Demand object
+:return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
+dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
+[ExtendedNode] = List[ExtendedEdge], dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]
+, dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
+and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_all_hyperpaths(self, OD_matrix: defaultdict2_float) -&gt; (
+        dic_hyperpaths, dic_labels, dic_successors, dic_frequency, dic_Vij):
+    &#34;&#34;&#34;
+    get information about all hyperpath and label for all OD pair with trips in OD matrix
+    :param OD_matrix:  OD matrix get from Demand object
+    :return: (Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]],
+    dic[origin: CityNode][destination: CityNode][ExtendedNode] = Label, dic[origin: CityNode][destination: CityNode]
+    [ExtendedNode] = List[ExtendedEdge], dic[origin: CityNode][destination: CityNode][ExtendedNode] = float [veh/hr]
+    , dic[origin][destination] = vij). Each List[ExtendedNodes] represent a elemental path to connect a origin
+    and destination. List[ExtendedEdge] represent all successors edge for each ExtendedNode in a OD pair.
+    &#34;&#34;&#34;
+    hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+    successors = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+    frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+    Vij = defaultdict(lambda: defaultdict(list))
+
+    nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+    if self.network_validator(OD_matrix):
+        for origin_id in OD_matrix:
+            for destination_id in OD_matrix[origin_id]:
+                vij = OD_matrix[origin_id][destination_id]
+                if vij != 0:
+                    origin = None
+                    destination = None
+                    for city_node in nodes:
+                        if str(origin_id) == str(city_node.graph_node.id):
+                            origin = city_node
+                        if str(destination_id) == str(city_node.graph_node.id):
+                            destination = city_node
+
+                    hyperpaths_od, label, successor, frequencies = self.get_hyperpath_OD(origin, destination)
+
+                    for city_node in nodes:
+                        labels[origin][destination][city_node] = label[city_node]
+                        for stop_node in nodes[city_node]:
+                            labels[origin][destination][stop_node] = label[stop_node]
+                            for route_node in nodes[city_node][stop_node]:
+                                labels[origin][destination][route_node] = label[route_node]
+
+                    for city_node in nodes:
+                        for suc in successor[city_node]:
+                            successors[origin][destination][city_node].append(suc)
+                        for stop_node in nodes[city_node]:
+                            for suc in successor[stop_node]:
+                                successors[origin][destination][stop_node].append(suc)
+                            for route_node in nodes[city_node][stop_node]:
+                                for suc in successor[route_node]:
+                                    successors[origin][destination][route_node].append(suc)
+
+                    for city_node in nodes:
+                        frequency[origin][destination][city_node] = frequencies[city_node]
+                        for stop_node in nodes[city_node]:
+                            frequency[origin][destination][stop_node] = frequencies[stop_node]
+                            for route_node in nodes[city_node][stop_node]:
+                                frequency[origin][destination][route_node] = frequencies[route_node]
+
+                    for stop in hyperpaths_od:
+                        for elemental_path in hyperpaths_od[stop]:
+                            hyperpaths[origin][destination][stop].append(elemental_path)
+
+                    Vij[origin][destination] = vij
+
+    else:
+        raise TransportNetworkIsNotValidException(&#34;Network is not valid&#34;)
+
+    return hyperpaths, labels, successors, frequency, Vij</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_hyperpath_OD"><code class="name flex">
+<span>def <span class="ident">get_hyperpath_OD</span></span>(<span>self, origin: <a title="sidermit.optimization.preoptimization.extended_graph.CityNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.CityNode">CityNode</a>, destination: <a title="sidermit.optimization.preoptimization.extended_graph.CityNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.CityNode">CityNode</a>) ‑> (defaultdict(typing.List[typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedNode" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedNode">ExtendedNode</a>]], {}), defaultdict(<class 'float'>, {}), defaultdict(typing.List[<a title="sidermit.optimization.preoptimization.extended_graph.ExtendedEdge" href="extended_graph.html#sidermit.optimization.preoptimization.extended_graph.ExtendedEdge">ExtendedEdge</a>], {}))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all elemental path for each StopNode in Origin
+:param origin: CityNode origin
+:param destination: CityNode destination
+:return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode] = Label, dic[ExtendedNode] =
+List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect origin and destination.
+List[ExtendedEdge] represent all successors edge for each ExtendedNode.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_hyperpath_OD(self, origin: CityNode, destination: CityNode) -&gt; (
+        defaultdict_elemental_path, list_lab, list_suc):
+    &#34;&#34;&#34;
+    to get all elemental path for each StopNode in Origin
+    :param origin: CityNode origin
+    :param destination: CityNode destination
+    :return: (Dic[TransportMode] = List[List[ExtendedNodes]], dic[ExtendedNode] = Label, dic[ExtendedNode] =
+    List[ExtendedEdge]). Each List[ExtendedNodes] represent a elemental path to connect origin and destination.
+    List[ExtendedEdge] represent all successors edge for each ExtendedNode.
+    &#34;&#34;&#34;
+    # we run hyperpath algorithm
+    successors, label, frequencies = self.build_hyperpath_graph(origin, destination)
+
+    nodes = self.extended_graph_obj.get_extended_graph_nodes()
+
+    # dictionary with key: TransportMode and value all elemental path associated
+    hyperpaths_od = defaultdict(list)
+
+    # for each StopNode in Origin
+    for stop in nodes[origin]:
+        # hyperpath in the StopNode
+        hyperpath_stop = [[origin, stop]]
+        # we initialize hyperpath
+
+        while True:
+            # stop condition that each elemental path has reached the destination
+            end = True
+            for path in hyperpath_stop:
+                # there is a elemental path that has not reached the destination
+                if path[len(path) - 1] != destination:
+                    end = False
+                    break
+            if end:
+                break
+
+            new_hyperpath_stop = []
+            # we add successors of those paths that have not reached the destination
+            for path in hyperpath_stop:
+                # elemental path that has not reached the destination
+                if path[len(path) - 1] != destination:
+                    # we add new elemental path as successors have the last node of the path analyzed
+                    for suc in successors[path[len(path) - 1]]:
+                        new_path = []
+                        new_path.extend(path)
+                        new_path.append(suc.nodej)
+                        new_hyperpath_stop.append(new_path)
+                # path that arrived at destination
+                else:
+                    new_hyperpath_stop.append(path)
+            hyperpath_stop = new_hyperpath_stop
+
+        for elemental_path in hyperpath_stop:
+            hyperpaths_od[stop].append(elemental_path)
+
+    return hyperpaths_od, label, successors, frequencies</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.preoptimization.hyper_path.Hyperpath.network_validator"><code class="name flex">
+<span>def <span class="ident">network_validator</span></span>(<span>self, OD_matrix: defaultdict(<function <lambda> at 0x106CD1E0>, {})) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
+each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
+:param OD_matrix: OD matrix get from Demand object
+:return: True if all OD pairs with trips have at least one path between origin and destination. False if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def network_validator(self, OD_matrix: defaultdict2_float) -&gt; bool:
+    &#34;&#34;&#34;
+    to check if Transport network is well defined for all pairs OD with trips. This must has at least a route for
+    each OD pair with trips. Also this must has until 2 TransportMode and at least one has parameter d=1.
+    :param OD_matrix: OD matrix get from Demand object
+    :return: True if all OD pairs with trips have at least one path between origin and destination. False if not.
+    &#34;&#34;&#34;
+    nodes = self.extended_graph_obj.get_extended_graph_nodes()
+    # to check a path between all OD pair with trips
+    for origin_id in OD_matrix:
+        for destination_id in OD_matrix[origin_id]:
+            vij = OD_matrix[origin_id][destination_id]
+            if vij != 0:
+                origin = None
+                destination = None
+                for city_node in nodes:
+                    if str(origin_id) == str(city_node.graph_node.id):
+                        origin = city_node
+                    if str(destination_id) == str(city_node.graph_node.id):
+                        destination = city_node
+
+                _, label, _ = self.build_hyperpath_graph(origin, destination)
+
+                # if there is a stop with a label != infinity, you can get from the origin to the destination
+                conection = False
+                for stop in nodes[origin]:
+                    if label[stop] != float(&#39;inf&#39;):
+                        conection = True
+                        break
+                if conection is False:
+                    raise TransportNetworkException(
+                        &#34;par OD {}-{} without connection&#34;.format(origin_id, destination_id))
+    # to check network must has until 2 TransportMode
+    list_mode = []
+    for city_node in nodes:
+        for stop in nodes[city_node]:
+            if stop.mode not in list_mode:
+                list_mode.append(stop.mode)
+
+    mode_manager = TransportModeManager(add_default_mode=False)
+
+    for mode in list_mode:
+        mode_manager.add_mode(mode)
+
+    return mode_manager.is_valid_to_assignment_step()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sidermit.optimization.preoptimization" href="index.html">sidermit.optimization.preoptimization</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath">Hyperpath</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.build_hyperpath_graph" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.build_hyperpath_graph">build_hyperpath_graph</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_all_hyperpaths" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_all_hyperpaths">get_all_hyperpaths</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_hyperpath_OD" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.get_hyperpath_OD">get_hyperpath_OD</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.network_validator" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.network_validator">network_validator</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.plot" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.plot">plot</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_all_hyperpaths" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_all_hyperpaths">string_all_hyperpaths</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpath_graph" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpath_graph">string_hyperpath_graph</a></code></li>
+<li><code><a title="sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpaths_OD" href="#sidermit.optimization.preoptimization.hyper_path.Hyperpath.string_hyperpaths_OD">string_hyperpaths_OD</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

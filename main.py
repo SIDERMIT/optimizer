@@ -84,6 +84,11 @@ from sidermit.publictransportsystem import TransportMode, TransportNetwork, Pass
 
 n, l, g, p = 4, 10, 0.85, 2
 graph_obj = Graph.build_from_parameters(n, l, g, p)
+graph_obj.graph_to_pajek_file("graph.pajek")
+graph_obj = Graph.build_from_file("graph.pajek")
+print(graph_obj.get_parameters())
+
+
 demand_obj = Demand.build_from_parameters(graph_obj, 300000, 0.78, 0.25, 0.22)
 network_obj = TransportNetwork(graph_obj)
 
@@ -125,14 +130,14 @@ t1_bus = network_obj.get_tangencial_routes(bus, 1)
 ds2_metro = network_obj.get_diametral_routes(metro, 2, True)
 r_bus = network_obj.get_radial_routes(bus)
 
-routes = r_bus + t1_bus + ds2_metro + d2_bus  # + d1_bus + c
+routes = r_bus + t1_bus + ds2_metro + d2_bus + d1_bus + c
 
 for route in routes:
     network_obj.add_route(route)
 
 # static method to run a optimization, return optimizer object
 # max_number_of_iteration set in 5
-opt_obj = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=1)
+opt_obj = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=20)
 
 # to get a data structure with overall results
 overall_result = opt_obj.get_overall_results()

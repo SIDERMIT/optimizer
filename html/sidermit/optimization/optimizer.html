@@ -1,0 +1,2827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>sidermit.optimization.optimizer API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sidermit.optimization.optimizer</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+import logging
+from collections import defaultdict
+from typing import List, Tuple
+
+import numpy as np
+from scipy.optimize import minimize, NonlinearConstraint, Bounds, OptimizeResult
+
+from sidermit.city import Graph, Demand
+from sidermit.exceptions import *
+from sidermit.optimization import Constrains
+from sidermit.optimization import InfrastructureCost, UsersCost, OperatorsCost
+from sidermit.optimization.preoptimization import Assignment, Hyperpath, ExtendedGraph, ExtendedNode, ExtendedEdge
+from sidermit.publictransportsystem import Passenger
+from sidermit.publictransportsystem import TransportNetwork, RouteType
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+defaultdict_float = defaultdict(float)
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+defaultdict3_float = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+list_elemental_path = List[ExtendedNode]
+defaultdict_elemental_path = defaultdict(List[list_elemental_path])
+
+dic_hyperpaths = defaultdict(lambda: defaultdict(lambda: defaultdict(List[list_elemental_path])))
+dic_labels = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_successors = defaultdict(lambda: defaultdict(lambda: defaultdict(List[ExtendedEdge])))
+dic_frequency = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_Vij = defaultdict(lambda: defaultdict(float))
+dic_assigment = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_f = defaultdict(float)
+
+dic_boarding = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+dic_alighting = defaultdict(lambda: defaultdict(lambda: defaultdict(float)))
+
+dic_loaded_section = defaultdict(float)
+
+defaultdict_str = defaultdict(str)
+
+
+class Optimizer:
+    def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork,
+                 f: defaultdict_float = None):
+
+        # definimos ciudad
+        self.graph_obj = graph_obj
+        _, _, _, self.p, _, _, _, _, _ = self.graph_obj.get_parameters()
+        # definimos demanda
+        self.demand_obj = demand_obj
+        self.total_trips = demand_obj.get_total_trips()
+        # definimos pasajeros
+        self.passenger_obj = passenger_obj
+        self.vp = self.passenger_obj.va
+        self.pa = self.passenger_obj.pa
+        self.pv = self.passenger_obj.pv
+        self.TP = self.passenger_obj.pt
+
+        # definimos red de transporte
+        self.network_obj = network_obj
+
+        # definimos frecuencia
+        self.f, self.f_opt, self.lines_position = self.f0(f)
+
+        self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.TP, self.f)
+        self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
+
+        # en este punto se debería levantar exception de que la red tiene mas de dos modos defnidos
+        # o que existe un par OD con viaje y sin conexion
+        self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = self.hyperpath_obj.get_all_hyperpaths(
+            self.demand_obj.get_matrix())
+
+        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.pa,
+                                                    self.pv)
+
+        self.len_constrains = len(self.get_constrains(self.f_opt))
+        self.len_var = len(self.f_opt)
+
+        self.better_res = None  # (fopt, success, status, message, constr_violation, vrc)
+
+    def f0(self, f: defaultdict_float = None) -&gt; (defaultdict_float, List[float], defaultdict_str):
+        &#34;&#34;&#34;
+        to get a relation between f as a dictionary and f_opt as a list to the optimizer
+        :param f: dic[route_id] = frequency [veh/hr] for all D lines
+        :return: dic[route_id] = frequency [veh/hr] for all D lines, List[frequency], dic[position] = route_id
+        &#34;&#34;&#34;
+        fini = defaultdict(float)
+        fopt = []
+        lines_position = defaultdict(None)
+        n = 0
+        if f is None:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = route.mode.fini
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
+        else:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = f[route.id]
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
+
+        return fini, fopt, lines_position
+
+    def fopt_to_f(self, fopt: List[float]) -&gt; defaultdict_float:
+        &#34;&#34;&#34;
+        to get f as a dictionary
+        :param fopt: List[frequency]
+        :return: dic[route_id] = frequency [veh/hr] all D lines
+        &#34;&#34;&#34;
+        f = defaultdict(float)
+        n = 0
+        for fr in fopt:
+            f[self.lines_position[n]] = fr
+            n += 1
+        return f
+
+    @staticmethod
+    def get_k(loaded_section_route: defaultdict3_float) -&gt; defaultdict_float:
+        &#34;&#34;&#34;
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: k: dic[route_id] = vehicle capacity [pax/veh]
+        &#34;&#34;&#34;
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+        k = defaultdict(float)
+        for route_id in most_loaded_section:
+            k[route_id] = most_loaded_section[route_id]
+        return k
+
+    def operators_cost(self, z: defaultdict3_float, v: defaultdict3_float, f: defaultdict_float,
+                       k: defaultdict_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get operators cost
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param f: dic[route_id] = frequency [veh/hr]
+        :param k: dic[route_id] = frequency [pax/veh]
+        :return: float, operator cost
+        &#34;&#34;&#34;
+        operators_cost_obj = OperatorsCost()
+
+        edge_distance = self.graph_obj.get_edges_distance()
+        routes = self.network_obj.get_routes()
+        line_travel_time = operators_cost_obj.lines_travel_time(routes, edge_distance)
+
+        cycle_time = operators_cost_obj.get_cycle_time(z, v, routes, line_travel_time)
+        cost = operators_cost_obj.get_operators_cost(routes, cycle_time, f, k)
+        return cost
+
+    def infrastructure_cost(self, f: defaultdict_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get infrastructure cost
+        :param f: dic[route_id] = frequency [veh/hr]
+        :return: float, infrastructure cost
+        &#34;&#34;&#34;
+        infrastructure_cost_obj = InfrastructureCost()
+        cost = infrastructure_cost_obj.get_infrastruture_cost(self.graph_obj, self.network_obj, f)
+        return cost
+
+    def user_cost(self, hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment,
+                  successors: dic_successors, extended_graph: ExtendedGraph, f: defaultdict_float,
+                  z: defaultdict3_float, v: defaultdict3_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get users cost
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param Vij: dic[origin: CityNode][destination: CityNode] = vij
+        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param extended_graph: ExtendedGraph object
+        :param f: dict with frequency [veh/hr] for each route_id
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: float, users cost
+        &#34;&#34;&#34;
+        user_cost_obj = UsersCost()
+        cost = user_cost_obj.get_users_cost(hyperpaths, Vij, assignment, successors, extended_graph, f,
+                                            self.passenger_obj, z, v)
+        return cost
+
+    def constrains(self, loaded_section_route: defaultdict3_float, f: defaultdict_float) -&gt; (
+            List[float], List[float]):
+        &#34;&#34;&#34;
+        to get k constrains and f constrains
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param f: dict with frequency [veh/hr] for each route_id
+        :return: (k_ineq_constrains, f_ineq_constrains)
+        &#34;&#34;&#34;
+
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+
+        constrains_obj = Constrains()
+
+        ineq_k = constrains_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+        ineq_f = constrains_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                                self.network_obj.get_modes(), f)
+
+        return ineq_k, ineq_f
+
+    def VRC(self, fopt: List[float]) -&gt; float:
+        &#34;&#34;&#34;
+        to get VRC objective function to minime in optimizer
+        :param fopt: variable to optimize
+        :return: float, VRC value function
+        &#34;&#34;&#34;
+
+        f = self.fopt_to_f(fopt)
+
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
+        k = self.get_k(loaded_section_route)
+
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
+                            v)
+
+        return CO + CI + CU
+
+    def get_constrains(self, fopt: List[float]) -&gt; List[float]:
+        &#34;&#34;&#34;
+        to get all constrains as a List[float]
+        :param fopt: variable to optimize
+        :return: all constrains as a List[float]
+        &#34;&#34;&#34;
+
+        f = self.fopt_to_f(fopt)
+
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
+
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+        constrain_obj = Constrains()
+        ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+        ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                               self.network_obj.get_modes(), f)
+
+        con = []
+        for c in ineq_k:
+            con.append(c)
+        for c in ineq_f:
+            con.append(c)
+
+        return con
+
+    def internal_optimization(self) -&gt; OptimizeResult:
+        &#34;&#34;&#34;
+        method to do internal optimization process, with a hyperpath setted you can get a optimization of the network
+        :return:     res : OptimizeResult
+        The optimization result represented as a ``OptimizeResult`` object.
+        Important attributes are: ``x`` the solution array, ``success`` a
+        Boolean flag indicating if the optimizer exited successfully and
+        ``message`` which describes the cause of the termination. See
+        `OptimizeResult` for a description of other attributes.
+        &#34;&#34;&#34;
+
+        constr_func = lambda fopt: np.array(self.get_constrains(fopt))
+
+        lb = [-1 * np.inf] * self.len_constrains
+        ub = [0] * self.len_constrains
+        nonlin_con = NonlinearConstraint(constr_func, lb=lb, ub=ub)
+
+        lb = [0] * self.len_var
+        ub = [np.inf] * self.len_var
+
+        bounds = Bounds(lb=lb, ub=ub)
+        res = minimize(self.VRC, self.f_opt, method=&#39;trust-constr&#39;, constraints=nonlin_con, tol=0.01, bounds=bounds)
+        logger.info(self.string_information_internal_optimization(res))
+
+        return res
+
+    @staticmethod
+    def string_information_internal_optimization(res: OptimizeResult) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with information about internal optimization
+        :param res: OptimizeResult
+        :return: str
+        &#34;&#34;&#34;
+
+        success = res.success
+        status = res.status
+        message = res.message
+        new_f = res.x
+        constr_violation = res.constr_violation
+        fun = res.fun
+
+        line = &#34;Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}\n\tVRC: {}&#34;.format(
+            success, status, message, new_f, constr_violation, fun)
+        return line
+
+    @staticmethod
+    def f_distance(prev_f: List[float], new_f: List[float]) -&gt; float:
+        &#34;&#34;&#34;
+        to get distance between 2 list of frequency results.
+        :param prev_f: previous frequency
+        :param new_f: new frequency
+        :return: float, distance with normal distance
+        &#34;&#34;&#34;
+        dif = 0
+        for i in range(len(prev_f)):
+            dif += abs(prev_f[i] - new_f[i])
+        dif = dif  # ** (1 / len(prev_f))
+        logger.info(&#34;f_norm_distance: {}&#34;.format(dif))
+        return dif
+
+    def external_optimization_tolerance(self, prev_f: List[float], new_f: List[float], tol: float = 0.01) -&gt; bool:
+        &#34;&#34;&#34;
+        True, if tolerance criteria is success
+        :param prev_f: previous frequency
+        :param new_f: new frequency
+        :param tol: float, tolerance
+        :return: True, if tolerance criteria is success
+        &#34;&#34;&#34;
+
+        if tol &gt; abs(self.f_distance(prev_f, new_f)):
+            return True
+
+        return False
+
+    @staticmethod
+    def status_optimization(better_res) -&gt; bool:
+        &#34;&#34;&#34;
+        to get a information about status of external optimization
+        :param better_res:(fopt, success, status, message, constr_violation, vrc)
+        :return: true if status is success, exceptions if not
+        &#34;&#34;&#34;
+
+        if better_res is None:
+            raise NoOptimalSolutionFoundException(
+                &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+        fopt, success, status, message, constr_violation, fun = better_res
+
+        for f in fopt:
+            if f &lt; -0.1:
+                raise NegativeFrequencyException(&#34;Solution with negative frequency. You can try with other fini&#34;)
+
+        if abs(constr_violation) &gt; 0.1:
+            raise ConstraintViolationException(
+                &#34;Maximum constraint violation at the solution {}. You can try with other fini or total demand is very large for the proposed network.&#34;.format(
+                    constr_violation))
+
+        if status == 0 or status == 3:
+            raise NoOptimalSolutionFoundException(
+                &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+        return True
+
+    @staticmethod
+    def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                              network_obj: TransportNetwork,
+                              f: defaultdict_float = None, tolerance: float = 0.01,
+                              number_of_iteration: int = None) -&gt; Tuple:
+        &#34;&#34;&#34;
+        method to do external optimization process, several iterations of internal optimization with fixed
+        hyperpaths in each
+        :param graph_obj: Graph object
+        :param demand_obj: Demand object
+        :param passenger_obj: Passenger object
+        :param network_obj: TransportNetwork object
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+        :param tolerance: float, tolerance to external optimization
+        :param number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
+        :return: (fopt, success, status, message, constr_violation, vrc)
+        &#34;&#34;&#34;
+
+        list_res = []
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        # inicialización
+        list_res.append((opt_obj.f_opt, &#34;initialization&#34;, -1, &#34;initialization&#34;, -1, -1))
+
+        # primera iteracion
+        res = opt_obj.internal_optimization()
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+
+        pre_f, _, _, _, _, _ = list_res[0]
+        new_f, _, _, _, _, _ = list_res[1]
+
+        iteration = 1
+        # mientras criterio de tolerancia externo no se cumpla o se llegue al maximo numero de iteraciones
+        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
+            if number_of_iteration is not None:
+                if iteration &gt; number_of_iteration:
+                    break
+            pre_f = new_f
+            dic_new_f = opt_obj.fopt_to_f(new_f)
+            opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
+            res = opt_obj.internal_optimization()
+            list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+            new_f = res.x
+            iteration += 1
+
+        better_result = opt_obj.get_better_result(list_res)
+
+        if opt_obj.status_optimization(better_result):
+            return better_result
+
+    @staticmethod
+    def get_better_result(list_res):
+        valid_result = []
+        for x, success, status, message, constr_violation, fun in list_res:
+            if status not in [0, 3, -1] and abs(constr_violation) &lt; 0.001:
+                cond_f = True
+                for f in x:
+                    if f &lt; 0:
+                        cond_f = False
+                        break
+                if cond_f:
+                    valid_result.append((x, success, status, message, constr_violation, fun))
+
+        better_result = None
+        max_fun = float(&#34;inf&#34;)
+        for x, success, status, message, constr_violation, fun in valid_result:
+            if fun &lt; max_fun:
+                max_fun = fun
+                better_result = (x, success, status, message, constr_violation, fun)
+
+        return better_result
+
+    @staticmethod
+    def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                             network_obj: TransportNetwork,
+                             f: defaultdict_float = None, tolerance: float = 0.01,
+                             max_number_of_iteration: int = None) -&gt; Optimizer:
+        &#34;&#34;&#34;
+        obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
+        :param graph_obj: Graph object
+        :param demand_obj: Demand object
+        :param passenger_obj: Passenger object
+        :param network_obj: TransportNetwork object
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency, if f is None then fini of
+        each TransportMode defined in TransportNetwork define f.
+        :param tolerance: float, tolerance to external optimization
+        :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
+        :return: opt_obj
+        &#34;&#34;&#34;
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        opt_obj.better_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f,
+                                                           tolerance, number_of_iteration=max_number_of_iteration)
+
+        logger.info(opt_obj.string_network_optimization(opt_obj.better_res))
+
+        return opt_obj
+
+    def get_optimization_value(self) -&gt; Tuple:
+        &#34;&#34;&#34;
+        to get optimization value saved
+        :return: (fopt, success, status, message, constr_violation, vrc)
+        &#34;&#34;&#34;
+        return self.better_res
+
+    def string_network_optimization(self, res: Tuple) -&gt; str:
+        &#34;&#34;&#34;
+        get a str summary about last external optimization in network_optimization
+        :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return:
+        &#34;&#34;&#34;
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+
+        line = &#34;\n\nOptimization Results&#34;
+        line += &#34;\nSuccess: {}&#34;.format(success)
+        line += &#34;\nStatus: {}&#34;.format(status)
+        line += &#34;\nMessage: {}&#34;.format(message)
+        line += &#34;\nMax constrain violation: {}&#34;.format(constr_violation)
+        line += &#34;\nVRC: {}&#34;.format(vrc)
+        line += &#34;\n\nFrequency information [veh/hr]: &#34;
+        for route_id in f:
+            line += &#34;\n\t{}: {:.2f}&#34;.format(route_id, f[route_id])
+
+        return line
+
+    def last_iteration(self, res: Tuple):
+        &#34;&#34;&#34;
+        return last network optimized with optimization result
+        :param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route
+        &#34;&#34;&#34;
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+        final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij,
+                                                                           final_optimizer.hyperpaths,
+                                                                           final_optimizer.successors,
+                                                                           final_optimizer.assignment, f)
+        k = self.get_k(loaded_section_route)
+        return final_optimizer, z, v, k, loaded_section_route
+
+    def get_network_results(self) -&gt; List[Tuple]:
+        &#34;&#34;&#34;
+        to get transport network results per line-direction
+        :return: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float, cycle_time [hr]: float,
+        CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
+        sub_table_i: List[(node_i, node_j, lambda)]
+        &#34;&#34;&#34;
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+        output = []
+
+        fopt, success, status, message, constr_violation, vrc = res
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+        f = self.fopt_to_f(fopt)
+
+        # resultados de modos
+        travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                           final_optimizer.graph_obj.get_edges_distance())
+        cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        for route in final_optimizer.network_obj.get_routes():
+
+            # flota de buses
+            b = cycle_time_line[route.id] * f[route.id]
+            nodes_sequence_i = route.nodes_sequence_i
+            nodes_sequence_r = route.nodes_sequence_r
+            # carga que hay en los tramos
+            total_pax = 0
+            charge_i = []
+            charge_r = []
+            # total de subidas a la ruta
+            total_b = 0
+
+            # caso circular
+            if route._type == RouteType.CIRCULAR:
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) &gt; 0:
+                    node_sequence = nodes_sequence_i
+                    direction = &#34;I&#34;
+                # circular con sentido de vuelta
+                else:
+                    node_sequence = nodes_sequence_r
+                    direction = &#34;R&#34;
+                load_i = []
+                for i in node_sequence:
+                    for stop_node in z[route.id][direction]:
+                        if stop_node.city_node.graph_node.id == i:
+                            total_b += z[route.id][direction][stop_node]
+                            break
+                    for stop_node in loaded_section_route[route.id][direction]:
+                        if stop_node.city_node.graph_node.id == i:
+                            load_i.append(loaded_section_route[route.id][direction][stop_node])
+                            break
+
+                if total_b == 0:
+                    co = 0
+                else:
+                    co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                            total_b * f[route.id])
+
+                if len(load_i) &gt;= 1:
+                    charge_min = min(load_i) / max(load_i)
+                else:
+                    load_i = [1] * len(node_sequence)
+                    charge_min = 0
+
+                sub_table = []
+                sub_table_i = []
+                sub_table_r = []
+
+                node_i = None
+                charge_ij = None
+                for i in range(len(node_sequence)):
+                    if i == 0:
+                        node_i = node_sequence[i]
+                        charge_ij = load_i[i] / max(load_i)
+                        continue
+                    else:
+                        node_j = node_sequence[i]
+                        sub_table.append((node_i, node_j, abs(charge_ij)))
+                        node_i = node_j
+                        charge_ij = load_i[i] / max(load_i)
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) &gt; 0:
+                    sub_table_i = sub_table
+                # circular con sentido de vuelta
+                else:
+                    sub_table_r = sub_table
+
+                output.append((
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i, sub_table_r))
+            else:
+                # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+                total_pax = 0
+                for node_id in nodes_sequence_i:
+                    bool_add = False
+                    for stopnode in z[route.id][&#34;I&#34;]:
+                        if stopnode.city_node.graph_node.id == node_id:
+                            pax_b = z[route.id][&#34;I&#34;][stopnode]
+                            pax_a = v[route.id][&#34;I&#34;][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+
+                            charge_i.append((node_id, total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
+                        charge_i.append((node_id, total_pax / k[route.id]))
+
+                total_pax = 0
+                for node_id in nodes_sequence_r:
+                    bool_add = False
+                    for stopnode in z[route.id][&#34;R&#34;]:
+                        if stopnode.city_node.graph_node.id == node_id:
+                            pax_b = z[route.id][&#34;R&#34;][stopnode]
+                            pax_a = v[route.id][&#34;R&#34;][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+
+                            charge_r.append((node_id, total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
+                        charge_r.append((node_id, total_pax / k[route.id]))
+
+                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                        total_b * f[route.id])
+
+                charge_min = float(&#34;inf&#34;)
+                sub_table_i = []
+                node_i = None
+                charge_ij = None
+                for node_j, charge in charge_i:
+                    if node_i is None:
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_i.append((node_i, node_j, abs(charge_ij)))
+                        if charge_min &gt; charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
+
+                sub_table_r = []
+                node_i = None
+                charge_ij = None
+                for node_j, charge in charge_r:
+                    if node_i is None:
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_r.append((node_i, node_j, abs(charge_ij)))
+                        if charge_min &gt; charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
+
+                output.append((
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i, sub_table_r))
+
+        return output
+
+    def string_network_results(self) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with network results
+        :return: str
+        &#34;&#34;&#34;
+
+        output_network_results = self.get_network_results()
+        line = &#34;route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r&#34;
+
+        for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
+            line += &#34;\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}&#34;.format(route_id, F, f, k, b,
+                                                                                         cycle_time, co,
+                                                                                         charge_min, sub_table_i,
+                                                                                         sub_table_r)
+        return line
+
+    def write_file_network_results(self, file_path) -&gt; None:
+        &#34;&#34;&#34;
+        to write output file with result of optimization transport network
+        :param file_path: file path
+        :return: None
+        &#34;&#34;&#34;
+        string_lines = self.string_network_results()
+        file = open(file_path, &#39;w&#39;, encoding=&#39;utf-8&#39;)
+        file.write(string_lines)
+        file.close()
+
+    def get_overall_results(self) -&gt; defaultdict:
+        &#34;&#34;&#34;
+        to get overall cost results per passenger
+        :return: defaultdict:
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
+        &#34;&#34;&#34;
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+        fopt, success, status, message, constr_violation, vrc = res
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+        f = self.fopt_to_f(fopt)
+
+        # resultados de costos
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
+                            final_optimizer.successors, final_optimizer.extended_graph_obj, f, z, v)
+
+        VRC = CO + CI + CU
+
+        # resultados de usuarios
+        ta, te, tv, t = UsersCost.resources_consumer(final_optimizer.hyperpaths, final_optimizer.Vij,
+                                                     final_optimizer.assignment, final_optimizer.successors,
+                                                     final_optimizer.extended_graph_obj,
+                                                     final_optimizer.passenger_obj.va, f, z, v)
+
+        # resultados de modos
+        travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                           final_optimizer.graph_obj.get_edges_distance())
+        cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        B = defaultdict(float)
+        L = defaultdict(int)
+
+        K_list = defaultdict(list)
+        K = defaultdict(float)
+
+        for route in self.network_obj.get_routes():
+            if f[route.id] &gt; 0:
+                B[route.mode] += f[route.id] * cycle_time_line[route.id]
+                L[route.mode] += route.mode.d
+                K_list[route.mode].append(k[route.id])
+
+        for mode in K_list:
+            l = K_list[mode]
+            K[mode] = sum(l) / len(l)
+
+        output = defaultdict(None)
+        output[&#34;VRC&#34;] = VRC / self.total_trips
+        output[&#34;operators_cost&#34;] = CO / self.total_trips
+        output[&#34;infrastructure_cost&#34;] = CI / self.total_trips
+        output[&#34;users_cost&#34;] = CU / self.total_trips
+        output[&#34;travel_time_on_board&#34;] = tv / self.total_trips * 60
+        output[&#34;waiting_time&#34;] = te / self.total_trips * 60
+        output[&#34;access_time&#34;] = ta / self.total_trips * 60
+        output[&#34;transfers&#34;] = t / self.total_trips
+        output[&#34;vehicles_mode&#34;] = B
+        output[&#34;vehicle_capacity_mode&#34;] = K
+        output[&#34;lines_mode&#34;] = L
+        return output
+
+    def string_overall_results(self) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string to print overall results in console
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
+        :return: string to print overall results in console
+        &#34;&#34;&#34;
+        overall_results = self.get_overall_results()
+
+        vrc = overall_results[&#34;VRC&#34;]
+        co = overall_results[&#34;operators_cost&#34;]
+        ci = overall_results[&#34;infrastructure_cost&#34;]
+        cu = overall_results[&#34;users_cost&#34;]
+        tv = overall_results[&#34;travel_time_on_board&#34;]
+        te = overall_results[&#34;waiting_time&#34;]
+        ta = overall_results[&#34;access_time&#34;]
+        t = overall_results[&#34;transfers&#34;]
+        b = overall_results[&#34;vehicles_mode&#34;]
+        k = overall_results[&#34;vehicle_capacity_mode&#34;]
+        l = overall_results[&#34;lines_mode&#34;]
+
+        line = &#34;\n\nObjective function VRC [USD$/hr-pax]: {:.2f}&#34;.format(vrc)
+        line += &#34;\nOperators cost [USD$/hr-pax]        : {:.2f}&#34;.format(co)
+        line += &#34;\nInfrastructure cost [USD$/hr-pax]   : {:.2f}&#34;.format(ci)
+        line += &#34;\nUsers cost [USD$/hr-pax]            : {:.2f}&#34;.format(cu)
+
+        line += &#34;\n\nResources consumer for users&#34;
+        line += &#34;\nTime on board vehicle [min/pax]: {:.2f}&#34;.format(tv)
+        line += &#34;\nWaiting time [min/pax]         : {:.2f}&#34;.format(te)
+        line += &#34;\nAccess time [min/pax]          : {:.2f}&#34;.format(ta)
+        line += &#34;\ntotal travel time [min/pax]    : {:.2f}&#34;.format(tv + ta + te)
+        line += &#34;\nTransfers [transfers/pax]      : {:.2f}&#34;.format(t)
+
+        line += &#34;\n\n&#34;
+        line += &#34;Transport mode information: {}&#34;.format(len(b))
+
+        for mode in b:
+            line += &#34;\n\n\tMode name: {}&#34;.format(mode.name)
+            line += &#34;\n\tB [veh]      : {:.2f}&#34;.format(b[mode])
+            line += &#34;\n\tK [pax/veh]  : {:.2f}&#34;.format(k[mode])
+            line += &#34;\n\tL [lines]    : {}&#34;.format(l[mode])
+
+        return line</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sidermit.optimization.optimizer.Optimizer"><code class="flex name class">
+<span>class <span class="ident">Optimizer</span></span>
+<span>(</span><span>graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork, f: defaultdict_float = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Optimizer:
+    def __init__(self, graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork,
+                 f: defaultdict_float = None):
+
+        # definimos ciudad
+        self.graph_obj = graph_obj
+        _, _, _, self.p, _, _, _, _, _ = self.graph_obj.get_parameters()
+        # definimos demanda
+        self.demand_obj = demand_obj
+        self.total_trips = demand_obj.get_total_trips()
+        # definimos pasajeros
+        self.passenger_obj = passenger_obj
+        self.vp = self.passenger_obj.va
+        self.pa = self.passenger_obj.pa
+        self.pv = self.passenger_obj.pv
+        self.TP = self.passenger_obj.pt
+
+        # definimos red de transporte
+        self.network_obj = network_obj
+
+        # definimos frecuencia
+        self.f, self.f_opt, self.lines_position = self.f0(f)
+
+        self.extended_graph_obj = ExtendedGraph(self.graph_obj, self.network_obj.get_routes(), self.TP, self.f)
+        self.hyperpath_obj = Hyperpath(self.extended_graph_obj, self.passenger_obj)
+
+        # en este punto se debería levantar exception de que la red tiene mas de dos modos defnidos
+        # o que existe un par OD con viaje y sin conexion
+        self.hyperpaths, self.labels, self.successors, self.frequency, self.Vij = self.hyperpath_obj.get_all_hyperpaths(
+            self.demand_obj.get_matrix())
+
+        self.assignment = Assignment.get_assignment(self.hyperpaths, self.labels, self.p, self.vp, self.pa,
+                                                    self.pv)
+
+        self.len_constrains = len(self.get_constrains(self.f_opt))
+        self.len_var = len(self.f_opt)
+
+        self.better_res = None  # (fopt, success, status, message, constr_violation, vrc)
+
+    def f0(self, f: defaultdict_float = None) -&gt; (defaultdict_float, List[float], defaultdict_str):
+        &#34;&#34;&#34;
+        to get a relation between f as a dictionary and f_opt as a list to the optimizer
+        :param f: dic[route_id] = frequency [veh/hr] for all D lines
+        :return: dic[route_id] = frequency [veh/hr] for all D lines, List[frequency], dic[position] = route_id
+        &#34;&#34;&#34;
+        fini = defaultdict(float)
+        fopt = []
+        lines_position = defaultdict(None)
+        n = 0
+        if f is None:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = route.mode.fini
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
+        else:
+            for route in self.network_obj.get_routes():
+                fini[route.id] = f[route.id]
+                fopt.append(route.mode.fini)
+                lines_position[n] = route.id
+                n += 1
+
+        return fini, fopt, lines_position
+
+    def fopt_to_f(self, fopt: List[float]) -&gt; defaultdict_float:
+        &#34;&#34;&#34;
+        to get f as a dictionary
+        :param fopt: List[frequency]
+        :return: dic[route_id] = frequency [veh/hr] all D lines
+        &#34;&#34;&#34;
+        f = defaultdict(float)
+        n = 0
+        for fr in fopt:
+            f[self.lines_position[n]] = fr
+            n += 1
+        return f
+
+    @staticmethod
+    def get_k(loaded_section_route: defaultdict3_float) -&gt; defaultdict_float:
+        &#34;&#34;&#34;
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: k: dic[route_id] = vehicle capacity [pax/veh]
+        &#34;&#34;&#34;
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+        k = defaultdict(float)
+        for route_id in most_loaded_section:
+            k[route_id] = most_loaded_section[route_id]
+        return k
+
+    def operators_cost(self, z: defaultdict3_float, v: defaultdict3_float, f: defaultdict_float,
+                       k: defaultdict_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get operators cost
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param f: dic[route_id] = frequency [veh/hr]
+        :param k: dic[route_id] = frequency [pax/veh]
+        :return: float, operator cost
+        &#34;&#34;&#34;
+        operators_cost_obj = OperatorsCost()
+
+        edge_distance = self.graph_obj.get_edges_distance()
+        routes = self.network_obj.get_routes()
+        line_travel_time = operators_cost_obj.lines_travel_time(routes, edge_distance)
+
+        cycle_time = operators_cost_obj.get_cycle_time(z, v, routes, line_travel_time)
+        cost = operators_cost_obj.get_operators_cost(routes, cycle_time, f, k)
+        return cost
+
+    def infrastructure_cost(self, f: defaultdict_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get infrastructure cost
+        :param f: dic[route_id] = frequency [veh/hr]
+        :return: float, infrastructure cost
+        &#34;&#34;&#34;
+        infrastructure_cost_obj = InfrastructureCost()
+        cost = infrastructure_cost_obj.get_infrastruture_cost(self.graph_obj, self.network_obj, f)
+        return cost
+
+    def user_cost(self, hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment,
+                  successors: dic_successors, extended_graph: ExtendedGraph, f: defaultdict_float,
+                  z: defaultdict3_float, v: defaultdict3_float) -&gt; float:
+        &#34;&#34;&#34;
+        to get users cost
+        :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+        :param Vij: dic[origin: CityNode][destination: CityNode] = vij
+        :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+        :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+        :param extended_graph: ExtendedGraph object
+        :param f: dict with frequency [veh/hr] for each route_id
+        :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :return: float, users cost
+        &#34;&#34;&#34;
+        user_cost_obj = UsersCost()
+        cost = user_cost_obj.get_users_cost(hyperpaths, Vij, assignment, successors, extended_graph, f,
+                                            self.passenger_obj, z, v)
+        return cost
+
+    def constrains(self, loaded_section_route: defaultdict3_float, f: defaultdict_float) -&gt; (
+            List[float], List[float]):
+        &#34;&#34;&#34;
+        to get k constrains and f constrains
+        :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+        :param f: dict with frequency [veh/hr] for each route_id
+        :return: (k_ineq_constrains, f_ineq_constrains)
+        &#34;&#34;&#34;
+
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+
+        constrains_obj = Constrains()
+
+        ineq_k = constrains_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+        ineq_f = constrains_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                                self.network_obj.get_modes(), f)
+
+        return ineq_k, ineq_f
+
+    def VRC(self, fopt: List[float]) -&gt; float:
+        &#34;&#34;&#34;
+        to get VRC objective function to minime in optimizer
+        :param fopt: variable to optimize
+        :return: float, VRC value function
+        &#34;&#34;&#34;
+
+        f = self.fopt_to_f(fopt)
+
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
+        k = self.get_k(loaded_section_route)
+
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
+                            v)
+
+        return CO + CI + CU
+
+    def get_constrains(self, fopt: List[float]) -&gt; List[float]:
+        &#34;&#34;&#34;
+        to get all constrains as a List[float]
+        :param fopt: variable to optimize
+        :return: all constrains as a List[float]
+        &#34;&#34;&#34;
+
+        f = self.fopt_to_f(fopt)
+
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                           self.assignment, f)
+
+        most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+        constrain_obj = Constrains()
+        ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+        ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                               self.network_obj.get_modes(), f)
+
+        con = []
+        for c in ineq_k:
+            con.append(c)
+        for c in ineq_f:
+            con.append(c)
+
+        return con
+
+    def internal_optimization(self) -&gt; OptimizeResult:
+        &#34;&#34;&#34;
+        method to do internal optimization process, with a hyperpath setted you can get a optimization of the network
+        :return:     res : OptimizeResult
+        The optimization result represented as a ``OptimizeResult`` object.
+        Important attributes are: ``x`` the solution array, ``success`` a
+        Boolean flag indicating if the optimizer exited successfully and
+        ``message`` which describes the cause of the termination. See
+        `OptimizeResult` for a description of other attributes.
+        &#34;&#34;&#34;
+
+        constr_func = lambda fopt: np.array(self.get_constrains(fopt))
+
+        lb = [-1 * np.inf] * self.len_constrains
+        ub = [0] * self.len_constrains
+        nonlin_con = NonlinearConstraint(constr_func, lb=lb, ub=ub)
+
+        lb = [0] * self.len_var
+        ub = [np.inf] * self.len_var
+
+        bounds = Bounds(lb=lb, ub=ub)
+        res = minimize(self.VRC, self.f_opt, method=&#39;trust-constr&#39;, constraints=nonlin_con, tol=0.01, bounds=bounds)
+        logger.info(self.string_information_internal_optimization(res))
+
+        return res
+
+    @staticmethod
+    def string_information_internal_optimization(res: OptimizeResult) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with information about internal optimization
+        :param res: OptimizeResult
+        :return: str
+        &#34;&#34;&#34;
+
+        success = res.success
+        status = res.status
+        message = res.message
+        new_f = res.x
+        constr_violation = res.constr_violation
+        fun = res.fun
+
+        line = &#34;Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}\n\tVRC: {}&#34;.format(
+            success, status, message, new_f, constr_violation, fun)
+        return line
+
+    @staticmethod
+    def f_distance(prev_f: List[float], new_f: List[float]) -&gt; float:
+        &#34;&#34;&#34;
+        to get distance between 2 list of frequency results.
+        :param prev_f: previous frequency
+        :param new_f: new frequency
+        :return: float, distance with normal distance
+        &#34;&#34;&#34;
+        dif = 0
+        for i in range(len(prev_f)):
+            dif += abs(prev_f[i] - new_f[i])
+        dif = dif  # ** (1 / len(prev_f))
+        logger.info(&#34;f_norm_distance: {}&#34;.format(dif))
+        return dif
+
+    def external_optimization_tolerance(self, prev_f: List[float], new_f: List[float], tol: float = 0.01) -&gt; bool:
+        &#34;&#34;&#34;
+        True, if tolerance criteria is success
+        :param prev_f: previous frequency
+        :param new_f: new frequency
+        :param tol: float, tolerance
+        :return: True, if tolerance criteria is success
+        &#34;&#34;&#34;
+
+        if tol &gt; abs(self.f_distance(prev_f, new_f)):
+            return True
+
+        return False
+
+    @staticmethod
+    def status_optimization(better_res) -&gt; bool:
+        &#34;&#34;&#34;
+        to get a information about status of external optimization
+        :param better_res:(fopt, success, status, message, constr_violation, vrc)
+        :return: true if status is success, exceptions if not
+        &#34;&#34;&#34;
+
+        if better_res is None:
+            raise NoOptimalSolutionFoundException(
+                &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+        fopt, success, status, message, constr_violation, fun = better_res
+
+        for f in fopt:
+            if f &lt; -0.1:
+                raise NegativeFrequencyException(&#34;Solution with negative frequency. You can try with other fini&#34;)
+
+        if abs(constr_violation) &gt; 0.1:
+            raise ConstraintViolationException(
+                &#34;Maximum constraint violation at the solution {}. You can try with other fini or total demand is very large for the proposed network.&#34;.format(
+                    constr_violation))
+
+        if status == 0 or status == 3:
+            raise NoOptimalSolutionFoundException(
+                &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+        return True
+
+    @staticmethod
+    def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                              network_obj: TransportNetwork,
+                              f: defaultdict_float = None, tolerance: float = 0.01,
+                              number_of_iteration: int = None) -&gt; Tuple:
+        &#34;&#34;&#34;
+        method to do external optimization process, several iterations of internal optimization with fixed
+        hyperpaths in each
+        :param graph_obj: Graph object
+        :param demand_obj: Demand object
+        :param passenger_obj: Passenger object
+        :param network_obj: TransportNetwork object
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+        :param tolerance: float, tolerance to external optimization
+        :param number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
+        :return: (fopt, success, status, message, constr_violation, vrc)
+        &#34;&#34;&#34;
+
+        list_res = []
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        # inicialización
+        list_res.append((opt_obj.f_opt, &#34;initialization&#34;, -1, &#34;initialization&#34;, -1, -1))
+
+        # primera iteracion
+        res = opt_obj.internal_optimization()
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+
+        pre_f, _, _, _, _, _ = list_res[0]
+        new_f, _, _, _, _, _ = list_res[1]
+
+        iteration = 1
+        # mientras criterio de tolerancia externo no se cumpla o se llegue al maximo numero de iteraciones
+        while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
+            if number_of_iteration is not None:
+                if iteration &gt; number_of_iteration:
+                    break
+            pre_f = new_f
+            dic_new_f = opt_obj.fopt_to_f(new_f)
+            opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
+            res = opt_obj.internal_optimization()
+            list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+            new_f = res.x
+            iteration += 1
+
+        better_result = opt_obj.get_better_result(list_res)
+
+        if opt_obj.status_optimization(better_result):
+            return better_result
+
+    @staticmethod
+    def get_better_result(list_res):
+        valid_result = []
+        for x, success, status, message, constr_violation, fun in list_res:
+            if status not in [0, 3, -1] and abs(constr_violation) &lt; 0.001:
+                cond_f = True
+                for f in x:
+                    if f &lt; 0:
+                        cond_f = False
+                        break
+                if cond_f:
+                    valid_result.append((x, success, status, message, constr_violation, fun))
+
+        better_result = None
+        max_fun = float(&#34;inf&#34;)
+        for x, success, status, message, constr_violation, fun in valid_result:
+            if fun &lt; max_fun:
+                max_fun = fun
+                better_result = (x, success, status, message, constr_violation, fun)
+
+        return better_result
+
+    @staticmethod
+    def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                             network_obj: TransportNetwork,
+                             f: defaultdict_float = None, tolerance: float = 0.01,
+                             max_number_of_iteration: int = None) -&gt; Optimizer:
+        &#34;&#34;&#34;
+        obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
+        :param graph_obj: Graph object
+        :param demand_obj: Demand object
+        :param passenger_obj: Passenger object
+        :param network_obj: TransportNetwork object
+        :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency, if f is None then fini of
+        each TransportMode defined in TransportNetwork define f.
+        :param tolerance: float, tolerance to external optimization
+        :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
+        it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+        converges
+        :return: opt_obj
+        &#34;&#34;&#34;
+
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+        opt_obj.better_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f,
+                                                           tolerance, number_of_iteration=max_number_of_iteration)
+
+        logger.info(opt_obj.string_network_optimization(opt_obj.better_res))
+
+        return opt_obj
+
+    def get_optimization_value(self) -&gt; Tuple:
+        &#34;&#34;&#34;
+        to get optimization value saved
+        :return: (fopt, success, status, message, constr_violation, vrc)
+        &#34;&#34;&#34;
+        return self.better_res
+
+    def string_network_optimization(self, res: Tuple) -&gt; str:
+        &#34;&#34;&#34;
+        get a str summary about last external optimization in network_optimization
+        :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return:
+        &#34;&#34;&#34;
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+
+        line = &#34;\n\nOptimization Results&#34;
+        line += &#34;\nSuccess: {}&#34;.format(success)
+        line += &#34;\nStatus: {}&#34;.format(status)
+        line += &#34;\nMessage: {}&#34;.format(message)
+        line += &#34;\nMax constrain violation: {}&#34;.format(constr_violation)
+        line += &#34;\nVRC: {}&#34;.format(vrc)
+        line += &#34;\n\nFrequency information [veh/hr]: &#34;
+        for route_id in f:
+            line += &#34;\n\t{}: {:.2f}&#34;.format(route_id, f[route_id])
+
+        return line
+
+    def last_iteration(self, res: Tuple):
+        &#34;&#34;&#34;
+        return last network optimized with optimization result
+        :param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+        :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route
+        &#34;&#34;&#34;
+        fopt, success, status, message, constr_violation, vrc = res
+        f = self.fopt_to_f(fopt)
+        final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
+        z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij,
+                                                                           final_optimizer.hyperpaths,
+                                                                           final_optimizer.successors,
+                                                                           final_optimizer.assignment, f)
+        k = self.get_k(loaded_section_route)
+        return final_optimizer, z, v, k, loaded_section_route
+
+    def get_network_results(self) -&gt; List[Tuple]:
+        &#34;&#34;&#34;
+        to get transport network results per line-direction
+        :return: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float, cycle_time [hr]: float,
+        CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
+        sub_table_i: List[(node_i, node_j, lambda)]
+        &#34;&#34;&#34;
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+        output = []
+
+        fopt, success, status, message, constr_violation, vrc = res
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+        f = self.fopt_to_f(fopt)
+
+        # resultados de modos
+        travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                           final_optimizer.graph_obj.get_edges_distance())
+        cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        for route in final_optimizer.network_obj.get_routes():
+
+            # flota de buses
+            b = cycle_time_line[route.id] * f[route.id]
+            nodes_sequence_i = route.nodes_sequence_i
+            nodes_sequence_r = route.nodes_sequence_r
+            # carga que hay en los tramos
+            total_pax = 0
+            charge_i = []
+            charge_r = []
+            # total de subidas a la ruta
+            total_b = 0
+
+            # caso circular
+            if route._type == RouteType.CIRCULAR:
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) &gt; 0:
+                    node_sequence = nodes_sequence_i
+                    direction = &#34;I&#34;
+                # circular con sentido de vuelta
+                else:
+                    node_sequence = nodes_sequence_r
+                    direction = &#34;R&#34;
+                load_i = []
+                for i in node_sequence:
+                    for stop_node in z[route.id][direction]:
+                        if stop_node.city_node.graph_node.id == i:
+                            total_b += z[route.id][direction][stop_node]
+                            break
+                    for stop_node in loaded_section_route[route.id][direction]:
+                        if stop_node.city_node.graph_node.id == i:
+                            load_i.append(loaded_section_route[route.id][direction][stop_node])
+                            break
+
+                if total_b == 0:
+                    co = 0
+                else:
+                    co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                            total_b * f[route.id])
+
+                if len(load_i) &gt;= 1:
+                    charge_min = min(load_i) / max(load_i)
+                else:
+                    load_i = [1] * len(node_sequence)
+                    charge_min = 0
+
+                sub_table = []
+                sub_table_i = []
+                sub_table_r = []
+
+                node_i = None
+                charge_ij = None
+                for i in range(len(node_sequence)):
+                    if i == 0:
+                        node_i = node_sequence[i]
+                        charge_ij = load_i[i] / max(load_i)
+                        continue
+                    else:
+                        node_j = node_sequence[i]
+                        sub_table.append((node_i, node_j, abs(charge_ij)))
+                        node_i = node_j
+                        charge_ij = load_i[i] / max(load_i)
+
+                # circular con sentido de ida
+                if len(nodes_sequence_i) &gt; 0:
+                    sub_table_i = sub_table
+                # circular con sentido de vuelta
+                else:
+                    sub_table_r = sub_table
+
+                output.append((
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i, sub_table_r))
+            else:
+                # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+                total_pax = 0
+                for node_id in nodes_sequence_i:
+                    bool_add = False
+                    for stopnode in z[route.id][&#34;I&#34;]:
+                        if stopnode.city_node.graph_node.id == node_id:
+                            pax_b = z[route.id][&#34;I&#34;][stopnode]
+                            pax_a = v[route.id][&#34;I&#34;][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+
+                            charge_i.append((node_id, total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
+                        charge_i.append((node_id, total_pax / k[route.id]))
+
+                total_pax = 0
+                for node_id in nodes_sequence_r:
+                    bool_add = False
+                    for stopnode in z[route.id][&#34;R&#34;]:
+                        if stopnode.city_node.graph_node.id == node_id:
+                            pax_b = z[route.id][&#34;R&#34;][stopnode]
+                            pax_a = v[route.id][&#34;R&#34;][stopnode]
+                            total_pax += pax_b - pax_a
+                            total_b += pax_b
+
+                            charge_r.append((node_id, total_pax / k[route.id]))
+                            bool_add = True
+                            break
+                    if bool_add is False:
+                        charge_r.append((node_id, total_pax / k[route.id]))
+
+                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                        total_b * f[route.id])
+
+                charge_min = float(&#34;inf&#34;)
+                sub_table_i = []
+                node_i = None
+                charge_ij = None
+                for node_j, charge in charge_i:
+                    if node_i is None:
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_i.append((node_i, node_j, abs(charge_ij)))
+                        if charge_min &gt; charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
+
+                sub_table_r = []
+                node_i = None
+                charge_ij = None
+                for node_j, charge in charge_r:
+                    if node_i is None:
+                        node_i = node_j
+                        charge_ij = charge
+                        continue
+                    else:
+                        sub_table_r.append((node_i, node_j, abs(charge_ij)))
+                        if charge_min &gt; charge_ij:
+                            charge_min = charge_ij
+                        node_i = node_j
+                        charge_ij = charge
+
+                output.append((
+                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                    co, abs(charge_min), sub_table_i, sub_table_r))
+
+        return output
+
+    def string_network_results(self) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with network results
+        :return: str
+        &#34;&#34;&#34;
+
+        output_network_results = self.get_network_results()
+        line = &#34;route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r&#34;
+
+        for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
+            line += &#34;\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}&#34;.format(route_id, F, f, k, b,
+                                                                                         cycle_time, co,
+                                                                                         charge_min, sub_table_i,
+                                                                                         sub_table_r)
+        return line
+
+    def write_file_network_results(self, file_path) -&gt; None:
+        &#34;&#34;&#34;
+        to write output file with result of optimization transport network
+        :param file_path: file path
+        :return: None
+        &#34;&#34;&#34;
+        string_lines = self.string_network_results()
+        file = open(file_path, &#39;w&#39;, encoding=&#39;utf-8&#39;)
+        file.write(string_lines)
+        file.close()
+
+    def get_overall_results(self) -&gt; defaultdict:
+        &#34;&#34;&#34;
+        to get overall cost results per passenger
+        :return: defaultdict:
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
+        &#34;&#34;&#34;
+        if self.better_res is not None:
+            res = self.better_res
+        else:
+            raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+        fopt, success, status, message, constr_violation, vrc = res
+        final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+        f = self.fopt_to_f(fopt)
+
+        # resultados de costos
+        CO = self.operators_cost(z, v, f, k)
+        CI = self.infrastructure_cost(f)
+        CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
+                            final_optimizer.successors, final_optimizer.extended_graph_obj, f, z, v)
+
+        VRC = CO + CI + CU
+
+        # resultados de usuarios
+        ta, te, tv, t = UsersCost.resources_consumer(final_optimizer.hyperpaths, final_optimizer.Vij,
+                                                     final_optimizer.assignment, final_optimizer.successors,
+                                                     final_optimizer.extended_graph_obj,
+                                                     final_optimizer.passenger_obj.va, f, z, v)
+
+        # resultados de modos
+        travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                           final_optimizer.graph_obj.get_edges_distance())
+        cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+        B = defaultdict(float)
+        L = defaultdict(int)
+
+        K_list = defaultdict(list)
+        K = defaultdict(float)
+
+        for route in self.network_obj.get_routes():
+            if f[route.id] &gt; 0:
+                B[route.mode] += f[route.id] * cycle_time_line[route.id]
+                L[route.mode] += route.mode.d
+                K_list[route.mode].append(k[route.id])
+
+        for mode in K_list:
+            l = K_list[mode]
+            K[mode] = sum(l) / len(l)
+
+        output = defaultdict(None)
+        output[&#34;VRC&#34;] = VRC / self.total_trips
+        output[&#34;operators_cost&#34;] = CO / self.total_trips
+        output[&#34;infrastructure_cost&#34;] = CI / self.total_trips
+        output[&#34;users_cost&#34;] = CU / self.total_trips
+        output[&#34;travel_time_on_board&#34;] = tv / self.total_trips * 60
+        output[&#34;waiting_time&#34;] = te / self.total_trips * 60
+        output[&#34;access_time&#34;] = ta / self.total_trips * 60
+        output[&#34;transfers&#34;] = t / self.total_trips
+        output[&#34;vehicles_mode&#34;] = B
+        output[&#34;vehicle_capacity_mode&#34;] = K
+        output[&#34;lines_mode&#34;] = L
+        return output
+
+    def string_overall_results(self) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string to print overall results in console
+
+        Key [unit]: value type
+
+        VRC [USD$/hr-pax]: float,
+        operators_cost [USD$/hr-pax]: float,
+        infrastructure_cost [USD$/hr-pax]: float,
+        users_cost [USD$/hr-pax]: float,
+        travel_time_on_board [min/pax]: float,
+        waiting time [min/pax]: float,
+        access_time [min/pax]: float,
+        transfers [transfer/pax]: float,
+        vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+        vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+        lines_mode : dic[TransportMode]=int [lines])
+        :return: string to print overall results in console
+        &#34;&#34;&#34;
+        overall_results = self.get_overall_results()
+
+        vrc = overall_results[&#34;VRC&#34;]
+        co = overall_results[&#34;operators_cost&#34;]
+        ci = overall_results[&#34;infrastructure_cost&#34;]
+        cu = overall_results[&#34;users_cost&#34;]
+        tv = overall_results[&#34;travel_time_on_board&#34;]
+        te = overall_results[&#34;waiting_time&#34;]
+        ta = overall_results[&#34;access_time&#34;]
+        t = overall_results[&#34;transfers&#34;]
+        b = overall_results[&#34;vehicles_mode&#34;]
+        k = overall_results[&#34;vehicle_capacity_mode&#34;]
+        l = overall_results[&#34;lines_mode&#34;]
+
+        line = &#34;\n\nObjective function VRC [USD$/hr-pax]: {:.2f}&#34;.format(vrc)
+        line += &#34;\nOperators cost [USD$/hr-pax]        : {:.2f}&#34;.format(co)
+        line += &#34;\nInfrastructure cost [USD$/hr-pax]   : {:.2f}&#34;.format(ci)
+        line += &#34;\nUsers cost [USD$/hr-pax]            : {:.2f}&#34;.format(cu)
+
+        line += &#34;\n\nResources consumer for users&#34;
+        line += &#34;\nTime on board vehicle [min/pax]: {:.2f}&#34;.format(tv)
+        line += &#34;\nWaiting time [min/pax]         : {:.2f}&#34;.format(te)
+        line += &#34;\nAccess time [min/pax]          : {:.2f}&#34;.format(ta)
+        line += &#34;\ntotal travel time [min/pax]    : {:.2f}&#34;.format(tv + ta + te)
+        line += &#34;\nTransfers [transfers/pax]      : {:.2f}&#34;.format(t)
+
+        line += &#34;\n\n&#34;
+        line += &#34;Transport mode information: {}&#34;.format(len(b))
+
+        for mode in b:
+            line += &#34;\n\n\tMode name: {}&#34;.format(mode.name)
+            line += &#34;\n\tB [veh]      : {:.2f}&#34;.format(b[mode])
+            line += &#34;\n\tK [pax/veh]  : {:.2f}&#34;.format(k[mode])
+            line += &#34;\n\tL [lines]    : {}&#34;.format(l[mode])
+
+        return line</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="sidermit.optimization.optimizer.Optimizer.external_optimization"><code class="name flex">
+<span>def <span class="ident">external_optimization</span></span>(<span>graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork, f: defaultdict_float = None, tolerance: float = 0.01, number_of_iteration: int = None) ‑> Tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>method to do external optimization process, several iterations of internal optimization with fixed
+hyperpaths in each
+:param graph_obj: Graph object
+:param demand_obj: Demand object
+:param passenger_obj: Passenger object
+:param network_obj: TransportNetwork object
+:param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+:param tolerance: float, tolerance to external optimization
+:param number_of_iteration: int, max. number of iterations. Default value is infinity.
+it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+converges
+:return: (fopt, success, status, message, constr_violation, vrc)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def external_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                          network_obj: TransportNetwork,
+                          f: defaultdict_float = None, tolerance: float = 0.01,
+                          number_of_iteration: int = None) -&gt; Tuple:
+    &#34;&#34;&#34;
+    method to do external optimization process, several iterations of internal optimization with fixed
+    hyperpaths in each
+    :param graph_obj: Graph object
+    :param demand_obj: Demand object
+    :param passenger_obj: Passenger object
+    :param network_obj: TransportNetwork object
+    :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency
+    :param tolerance: float, tolerance to external optimization
+    :param number_of_iteration: int, max. number of iterations. Default value is infinity.
+    it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+    converges
+    :return: (fopt, success, status, message, constr_violation, vrc)
+    &#34;&#34;&#34;
+
+    list_res = []
+
+    opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+    # inicialización
+    list_res.append((opt_obj.f_opt, &#34;initialization&#34;, -1, &#34;initialization&#34;, -1, -1))
+
+    # primera iteracion
+    res = opt_obj.internal_optimization()
+    list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+
+    pre_f, _, _, _, _, _ = list_res[0]
+    new_f, _, _, _, _, _ = list_res[1]
+
+    iteration = 1
+    # mientras criterio de tolerancia externo no se cumpla o se llegue al maximo numero de iteraciones
+    while not opt_obj.external_optimization_tolerance(pre_f, new_f, tolerance):
+        if number_of_iteration is not None:
+            if iteration &gt; number_of_iteration:
+                break
+        pre_f = new_f
+        dic_new_f = opt_obj.fopt_to_f(new_f)
+        opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, dic_new_f)
+        res = opt_obj.internal_optimization()
+        list_res.append((res.x, res.success, res.status, res.message, res.constr_violation, res.fun))
+        new_f = res.x
+        iteration += 1
+
+    better_result = opt_obj.get_better_result(list_res)
+
+    if opt_obj.status_optimization(better_result):
+        return better_result</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.f_distance"><code class="name flex">
+<span>def <span class="ident">f_distance</span></span>(<span>prev_f: List[float], new_f: List[float]) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get distance between 2 list of frequency results.
+:param prev_f: previous frequency
+:param new_f: new frequency
+:return: float, distance with normal distance</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def f_distance(prev_f: List[float], new_f: List[float]) -&gt; float:
+    &#34;&#34;&#34;
+    to get distance between 2 list of frequency results.
+    :param prev_f: previous frequency
+    :param new_f: new frequency
+    :return: float, distance with normal distance
+    &#34;&#34;&#34;
+    dif = 0
+    for i in range(len(prev_f)):
+        dif += abs(prev_f[i] - new_f[i])
+    dif = dif  # ** (1 / len(prev_f))
+    logger.info(&#34;f_norm_distance: {}&#34;.format(dif))
+    return dif</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_better_result"><code class="name flex">
+<span>def <span class="ident">get_better_result</span></span>(<span>list_res)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def get_better_result(list_res):
+    valid_result = []
+    for x, success, status, message, constr_violation, fun in list_res:
+        if status not in [0, 3, -1] and abs(constr_violation) &lt; 0.001:
+            cond_f = True
+            for f in x:
+                if f &lt; 0:
+                    cond_f = False
+                    break
+            if cond_f:
+                valid_result.append((x, success, status, message, constr_violation, fun))
+
+    better_result = None
+    max_fun = float(&#34;inf&#34;)
+    for x, success, status, message, constr_violation, fun in valid_result:
+        if fun &lt; max_fun:
+            max_fun = fun
+            better_result = (x, success, status, message, constr_violation, fun)
+
+    return better_result</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_k"><code class="name flex">
+<span>def <span class="ident">get_k</span></span>(<span>loaded_section_route: defaultdict3_float) ‑> defaultdict_float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:return: k: dic[route_id] = vehicle capacity [pax/veh]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def get_k(loaded_section_route: defaultdict3_float) -&gt; defaultdict_float:
+    &#34;&#34;&#34;
+    :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :return: k: dic[route_id] = vehicle capacity [pax/veh]
+    &#34;&#34;&#34;
+    most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+    k = defaultdict(float)
+    for route_id in most_loaded_section:
+        k[route_id] = most_loaded_section[route_id]
+    return k</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.network_optimization"><code class="name flex">
+<span>def <span class="ident">network_optimization</span></span>(<span>graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger, network_obj: TransportNetwork, f: defaultdict_float = None, tolerance: float = 0.01, max_number_of_iteration: int = None) ‑> <a title="sidermit.optimization.optimizer.Optimizer" href="#sidermit.optimization.optimizer.Optimizer">Optimizer</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
+:param graph_obj: Graph object
+:param demand_obj: Demand object
+:param passenger_obj: Passenger object
+:param network_obj: TransportNetwork object
+:param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency, if f is None then fini of
+each TransportMode defined in TransportNetwork define f.
+:param tolerance: float, tolerance to external optimization
+:param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
+it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+converges
+:return: opt_obj</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def network_optimization(graph_obj: Graph, demand_obj: Demand, passenger_obj: Passenger,
+                         network_obj: TransportNetwork,
+                         f: defaultdict_float = None, tolerance: float = 0.01,
+                         max_number_of_iteration: int = None) -&gt; Optimizer:
+    &#34;&#34;&#34;
+    obtain optimal frequency for the defined network if possible or raise exceptions in case of not being able
+    :param graph_obj: Graph object
+    :param demand_obj: Demand object
+    :param passenger_obj: Passenger object
+    :param network_obj: TransportNetwork object
+    :param f: dict with frequency [veh/hr] for each route_id, dic[route_id] = frequency, if f is None then fini of
+    each TransportMode defined in TransportNetwork define f.
+    :param tolerance: float, tolerance to external optimization
+    :param max_number_of_iteration: int, max. number of iterations. Default value is infinity.
+    it is recommended to set this value in a small number of iterations (e.x. 5) in the beginning to know if it
+    converges
+    :return: opt_obj
+    &#34;&#34;&#34;
+
+    opt_obj = Optimizer(graph_obj, demand_obj, passenger_obj, network_obj, f)
+    opt_obj.better_res = opt_obj.external_optimization(graph_obj, demand_obj, passenger_obj, network_obj, f,
+                                                       tolerance, number_of_iteration=max_number_of_iteration)
+
+    logger.info(opt_obj.string_network_optimization(opt_obj.better_res))
+
+    return opt_obj</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.status_optimization"><code class="name flex">
+<span>def <span class="ident">status_optimization</span></span>(<span>better_res) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a information about status of external optimization
+:param better_res:(fopt, success, status, message, constr_violation, vrc)
+:return: true if status is success, exceptions if not</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def status_optimization(better_res) -&gt; bool:
+    &#34;&#34;&#34;
+    to get a information about status of external optimization
+    :param better_res:(fopt, success, status, message, constr_violation, vrc)
+    :return: true if status is success, exceptions if not
+    &#34;&#34;&#34;
+
+    if better_res is None:
+        raise NoOptimalSolutionFoundException(
+            &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+    fopt, success, status, message, constr_violation, fun = better_res
+
+    for f in fopt:
+        if f &lt; -0.1:
+            raise NegativeFrequencyException(&#34;Solution with negative frequency. You can try with other fini&#34;)
+
+    if abs(constr_violation) &gt; 0.1:
+        raise ConstraintViolationException(
+            &#34;Maximum constraint violation at the solution {}. You can try with other fini or total demand is very large for the proposed network.&#34;.format(
+                constr_violation))
+
+    if status == 0 or status == 3:
+        raise NoOptimalSolutionFoundException(
+            &#34;No optimal solution was found. You can try with other fini or total demand is very large for the proposed network.&#34;)
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.string_information_internal_optimization"><code class="name flex">
+<span>def <span class="ident">string_information_internal_optimization</span></span>(<span>res: OptimizeResult) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a string with information about internal optimization
+:param res: OptimizeResult
+:return: str</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def string_information_internal_optimization(res: OptimizeResult) -&gt; str:
+    &#34;&#34;&#34;
+    to get a string with information about internal optimization
+    :param res: OptimizeResult
+    :return: str
+    &#34;&#34;&#34;
+
+    success = res.success
+    status = res.status
+    message = res.message
+    new_f = res.x
+    constr_violation = res.constr_violation
+    fun = res.fun
+
+    line = &#34;Internal optimization\n\tSuccess: {}\n\tStatus: {}\n\tMessage: {}\n\tnew_f: {}\n\tConstrain violation: {}\n\tVRC: {}&#34;.format(
+        success, status, message, new_f, constr_violation, fun)
+    return line</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sidermit.optimization.optimizer.Optimizer.VRC"><code class="name flex">
+<span>def <span class="ident">VRC</span></span>(<span>self, fopt: List[float]) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get VRC objective function to minime in optimizer
+:param fopt: variable to optimize
+:return: float, VRC value function</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def VRC(self, fopt: List[float]) -&gt; float:
+    &#34;&#34;&#34;
+    to get VRC objective function to minime in optimizer
+    :param fopt: variable to optimize
+    :return: float, VRC value function
+    &#34;&#34;&#34;
+
+    f = self.fopt_to_f(fopt)
+
+    z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                       self.assignment, f)
+    k = self.get_k(loaded_section_route)
+
+    CO = self.operators_cost(z, v, f, k)
+    CI = self.infrastructure_cost(f)
+    CU = self.user_cost(self.hyperpaths, self.Vij, self.assignment, self.successors, self.extended_graph_obj, f, z,
+                        v)
+
+    return CO + CI + CU</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.constrains"><code class="name flex">
+<span>def <span class="ident">constrains</span></span>(<span>self, loaded_section_route: defaultdict3_float, f: defaultdict_float) ‑> (List[float], List[float])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get k constrains and f constrains
+:param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:param f: dict with frequency [veh/hr] for each route_id
+:return: (k_ineq_constrains, f_ineq_constrains)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def constrains(self, loaded_section_route: defaultdict3_float, f: defaultdict_float) -&gt; (
+        List[float], List[float]):
+    &#34;&#34;&#34;
+    to get k constrains and f constrains
+    :param loaded_section_route: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :param f: dict with frequency [veh/hr] for each route_id
+    :return: (k_ineq_constrains, f_ineq_constrains)
+    &#34;&#34;&#34;
+
+    most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+
+    constrains_obj = Constrains()
+
+    ineq_k = constrains_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+    ineq_f = constrains_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                            self.network_obj.get_modes(), f)
+
+    return ineq_k, ineq_f</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.external_optimization_tolerance"><code class="name flex">
+<span>def <span class="ident">external_optimization_tolerance</span></span>(<span>self, prev_f: List[float], new_f: List[float], tol: float = 0.01) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>True, if tolerance criteria is success
+:param prev_f: previous frequency
+:param new_f: new frequency
+:param tol: float, tolerance
+:return: True, if tolerance criteria is success</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def external_optimization_tolerance(self, prev_f: List[float], new_f: List[float], tol: float = 0.01) -&gt; bool:
+    &#34;&#34;&#34;
+    True, if tolerance criteria is success
+    :param prev_f: previous frequency
+    :param new_f: new frequency
+    :param tol: float, tolerance
+    :return: True, if tolerance criteria is success
+    &#34;&#34;&#34;
+
+    if tol &gt; abs(self.f_distance(prev_f, new_f)):
+        return True
+
+    return False</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.f0"><code class="name flex">
+<span>def <span class="ident">f0</span></span>(<span>self, f: defaultdict_float = None) ‑> (defaultdict_float, List[float], defaultdict_str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a relation between f as a dictionary and f_opt as a list to the optimizer
+:param f: dic[route_id] = frequency [veh/hr] for all D lines
+:return: dic[route_id] = frequency [veh/hr] for all D lines, List[frequency], dic[position] = route_id</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def f0(self, f: defaultdict_float = None) -&gt; (defaultdict_float, List[float], defaultdict_str):
+    &#34;&#34;&#34;
+    to get a relation between f as a dictionary and f_opt as a list to the optimizer
+    :param f: dic[route_id] = frequency [veh/hr] for all D lines
+    :return: dic[route_id] = frequency [veh/hr] for all D lines, List[frequency], dic[position] = route_id
+    &#34;&#34;&#34;
+    fini = defaultdict(float)
+    fopt = []
+    lines_position = defaultdict(None)
+    n = 0
+    if f is None:
+        for route in self.network_obj.get_routes():
+            fini[route.id] = route.mode.fini
+            fopt.append(route.mode.fini)
+            lines_position[n] = route.id
+            n += 1
+    else:
+        for route in self.network_obj.get_routes():
+            fini[route.id] = f[route.id]
+            fopt.append(route.mode.fini)
+            lines_position[n] = route.id
+            n += 1
+
+    return fini, fopt, lines_position</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.fopt_to_f"><code class="name flex">
+<span>def <span class="ident">fopt_to_f</span></span>(<span>self, fopt: List[float]) ‑> defaultdict_float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get f as a dictionary
+:param fopt: List[frequency]
+:return: dic[route_id] = frequency [veh/hr] all D lines</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def fopt_to_f(self, fopt: List[float]) -&gt; defaultdict_float:
+    &#34;&#34;&#34;
+    to get f as a dictionary
+    :param fopt: List[frequency]
+    :return: dic[route_id] = frequency [veh/hr] all D lines
+    &#34;&#34;&#34;
+    f = defaultdict(float)
+    n = 0
+    for fr in fopt:
+        f[self.lines_position[n]] = fr
+        n += 1
+    return f</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_constrains"><code class="name flex">
+<span>def <span class="ident">get_constrains</span></span>(<span>self, fopt: List[float]) ‑> List[float]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all constrains as a List[float]
+:param fopt: variable to optimize
+:return: all constrains as a List[float]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_constrains(self, fopt: List[float]) -&gt; List[float]:
+    &#34;&#34;&#34;
+    to get all constrains as a List[float]
+    :param fopt: variable to optimize
+    :return: all constrains as a List[float]
+    &#34;&#34;&#34;
+
+    f = self.fopt_to_f(fopt)
+
+    z, v, loaded_section_route = Assignment.get_alighting_and_boarding(self.Vij, self.hyperpaths, self.successors,
+                                                                       self.assignment, f)
+
+    most_loaded_section = Assignment.most_loaded_section(loaded_section_route)
+    constrain_obj = Constrains()
+    ineq_k = constrain_obj.most_loaded_section_constrains(self.network_obj.get_routes(), most_loaded_section)
+    ineq_f = constrain_obj.fmax_constrains(self.graph_obj, self.network_obj.get_routes(),
+                                           self.network_obj.get_modes(), f)
+
+    con = []
+    for c in ineq_k:
+        con.append(c)
+    for c in ineq_f:
+        con.append(c)
+
+    return con</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_network_results"><code class="name flex">
+<span>def <span class="ident">get_network_results</span></span>(<span>self) ‑> List[Tuple]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get transport network results per line-direction
+:return: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float, cycle_time [hr]: float,
+CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
+sub_table_i: List[(node_i, node_j, lambda)]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_network_results(self) -&gt; List[Tuple]:
+    &#34;&#34;&#34;
+    to get transport network results per line-direction
+    :return: List[(route.id: str, f [veh/hr]: float, k [pax/veh]: float, B [veh]: float, cycle_time [hr]: float,
+    CO [US$/hr-pax]: float, lambda_min, sub_table_i: List[(node_i, node_j, lambda)],
+    sub_table_i: List[(node_i, node_j, lambda)]
+    &#34;&#34;&#34;
+    if self.better_res is not None:
+        res = self.better_res
+    else:
+        raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+    output = []
+
+    fopt, success, status, message, constr_violation, vrc = res
+    final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+    f = self.fopt_to_f(fopt)
+
+    # resultados de modos
+    travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                       final_optimizer.graph_obj.get_edges_distance())
+    cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+    for route in final_optimizer.network_obj.get_routes():
+
+        # flota de buses
+        b = cycle_time_line[route.id] * f[route.id]
+        nodes_sequence_i = route.nodes_sequence_i
+        nodes_sequence_r = route.nodes_sequence_r
+        # carga que hay en los tramos
+        total_pax = 0
+        charge_i = []
+        charge_r = []
+        # total de subidas a la ruta
+        total_b = 0
+
+        # caso circular
+        if route._type == RouteType.CIRCULAR:
+
+            # circular con sentido de ida
+            if len(nodes_sequence_i) &gt; 0:
+                node_sequence = nodes_sequence_i
+                direction = &#34;I&#34;
+            # circular con sentido de vuelta
+            else:
+                node_sequence = nodes_sequence_r
+                direction = &#34;R&#34;
+            load_i = []
+            for i in node_sequence:
+                for stop_node in z[route.id][direction]:
+                    if stop_node.city_node.graph_node.id == i:
+                        total_b += z[route.id][direction][stop_node]
+                        break
+                for stop_node in loaded_section_route[route.id][direction]:
+                    if stop_node.city_node.graph_node.id == i:
+                        load_i.append(loaded_section_route[route.id][direction][stop_node])
+                        break
+
+            if total_b == 0:
+                co = 0
+            else:
+                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                        total_b * f[route.id])
+
+            if len(load_i) &gt;= 1:
+                charge_min = min(load_i) / max(load_i)
+            else:
+                load_i = [1] * len(node_sequence)
+                charge_min = 0
+
+            sub_table = []
+            sub_table_i = []
+            sub_table_r = []
+
+            node_i = None
+            charge_ij = None
+            for i in range(len(node_sequence)):
+                if i == 0:
+                    node_i = node_sequence[i]
+                    charge_ij = load_i[i] / max(load_i)
+                    continue
+                else:
+                    node_j = node_sequence[i]
+                    sub_table.append((node_i, node_j, abs(charge_ij)))
+                    node_i = node_j
+                    charge_ij = load_i[i] / max(load_i)
+
+            # circular con sentido de ida
+            if len(nodes_sequence_i) &gt; 0:
+                sub_table_i = sub_table
+            # circular con sentido de vuelta
+            else:
+                sub_table_r = sub_table
+
+            output.append((
+                route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                co, abs(charge_min), sub_table_i, sub_table_r))
+        else:
+            # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+            total_pax = 0
+            for node_id in nodes_sequence_i:
+                bool_add = False
+                for stopnode in z[route.id][&#34;I&#34;]:
+                    if stopnode.city_node.graph_node.id == node_id:
+                        pax_b = z[route.id][&#34;I&#34;][stopnode]
+                        pax_a = v[route.id][&#34;I&#34;][stopnode]
+                        total_pax += pax_b - pax_a
+                        total_b += pax_b
+
+                        charge_i.append((node_id, total_pax / k[route.id]))
+                        bool_add = True
+                        break
+                if bool_add is False:
+                    charge_i.append((node_id, total_pax / k[route.id]))
+
+            total_pax = 0
+            for node_id in nodes_sequence_r:
+                bool_add = False
+                for stopnode in z[route.id][&#34;R&#34;]:
+                    if stopnode.city_node.graph_node.id == node_id:
+                        pax_b = z[route.id][&#34;R&#34;][stopnode]
+                        pax_a = v[route.id][&#34;R&#34;][stopnode]
+                        total_pax += pax_b - pax_a
+                        total_b += pax_b
+
+                        charge_r.append((node_id, total_pax / k[route.id]))
+                        bool_add = True
+                        break
+                if bool_add is False:
+                    charge_r.append((node_id, total_pax / k[route.id]))
+
+            co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                    total_b * f[route.id])
+
+            charge_min = float(&#34;inf&#34;)
+            sub_table_i = []
+            node_i = None
+            charge_ij = None
+            for node_j, charge in charge_i:
+                if node_i is None:
+                    node_i = node_j
+                    charge_ij = charge
+                    continue
+                else:
+                    sub_table_i.append((node_i, node_j, abs(charge_ij)))
+                    if charge_min &gt; charge_ij:
+                        charge_min = charge_ij
+                    node_i = node_j
+                    charge_ij = charge
+
+            sub_table_r = []
+            node_i = None
+            charge_ij = None
+            for node_j, charge in charge_r:
+                if node_i is None:
+                    node_i = node_j
+                    charge_ij = charge
+                    continue
+                else:
+                    sub_table_r.append((node_i, node_j, abs(charge_ij)))
+                    if charge_min &gt; charge_ij:
+                        charge_min = charge_ij
+                    node_i = node_j
+                    charge_ij = charge
+
+            output.append((
+                route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
+                co, abs(charge_min), sub_table_i, sub_table_r))
+
+    return output</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_optimization_value"><code class="name flex">
+<span>def <span class="ident">get_optimization_value</span></span>(<span>self) ‑> Tuple</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get optimization value saved
+:return: (fopt, success, status, message, constr_violation, vrc)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_optimization_value(self) -&gt; Tuple:
+    &#34;&#34;&#34;
+    to get optimization value saved
+    :return: (fopt, success, status, message, constr_violation, vrc)
+    &#34;&#34;&#34;
+    return self.better_res</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.get_overall_results"><code class="name flex">
+<span>def <span class="ident">get_overall_results</span></span>(<span>self) ‑> collections.defaultdict</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get overall cost results per passenger
+:return: defaultdict:</p>
+<p>Key [unit]: value type</p>
+<p>VRC [USD$/hr-pax]: float,
+operators_cost [USD$/hr-pax]: float,
+infrastructure_cost [USD$/hr-pax]: float,
+users_cost [USD$/hr-pax]: float,
+travel_time_on_board [min/pax]: float,
+waiting time [min/pax]: float,
+access_time [min/pax]: float,
+transfers [transfer/pax]: float,
+vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+lines_mode : dic[TransportMode]=int [lines])</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_overall_results(self) -&gt; defaultdict:
+    &#34;&#34;&#34;
+    to get overall cost results per passenger
+    :return: defaultdict:
+
+    Key [unit]: value type
+
+    VRC [USD$/hr-pax]: float,
+    operators_cost [USD$/hr-pax]: float,
+    infrastructure_cost [USD$/hr-pax]: float,
+    users_cost [USD$/hr-pax]: float,
+    travel_time_on_board [min/pax]: float,
+    waiting time [min/pax]: float,
+    access_time [min/pax]: float,
+    transfers [transfer/pax]: float,
+    vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+    vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+    lines_mode : dic[TransportMode]=int [lines])
+    &#34;&#34;&#34;
+    if self.better_res is not None:
+        res = self.better_res
+    else:
+        raise NoOptimalSolutionFoundException(&#34;not solution found in optimizer object&#34;)
+
+    fopt, success, status, message, constr_violation, vrc = res
+    final_optimizer, z, v, k, loaded_section_route = self.last_iteration(res)
+
+    f = self.fopt_to_f(fopt)
+
+    # resultados de costos
+    CO = self.operators_cost(z, v, f, k)
+    CI = self.infrastructure_cost(f)
+    CU = self.user_cost(final_optimizer.hyperpaths, final_optimizer.Vij, final_optimizer.assignment,
+                        final_optimizer.successors, final_optimizer.extended_graph_obj, f, z, v)
+
+    VRC = CO + CI + CU
+
+    # resultados de usuarios
+    ta, te, tv, t = UsersCost.resources_consumer(final_optimizer.hyperpaths, final_optimizer.Vij,
+                                                 final_optimizer.assignment, final_optimizer.successors,
+                                                 final_optimizer.extended_graph_obj,
+                                                 final_optimizer.passenger_obj.va, f, z, v)
+
+    # resultados de modos
+    travel_time_line = OperatorsCost.lines_travel_time(final_optimizer.network_obj.get_routes(),
+                                                       final_optimizer.graph_obj.get_edges_distance())
+    cycle_time_line = OperatorsCost.get_cycle_time(z, v, final_optimizer.network_obj.get_routes(), travel_time_line)
+
+    B = defaultdict(float)
+    L = defaultdict(int)
+
+    K_list = defaultdict(list)
+    K = defaultdict(float)
+
+    for route in self.network_obj.get_routes():
+        if f[route.id] &gt; 0:
+            B[route.mode] += f[route.id] * cycle_time_line[route.id]
+            L[route.mode] += route.mode.d
+            K_list[route.mode].append(k[route.id])
+
+    for mode in K_list:
+        l = K_list[mode]
+        K[mode] = sum(l) / len(l)
+
+    output = defaultdict(None)
+    output[&#34;VRC&#34;] = VRC / self.total_trips
+    output[&#34;operators_cost&#34;] = CO / self.total_trips
+    output[&#34;infrastructure_cost&#34;] = CI / self.total_trips
+    output[&#34;users_cost&#34;] = CU / self.total_trips
+    output[&#34;travel_time_on_board&#34;] = tv / self.total_trips * 60
+    output[&#34;waiting_time&#34;] = te / self.total_trips * 60
+    output[&#34;access_time&#34;] = ta / self.total_trips * 60
+    output[&#34;transfers&#34;] = t / self.total_trips
+    output[&#34;vehicles_mode&#34;] = B
+    output[&#34;vehicle_capacity_mode&#34;] = K
+    output[&#34;lines_mode&#34;] = L
+    return output</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.infrastructure_cost"><code class="name flex">
+<span>def <span class="ident">infrastructure_cost</span></span>(<span>self, f: defaultdict_float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get infrastructure cost
+:param f: dic[route_id] = frequency [veh/hr]
+:return: float, infrastructure cost</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def infrastructure_cost(self, f: defaultdict_float) -&gt; float:
+    &#34;&#34;&#34;
+    to get infrastructure cost
+    :param f: dic[route_id] = frequency [veh/hr]
+    :return: float, infrastructure cost
+    &#34;&#34;&#34;
+    infrastructure_cost_obj = InfrastructureCost()
+    cost = infrastructure_cost_obj.get_infrastruture_cost(self.graph_obj, self.network_obj, f)
+    return cost</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.internal_optimization"><code class="name flex">
+<span>def <span class="ident">internal_optimization</span></span>(<span>self) ‑> scipy.optimize.optimize.OptimizeResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>method to do internal optimization process, with a hyperpath setted you can get a optimization of the network
+:return:
+res : OptimizeResult
+The optimization result represented as a <code>OptimizeResult</code> object.
+Important attributes are: <code>x</code> the solution array, <code>success</code> a
+Boolean flag indicating if the optimizer exited successfully and
+<code>message</code> which describes the cause of the termination. See
+<code>OptimizeResult</code> for a description of other attributes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def internal_optimization(self) -&gt; OptimizeResult:
+    &#34;&#34;&#34;
+    method to do internal optimization process, with a hyperpath setted you can get a optimization of the network
+    :return:     res : OptimizeResult
+    The optimization result represented as a ``OptimizeResult`` object.
+    Important attributes are: ``x`` the solution array, ``success`` a
+    Boolean flag indicating if the optimizer exited successfully and
+    ``message`` which describes the cause of the termination. See
+    `OptimizeResult` for a description of other attributes.
+    &#34;&#34;&#34;
+
+    constr_func = lambda fopt: np.array(self.get_constrains(fopt))
+
+    lb = [-1 * np.inf] * self.len_constrains
+    ub = [0] * self.len_constrains
+    nonlin_con = NonlinearConstraint(constr_func, lb=lb, ub=ub)
+
+    lb = [0] * self.len_var
+    ub = [np.inf] * self.len_var
+
+    bounds = Bounds(lb=lb, ub=ub)
+    res = minimize(self.VRC, self.f_opt, method=&#39;trust-constr&#39;, constraints=nonlin_con, tol=0.01, bounds=bounds)
+    logger.info(self.string_information_internal_optimization(res))
+
+    return res</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.last_iteration"><code class="name flex">
+<span>def <span class="ident">last_iteration</span></span>(<span>self, res: Tuple)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>return last network optimized with optimization result
+:param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+:return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def last_iteration(self, res: Tuple):
+    &#34;&#34;&#34;
+    return last network optimized with optimization result
+    :param res: res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+    :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route
+    &#34;&#34;&#34;
+    fopt, success, status, message, constr_violation, vrc = res
+    f = self.fopt_to_f(fopt)
+    final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
+    z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij,
+                                                                       final_optimizer.hyperpaths,
+                                                                       final_optimizer.successors,
+                                                                       final_optimizer.assignment, f)
+    k = self.get_k(loaded_section_route)
+    return final_optimizer, z, v, k, loaded_section_route</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.operators_cost"><code class="name flex">
+<span>def <span class="ident">operators_cost</span></span>(<span>self, z: defaultdict3_float, v: defaultdict3_float, f: defaultdict_float, k: defaultdict_float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get operators cost
+:param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:param f: dic[route_id] = frequency [veh/hr]
+:param k: dic[route_id] = frequency [pax/veh]
+:return: float, operator cost</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def operators_cost(self, z: defaultdict3_float, v: defaultdict3_float, f: defaultdict_float,
+                   k: defaultdict_float) -&gt; float:
+    &#34;&#34;&#34;
+    to get operators cost
+    :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :param f: dic[route_id] = frequency [veh/hr]
+    :param k: dic[route_id] = frequency [pax/veh]
+    :return: float, operator cost
+    &#34;&#34;&#34;
+    operators_cost_obj = OperatorsCost()
+
+    edge_distance = self.graph_obj.get_edges_distance()
+    routes = self.network_obj.get_routes()
+    line_travel_time = operators_cost_obj.lines_travel_time(routes, edge_distance)
+
+    cycle_time = operators_cost_obj.get_cycle_time(z, v, routes, line_travel_time)
+    cost = operators_cost_obj.get_operators_cost(routes, cycle_time, f, k)
+    return cost</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.string_network_optimization"><code class="name flex">
+<span>def <span class="ident">string_network_optimization</span></span>(<span>self, res: Tuple) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get a str summary about last external optimization in network_optimization
+:param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def string_network_optimization(self, res: Tuple) -&gt; str:
+    &#34;&#34;&#34;
+    get a str summary about last external optimization in network_optimization
+    :param res: Tuple, (fopt, success, status, message, constr_violation, vrc)
+    :return:
+    &#34;&#34;&#34;
+    fopt, success, status, message, constr_violation, vrc = res
+    f = self.fopt_to_f(fopt)
+
+    line = &#34;\n\nOptimization Results&#34;
+    line += &#34;\nSuccess: {}&#34;.format(success)
+    line += &#34;\nStatus: {}&#34;.format(status)
+    line += &#34;\nMessage: {}&#34;.format(message)
+    line += &#34;\nMax constrain violation: {}&#34;.format(constr_violation)
+    line += &#34;\nVRC: {}&#34;.format(vrc)
+    line += &#34;\n\nFrequency information [veh/hr]: &#34;
+    for route_id in f:
+        line += &#34;\n\t{}: {:.2f}&#34;.format(route_id, f[route_id])
+
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.string_network_results"><code class="name flex">
+<span>def <span class="ident">string_network_results</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a string with network results
+:return: str</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def string_network_results(self) -&gt; str:
+    &#34;&#34;&#34;
+    to get a string with network results
+    :return: str
+    &#34;&#34;&#34;
+
+    output_network_results = self.get_network_results()
+    line = &#34;route_id;F[veh/hr];f[veh/hr-line];k[pax/veh];B[veh];tc[min];CO[US$/hr-pax];load_min;sub_table_i;sub_table_r&#34;
+
+    for route_id, F, f, k, b, cycle_time, co, charge_min, sub_table_i, sub_table_r in output_network_results:
+        line += &#34;\n{};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{:.2f};{};{}&#34;.format(route_id, F, f, k, b,
+                                                                                     cycle_time, co,
+                                                                                     charge_min, sub_table_i,
+                                                                                     sub_table_r)
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.string_overall_results"><code class="name flex">
+<span>def <span class="ident">string_overall_results</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a string to print overall results in console</p>
+<p>Key [unit]: value type</p>
+<p>VRC [USD$/hr-pax]: float,
+operators_cost [USD$/hr-pax]: float,
+infrastructure_cost [USD$/hr-pax]: float,
+users_cost [USD$/hr-pax]: float,
+travel_time_on_board [min/pax]: float,
+waiting time [min/pax]: float,
+access_time [min/pax]: float,
+transfers [transfer/pax]: float,
+vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+lines_mode : dic[TransportMode]=int [lines])
+:return: string to print overall results in console</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def string_overall_results(self) -&gt; str:
+    &#34;&#34;&#34;
+    to get a string to print overall results in console
+
+    Key [unit]: value type
+
+    VRC [USD$/hr-pax]: float,
+    operators_cost [USD$/hr-pax]: float,
+    infrastructure_cost [USD$/hr-pax]: float,
+    users_cost [USD$/hr-pax]: float,
+    travel_time_on_board [min/pax]: float,
+    waiting time [min/pax]: float,
+    access_time [min/pax]: float,
+    transfers [transfer/pax]: float,
+    vehicles_mode [veh/mode]: dic[TransportMode] = float [veh],
+    vehicle_capacity_mode [pax/veh]: dic[TransportMode] = float [pax/veh],
+    lines_mode : dic[TransportMode]=int [lines])
+    :return: string to print overall results in console
+    &#34;&#34;&#34;
+    overall_results = self.get_overall_results()
+
+    vrc = overall_results[&#34;VRC&#34;]
+    co = overall_results[&#34;operators_cost&#34;]
+    ci = overall_results[&#34;infrastructure_cost&#34;]
+    cu = overall_results[&#34;users_cost&#34;]
+    tv = overall_results[&#34;travel_time_on_board&#34;]
+    te = overall_results[&#34;waiting_time&#34;]
+    ta = overall_results[&#34;access_time&#34;]
+    t = overall_results[&#34;transfers&#34;]
+    b = overall_results[&#34;vehicles_mode&#34;]
+    k = overall_results[&#34;vehicle_capacity_mode&#34;]
+    l = overall_results[&#34;lines_mode&#34;]
+
+    line = &#34;\n\nObjective function VRC [USD$/hr-pax]: {:.2f}&#34;.format(vrc)
+    line += &#34;\nOperators cost [USD$/hr-pax]        : {:.2f}&#34;.format(co)
+    line += &#34;\nInfrastructure cost [USD$/hr-pax]   : {:.2f}&#34;.format(ci)
+    line += &#34;\nUsers cost [USD$/hr-pax]            : {:.2f}&#34;.format(cu)
+
+    line += &#34;\n\nResources consumer for users&#34;
+    line += &#34;\nTime on board vehicle [min/pax]: {:.2f}&#34;.format(tv)
+    line += &#34;\nWaiting time [min/pax]         : {:.2f}&#34;.format(te)
+    line += &#34;\nAccess time [min/pax]          : {:.2f}&#34;.format(ta)
+    line += &#34;\ntotal travel time [min/pax]    : {:.2f}&#34;.format(tv + ta + te)
+    line += &#34;\nTransfers [transfers/pax]      : {:.2f}&#34;.format(t)
+
+    line += &#34;\n\n&#34;
+    line += &#34;Transport mode information: {}&#34;.format(len(b))
+
+    for mode in b:
+        line += &#34;\n\n\tMode name: {}&#34;.format(mode.name)
+        line += &#34;\n\tB [veh]      : {:.2f}&#34;.format(b[mode])
+        line += &#34;\n\tK [pax/veh]  : {:.2f}&#34;.format(k[mode])
+        line += &#34;\n\tL [lines]    : {}&#34;.format(l[mode])
+
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.user_cost"><code class="name flex">
+<span>def <span class="ident">user_cost</span></span>(<span>self, hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment, successors: dic_successors, extended_graph: ExtendedGraph, f: defaultdict_float, z: defaultdict3_float, v: defaultdict3_float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get users cost
+:param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+:param Vij: dic[origin: CityNode][destination: CityNode] = vij
+:param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+:param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+:param extended_graph: ExtendedGraph object
+:param f: dict with frequency [veh/hr] for each route_id
+:param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+:return: float, users cost</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def user_cost(self, hyperpaths: dic_hyperpaths, Vij: dic_Vij, assignment: dic_assigment,
+              successors: dic_successors, extended_graph: ExtendedGraph, f: defaultdict_float,
+              z: defaultdict3_float, v: defaultdict3_float) -&gt; float:
+    &#34;&#34;&#34;
+    to get users cost
+    :param hyperpaths: Dic[origin: CityNode][destination: CityNode][StopNode] = List[List[ExtendedNodes]]
+    :param Vij: dic[origin: CityNode][destination: CityNode] = vij
+    :param assignment: dic[origin: CityNode][destination: CityNode][Stop: StopNode] = %V_OD
+    :param successors: dic[origin: CityNode][destination: CityNode][ExtendedNode] = List[ExtendedEdge]
+    :param extended_graph: ExtendedGraph object
+    :param f: dict with frequency [veh/hr] for each route_id
+    :param z: boarding, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :param v: alighting, dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+    :return: float, users cost
+    &#34;&#34;&#34;
+    user_cost_obj = UsersCost()
+    cost = user_cost_obj.get_users_cost(hyperpaths, Vij, assignment, successors, extended_graph, f,
+                                        self.passenger_obj, z, v)
+    return cost</code></pre>
+</details>
+</dd>
+<dt id="sidermit.optimization.optimizer.Optimizer.write_file_network_results"><code class="name flex">
+<span>def <span class="ident">write_file_network_results</span></span>(<span>self, file_path) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to write output file with result of optimization transport network
+:param file_path: file path
+:return: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def write_file_network_results(self, file_path) -&gt; None:
+    &#34;&#34;&#34;
+    to write output file with result of optimization transport network
+    :param file_path: file path
+    :return: None
+    &#34;&#34;&#34;
+    string_lines = self.string_network_results()
+    file = open(file_path, &#39;w&#39;, encoding=&#39;utf-8&#39;)
+    file.write(string_lines)
+    file.close()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sidermit.optimization" href="index.html">sidermit.optimization</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sidermit.optimization.optimizer.Optimizer" href="#sidermit.optimization.optimizer.Optimizer">Optimizer</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.VRC" href="#sidermit.optimization.optimizer.Optimizer.VRC">VRC</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.constrains" href="#sidermit.optimization.optimizer.Optimizer.constrains">constrains</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.external_optimization" href="#sidermit.optimization.optimizer.Optimizer.external_optimization">external_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.external_optimization_tolerance" href="#sidermit.optimization.optimizer.Optimizer.external_optimization_tolerance">external_optimization_tolerance</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.f0" href="#sidermit.optimization.optimizer.Optimizer.f0">f0</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.f_distance" href="#sidermit.optimization.optimizer.Optimizer.f_distance">f_distance</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.fopt_to_f" href="#sidermit.optimization.optimizer.Optimizer.fopt_to_f">fopt_to_f</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_better_result" href="#sidermit.optimization.optimizer.Optimizer.get_better_result">get_better_result</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_constrains" href="#sidermit.optimization.optimizer.Optimizer.get_constrains">get_constrains</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_k" href="#sidermit.optimization.optimizer.Optimizer.get_k">get_k</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_network_results" href="#sidermit.optimization.optimizer.Optimizer.get_network_results">get_network_results</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_optimization_value" href="#sidermit.optimization.optimizer.Optimizer.get_optimization_value">get_optimization_value</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.get_overall_results" href="#sidermit.optimization.optimizer.Optimizer.get_overall_results">get_overall_results</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.infrastructure_cost" href="#sidermit.optimization.optimizer.Optimizer.infrastructure_cost">infrastructure_cost</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.internal_optimization" href="#sidermit.optimization.optimizer.Optimizer.internal_optimization">internal_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.last_iteration" href="#sidermit.optimization.optimizer.Optimizer.last_iteration">last_iteration</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.network_optimization" href="#sidermit.optimization.optimizer.Optimizer.network_optimization">network_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.operators_cost" href="#sidermit.optimization.optimizer.Optimizer.operators_cost">operators_cost</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.status_optimization" href="#sidermit.optimization.optimizer.Optimizer.status_optimization">status_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.string_information_internal_optimization" href="#sidermit.optimization.optimizer.Optimizer.string_information_internal_optimization">string_information_internal_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.string_network_optimization" href="#sidermit.optimization.optimizer.Optimizer.string_network_optimization">string_network_optimization</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.string_network_results" href="#sidermit.optimization.optimizer.Optimizer.string_network_results">string_network_results</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.string_overall_results" href="#sidermit.optimization.optimizer.Optimizer.string_overall_results">string_overall_results</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.user_cost" href="#sidermit.optimization.optimizer.Optimizer.user_cost">user_cost</a></code></li>
+<li><code><a title="sidermit.optimization.optimizer.Optimizer.write_file_network_results" href="#sidermit.optimization.optimizer.Optimizer.write_file_network_results">write_file_network_results</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

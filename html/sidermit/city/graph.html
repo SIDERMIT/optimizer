@@ -1,0 +1,3102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>sidermit.city.graph API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sidermit.city.graph</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+import math
+from collections import defaultdict
+from enum import Enum
+from typing import List
+
+import networkx as nx
+import pandas as pd
+from matplotlib import pyplot as plt
+
+from sidermit.exceptions import *
+
+
+class GraphContentFormat(Enum):
+    &#34;&#34;&#34;
+    Supported format for reading files in the construction of the city graph.
+    Pajek reference: https://gephi.org/users/supported-graph-formats/pajek-net-format/
+    Defined format: [node_id] [node name] [x] [y] [type] [zone] [width]
+    &#34;&#34;&#34;
+    PAJEK = 1
+
+
+class Node:
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Graph node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        if name is None:
+            raise NameIsNotDefinedException(&#34;must define a name to node&#34;)
+        if node_id is None:
+            raise NodeIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if zone_id is None:
+            raise ZoneIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if radius &lt; 0:
+            raise NodeRadiusIsNotValidException(&#34;radius must be positive&#34;)
+        if angle &lt; 0 or angle &gt; 360:
+            raise NodeAngleIsNotValidException(&#34;angle must belong into range [0°-360°]&#34;)
+        if width &lt; 0:
+            raise NodeWidthIsNotValidException(&#34;width must be &gt;= 0&#34;)
+        self.id = node_id
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.angle = angle
+        self.width = width
+        self.name = name
+        self.zone_id = zone_id
+
+
+class CBD(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        CBD node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs. CBD must belong to zone with id 0
+        :param name: node name
+        &#34;&#34;&#34;
+        if zone_id != 0:
+            raise ZoneIdIsNotValidException(&#34;CBD node_id must be equal to 0&#34;)
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
+
+
+class Periphery(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Periphery node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
+
+
+class Subcenter(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Subcenter node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)
+
+
+class Zone:
+
+    def __init__(self, zone_id: int, node_periphery: Periphery, node_subcenter: Subcenter):
+        &#34;&#34;&#34;
+        Area of the city, they have two nodes, one of them corresponding to the subcenter and another to the periphery.
+        :param zone_id: zone id must be unique in the city graph and belong to an ordered list of id [1, ..., n]
+        :param node_periphery:
+        :param node_subcenter:
+        &#34;&#34;&#34;
+
+        if zone_id is None:
+            raise ZoneIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if zone_id &lt;= 0:
+            raise ZoneIdIsNotValidException(&#34;zone_id number must be &gt;=1&#34;)
+        if not isinstance(node_periphery, Periphery):
+            raise PeripheryNodeTypeIsNotValidException(&#39;node must be periphery&#39;)
+
+        if not isinstance(node_subcenter, Subcenter):
+            raise SubcenterNodeTypeIsNotValidException(&#39;node must be subcenter&#39;)
+
+        if node_periphery.zone_id != zone_id or node_subcenter.zone_id != zone_id:
+            raise ZoneIdIsNotValidException(&#34;node_periphery and node_subcenter must be equal to zone_id&#34;)
+
+        self.id = zone_id
+        self.periphery = node_periphery
+        self.subcenter = node_subcenter
+
+
+class Edge:
+
+    def __init__(self, edge_id: int, node1, node2):
+        &#34;&#34;&#34;
+        Graph edge. Allowed edges are: [Periphery - Subcenter], [Subcenter - Periphery], [Subcenter - Subcenter],
+        [Subcenter - CBD], [CBD - Subcenter]
+        :param edge_id: edge id must be unique in the city graph
+        :param node1: edge start node
+        :param node2: edge end node
+        &#34;&#34;&#34;
+        if edge_id is None:
+            raise EdgeIdIsNotValidException(&#34;edge_id is not valid&#34;)
+        if isinstance(node1, Periphery) and isinstance(node2, Periphery):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery nodes is not available&#34;)
+        if isinstance(node1, Periphery) and isinstance(node2, CBD):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery and CBD is not available&#34;)
+        if isinstance(node1, CBD) and isinstance(node2, Periphery):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery and CBD is not available&#34;)
+        self.id = edge_id
+        self.node1 = node1
+        self.node2 = node2
+
+
+defaultdict2_float = defaultdict(lambda: defaultdict(float))
+coor = (float, float)
+vector = List[float]
+parameters = (int, float, float, float, float, int, vector, vector, vector)
+zones = List[Zone]
+nodes = List[Node]
+edges = List[Edge]
+
+
+class Graph:
+
+    def __init__(self):
+        &#34;&#34;&#34;
+        Graph of the city. Defined by n zones, n periphery nodes, n subcenter nodes, 1 CBD node, and 6 * n edges.
+        The edges are defined by construction between the periphery and subcenter of the same zone, the subcenter and
+        the CBD of all zones and between adjacent sub-centers of zones
+        &#34;&#34;&#34;
+
+        self.__nodes_id = []
+        self.__edges_id = []
+        self.__cbd_exist = False
+
+        self.__zones = []
+        self.__nodes = []
+        self.__edges = []
+
+        self.__n = None
+        self.__l = None
+        self.__g = None
+        self.__p = None
+        self.__etha = None
+        self.__etha_zone = None
+        self.__angles = None
+        self.__Gi = None
+        self.__Hi = None
+
+    def edge_exist(self, id_i, id_j) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if edge with origin node id = id_i and destination node id = id_j exist
+        :param id_i:
+        :param id_j:
+        :return: True if edge exist, False if not.
+        &#34;&#34;&#34;
+        for edge in self.__edges:
+            if edge.node1.id == id_i and edge.node2.id == id_j:
+                return True
+        return False
+
+    def export_graph(self, format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with graph nodes information in a specific format file
+        :param format: GraphContentFormat
+        :return: string with graph nodes information in a specific format file
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        if format == GraphContentFormat.PAJEK:
+            line += &#34;Content format: [node_id] [node_name] [x] [y] [node_type] [zone_id] [node_width]\n&#34;
+            line += &#34;Content format: each row provides have whitespace separated values\n\n&#34;
+            line += &#34;*vertices {}{}&#34;.format(len(self.__nodes), &#34;\n&#34;)
+
+            for node_obj in self.__nodes:
+                node_type = None
+                if isinstance(node_obj, CBD):
+                    node_type = &#39;CBD&#39;
+                elif isinstance(node_obj, Periphery):
+                    node_type = &#39;P&#39;
+                elif isinstance(node_obj, Subcenter):
+                    node_type = &#39;SC&#39;
+
+                line += &#34;{0} {1} {2} {3} {4} {5} {6}\n&#34;.format(node_obj.id, node_obj.name, node_obj.x, node_obj.y,
+                                                               node_type, node_obj.zone_id,
+                                                               node_obj.width)
+        return line
+
+    def graph_to_pajek_file(self, file_path, format: GraphContentFormat = GraphContentFormat.PAJEK):
+        &#34;&#34;&#34;
+        write city graph data to file using Pajek format
+        :param format:
+        :param file_path: file path
+        :return: None
+        &#34;&#34;&#34;
+
+        file = open(file_path, &#39;w&#39;)
+        string_file = self.export_graph(format)
+        file.write(string_file)
+
+        file.close()
+
+    @staticmethod
+    def parameters_validator(n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None,
+                             Hi=None) -&gt; bool:
+        &#34;&#34;&#34;
+        to validate symmetric and asymmetric graph construction parameters.
+        :param n: zone numbers.
+        :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+        :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+        :param p: node width in meters, takes part in the demand assignment considering lateral access time.
+        :param etha: [0-1] CBD eccentricity ratio.
+        :param etha_zone: CBD eccentricity direction zone
+        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return: True if parameters are valid. False if not.
+        &#34;&#34;&#34;
+        if n &lt; 0 or not isinstance(n, int):
+            raise NIsNotValidNumberException(&#39;n cannot be a negative number&#39;)
+        if l &lt; 0:
+            raise LIsNotValidNumberException(&#39;L cannot be a negative number&#39;)
+        if g &lt; 0:
+            raise GIsNotValidNumberException(&#39;g cannot be a negative number&#39;)
+        if p &lt; 0:
+            raise PIsNotValidNumberException(&#39;p cannot be a negative number&#39;)
+        if etha is None and etha_zone is not None:
+            raise EthaValueRequiredException(&#34;must give value for etha&#34;)
+        if etha is not None and etha_zone is None:
+            raise EthaZoneValueRequiredException(&#34;must give value for etha zone&#34;)
+        if etha is not None and etha_zone is not None:
+            if etha &lt; 0 or etha &gt; 1:
+                raise EthaValueIsNotValidException(&#34;etha value is not valid. Try with value belong in [0-1]&#34;)
+            elif etha_zone &lt;= 0 or etha_zone &gt; n or not isinstance(etha_zone, int):
+                raise EthaZoneValueIsNotValidException(
+                    &#34;etha zone is not valid. Try with value belong in [1,...,{}]&#34;.format(n))
+        if angles is not None:
+            if len(angles) != n:
+                raise AngleListLengthIsNotValidException(&#34;must give angle value for all zones&#34;)
+            for angle in angles:
+                if angle &lt; 0 or angle &gt; 360:
+                    raise AngleValueIsNotValidException(&#34;angle must belong in range [0°-360°]&#34;)
+        if Gi is not None:
+            if len(Gi) != n:
+                raise GiListLengthIsNotValidException(&#34;must give Gi value for all zones&#34;)
+            for gi in Gi:
+                if gi &lt; 0:
+                    raise GiValueIsNotValidException(&#34;Gi must be &gt;= 0&#34;)
+        if Hi is not None:
+            if len(Hi) != n:
+                raise HiListLengthIsNotValidException(&#34;must give Hi value for all zones&#34;)
+            for hi in Hi:
+                if hi &lt; 0:
+                    raise HiValueIsNotValidException(&#34;Hi must be &gt;= 0&#34;)
+        return True
+
+    @staticmethod
+    def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha: float = None,
+                              etha_zone: int = None, angles: List[float] = None, Gi: List[float] = None,
+                              Hi: List[float] = None) -&gt; Graph:
+        &#34;&#34;&#34;
+        to build a city graph with parameters information
+        :param n: zone numbers.
+        :param l: average distance in km of subcenters to (0,0) of the Cartesian plane.
+        :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+        :param p: node width in km, takes part in the demand assignment considering lateral access time.
+        :param etha: float, optional value in range [0-1], CBD eccentricity ratio.
+        :param etha_zone: int, optional value, CBD eccentricity direction zone
+        :param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
+        angle for each zone. Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: List[float], optional parameters, asymmetry parameter of the distance from the subcenters to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+        :param Hi: List[float], optional parameters, asymmetry parameter of the distance from the peripheries to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+        :return: Graph
+        &#34;&#34;&#34;
+
+        graph_obj = Graph()
+
+        # if parameters are valid
+        if graph_obj.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi):
+            # ADD CBD
+            # ADD Zones
+            # # for each zones add Nodes periphery and subcenter
+            # ADD all edges
+            # add CBD
+            cbd_node_obj = CBD(0, 0, 0, 0, 0, p, 0, &#34;CBD&#34;)
+            graph_obj.__add_cbd(cbd_node_obj)
+
+            # Add zones
+            for zone in range(n):
+                periphery_node_id = 2 * zone + 1
+                subcenter_node_id = 2 * zone + 2
+                periphery_radius = l + g * l
+                subcenter_radius = l
+                periphery_angle = 360 / n * zone
+                subcenter_angle = 360 / n * zone
+                x_p, y_p = graph_obj.get_xy(periphery_radius, periphery_angle)
+                x_sc, y_sc = graph_obj.get_xy(subcenter_radius, subcenter_angle)
+
+                periphery_node_name = &#34;P_{}&#34;.format(zone + 1)
+                periphery_node_obj = Periphery(periphery_node_id, x_p, y_p, periphery_radius, periphery_angle, p,
+                                               zone + 1, periphery_node_name)
+                subcenter_node_name = &#34;SC_{}&#34;.format(zone + 1)
+                subcenter_node_obj = Subcenter(subcenter_node_id, x_sc, y_sc, subcenter_radius, subcenter_angle, p,
+                                               zone + 1, subcenter_node_name)
+
+                # add periphery and subcenter nodes to graph obj
+                graph_obj.__add_zone(periphery_node_obj, subcenter_node_obj, zone + 1)
+
+            # add asymmetry by angles
+            if angles is not None:
+                graph_obj.__angles_asymmetry(angles)
+            # add asymmetry by Gi
+            if Gi is not None:
+                graph_obj.__Gi_asymmetry(Gi)
+            # add asymmetry by Hi
+            if Hi is not None:
+                graph_obj.__Hi_asymmetry(Hi)
+            # add asymmetry by etha
+            if etha is not None and etha_zone is not None:
+                graph_obj.__etha_asymmetry(etha, etha_zone)
+
+        graph_obj.__n = n
+        graph_obj.__l = l
+        graph_obj.__g = g
+        graph_obj.__p = p
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
+
+        return graph_obj
+
+    @staticmethod
+    def __pajekfile_to_dataframe(data) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        convert string pajek to dataframe
+        :param data: string data in  pajek format
+        :return: Dataframe panda
+        &#34;&#34;&#34;
+
+        # read pajek file as a Dataframe
+        df_file = pd.DataFrame()
+        col_id = []
+        col_name = []
+        col_x = []
+        col_y = []
+        col_type = []
+        col_zone = []
+        col_width = []
+
+        f_obj = data.split(&#34;\n&#34;)
+
+        # print(f_obj)
+
+        n_nodes = 0
+        for line in f_obj:
+            if line.lower().startswith(&#34;*vertices&#34;):
+                _, n_nodes = line.split()
+                n_nodes = int(n_nodes)
+                continue
+            if n_nodes &gt; 0:
+                if len(line.split()) == 7:
+                    node_id, name, x, y, node_type, zone, width = line.split()
+                    if node_type != &#34;CBD&#34; and node_type != &#34;SC&#34; and node_type != &#34;P&#34;:
+                        raise NodeTypeIsNotValidException(&#34;Node type is not valid. Try with CBD, SC or P&#34;)
+
+                    col_name.append(name)
+                    col_x.append(x)
+                    col_y.append(y)
+                    col_type.append(node_type)
+                    col_width.append(width)
+
+                    try:
+                        col_id.append(int(node_id))
+                    except ValueError:
+                        raise NodeIdIsNotAnInteger(&#34;node id must be a integer&#34;)
+                    try:
+                        col_zone.append(int(zone))
+                    except ValueError:
+                        raise ZoneIdIsNotAnInteger(&#34;zone id must be a integer&#34;)
+
+                    n_nodes = n_nodes - 1
+                else:
+                    raise PajekFormatIsNotValidException(&#34;each node line must provide information about [id] [&#34;
+                                                         &#34;name] [x] [y] [type] [zone] [width]&#34;)
+
+        df_file[&#34;node_id&#34;] = col_id
+        df_file[&#34;name&#34;] = col_name
+        df_file[&#34;x&#34;] = col_x
+        df_file[&#34;y&#34;] = col_y
+        df_file[&#34;type&#34;] = col_type
+        df_file[&#34;zone&#34;] = col_zone
+        df_file[&#34;width&#34;] = col_width
+
+        return df_file
+
+    def get_edges_distance(self) -&gt; defaultdict2_float:
+        &#34;&#34;&#34;
+        to get a dictionary with the edge distance of a nodes pair
+        :return: dic[nodei_id][nodej_id] = float [km]; defaultdict(lambda: defaultdict(float))
+        &#34;&#34;&#34;
+
+        edge_distance = defaultdict(lambda: defaultdict(float))
+
+        for edge in self.__edges:
+            nodei = edge.node1
+            nodej = edge.node2
+
+            xi = nodei.x
+            yi = nodei.y
+            xj = nodej.x
+            yj = nodej.y
+
+            edge_distance[nodei.id][nodej.id] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
+
+        return edge_distance
+
+    @staticmethod
+    def get_angle(x: float, y: float) -&gt; float:
+        &#34;&#34;&#34;
+        to get angle of a vector with coor (0,0,x,y)  with respect to x+
+        :param x:
+        :param y:
+        :return: angle in degrees with range[0° - 360°] measured from x+ axis counterclockwise
+        &#34;&#34;&#34;
+        a = 1
+        b = 0
+        c = x
+        d = y
+
+        if x == 0 and y == 0:
+            return 0
+
+        dot_product = a * c + b * d
+        # for three dimensional simply add dotProduct = a*c + b*d  + e*f
+        mod_of_vector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
+        # for three dimensional simply add modOfVector = math.sqrt( a*a + b*b + e*e)*math.sqrt(c*c + d*d +f*f)
+        angle = dot_product / mod_of_vector1
+        # print(&#34;Cosθ =&#34;,angle)
+        angle_in_degree = math.degrees(math.acos(angle))
+        if y &lt; 0:
+            if x &gt;= 0:
+                angle_in_degree = 360 - angle_in_degree
+            if x &lt; 0:
+                angle_in_degree = (180 - angle_in_degree) + 180
+        return angle_in_degree
+
+    @staticmethod
+    def get_xy(radius, angle) -&gt; coor:
+        &#34;&#34;&#34;
+        to get x, y with radius and angle parameters
+        :param radius:
+        :param angle:
+        :return: x,y in the Cartesian plane
+        &#34;&#34;&#34;
+        x, y = radius * math.cos(math.radians(angle)), radius * math.sin(math.radians(angle))
+        return x, y
+
+    @staticmethod
+    def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; Graph:
+        &#34;&#34;&#34;
+        :param data:
+        :param content_format:
+        :return: Graph
+        &#34;&#34;&#34;
+        graph_obj = Graph()
+
+        if content_format == GraphContentFormat.PAJEK:
+
+            df_file = graph_obj.__pajekfile_to_dataframe(data)
+
+            df_file = df_file.sort_values([&#34;zone&#34;, &#34;type&#34;], ascending=[True, True])
+
+            lines_accepted = list(range(1, 10001, 2))
+
+            if not len(df_file[&#34;node_id&#34;]) in lines_accepted:
+                # print(len(df_file[&#34;node_id&#34;]))
+                raise LineNumberInFileIsNotValidException(&#34;The number of lines in the file must be 2n+1 or &#34;
+                                                          &#34;file is very big (until 5000 zones accepted)&#34;)
+
+            n = int((len(df_file[&#34;node_id&#34;]) - 1) / 2)
+
+            cbd = []
+            periphery = []
+            subcenter = []
+
+            width = 0
+
+            # build nodes list
+            for i in range(len(df_file[&#34;node_id&#34;])):
+                node_id = df_file.iloc[i][&#34;node_id&#34;]
+                name = df_file.iloc[i][&#34;name&#34;]
+                x = float(df_file.iloc[i][&#34;x&#34;])
+                y = float(df_file.iloc[i][&#34;y&#34;])
+                node_type = df_file.iloc[i][&#34;type&#34;]
+                zone = int(df_file.iloc[i][&#34;zone&#34;])
+                width = float(df_file.iloc[i][&#34;width&#34;])
+
+                radius = math.sqrt(x ** 2 + y ** 2)
+                angle = graph_obj.get_angle(x, y)
+
+                if node_type == &#34;CBD&#34;:
+                    cbd.append(CBD(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == &#34;P&#34;:
+                    periphery.append(Periphery(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == &#34;SC&#34;:
+                    subcenter.append(Subcenter(node_id, x, y, radius, angle, width, zone, name))
+
+            r_sc = []
+            r_p = []
+            ang_sc = []
+            r_cbd = 0
+            ang_cbd = 0
+
+            if len(cbd) == 1:
+                r_cbd = cbd[0].radius
+                ang_cbd = cbd[0].angle
+
+            etha = None
+            etha_zone = None
+
+            # verification of existence and uniqueness of SC and P by zone
+            # save information to build parameters
+            for zone in range(n):
+                zone_id = zone + 1
+                n_p = 0
+                n_sc = 0
+                node_periphery = None
+                node_subcenter = None
+
+                for p in periphery:
+                    if p.zone_id == zone_id:
+                        n_p = n_p + 1
+                        node_periphery = p
+                for sc in subcenter:
+                    if sc.zone_id == zone_id:
+                        n_sc = n_sc + 1
+                        node_subcenter = sc
+                if n_p != 1 or n_sc != 1:
+                    raise PeripherySubcenterNumberForZoneException(&#34;try to verify that each zone [1, ..., n] has &#34;
+                                                                   &#34;one sc and p&#34;)
+
+                radius_p = node_periphery.radius
+                radius_sc = node_subcenter.radius
+                angle_sc = node_subcenter.angle
+
+                r_sc.append(radius_sc)
+                r_p.append(radius_p)
+                ang_sc.append(angle_sc)
+
+                # Update etha and etha_zone
+                if ang_cbd - 0.001 &lt;= angle_sc &lt;= ang_cbd + 0.001:
+                    etha_zone = zone_id
+                    etha = r_cbd / radius_sc
+
+            L = 0
+            g = 0
+            if len(r_sc) != 0 and len(r_p) != 0:
+                L = sum(r_sc) / len(r_sc)
+                g = (sum(r_p) / len(r_p) - L) / L
+
+            Gi = []
+            Hi = []
+            for i in range(n):
+                Gi.append(r_sc[i] / L)
+                Hi.append(r_p[i] / (L + g * L))
+
+            angles = ang_sc
+
+            # if parameters are valid
+            if graph_obj.parameters_validator(n, L, g, width, etha, etha_zone, angles, Gi, Hi):
+
+                for node in cbd:
+                    graph_obj.__add_cbd(node)
+
+                for i in range(n):
+                    node_periphery = None
+                    node_subcenter = None
+                    for p in periphery:
+                        if p.zone_id == i + 1:
+                            node_periphery = p
+                            break
+                    for sc in subcenter:
+                        if sc.zone_id == i + 1:
+                            node_subcenter = sc
+                            break
+                    graph_obj.__add_zone(node_periphery, node_subcenter)
+
+        else:
+            raise FileFormatIsNotValidException(&#34;File don&#39;t have a valid format. Try with Pajek format&#34;)
+
+        graph_obj.__n = n
+        graph_obj.__l = L
+        graph_obj.__g = g
+        graph_obj.__p = width
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
+
+        return graph_obj
+
+    @staticmethod
+    def build_from_file(file_path, file_format=GraphContentFormat.PAJEK) -&gt; Graph:
+        &#34;&#34;&#34;
+        to build a city graph with pajek file information
+        :param file_path:
+        :param file_format: default and only supported value is PAJEK
+        :return: Graph instance
+        &#34;&#34;&#34;
+
+        graph_obj = Graph()
+
+        with open(file_path, mode=&#39;r&#39;, encoding=&#39;utf-8&#39;) as f_obj:
+            data = f_obj.read()
+            # print(data)
+
+            graph_obj = graph_obj.build_from_content(data, file_format)
+
+        return graph_obj
+
+    def __add_cbd(self, cbd_node):
+        &#34;&#34;&#34;
+        to add cbd node in the graph
+        :param cbd_node:
+        :return:
+        &#34;&#34;&#34;
+        self.__cbd_exist = True
+        self.__nodes_id.append(cbd_node.id)
+        self.__nodes.append(cbd_node)
+
+    def __add_zone(self, node_periphery: Periphery, node_subcenter: Subcenter, zone_id=None):
+        &#34;&#34;&#34;
+        to add zone in the graph
+        :param node_periphery:
+        :param node_subcenter:
+        :param zone_id:
+        :return:
+        &#34;&#34;&#34;
+        # zones can only be added if CBD is included
+        if len(self.__nodes) == 0:
+            raise CBDDoesNotExistException(&#34;Need add CBD node previously&#34;)
+        # always add last zone
+        if zone_id is None:
+            zone_id = len(self.__zones) + 1
+        # not need to check because number of periphery and subcenter control exceptions
+        # if zone_id != len(self.__zones) + 1:
+        #    raise AddPreviousZonesExceptions(&#34;need to specify zone {} previously&#34;.format(len(self.__zones) + 1))
+        self.__zones.append(Zone(zone_id, node_periphery, node_subcenter))
+        self.__add_nodes(node_periphery, node_subcenter)
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __add_nodes(self, node_periphery: Periphery, node_subcenter: Subcenter):
+        &#34;&#34;&#34;
+        to add periphery and subcenter belonging to a zone
+        :param node_periphery:
+        :param node_subcenter:
+        :return:
+        &#34;&#34;&#34;
+
+        # to verified if id is not duplicated
+        if node_periphery.id in self.__nodes_id or node_subcenter.id in self.__nodes_id:
+            raise NodeIdDuplicatedException(&#39;id_node is duplicated&#39;)
+
+        self.__nodes.append(node_periphery)
+        self.__nodes.append(node_subcenter)
+        self.__nodes_id.append(node_periphery.id)
+        self.__nodes_id.append(node_subcenter.id)
+
+    def __build_edges(self):
+        &#34;&#34;&#34;
+        to build all edges defined by construction in the graph. The edges are defined by construction between the
+        periphery and subcenter of the same zone, the subcenter and the CBD of all zones and between adjacent
+        sub-centers of zones
+        :return:
+        &#34;&#34;&#34;
+        self.__edges = []
+        self.__edges_id = []
+        if len(self.__zones) == 1:
+            # p &lt;-&gt; sc
+            # sc &lt;-&gt; cbd
+            p = self.__zones[0].periphery
+            sc = self.__zones[0].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
+        if len(self.__zones) == 2:
+            # p &lt;-&gt; sc
+            # sc &lt;-&gt; cbd
+            p1 = self.__zones[0].periphery
+            sc1 = self.__zones[0].subcenter
+            p2 = self.__zones[1].periphery
+            sc2 = self.__zones[1].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p1, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, p1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, p2, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, p2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc2))
+
+        if len(self.__zones) &gt; 2:
+            for i in range(len(self.__zones)):
+                p = self.__zones[i].periphery
+                sc = self.__zones[i].subcenter
+                cbd = self.__nodes[0]
+                j = i + 1
+                if i == len(self.__zones) - 1:
+                    j = 0
+                sc2 = self.__zones[j].subcenter
+                # p &lt;-&gt; sc
+                # sc &lt;-&gt; cbd
+                # sc &lt;-&gt; sc2
+                self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+                self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
+
+    def __add_edge(self, edge: Edge):
+        &#34;&#34;&#34;
+        to add a edge in the graph
+        :param edge:
+        :return:
+        &#34;&#34;&#34;
+        self.__edges.append(edge)
+        self.__edges_id.append(edge.id)
+
+    def __etha_asymmetry(self, etha, etha_zone):
+        &#34;&#34;&#34;
+        modification of the graph incorporating eccentricity of the CBD
+        :param etha: [0-1] CBD eccentricity ratio.
+        :param etha_zone: CBD eccentricity direction zone
+        :return:
+        &#34;&#34;&#34;
+
+        zone = self.__zones[etha_zone - 1]
+        sc = zone.subcenter
+        r_cbd = etha * sc.radius
+        ang = sc.angle
+
+        x_cbd, y_cbd = self.get_xy(r_cbd, ang)
+
+        for node in range(len(self.__nodes)):
+            if isinstance(self.__nodes[node], CBD):
+                self.__nodes[node].x = x_cbd
+                self.__nodes[node].y = y_cbd
+                self.__nodes[node].radius = r_cbd
+                self.__nodes[node].angle = ang
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __Hi_asymmetry(self, Hi):
+        &#34;&#34;&#34;
+        graph modification incorporating asymmetry of the peripheries
+        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            hi = Hi[i]
+            p = self.__zones[i].periphery
+
+            r_p = hi * p.radius
+            ang = p.angle
+            x_p, y_p = self.get_xy(r_p, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].radius = r_p
+
+            # change values in zones nodes information
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.radius = r_p
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __Gi_asymmetry(self, Gi):
+
+        &#34;&#34;&#34;
+        graph modification incorporating asymmetry of the subcenters
+        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            gi = Gi[i]
+            sc = self.__zones[i].subcenter
+
+            r_sc = gi * sc.radius
+            ang = sc.angle
+            x_sc, y_sc = self.get_xy(r_sc, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].radius = r_sc
+
+            # change values in zones nodes information
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.radius = r_sc
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __angles_asymmetry(self, angles):
+        &#34;&#34;&#34;
+        graph modification incorporating angular asymmetry of the zones
+        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            ang = angles[i]
+
+            p = self.__zones[i].periphery
+            sc = self.__zones[i].subcenter
+
+            r_p = p.radius
+            r_sc = sc.radius
+            x_p, y_p = self.get_xy(r_p, ang)
+            x_sc, y_sc = self.get_xy(r_sc, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].angle = ang
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].angle = ang
+
+            # change values in zones nodes information
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.angle = ang
+
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.angle = ang
+
+        # must build all the edges
+        self.__build_edges()
+
+    def get_cbd(self) -&gt; CBD:
+        &#34;&#34;&#34;
+        to get CBD node defined in the graph
+        :return: CBD node
+        &#34;&#34;&#34;
+        cbd = None
+        for node in self.__nodes:
+            if isinstance(node, CBD):
+                cbd = node
+                break
+        return cbd
+
+    def get_parameters(self) -&gt; parameters:
+        &#34;&#34;&#34;
+        to get tuple with symmetric and asymmetric parameters n, L, g, P, etha, etha_zone, angles, Gi, Hi
+        :return: n, L, g, P, etha, etha_zone, angles, Gi, Hi
+        &#34;&#34;&#34;
+        return (self.__n, self.__l, self.__g, self.__p, self.__etha,
+                self.__etha_zone, self.__angles, self.__Gi, self.__Hi)
+
+    def get_n(self) -&gt; int:
+        &#34;&#34;&#34;
+        to get parameters of numbers of zones
+        :return: n
+        &#34;&#34;&#34;
+        return self.__n
+
+    def get_zones(self) -&gt; zones:
+        &#34;&#34;&#34;
+        to get all the zones built
+        :return: list of zones
+        &#34;&#34;&#34;
+        return self.__zones
+
+    def get_nodes(self) -&gt; nodes:
+        &#34;&#34;&#34;
+        to get all the nodes built
+        :return: list of nodes
+        &#34;&#34;&#34;
+        return self.__nodes
+
+    def get_edges(self) -&gt; edges:
+        &#34;&#34;&#34;
+        to get all the edges built
+        :return: list of edges
+        &#34;&#34;&#34;
+        return self.__edges
+
+    def plot(self, file_path):
+        &#34;&#34;&#34;
+        to plot graph defined
+        :param file_path:
+        :return:
+        &#34;&#34;&#34;
+
+        # edges information and positions
+        edges = []
+        position = defaultdict(list)
+        for edge in self.__edges:
+            edges.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
+
+        # nodes information and positions
+        info_cbd = []
+        info_sc = []
+        info_p = []
+
+        for node in self.__nodes:
+            if isinstance(node, CBD):
+                info_cbd.append(node)
+            if isinstance(node, Periphery):
+                info_p.append(node)
+            if isinstance(node, Subcenter):
+                info_sc.append(node)
+        id_cbd = []
+        id_sc = []
+        id_p = []
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
+
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
+            id_cbd.append(cbd.id)
+
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
+            id_sc.append(sc.id)
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
+            id_p.append(p.id)
+
+        G = nx.DiGraph()
+        G.add_edges_from(edges)
+
+        # separate calls to draw labels, nodes and edges
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                               node_size=300)
+        nx.draw_networkx_labels(G, position)
+        nx.draw_networkx_edges(G, position, edgelist=edges, edge_color=&#39;orange&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.savefig(file_path)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sidermit.city.graph.CBD"><code class="flex name class">
+<span>class <span class="ident">CBD</span></span>
+<span>(</span><span>node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>CBD node
+:param node_id: node id, must be unique in the graph
+:param x: horizontal position in meters of the node in the Cartesian plane
+:param y: vertical position in meters of the node in the Cartesian plane
+:param radius: node radius in meters from point 0,0 of the Cartesian plane
+:param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param width: node width in meters, takes part in the demand assignment considering lateral access time
+:param zone_id: zone id that the node belongs. CBD must belong to zone with id 0
+:param name: node name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CBD(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        CBD node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs. CBD must belong to zone with id 0
+        :param name: node name
+        &#34;&#34;&#34;
+        if zone_id != 0:
+            raise ZoneIdIsNotValidException(&#34;CBD node_id must be equal to 0&#34;)
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.city.graph.Node" href="#sidermit.city.graph.Node">Node</a></li>
+</ul>
+</dd>
+<dt id="sidermit.city.graph.Edge"><code class="flex name class">
+<span>class <span class="ident">Edge</span></span>
+<span>(</span><span>edge_id: int, node1, node2)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Graph edge. Allowed edges are: [Periphery - Subcenter], [Subcenter - Periphery], [Subcenter - Subcenter],
+[Subcenter - CBD], [CBD - Subcenter]
+:param edge_id: edge id must be unique in the city graph
+:param node1: edge start node
+:param node2: edge end node</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Edge:
+
+    def __init__(self, edge_id: int, node1, node2):
+        &#34;&#34;&#34;
+        Graph edge. Allowed edges are: [Periphery - Subcenter], [Subcenter - Periphery], [Subcenter - Subcenter],
+        [Subcenter - CBD], [CBD - Subcenter]
+        :param edge_id: edge id must be unique in the city graph
+        :param node1: edge start node
+        :param node2: edge end node
+        &#34;&#34;&#34;
+        if edge_id is None:
+            raise EdgeIdIsNotValidException(&#34;edge_id is not valid&#34;)
+        if isinstance(node1, Periphery) and isinstance(node2, Periphery):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery nodes is not available&#34;)
+        if isinstance(node1, Periphery) and isinstance(node2, CBD):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery and CBD is not available&#34;)
+        if isinstance(node1, CBD) and isinstance(node2, Periphery):
+            raise EdgeIsNotAvailableException(&#34;edge between periphery and CBD is not available&#34;)
+        self.id = edge_id
+        self.node1 = node1
+        self.node2 = node2</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph"><code class="flex name class">
+<span>class <span class="ident">Graph</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Graph of the city. Defined by n zones, n periphery nodes, n subcenter nodes, 1 CBD node, and 6 * n edges.
+The edges are defined by construction between the periphery and subcenter of the same zone, the subcenter and
+the CBD of all zones and between adjacent sub-centers of zones</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Graph:
+
+    def __init__(self):
+        &#34;&#34;&#34;
+        Graph of the city. Defined by n zones, n periphery nodes, n subcenter nodes, 1 CBD node, and 6 * n edges.
+        The edges are defined by construction between the periphery and subcenter of the same zone, the subcenter and
+        the CBD of all zones and between adjacent sub-centers of zones
+        &#34;&#34;&#34;
+
+        self.__nodes_id = []
+        self.__edges_id = []
+        self.__cbd_exist = False
+
+        self.__zones = []
+        self.__nodes = []
+        self.__edges = []
+
+        self.__n = None
+        self.__l = None
+        self.__g = None
+        self.__p = None
+        self.__etha = None
+        self.__etha_zone = None
+        self.__angles = None
+        self.__Gi = None
+        self.__Hi = None
+
+    def edge_exist(self, id_i, id_j) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if edge with origin node id = id_i and destination node id = id_j exist
+        :param id_i:
+        :param id_j:
+        :return: True if edge exist, False if not.
+        &#34;&#34;&#34;
+        for edge in self.__edges:
+            if edge.node1.id == id_i and edge.node2.id == id_j:
+                return True
+        return False
+
+    def export_graph(self, format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; str:
+        &#34;&#34;&#34;
+        to get a string with graph nodes information in a specific format file
+        :param format: GraphContentFormat
+        :return: string with graph nodes information in a specific format file
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        if format == GraphContentFormat.PAJEK:
+            line += &#34;Content format: [node_id] [node_name] [x] [y] [node_type] [zone_id] [node_width]\n&#34;
+            line += &#34;Content format: each row provides have whitespace separated values\n\n&#34;
+            line += &#34;*vertices {}{}&#34;.format(len(self.__nodes), &#34;\n&#34;)
+
+            for node_obj in self.__nodes:
+                node_type = None
+                if isinstance(node_obj, CBD):
+                    node_type = &#39;CBD&#39;
+                elif isinstance(node_obj, Periphery):
+                    node_type = &#39;P&#39;
+                elif isinstance(node_obj, Subcenter):
+                    node_type = &#39;SC&#39;
+
+                line += &#34;{0} {1} {2} {3} {4} {5} {6}\n&#34;.format(node_obj.id, node_obj.name, node_obj.x, node_obj.y,
+                                                               node_type, node_obj.zone_id,
+                                                               node_obj.width)
+        return line
+
+    def graph_to_pajek_file(self, file_path, format: GraphContentFormat = GraphContentFormat.PAJEK):
+        &#34;&#34;&#34;
+        write city graph data to file using Pajek format
+        :param format:
+        :param file_path: file path
+        :return: None
+        &#34;&#34;&#34;
+
+        file = open(file_path, &#39;w&#39;)
+        string_file = self.export_graph(format)
+        file.write(string_file)
+
+        file.close()
+
+    @staticmethod
+    def parameters_validator(n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None,
+                             Hi=None) -&gt; bool:
+        &#34;&#34;&#34;
+        to validate symmetric and asymmetric graph construction parameters.
+        :param n: zone numbers.
+        :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+        :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+        :param p: node width in meters, takes part in the demand assignment considering lateral access time.
+        :param etha: [0-1] CBD eccentricity ratio.
+        :param etha_zone: CBD eccentricity direction zone
+        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return: True if parameters are valid. False if not.
+        &#34;&#34;&#34;
+        if n &lt; 0 or not isinstance(n, int):
+            raise NIsNotValidNumberException(&#39;n cannot be a negative number&#39;)
+        if l &lt; 0:
+            raise LIsNotValidNumberException(&#39;L cannot be a negative number&#39;)
+        if g &lt; 0:
+            raise GIsNotValidNumberException(&#39;g cannot be a negative number&#39;)
+        if p &lt; 0:
+            raise PIsNotValidNumberException(&#39;p cannot be a negative number&#39;)
+        if etha is None and etha_zone is not None:
+            raise EthaValueRequiredException(&#34;must give value for etha&#34;)
+        if etha is not None and etha_zone is None:
+            raise EthaZoneValueRequiredException(&#34;must give value for etha zone&#34;)
+        if etha is not None and etha_zone is not None:
+            if etha &lt; 0 or etha &gt; 1:
+                raise EthaValueIsNotValidException(&#34;etha value is not valid. Try with value belong in [0-1]&#34;)
+            elif etha_zone &lt;= 0 or etha_zone &gt; n or not isinstance(etha_zone, int):
+                raise EthaZoneValueIsNotValidException(
+                    &#34;etha zone is not valid. Try with value belong in [1,...,{}]&#34;.format(n))
+        if angles is not None:
+            if len(angles) != n:
+                raise AngleListLengthIsNotValidException(&#34;must give angle value for all zones&#34;)
+            for angle in angles:
+                if angle &lt; 0 or angle &gt; 360:
+                    raise AngleValueIsNotValidException(&#34;angle must belong in range [0°-360°]&#34;)
+        if Gi is not None:
+            if len(Gi) != n:
+                raise GiListLengthIsNotValidException(&#34;must give Gi value for all zones&#34;)
+            for gi in Gi:
+                if gi &lt; 0:
+                    raise GiValueIsNotValidException(&#34;Gi must be &gt;= 0&#34;)
+        if Hi is not None:
+            if len(Hi) != n:
+                raise HiListLengthIsNotValidException(&#34;must give Hi value for all zones&#34;)
+            for hi in Hi:
+                if hi &lt; 0:
+                    raise HiValueIsNotValidException(&#34;Hi must be &gt;= 0&#34;)
+        return True
+
+    @staticmethod
+    def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha: float = None,
+                              etha_zone: int = None, angles: List[float] = None, Gi: List[float] = None,
+                              Hi: List[float] = None) -&gt; Graph:
+        &#34;&#34;&#34;
+        to build a city graph with parameters information
+        :param n: zone numbers.
+        :param l: average distance in km of subcenters to (0,0) of the Cartesian plane.
+        :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+        :param p: node width in km, takes part in the demand assignment considering lateral access time.
+        :param etha: float, optional value in range [0-1], CBD eccentricity ratio.
+        :param etha_zone: int, optional value, CBD eccentricity direction zone
+        :param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
+        angle for each zone. Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param Gi: List[float], optional parameters, asymmetry parameter of the distance from the subcenters to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+        :param Hi: List[float], optional parameters, asymmetry parameter of the distance from the peripheries to (0,0)
+        of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+        :return: Graph
+        &#34;&#34;&#34;
+
+        graph_obj = Graph()
+
+        # if parameters are valid
+        if graph_obj.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi):
+            # ADD CBD
+            # ADD Zones
+            # # for each zones add Nodes periphery and subcenter
+            # ADD all edges
+            # add CBD
+            cbd_node_obj = CBD(0, 0, 0, 0, 0, p, 0, &#34;CBD&#34;)
+            graph_obj.__add_cbd(cbd_node_obj)
+
+            # Add zones
+            for zone in range(n):
+                periphery_node_id = 2 * zone + 1
+                subcenter_node_id = 2 * zone + 2
+                periphery_radius = l + g * l
+                subcenter_radius = l
+                periphery_angle = 360 / n * zone
+                subcenter_angle = 360 / n * zone
+                x_p, y_p = graph_obj.get_xy(periphery_radius, periphery_angle)
+                x_sc, y_sc = graph_obj.get_xy(subcenter_radius, subcenter_angle)
+
+                periphery_node_name = &#34;P_{}&#34;.format(zone + 1)
+                periphery_node_obj = Periphery(periphery_node_id, x_p, y_p, periphery_radius, periphery_angle, p,
+                                               zone + 1, periphery_node_name)
+                subcenter_node_name = &#34;SC_{}&#34;.format(zone + 1)
+                subcenter_node_obj = Subcenter(subcenter_node_id, x_sc, y_sc, subcenter_radius, subcenter_angle, p,
+                                               zone + 1, subcenter_node_name)
+
+                # add periphery and subcenter nodes to graph obj
+                graph_obj.__add_zone(periphery_node_obj, subcenter_node_obj, zone + 1)
+
+            # add asymmetry by angles
+            if angles is not None:
+                graph_obj.__angles_asymmetry(angles)
+            # add asymmetry by Gi
+            if Gi is not None:
+                graph_obj.__Gi_asymmetry(Gi)
+            # add asymmetry by Hi
+            if Hi is not None:
+                graph_obj.__Hi_asymmetry(Hi)
+            # add asymmetry by etha
+            if etha is not None and etha_zone is not None:
+                graph_obj.__etha_asymmetry(etha, etha_zone)
+
+        graph_obj.__n = n
+        graph_obj.__l = l
+        graph_obj.__g = g
+        graph_obj.__p = p
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
+
+        return graph_obj
+
+    @staticmethod
+    def __pajekfile_to_dataframe(data) -&gt; pd.DataFrame:
+        &#34;&#34;&#34;
+        convert string pajek to dataframe
+        :param data: string data in  pajek format
+        :return: Dataframe panda
+        &#34;&#34;&#34;
+
+        # read pajek file as a Dataframe
+        df_file = pd.DataFrame()
+        col_id = []
+        col_name = []
+        col_x = []
+        col_y = []
+        col_type = []
+        col_zone = []
+        col_width = []
+
+        f_obj = data.split(&#34;\n&#34;)
+
+        # print(f_obj)
+
+        n_nodes = 0
+        for line in f_obj:
+            if line.lower().startswith(&#34;*vertices&#34;):
+                _, n_nodes = line.split()
+                n_nodes = int(n_nodes)
+                continue
+            if n_nodes &gt; 0:
+                if len(line.split()) == 7:
+                    node_id, name, x, y, node_type, zone, width = line.split()
+                    if node_type != &#34;CBD&#34; and node_type != &#34;SC&#34; and node_type != &#34;P&#34;:
+                        raise NodeTypeIsNotValidException(&#34;Node type is not valid. Try with CBD, SC or P&#34;)
+
+                    col_name.append(name)
+                    col_x.append(x)
+                    col_y.append(y)
+                    col_type.append(node_type)
+                    col_width.append(width)
+
+                    try:
+                        col_id.append(int(node_id))
+                    except ValueError:
+                        raise NodeIdIsNotAnInteger(&#34;node id must be a integer&#34;)
+                    try:
+                        col_zone.append(int(zone))
+                    except ValueError:
+                        raise ZoneIdIsNotAnInteger(&#34;zone id must be a integer&#34;)
+
+                    n_nodes = n_nodes - 1
+                else:
+                    raise PajekFormatIsNotValidException(&#34;each node line must provide information about [id] [&#34;
+                                                         &#34;name] [x] [y] [type] [zone] [width]&#34;)
+
+        df_file[&#34;node_id&#34;] = col_id
+        df_file[&#34;name&#34;] = col_name
+        df_file[&#34;x&#34;] = col_x
+        df_file[&#34;y&#34;] = col_y
+        df_file[&#34;type&#34;] = col_type
+        df_file[&#34;zone&#34;] = col_zone
+        df_file[&#34;width&#34;] = col_width
+
+        return df_file
+
+    def get_edges_distance(self) -&gt; defaultdict2_float:
+        &#34;&#34;&#34;
+        to get a dictionary with the edge distance of a nodes pair
+        :return: dic[nodei_id][nodej_id] = float [km]; defaultdict(lambda: defaultdict(float))
+        &#34;&#34;&#34;
+
+        edge_distance = defaultdict(lambda: defaultdict(float))
+
+        for edge in self.__edges:
+            nodei = edge.node1
+            nodej = edge.node2
+
+            xi = nodei.x
+            yi = nodei.y
+            xj = nodej.x
+            yj = nodej.y
+
+            edge_distance[nodei.id][nodej.id] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
+
+        return edge_distance
+
+    @staticmethod
+    def get_angle(x: float, y: float) -&gt; float:
+        &#34;&#34;&#34;
+        to get angle of a vector with coor (0,0,x,y)  with respect to x+
+        :param x:
+        :param y:
+        :return: angle in degrees with range[0° - 360°] measured from x+ axis counterclockwise
+        &#34;&#34;&#34;
+        a = 1
+        b = 0
+        c = x
+        d = y
+
+        if x == 0 and y == 0:
+            return 0
+
+        dot_product = a * c + b * d
+        # for three dimensional simply add dotProduct = a*c + b*d  + e*f
+        mod_of_vector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
+        # for three dimensional simply add modOfVector = math.sqrt( a*a + b*b + e*e)*math.sqrt(c*c + d*d +f*f)
+        angle = dot_product / mod_of_vector1
+        # print(&#34;Cosθ =&#34;,angle)
+        angle_in_degree = math.degrees(math.acos(angle))
+        if y &lt; 0:
+            if x &gt;= 0:
+                angle_in_degree = 360 - angle_in_degree
+            if x &lt; 0:
+                angle_in_degree = (180 - angle_in_degree) + 180
+        return angle_in_degree
+
+    @staticmethod
+    def get_xy(radius, angle) -&gt; coor:
+        &#34;&#34;&#34;
+        to get x, y with radius and angle parameters
+        :param radius:
+        :param angle:
+        :return: x,y in the Cartesian plane
+        &#34;&#34;&#34;
+        x, y = radius * math.cos(math.radians(angle)), radius * math.sin(math.radians(angle))
+        return x, y
+
+    @staticmethod
+    def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; Graph:
+        &#34;&#34;&#34;
+        :param data:
+        :param content_format:
+        :return: Graph
+        &#34;&#34;&#34;
+        graph_obj = Graph()
+
+        if content_format == GraphContentFormat.PAJEK:
+
+            df_file = graph_obj.__pajekfile_to_dataframe(data)
+
+            df_file = df_file.sort_values([&#34;zone&#34;, &#34;type&#34;], ascending=[True, True])
+
+            lines_accepted = list(range(1, 10001, 2))
+
+            if not len(df_file[&#34;node_id&#34;]) in lines_accepted:
+                # print(len(df_file[&#34;node_id&#34;]))
+                raise LineNumberInFileIsNotValidException(&#34;The number of lines in the file must be 2n+1 or &#34;
+                                                          &#34;file is very big (until 5000 zones accepted)&#34;)
+
+            n = int((len(df_file[&#34;node_id&#34;]) - 1) / 2)
+
+            cbd = []
+            periphery = []
+            subcenter = []
+
+            width = 0
+
+            # build nodes list
+            for i in range(len(df_file[&#34;node_id&#34;])):
+                node_id = df_file.iloc[i][&#34;node_id&#34;]
+                name = df_file.iloc[i][&#34;name&#34;]
+                x = float(df_file.iloc[i][&#34;x&#34;])
+                y = float(df_file.iloc[i][&#34;y&#34;])
+                node_type = df_file.iloc[i][&#34;type&#34;]
+                zone = int(df_file.iloc[i][&#34;zone&#34;])
+                width = float(df_file.iloc[i][&#34;width&#34;])
+
+                radius = math.sqrt(x ** 2 + y ** 2)
+                angle = graph_obj.get_angle(x, y)
+
+                if node_type == &#34;CBD&#34;:
+                    cbd.append(CBD(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == &#34;P&#34;:
+                    periphery.append(Periphery(node_id, x, y, radius, angle, width, zone, name))
+                if node_type == &#34;SC&#34;:
+                    subcenter.append(Subcenter(node_id, x, y, radius, angle, width, zone, name))
+
+            r_sc = []
+            r_p = []
+            ang_sc = []
+            r_cbd = 0
+            ang_cbd = 0
+
+            if len(cbd) == 1:
+                r_cbd = cbd[0].radius
+                ang_cbd = cbd[0].angle
+
+            etha = None
+            etha_zone = None
+
+            # verification of existence and uniqueness of SC and P by zone
+            # save information to build parameters
+            for zone in range(n):
+                zone_id = zone + 1
+                n_p = 0
+                n_sc = 0
+                node_periphery = None
+                node_subcenter = None
+
+                for p in periphery:
+                    if p.zone_id == zone_id:
+                        n_p = n_p + 1
+                        node_periphery = p
+                for sc in subcenter:
+                    if sc.zone_id == zone_id:
+                        n_sc = n_sc + 1
+                        node_subcenter = sc
+                if n_p != 1 or n_sc != 1:
+                    raise PeripherySubcenterNumberForZoneException(&#34;try to verify that each zone [1, ..., n] has &#34;
+                                                                   &#34;one sc and p&#34;)
+
+                radius_p = node_periphery.radius
+                radius_sc = node_subcenter.radius
+                angle_sc = node_subcenter.angle
+
+                r_sc.append(radius_sc)
+                r_p.append(radius_p)
+                ang_sc.append(angle_sc)
+
+                # Update etha and etha_zone
+                if ang_cbd - 0.001 &lt;= angle_sc &lt;= ang_cbd + 0.001:
+                    etha_zone = zone_id
+                    etha = r_cbd / radius_sc
+
+            L = 0
+            g = 0
+            if len(r_sc) != 0 and len(r_p) != 0:
+                L = sum(r_sc) / len(r_sc)
+                g = (sum(r_p) / len(r_p) - L) / L
+
+            Gi = []
+            Hi = []
+            for i in range(n):
+                Gi.append(r_sc[i] / L)
+                Hi.append(r_p[i] / (L + g * L))
+
+            angles = ang_sc
+
+            # if parameters are valid
+            if graph_obj.parameters_validator(n, L, g, width, etha, etha_zone, angles, Gi, Hi):
+
+                for node in cbd:
+                    graph_obj.__add_cbd(node)
+
+                for i in range(n):
+                    node_periphery = None
+                    node_subcenter = None
+                    for p in periphery:
+                        if p.zone_id == i + 1:
+                            node_periphery = p
+                            break
+                    for sc in subcenter:
+                        if sc.zone_id == i + 1:
+                            node_subcenter = sc
+                            break
+                    graph_obj.__add_zone(node_periphery, node_subcenter)
+
+        else:
+            raise FileFormatIsNotValidException(&#34;File don&#39;t have a valid format. Try with Pajek format&#34;)
+
+        graph_obj.__n = n
+        graph_obj.__l = L
+        graph_obj.__g = g
+        graph_obj.__p = width
+        graph_obj.__etha = etha
+        graph_obj.__etha_zone = etha_zone
+        graph_obj.__angles = angles
+        graph_obj.__Gi = Gi
+        graph_obj.__Hi = Hi
+
+        return graph_obj
+
+    @staticmethod
+    def build_from_file(file_path, file_format=GraphContentFormat.PAJEK) -&gt; Graph:
+        &#34;&#34;&#34;
+        to build a city graph with pajek file information
+        :param file_path:
+        :param file_format: default and only supported value is PAJEK
+        :return: Graph instance
+        &#34;&#34;&#34;
+
+        graph_obj = Graph()
+
+        with open(file_path, mode=&#39;r&#39;, encoding=&#39;utf-8&#39;) as f_obj:
+            data = f_obj.read()
+            # print(data)
+
+            graph_obj = graph_obj.build_from_content(data, file_format)
+
+        return graph_obj
+
+    def __add_cbd(self, cbd_node):
+        &#34;&#34;&#34;
+        to add cbd node in the graph
+        :param cbd_node:
+        :return:
+        &#34;&#34;&#34;
+        self.__cbd_exist = True
+        self.__nodes_id.append(cbd_node.id)
+        self.__nodes.append(cbd_node)
+
+    def __add_zone(self, node_periphery: Periphery, node_subcenter: Subcenter, zone_id=None):
+        &#34;&#34;&#34;
+        to add zone in the graph
+        :param node_periphery:
+        :param node_subcenter:
+        :param zone_id:
+        :return:
+        &#34;&#34;&#34;
+        # zones can only be added if CBD is included
+        if len(self.__nodes) == 0:
+            raise CBDDoesNotExistException(&#34;Need add CBD node previously&#34;)
+        # always add last zone
+        if zone_id is None:
+            zone_id = len(self.__zones) + 1
+        # not need to check because number of periphery and subcenter control exceptions
+        # if zone_id != len(self.__zones) + 1:
+        #    raise AddPreviousZonesExceptions(&#34;need to specify zone {} previously&#34;.format(len(self.__zones) + 1))
+        self.__zones.append(Zone(zone_id, node_periphery, node_subcenter))
+        self.__add_nodes(node_periphery, node_subcenter)
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __add_nodes(self, node_periphery: Periphery, node_subcenter: Subcenter):
+        &#34;&#34;&#34;
+        to add periphery and subcenter belonging to a zone
+        :param node_periphery:
+        :param node_subcenter:
+        :return:
+        &#34;&#34;&#34;
+
+        # to verified if id is not duplicated
+        if node_periphery.id in self.__nodes_id or node_subcenter.id in self.__nodes_id:
+            raise NodeIdDuplicatedException(&#39;id_node is duplicated&#39;)
+
+        self.__nodes.append(node_periphery)
+        self.__nodes.append(node_subcenter)
+        self.__nodes_id.append(node_periphery.id)
+        self.__nodes_id.append(node_subcenter.id)
+
+    def __build_edges(self):
+        &#34;&#34;&#34;
+        to build all edges defined by construction in the graph. The edges are defined by construction between the
+        periphery and subcenter of the same zone, the subcenter and the CBD of all zones and between adjacent
+        sub-centers of zones
+        :return:
+        &#34;&#34;&#34;
+        self.__edges = []
+        self.__edges_id = []
+        if len(self.__zones) == 1:
+            # p &lt;-&gt; sc
+            # sc &lt;-&gt; cbd
+            p = self.__zones[0].periphery
+            sc = self.__zones[0].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
+        if len(self.__zones) == 2:
+            # p &lt;-&gt; sc
+            # sc &lt;-&gt; cbd
+            p1 = self.__zones[0].periphery
+            sc1 = self.__zones[0].subcenter
+            p2 = self.__zones[1].periphery
+            sc2 = self.__zones[1].subcenter
+            cbd = self.__nodes[0]
+            self.__add_edge(Edge(len(self.__edges) + 1, p1, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, p1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc1, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc1))
+            self.__add_edge(Edge(len(self.__edges) + 1, p2, sc2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, p2))
+            self.__add_edge(Edge(len(self.__edges) + 1, sc2, cbd))
+            self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc2))
+
+        if len(self.__zones) &gt; 2:
+            for i in range(len(self.__zones)):
+                p = self.__zones[i].periphery
+                sc = self.__zones[i].subcenter
+                cbd = self.__nodes[0]
+                j = i + 1
+                if i == len(self.__zones) - 1:
+                    j = 0
+                sc2 = self.__zones[j].subcenter
+                # p &lt;-&gt; sc
+                # sc &lt;-&gt; cbd
+                # sc &lt;-&gt; sc2
+                self.__add_edge(Edge(len(self.__edges) + 1, p, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, p))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, cbd))
+                self.__add_edge(Edge(len(self.__edges) + 1, cbd, sc))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc, sc2))
+                self.__add_edge(Edge(len(self.__edges) + 1, sc2, sc))
+
+    def __add_edge(self, edge: Edge):
+        &#34;&#34;&#34;
+        to add a edge in the graph
+        :param edge:
+        :return:
+        &#34;&#34;&#34;
+        self.__edges.append(edge)
+        self.__edges_id.append(edge.id)
+
+    def __etha_asymmetry(self, etha, etha_zone):
+        &#34;&#34;&#34;
+        modification of the graph incorporating eccentricity of the CBD
+        :param etha: [0-1] CBD eccentricity ratio.
+        :param etha_zone: CBD eccentricity direction zone
+        :return:
+        &#34;&#34;&#34;
+
+        zone = self.__zones[etha_zone - 1]
+        sc = zone.subcenter
+        r_cbd = etha * sc.radius
+        ang = sc.angle
+
+        x_cbd, y_cbd = self.get_xy(r_cbd, ang)
+
+        for node in range(len(self.__nodes)):
+            if isinstance(self.__nodes[node], CBD):
+                self.__nodes[node].x = x_cbd
+                self.__nodes[node].y = y_cbd
+                self.__nodes[node].radius = r_cbd
+                self.__nodes[node].angle = ang
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __Hi_asymmetry(self, Hi):
+        &#34;&#34;&#34;
+        graph modification incorporating asymmetry of the peripheries
+        :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            hi = Hi[i]
+            p = self.__zones[i].periphery
+
+            r_p = hi * p.radius
+            ang = p.angle
+            x_p, y_p = self.get_xy(r_p, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].radius = r_p
+
+            # change values in zones nodes information
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.radius = r_p
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __Gi_asymmetry(self, Gi):
+
+        &#34;&#34;&#34;
+        graph modification incorporating asymmetry of the subcenters
+        :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+        List with asymmetry ratio for each zone with values &gt;=0
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            gi = Gi[i]
+            sc = self.__zones[i].subcenter
+
+            r_sc = gi * sc.radius
+            ang = sc.angle
+            x_sc, y_sc = self.get_xy(r_sc, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].radius = r_sc
+
+            # change values in zones nodes information
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.radius = r_sc
+
+        # must build all the edges
+        self.__build_edges()
+
+    def __angles_asymmetry(self, angles):
+        &#34;&#34;&#34;
+        graph modification incorporating angular asymmetry of the zones
+        :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+        Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :return:
+        &#34;&#34;&#34;
+
+        for i in range(len(self.__zones)):
+            ang = angles[i]
+
+            p = self.__zones[i].periphery
+            sc = self.__zones[i].subcenter
+
+            r_p = p.radius
+            r_sc = sc.radius
+            x_p, y_p = self.get_xy(r_p, ang)
+            x_sc, y_sc = self.get_xy(r_sc, ang)
+
+            # change values in nodes list
+            for node in range(len(self.__nodes)):
+                if self.__nodes[node] == p:
+                    self.__nodes[node].x = x_p
+                    self.__nodes[node].y = y_p
+                    self.__nodes[node].angle = ang
+                if self.__nodes[node] == sc:
+                    self.__nodes[node].x = x_sc
+                    self.__nodes[node].y = y_sc
+                    self.__nodes[node].angle = ang
+
+            # change values in zones nodes information
+            self.__zones[i].periphery.x = x_p
+            self.__zones[i].periphery.y = y_p
+            self.__zones[i].periphery.angle = ang
+
+            self.__zones[i].subcenter.x = x_sc
+            self.__zones[i].subcenter.y = y_sc
+            self.__zones[i].subcenter.angle = ang
+
+        # must build all the edges
+        self.__build_edges()
+
+    def get_cbd(self) -&gt; CBD:
+        &#34;&#34;&#34;
+        to get CBD node defined in the graph
+        :return: CBD node
+        &#34;&#34;&#34;
+        cbd = None
+        for node in self.__nodes:
+            if isinstance(node, CBD):
+                cbd = node
+                break
+        return cbd
+
+    def get_parameters(self) -&gt; parameters:
+        &#34;&#34;&#34;
+        to get tuple with symmetric and asymmetric parameters n, L, g, P, etha, etha_zone, angles, Gi, Hi
+        :return: n, L, g, P, etha, etha_zone, angles, Gi, Hi
+        &#34;&#34;&#34;
+        return (self.__n, self.__l, self.__g, self.__p, self.__etha,
+                self.__etha_zone, self.__angles, self.__Gi, self.__Hi)
+
+    def get_n(self) -&gt; int:
+        &#34;&#34;&#34;
+        to get parameters of numbers of zones
+        :return: n
+        &#34;&#34;&#34;
+        return self.__n
+
+    def get_zones(self) -&gt; zones:
+        &#34;&#34;&#34;
+        to get all the zones built
+        :return: list of zones
+        &#34;&#34;&#34;
+        return self.__zones
+
+    def get_nodes(self) -&gt; nodes:
+        &#34;&#34;&#34;
+        to get all the nodes built
+        :return: list of nodes
+        &#34;&#34;&#34;
+        return self.__nodes
+
+    def get_edges(self) -&gt; edges:
+        &#34;&#34;&#34;
+        to get all the edges built
+        :return: list of edges
+        &#34;&#34;&#34;
+        return self.__edges
+
+    def plot(self, file_path):
+        &#34;&#34;&#34;
+        to plot graph defined
+        :param file_path:
+        :return:
+        &#34;&#34;&#34;
+
+        # edges information and positions
+        edges = []
+        position = defaultdict(list)
+        for edge in self.__edges:
+            edges.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
+
+        # nodes information and positions
+        info_cbd = []
+        info_sc = []
+        info_p = []
+
+        for node in self.__nodes:
+            if isinstance(node, CBD):
+                info_cbd.append(node)
+            if isinstance(node, Periphery):
+                info_p.append(node)
+            if isinstance(node, Subcenter):
+                info_sc.append(node)
+        id_cbd = []
+        id_sc = []
+        id_p = []
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
+
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
+            id_cbd.append(cbd.id)
+
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
+            id_sc.append(sc.id)
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
+            id_p.append(p.id)
+
+        G = nx.DiGraph()
+        G.add_edges_from(edges)
+
+        # separate calls to draw labels, nodes and edges
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                               node_size=300)
+        nx.draw_networkx_labels(G, position)
+        nx.draw_networkx_edges(G, position, edgelist=edges, edge_color=&#39;orange&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.savefig(file_path)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="sidermit.city.graph.Graph.build_from_content"><code class="name flex">
+<span>def <span class="ident">build_from_content</span></span>(<span>data, content_format: <a title="sidermit.city.graph.GraphContentFormat" href="#sidermit.city.graph.GraphContentFormat">GraphContentFormat</a> = GraphContentFormat.PAJEK) ‑> <a title="sidermit.city.graph.Graph" href="#sidermit.city.graph.Graph">Graph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>:param data:
+:param content_format:
+:return: Graph</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def build_from_content(data, content_format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; Graph:
+    &#34;&#34;&#34;
+    :param data:
+    :param content_format:
+    :return: Graph
+    &#34;&#34;&#34;
+    graph_obj = Graph()
+
+    if content_format == GraphContentFormat.PAJEK:
+
+        df_file = graph_obj.__pajekfile_to_dataframe(data)
+
+        df_file = df_file.sort_values([&#34;zone&#34;, &#34;type&#34;], ascending=[True, True])
+
+        lines_accepted = list(range(1, 10001, 2))
+
+        if not len(df_file[&#34;node_id&#34;]) in lines_accepted:
+            # print(len(df_file[&#34;node_id&#34;]))
+            raise LineNumberInFileIsNotValidException(&#34;The number of lines in the file must be 2n+1 or &#34;
+                                                      &#34;file is very big (until 5000 zones accepted)&#34;)
+
+        n = int((len(df_file[&#34;node_id&#34;]) - 1) / 2)
+
+        cbd = []
+        periphery = []
+        subcenter = []
+
+        width = 0
+
+        # build nodes list
+        for i in range(len(df_file[&#34;node_id&#34;])):
+            node_id = df_file.iloc[i][&#34;node_id&#34;]
+            name = df_file.iloc[i][&#34;name&#34;]
+            x = float(df_file.iloc[i][&#34;x&#34;])
+            y = float(df_file.iloc[i][&#34;y&#34;])
+            node_type = df_file.iloc[i][&#34;type&#34;]
+            zone = int(df_file.iloc[i][&#34;zone&#34;])
+            width = float(df_file.iloc[i][&#34;width&#34;])
+
+            radius = math.sqrt(x ** 2 + y ** 2)
+            angle = graph_obj.get_angle(x, y)
+
+            if node_type == &#34;CBD&#34;:
+                cbd.append(CBD(node_id, x, y, radius, angle, width, zone, name))
+            if node_type == &#34;P&#34;:
+                periphery.append(Periphery(node_id, x, y, radius, angle, width, zone, name))
+            if node_type == &#34;SC&#34;:
+                subcenter.append(Subcenter(node_id, x, y, radius, angle, width, zone, name))
+
+        r_sc = []
+        r_p = []
+        ang_sc = []
+        r_cbd = 0
+        ang_cbd = 0
+
+        if len(cbd) == 1:
+            r_cbd = cbd[0].radius
+            ang_cbd = cbd[0].angle
+
+        etha = None
+        etha_zone = None
+
+        # verification of existence and uniqueness of SC and P by zone
+        # save information to build parameters
+        for zone in range(n):
+            zone_id = zone + 1
+            n_p = 0
+            n_sc = 0
+            node_periphery = None
+            node_subcenter = None
+
+            for p in periphery:
+                if p.zone_id == zone_id:
+                    n_p = n_p + 1
+                    node_periphery = p
+            for sc in subcenter:
+                if sc.zone_id == zone_id:
+                    n_sc = n_sc + 1
+                    node_subcenter = sc
+            if n_p != 1 or n_sc != 1:
+                raise PeripherySubcenterNumberForZoneException(&#34;try to verify that each zone [1, ..., n] has &#34;
+                                                               &#34;one sc and p&#34;)
+
+            radius_p = node_periphery.radius
+            radius_sc = node_subcenter.radius
+            angle_sc = node_subcenter.angle
+
+            r_sc.append(radius_sc)
+            r_p.append(radius_p)
+            ang_sc.append(angle_sc)
+
+            # Update etha and etha_zone
+            if ang_cbd - 0.001 &lt;= angle_sc &lt;= ang_cbd + 0.001:
+                etha_zone = zone_id
+                etha = r_cbd / radius_sc
+
+        L = 0
+        g = 0
+        if len(r_sc) != 0 and len(r_p) != 0:
+            L = sum(r_sc) / len(r_sc)
+            g = (sum(r_p) / len(r_p) - L) / L
+
+        Gi = []
+        Hi = []
+        for i in range(n):
+            Gi.append(r_sc[i] / L)
+            Hi.append(r_p[i] / (L + g * L))
+
+        angles = ang_sc
+
+        # if parameters are valid
+        if graph_obj.parameters_validator(n, L, g, width, etha, etha_zone, angles, Gi, Hi):
+
+            for node in cbd:
+                graph_obj.__add_cbd(node)
+
+            for i in range(n):
+                node_periphery = None
+                node_subcenter = None
+                for p in periphery:
+                    if p.zone_id == i + 1:
+                        node_periphery = p
+                        break
+                for sc in subcenter:
+                    if sc.zone_id == i + 1:
+                        node_subcenter = sc
+                        break
+                graph_obj.__add_zone(node_periphery, node_subcenter)
+
+    else:
+        raise FileFormatIsNotValidException(&#34;File don&#39;t have a valid format. Try with Pajek format&#34;)
+
+    graph_obj.__n = n
+    graph_obj.__l = L
+    graph_obj.__g = g
+    graph_obj.__p = width
+    graph_obj.__etha = etha
+    graph_obj.__etha_zone = etha_zone
+    graph_obj.__angles = angles
+    graph_obj.__Gi = Gi
+    graph_obj.__Hi = Hi
+
+    return graph_obj</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.build_from_file"><code class="name flex">
+<span>def <span class="ident">build_from_file</span></span>(<span>file_path, file_format=GraphContentFormat.PAJEK) ‑> <a title="sidermit.city.graph.Graph" href="#sidermit.city.graph.Graph">Graph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>to build a city graph with pajek file information
+:param file_path:
+:param file_format: default and only supported value is PAJEK
+:return: Graph instance</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def build_from_file(file_path, file_format=GraphContentFormat.PAJEK) -&gt; Graph:
+    &#34;&#34;&#34;
+    to build a city graph with pajek file information
+    :param file_path:
+    :param file_format: default and only supported value is PAJEK
+    :return: Graph instance
+    &#34;&#34;&#34;
+
+    graph_obj = Graph()
+
+    with open(file_path, mode=&#39;r&#39;, encoding=&#39;utf-8&#39;) as f_obj:
+        data = f_obj.read()
+        # print(data)
+
+        graph_obj = graph_obj.build_from_content(data, file_format)
+
+    return graph_obj</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.build_from_parameters"><code class="name flex">
+<span>def <span class="ident">build_from_parameters</span></span>(<span>n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha: float = None, etha_zone: int = None, angles: List[float] = None, Gi: List[float] = None, Hi: List[float] = None) ‑> <a title="sidermit.city.graph.Graph" href="#sidermit.city.graph.Graph">Graph</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>to build a city graph with parameters information
+:param n: zone numbers.
+:param l: average distance in km of subcenters to (0,0) of the Cartesian plane.
+:param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+:param p: node width in km, takes part in the demand assignment considering lateral access time.
+:param etha: float, optional value in range [0-1], CBD eccentricity ratio.
+:param etha_zone: int, optional value, CBD eccentricity direction zone
+:param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
+angle for each zone. Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param Gi: List[float], optional parameters, asymmetry parameter of the distance from the subcenters to (0,0)
+of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+:param Hi: List[float], optional parameters, asymmetry parameter of the distance from the peripheries to (0,0)
+of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+:return: Graph</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def build_from_parameters(n: int = 2, l: float = 10, g: float = 0.5, p: float = 2, etha: float = None,
+                          etha_zone: int = None, angles: List[float] = None, Gi: List[float] = None,
+                          Hi: List[float] = None) -&gt; Graph:
+    &#34;&#34;&#34;
+    to build a city graph with parameters information
+    :param n: zone numbers.
+    :param l: average distance in km of subcenters to (0,0) of the Cartesian plane.
+    :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+    :param p: node width in km, takes part in the demand assignment considering lateral access time.
+    :param etha: float, optional value in range [0-1], CBD eccentricity ratio.
+    :param etha_zone: int, optional value, CBD eccentricity direction zone
+    :param angles: List[float], optional parameters, list of construction angles of the zones. You must specify an
+    angle for each zone. Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+    :param Gi: List[float], optional parameters, asymmetry parameter of the distance from the subcenters to (0,0)
+    of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+    :param Hi: List[float], optional parameters, asymmetry parameter of the distance from the peripheries to (0,0)
+    of the Cartesian plane. List with asymmetry ratio for each zone with values &gt;=0
+    :return: Graph
+    &#34;&#34;&#34;
+
+    graph_obj = Graph()
+
+    # if parameters are valid
+    if graph_obj.parameters_validator(n, l, g, p, etha, etha_zone, angles, Gi, Hi):
+        # ADD CBD
+        # ADD Zones
+        # # for each zones add Nodes periphery and subcenter
+        # ADD all edges
+        # add CBD
+        cbd_node_obj = CBD(0, 0, 0, 0, 0, p, 0, &#34;CBD&#34;)
+        graph_obj.__add_cbd(cbd_node_obj)
+
+        # Add zones
+        for zone in range(n):
+            periphery_node_id = 2 * zone + 1
+            subcenter_node_id = 2 * zone + 2
+            periphery_radius = l + g * l
+            subcenter_radius = l
+            periphery_angle = 360 / n * zone
+            subcenter_angle = 360 / n * zone
+            x_p, y_p = graph_obj.get_xy(periphery_radius, periphery_angle)
+            x_sc, y_sc = graph_obj.get_xy(subcenter_radius, subcenter_angle)
+
+            periphery_node_name = &#34;P_{}&#34;.format(zone + 1)
+            periphery_node_obj = Periphery(periphery_node_id, x_p, y_p, periphery_radius, periphery_angle, p,
+                                           zone + 1, periphery_node_name)
+            subcenter_node_name = &#34;SC_{}&#34;.format(zone + 1)
+            subcenter_node_obj = Subcenter(subcenter_node_id, x_sc, y_sc, subcenter_radius, subcenter_angle, p,
+                                           zone + 1, subcenter_node_name)
+
+            # add periphery and subcenter nodes to graph obj
+            graph_obj.__add_zone(periphery_node_obj, subcenter_node_obj, zone + 1)
+
+        # add asymmetry by angles
+        if angles is not None:
+            graph_obj.__angles_asymmetry(angles)
+        # add asymmetry by Gi
+        if Gi is not None:
+            graph_obj.__Gi_asymmetry(Gi)
+        # add asymmetry by Hi
+        if Hi is not None:
+            graph_obj.__Hi_asymmetry(Hi)
+        # add asymmetry by etha
+        if etha is not None and etha_zone is not None:
+            graph_obj.__etha_asymmetry(etha, etha_zone)
+
+    graph_obj.__n = n
+    graph_obj.__l = l
+    graph_obj.__g = g
+    graph_obj.__p = p
+    graph_obj.__etha = etha
+    graph_obj.__etha_zone = etha_zone
+    graph_obj.__angles = angles
+    graph_obj.__Gi = Gi
+    graph_obj.__Hi = Hi
+
+    return graph_obj</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_angle"><code class="name flex">
+<span>def <span class="ident">get_angle</span></span>(<span>x: float, y: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get angle of a vector with coor (0,0,x,y)
+with respect to x+
+:param x:
+:param y:
+:return: angle in degrees with range[0° - 360°] measured from x+ axis counterclockwise</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def get_angle(x: float, y: float) -&gt; float:
+    &#34;&#34;&#34;
+    to get angle of a vector with coor (0,0,x,y)  with respect to x+
+    :param x:
+    :param y:
+    :return: angle in degrees with range[0° - 360°] measured from x+ axis counterclockwise
+    &#34;&#34;&#34;
+    a = 1
+    b = 0
+    c = x
+    d = y
+
+    if x == 0 and y == 0:
+        return 0
+
+    dot_product = a * c + b * d
+    # for three dimensional simply add dotProduct = a*c + b*d  + e*f
+    mod_of_vector1 = math.sqrt(a * a + b * b) * math.sqrt(c * c + d * d)
+    # for three dimensional simply add modOfVector = math.sqrt( a*a + b*b + e*e)*math.sqrt(c*c + d*d +f*f)
+    angle = dot_product / mod_of_vector1
+    # print(&#34;Cosθ =&#34;,angle)
+    angle_in_degree = math.degrees(math.acos(angle))
+    if y &lt; 0:
+        if x &gt;= 0:
+            angle_in_degree = 360 - angle_in_degree
+        if x &lt; 0:
+            angle_in_degree = (180 - angle_in_degree) + 180
+    return angle_in_degree</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_xy"><code class="name flex">
+<span>def <span class="ident">get_xy</span></span>(<span>radius, angle) ‑> coor</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get x, y with radius and angle parameters
+:param radius:
+:param angle:
+:return: x,y in the Cartesian plane</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def get_xy(radius, angle) -&gt; coor:
+    &#34;&#34;&#34;
+    to get x, y with radius and angle parameters
+    :param radius:
+    :param angle:
+    :return: x,y in the Cartesian plane
+    &#34;&#34;&#34;
+    x, y = radius * math.cos(math.radians(angle)), radius * math.sin(math.radians(angle))
+    return x, y</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.parameters_validator"><code class="name flex">
+<span>def <span class="ident">parameters_validator</span></span>(<span>n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None, Hi=None) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to validate symmetric and asymmetric graph construction parameters.
+:param n: zone numbers.
+:param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+:param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+:param p: node width in meters, takes part in the demand assignment considering lateral access time.
+:param etha: [0-1] CBD eccentricity ratio.
+:param etha_zone: CBD eccentricity direction zone
+:param angles: list of construction angles of the zones. You must specify an angle for each zone.
+Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+List with asymmetry ratio for each zone with values &gt;=0
+:param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+List with asymmetry ratio for each zone with values &gt;=0
+:return: True if parameters are valid. False if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def parameters_validator(n: int, l: float, g: float, p: float, etha=None, etha_zone=None, angles=None, Gi=None,
+                         Hi=None) -&gt; bool:
+    &#34;&#34;&#34;
+    to validate symmetric and asymmetric graph construction parameters.
+    :param n: zone numbers.
+    :param l: average distance in meter of subcenters to (0,0) of the Cartesian plane.
+    :param g: (&gt;=0) to represent average distance of peripheries (= l + g * l).
+    :param p: node width in meters, takes part in the demand assignment considering lateral access time.
+    :param etha: [0-1] CBD eccentricity ratio.
+    :param etha_zone: CBD eccentricity direction zone
+    :param angles: list of construction angles of the zones. You must specify an angle for each zone.
+    Angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+    :param Gi: asymmetry parameter of the distance from the subcenters to (0,0) of the Cartesian plane.
+    List with asymmetry ratio for each zone with values &gt;=0
+    :param Hi: asymmetry parameter of the distance from the peripheries to (0,0) of the Cartesian plane.
+    List with asymmetry ratio for each zone with values &gt;=0
+    :return: True if parameters are valid. False if not.
+    &#34;&#34;&#34;
+    if n &lt; 0 or not isinstance(n, int):
+        raise NIsNotValidNumberException(&#39;n cannot be a negative number&#39;)
+    if l &lt; 0:
+        raise LIsNotValidNumberException(&#39;L cannot be a negative number&#39;)
+    if g &lt; 0:
+        raise GIsNotValidNumberException(&#39;g cannot be a negative number&#39;)
+    if p &lt; 0:
+        raise PIsNotValidNumberException(&#39;p cannot be a negative number&#39;)
+    if etha is None and etha_zone is not None:
+        raise EthaValueRequiredException(&#34;must give value for etha&#34;)
+    if etha is not None and etha_zone is None:
+        raise EthaZoneValueRequiredException(&#34;must give value for etha zone&#34;)
+    if etha is not None and etha_zone is not None:
+        if etha &lt; 0 or etha &gt; 1:
+            raise EthaValueIsNotValidException(&#34;etha value is not valid. Try with value belong in [0-1]&#34;)
+        elif etha_zone &lt;= 0 or etha_zone &gt; n or not isinstance(etha_zone, int):
+            raise EthaZoneValueIsNotValidException(
+                &#34;etha zone is not valid. Try with value belong in [1,...,{}]&#34;.format(n))
+    if angles is not None:
+        if len(angles) != n:
+            raise AngleListLengthIsNotValidException(&#34;must give angle value for all zones&#34;)
+        for angle in angles:
+            if angle &lt; 0 or angle &gt; 360:
+                raise AngleValueIsNotValidException(&#34;angle must belong in range [0°-360°]&#34;)
+    if Gi is not None:
+        if len(Gi) != n:
+            raise GiListLengthIsNotValidException(&#34;must give Gi value for all zones&#34;)
+        for gi in Gi:
+            if gi &lt; 0:
+                raise GiValueIsNotValidException(&#34;Gi must be &gt;= 0&#34;)
+    if Hi is not None:
+        if len(Hi) != n:
+            raise HiListLengthIsNotValidException(&#34;must give Hi value for all zones&#34;)
+        for hi in Hi:
+            if hi &lt; 0:
+                raise HiValueIsNotValidException(&#34;Hi must be &gt;= 0&#34;)
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sidermit.city.graph.Graph.edge_exist"><code class="name flex">
+<span>def <span class="ident">edge_exist</span></span>(<span>self, id_i, id_j) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check if edge with origin node id = id_i and destination node id = id_j exist
+:param id_i:
+:param id_j:
+:return: True if edge exist, False if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def edge_exist(self, id_i, id_j) -&gt; bool:
+    &#34;&#34;&#34;
+    to check if edge with origin node id = id_i and destination node id = id_j exist
+    :param id_i:
+    :param id_j:
+    :return: True if edge exist, False if not.
+    &#34;&#34;&#34;
+    for edge in self.__edges:
+        if edge.node1.id == id_i and edge.node2.id == id_j:
+            return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.export_graph"><code class="name flex">
+<span>def <span class="ident">export_graph</span></span>(<span>self, format: <a title="sidermit.city.graph.GraphContentFormat" href="#sidermit.city.graph.GraphContentFormat">GraphContentFormat</a> = GraphContentFormat.PAJEK) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a string with graph nodes information in a specific format file
+:param format: GraphContentFormat
+:return: string with graph nodes information in a specific format file</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def export_graph(self, format: GraphContentFormat = GraphContentFormat.PAJEK) -&gt; str:
+    &#34;&#34;&#34;
+    to get a string with graph nodes information in a specific format file
+    :param format: GraphContentFormat
+    :return: string with graph nodes information in a specific format file
+    &#34;&#34;&#34;
+    line = &#34;&#34;
+    if format == GraphContentFormat.PAJEK:
+        line += &#34;Content format: [node_id] [node_name] [x] [y] [node_type] [zone_id] [node_width]\n&#34;
+        line += &#34;Content format: each row provides have whitespace separated values\n\n&#34;
+        line += &#34;*vertices {}{}&#34;.format(len(self.__nodes), &#34;\n&#34;)
+
+        for node_obj in self.__nodes:
+            node_type = None
+            if isinstance(node_obj, CBD):
+                node_type = &#39;CBD&#39;
+            elif isinstance(node_obj, Periphery):
+                node_type = &#39;P&#39;
+            elif isinstance(node_obj, Subcenter):
+                node_type = &#39;SC&#39;
+
+            line += &#34;{0} {1} {2} {3} {4} {5} {6}\n&#34;.format(node_obj.id, node_obj.name, node_obj.x, node_obj.y,
+                                                           node_type, node_obj.zone_id,
+                                                           node_obj.width)
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_cbd"><code class="name flex">
+<span>def <span class="ident">get_cbd</span></span>(<span>self) ‑> <a title="sidermit.city.graph.CBD" href="#sidermit.city.graph.CBD">CBD</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get CBD node defined in the graph
+:return: CBD node</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cbd(self) -&gt; CBD:
+    &#34;&#34;&#34;
+    to get CBD node defined in the graph
+    :return: CBD node
+    &#34;&#34;&#34;
+    cbd = None
+    for node in self.__nodes:
+        if isinstance(node, CBD):
+            cbd = node
+            break
+    return cbd</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_edges"><code class="name flex">
+<span>def <span class="ident">get_edges</span></span>(<span>self) ‑> List[<a title="sidermit.city.graph.Edge" href="#sidermit.city.graph.Edge">Edge</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all the edges built
+:return: list of edges</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_edges(self) -&gt; edges:
+    &#34;&#34;&#34;
+    to get all the edges built
+    :return: list of edges
+    &#34;&#34;&#34;
+    return self.__edges</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_edges_distance"><code class="name flex">
+<span>def <span class="ident">get_edges_distance</span></span>(<span>self) ‑> defaultdict2_float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a dictionary with the edge distance of a nodes pair
+:return: dic[nodei_id][nodej_id] = float [km]; defaultdict(lambda: defaultdict(float))</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_edges_distance(self) -&gt; defaultdict2_float:
+    &#34;&#34;&#34;
+    to get a dictionary with the edge distance of a nodes pair
+    :return: dic[nodei_id][nodej_id] = float [km]; defaultdict(lambda: defaultdict(float))
+    &#34;&#34;&#34;
+
+    edge_distance = defaultdict(lambda: defaultdict(float))
+
+    for edge in self.__edges:
+        nodei = edge.node1
+        nodej = edge.node2
+
+        xi = nodei.x
+        yi = nodei.y
+        xj = nodej.x
+        yj = nodej.y
+
+        edge_distance[nodei.id][nodej.id] = ((xi - xj) ** 2 + (yi - yj) ** 2) ** 0.5
+
+    return edge_distance</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_n"><code class="name flex">
+<span>def <span class="ident">get_n</span></span>(<span>self) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get parameters of numbers of zones
+:return: n</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_n(self) -&gt; int:
+    &#34;&#34;&#34;
+    to get parameters of numbers of zones
+    :return: n
+    &#34;&#34;&#34;
+    return self.__n</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_nodes"><code class="name flex">
+<span>def <span class="ident">get_nodes</span></span>(<span>self) ‑> List[<a title="sidermit.city.graph.Node" href="#sidermit.city.graph.Node">Node</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all the nodes built
+:return: list of nodes</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_nodes(self) -&gt; nodes:
+    &#34;&#34;&#34;
+    to get all the nodes built
+    :return: list of nodes
+    &#34;&#34;&#34;
+    return self.__nodes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_parameters"><code class="name flex">
+<span>def <span class="ident">get_parameters</span></span>(<span>self) ‑> parameters</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get tuple with symmetric and asymmetric parameters n, L, g, P, etha, etha_zone, angles, Gi, Hi
+:return: n, L, g, P, etha, etha_zone, angles, Gi, Hi</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_parameters(self) -&gt; parameters:
+    &#34;&#34;&#34;
+    to get tuple with symmetric and asymmetric parameters n, L, g, P, etha, etha_zone, angles, Gi, Hi
+    :return: n, L, g, P, etha, etha_zone, angles, Gi, Hi
+    &#34;&#34;&#34;
+    return (self.__n, self.__l, self.__g, self.__p, self.__etha,
+            self.__etha_zone, self.__angles, self.__Gi, self.__Hi)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.get_zones"><code class="name flex">
+<span>def <span class="ident">get_zones</span></span>(<span>self) ‑> List[<a title="sidermit.city.graph.Zone" href="#sidermit.city.graph.Zone">Zone</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all the zones built
+:return: list of zones</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_zones(self) -&gt; zones:
+    &#34;&#34;&#34;
+    to get all the zones built
+    :return: list of zones
+    &#34;&#34;&#34;
+    return self.__zones</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.graph_to_pajek_file"><code class="name flex">
+<span>def <span class="ident">graph_to_pajek_file</span></span>(<span>self, file_path, format: <a title="sidermit.city.graph.GraphContentFormat" href="#sidermit.city.graph.GraphContentFormat">GraphContentFormat</a> = GraphContentFormat.PAJEK)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>write city graph data to file using Pajek format
+:param format:
+:param file_path: file path
+:return: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def graph_to_pajek_file(self, file_path, format: GraphContentFormat = GraphContentFormat.PAJEK):
+    &#34;&#34;&#34;
+    write city graph data to file using Pajek format
+    :param format:
+    :param file_path: file path
+    :return: None
+    &#34;&#34;&#34;
+
+    file = open(file_path, &#39;w&#39;)
+    string_file = self.export_graph(format)
+    file.write(string_file)
+
+    file.close()</code></pre>
+</details>
+</dd>
+<dt id="sidermit.city.graph.Graph.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, file_path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to plot graph defined
+:param file_path:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self, file_path):
+    &#34;&#34;&#34;
+    to plot graph defined
+    :param file_path:
+    :return:
+    &#34;&#34;&#34;
+
+    # edges information and positions
+    edges = []
+    position = defaultdict(list)
+    for edge in self.__edges:
+        edges.append((edge.node1.id, edge.node2.id))
+        if not position.get(edge.node1.id):
+            position[edge.node1.id].append(edge.node1.x)
+            position[edge.node1.id].append(edge.node1.y)
+        if not position.get(edge.node2.id):
+            position[edge.node2.id].append(edge.node2.x)
+            position[edge.node2.id].append(edge.node2.y)
+
+    # nodes information and positions
+    info_cbd = []
+    info_sc = []
+    info_p = []
+
+    for node in self.__nodes:
+        if isinstance(node, CBD):
+            info_cbd.append(node)
+        if isinstance(node, Periphery):
+            info_p.append(node)
+        if isinstance(node, Subcenter):
+            info_sc.append(node)
+    id_cbd = []
+    id_sc = []
+    id_p = []
+    x_cbd = []
+    y_cbd = []
+    x_sc = []
+    y_sc = []
+    x_p = []
+    y_p = []
+
+    for cbd in info_cbd:
+        x_cbd.append(cbd.x)
+        y_cbd.append(cbd.y)
+        id_cbd.append(cbd.id)
+
+    for sc in info_sc:
+        x_sc.append(sc.x)
+        y_sc.append(sc.y)
+        id_sc.append(sc.id)
+    for p in info_p:
+        x_p.append(p.x)
+        y_p.append(p.y)
+        id_p.append(p.id)
+
+    G = nx.DiGraph()
+    G.add_edges_from(edges)
+
+    # separate calls to draw labels, nodes and edges
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                           node_size=300)
+    nx.draw_networkx_labels(G, position)
+    nx.draw_networkx_edges(G, position, edgelist=edges, edge_color=&#39;orange&#39;, arrows=True)
+
+    plt.title(&#34;City graph&#34;)
+    plt.xlabel(&#34;X&#34;)
+    plt.ylabel(&#34;Y&#34;)
+    plt.gca().set_aspect(&#39;equal&#39;)
+    plt.savefig(file_path)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sidermit.city.graph.GraphContentFormat"><code class="flex name class">
+<span>class <span class="ident">GraphContentFormat</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Supported format for reading files in the construction of the city graph.
+Pajek reference: <a href="https://gephi.org/users/supported-graph-formats/pajek-net-format/">https://gephi.org/users/supported-graph-formats/pajek-net-format/</a>
+Defined format: [node_id] [node name] [x] [y] [type] [zone] [width]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GraphContentFormat(Enum):
+    &#34;&#34;&#34;
+    Supported format for reading files in the construction of the city graph.
+    Pajek reference: https://gephi.org/users/supported-graph-formats/pajek-net-format/
+    Defined format: [node_id] [node name] [x] [y] [type] [zone] [width]
+    &#34;&#34;&#34;
+    PAJEK = 1</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sidermit.city.graph.GraphContentFormat.PAJEK"><code class="name">var <span class="ident">PAJEK</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="sidermit.city.graph.Node"><code class="flex name class">
+<span>class <span class="ident">Node</span></span>
+<span>(</span><span>node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Graph node
+:param node_id: node id, must be unique in the graph
+:param x: horizontal position in meters of the node in the Cartesian plane
+:param y: vertical position in meters of the node in the Cartesian plane
+:param radius: node radius in meters from point 0,0 of the Cartesian plane
+:param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param width: node width in meters, takes part in the demand assignment considering lateral access time
+:param zone_id: zone id that the node belongs
+:param name: node name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Node:
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Graph node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        if name is None:
+            raise NameIsNotDefinedException(&#34;must define a name to node&#34;)
+        if node_id is None:
+            raise NodeIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if zone_id is None:
+            raise ZoneIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if radius &lt; 0:
+            raise NodeRadiusIsNotValidException(&#34;radius must be positive&#34;)
+        if angle &lt; 0 or angle &gt; 360:
+            raise NodeAngleIsNotValidException(&#34;angle must belong into range [0°-360°]&#34;)
+        if width &lt; 0:
+            raise NodeWidthIsNotValidException(&#34;width must be &gt;= 0&#34;)
+        self.id = node_id
+        self.x = x
+        self.y = y
+        self.radius = radius
+        self.angle = angle
+        self.width = width
+        self.name = name
+        self.zone_id = zone_id</code></pre>
+</details>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.city.graph.CBD" href="#sidermit.city.graph.CBD">CBD</a></li>
+<li><a title="sidermit.city.graph.Periphery" href="#sidermit.city.graph.Periphery">Periphery</a></li>
+<li><a title="sidermit.city.graph.Subcenter" href="#sidermit.city.graph.Subcenter">Subcenter</a></li>
+</ul>
+</dd>
+<dt id="sidermit.city.graph.Periphery"><code class="flex name class">
+<span>class <span class="ident">Periphery</span></span>
+<span>(</span><span>node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Periphery node
+:param node_id: node id, must be unique in the graph
+:param x: horizontal position in meters of the node in the Cartesian plane
+:param y: vertical position in meters of the node in the Cartesian plane
+:param radius: node radius in meters from point 0,0 of the Cartesian plane
+:param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param width: node width in meters, takes part in the demand assignment considering lateral access time
+:param zone_id: zone id that the node belongs
+:param name: node name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Periphery(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Periphery node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.city.graph.Node" href="#sidermit.city.graph.Node">Node</a></li>
+</ul>
+</dd>
+<dt id="sidermit.city.graph.Subcenter"><code class="flex name class">
+<span>class <span class="ident">Subcenter</span></span>
+<span>(</span><span>node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int, name: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Subcenter node
+:param node_id: node id, must be unique in the graph
+:param x: horizontal position in meters of the node in the Cartesian plane
+:param y: vertical position in meters of the node in the Cartesian plane
+:param radius: node radius in meters from point 0,0 of the Cartesian plane
+:param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+:param width: node width in meters, takes part in the demand assignment considering lateral access time
+:param zone_id: zone id that the node belongs
+:param name: node name</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Subcenter(Node):
+
+    def __init__(self, node_id: int, x: float, y: float, radius: float, angle: float, width: float, zone_id: int,
+                 name: str):
+        &#34;&#34;&#34;
+        Subcenter node
+        :param node_id: node id, must be unique in the graph
+        :param x: horizontal position in meters of the node in the Cartesian plane
+        :param y: vertical position in meters of the node in the Cartesian plane
+        :param radius: node radius in meters from point 0,0 of the Cartesian plane
+        :param angle: angle in degrees with range [0° - 360°] measured from x+ axis counterclockwise
+        :param width: node width in meters, takes part in the demand assignment considering lateral access time
+        :param zone_id: zone id that the node belongs
+        :param name: node name
+        &#34;&#34;&#34;
+        Node.__init__(self, node_id, x, y, radius, angle, width, zone_id, name)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.city.graph.Node" href="#sidermit.city.graph.Node">Node</a></li>
+</ul>
+</dd>
+<dt id="sidermit.city.graph.Zone"><code class="flex name class">
+<span>class <span class="ident">Zone</span></span>
+<span>(</span><span>zone_id: int, node_periphery: <a title="sidermit.city.graph.Periphery" href="#sidermit.city.graph.Periphery">Periphery</a>, node_subcenter: <a title="sidermit.city.graph.Subcenter" href="#sidermit.city.graph.Subcenter">Subcenter</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Area of the city, they have two nodes, one of them corresponding to the subcenter and another to the periphery.
+:param zone_id: zone id must be unique in the city graph and belong to an ordered list of id [1, &hellip;, n]
+:param node_periphery:
+:param node_subcenter:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Zone:
+
+    def __init__(self, zone_id: int, node_periphery: Periphery, node_subcenter: Subcenter):
+        &#34;&#34;&#34;
+        Area of the city, they have two nodes, one of them corresponding to the subcenter and another to the periphery.
+        :param zone_id: zone id must be unique in the city graph and belong to an ordered list of id [1, ..., n]
+        :param node_periphery:
+        :param node_subcenter:
+        &#34;&#34;&#34;
+
+        if zone_id is None:
+            raise ZoneIdIsNotValidException(&#34;zone_id is not valid&#34;)
+        if zone_id &lt;= 0:
+            raise ZoneIdIsNotValidException(&#34;zone_id number must be &gt;=1&#34;)
+        if not isinstance(node_periphery, Periphery):
+            raise PeripheryNodeTypeIsNotValidException(&#39;node must be periphery&#39;)
+
+        if not isinstance(node_subcenter, Subcenter):
+            raise SubcenterNodeTypeIsNotValidException(&#39;node must be subcenter&#39;)
+
+        if node_periphery.zone_id != zone_id or node_subcenter.zone_id != zone_id:
+            raise ZoneIdIsNotValidException(&#34;node_periphery and node_subcenter must be equal to zone_id&#34;)
+
+        self.id = zone_id
+        self.periphery = node_periphery
+        self.subcenter = node_subcenter</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sidermit.city" href="index.html">sidermit.city</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sidermit.city.graph.CBD" href="#sidermit.city.graph.CBD">CBD</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Edge" href="#sidermit.city.graph.Edge">Edge</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Graph" href="#sidermit.city.graph.Graph">Graph</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.city.graph.Graph.build_from_content" href="#sidermit.city.graph.Graph.build_from_content">build_from_content</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.build_from_file" href="#sidermit.city.graph.Graph.build_from_file">build_from_file</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.build_from_parameters" href="#sidermit.city.graph.Graph.build_from_parameters">build_from_parameters</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.edge_exist" href="#sidermit.city.graph.Graph.edge_exist">edge_exist</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.export_graph" href="#sidermit.city.graph.Graph.export_graph">export_graph</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_angle" href="#sidermit.city.graph.Graph.get_angle">get_angle</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_cbd" href="#sidermit.city.graph.Graph.get_cbd">get_cbd</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_edges" href="#sidermit.city.graph.Graph.get_edges">get_edges</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_edges_distance" href="#sidermit.city.graph.Graph.get_edges_distance">get_edges_distance</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_n" href="#sidermit.city.graph.Graph.get_n">get_n</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_nodes" href="#sidermit.city.graph.Graph.get_nodes">get_nodes</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_parameters" href="#sidermit.city.graph.Graph.get_parameters">get_parameters</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_xy" href="#sidermit.city.graph.Graph.get_xy">get_xy</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.get_zones" href="#sidermit.city.graph.Graph.get_zones">get_zones</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.graph_to_pajek_file" href="#sidermit.city.graph.Graph.graph_to_pajek_file">graph_to_pajek_file</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.parameters_validator" href="#sidermit.city.graph.Graph.parameters_validator">parameters_validator</a></code></li>
+<li><code><a title="sidermit.city.graph.Graph.plot" href="#sidermit.city.graph.Graph.plot">plot</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.GraphContentFormat" href="#sidermit.city.graph.GraphContentFormat">GraphContentFormat</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.city.graph.GraphContentFormat.PAJEK" href="#sidermit.city.graph.GraphContentFormat.PAJEK">PAJEK</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Node" href="#sidermit.city.graph.Node">Node</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Periphery" href="#sidermit.city.graph.Periphery">Periphery</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Subcenter" href="#sidermit.city.graph.Subcenter">Subcenter</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.city.graph.Zone" href="#sidermit.city.graph.Zone">Zone</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

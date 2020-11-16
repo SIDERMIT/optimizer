@@ -1,0 +1,2766 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>sidermit.publictransportsystem.network API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sidermit.publictransportsystem.network</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import math
+from collections import defaultdict
+from enum import Enum
+from typing import List
+
+import networkx as nx
+import pandas as pd
+from matplotlib import pyplot as plt
+
+from sidermit.city import Graph, CBD, Periphery, Subcenter
+from sidermit.exceptions import *
+from sidermit.publictransportsystem import TransportMode, TransportModeManager
+
+
+class RouteType(Enum):
+    &#34;&#34;&#34;
+    route types, CUSTOM for user-created custom routes, PREDEFINED for predefined routes created by a method of the
+    TransportNetwork class, CIRCULAR to a special type of predefined route with different construction rules
+    &#34;&#34;&#34;
+    CUSTOM = 1
+    PREDEFINED = 2
+    CIRCULAR = 3
+
+
+class Route:
+
+    def __init__(self, route_id, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                 stops_sequence_i: str, stops_sequence_r: str, _type: RouteType = RouteType.CUSTOM):
+        &#34;&#34;&#34;
+        to defined a route
+        :param route_id: route id
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :param _type: RouteType, default value CUSTOM.
+        &#34;&#34;&#34;
+        self.id = None
+        self.mode = None
+        self.nodes_sequence_i = None
+        self.nodes_sequence_r = None
+        self.stops_sequence_i = None
+        self.stops_sequence_r = None
+        self._type = _type
+        if _type == RouteType.CUSTOM and (
+                nodes_sequence_i is None or nodes_sequence_r is None or nodes_sequence_i == &#34;&#34; or nodes_sequence_r == &#34;&#34;):
+            raise NodeSequencesIsNotValidException(&#34;You should give a value for nodes_sequence_i and nodes_sequence_r&#34;)
+        if _type == RouteType.CUSTOM and (
+                stops_sequence_i is None or stops_sequence_r is None or stops_sequence_i == &#34;&#34; or stops_sequence_r == &#34;&#34;):
+            raise StopSequenceIsNotValidException(&#34;You should give a value for stops_sequence_i and stops_sequence_r&#34;)
+
+        if route_id is None:
+            raise RouteIdIsNotValidException(&#34;route_id is not valid. Try to give a value for route_id&#34;)
+
+        # special case for circular routes
+        if _type == RouteType.PREDEFINED or _type == RouteType.CIRCULAR:
+            self.id = route_id
+            self.mode = mode_obj
+            self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+            self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+            self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+            self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+
+        else:
+            # to valid parameters
+            if self.parameters_validator(mode_obj,
+                                         nodes_sequence_i, nodes_sequence_r,
+                                         stops_sequence_i, stops_sequence_r):
+                self.id = route_id
+                self.mode = mode_obj
+                self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+                self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+                self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+                self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+
+    def parameters_validator(self, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                             stops_sequence_i: str, stops_sequence_r: str) -&gt; bool:
+        &#34;&#34;&#34;
+        to check all parameters
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :return: True if parameters are valid. Exception if not.
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        nodes_i = self.sequences_to_list(nodes_sequence_i)
+        nodes_r = self.sequences_to_list(nodes_sequence_r)
+        stops_i = self.sequences_to_list(stops_sequence_i)
+        stops_r = self.sequences_to_list(stops_sequence_r)
+
+        if self.direction_validator(nodes_i, nodes_r):
+            if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
+                if self.sequences_validator(nodes_i) and self.sequences_validator(nodes_r):
+                    return True
+
+    @staticmethod
+    def sequences_to_string(sequence_list: List[str]) -&gt; str:
+        &#34;&#34;&#34;
+        convert a node id sequence list to a string
+        :param sequence_list: node id sequence list
+        :return: String
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        for node in sequence_list:
+            if line == &#34;&#34;:
+                line = line + str(node)
+            else:
+                line = line + &#34;,&#34; + str(node)
+        return line
+
+    @staticmethod
+    def sequences_to_list(sequence: str) -&gt; List[int]:
+        &#34;&#34;&#34;
+        convert a string of node id sequence to a list
+        :param sequence: String
+        :return: List[node id]
+        &#34;&#34;&#34;
+        if sequence == &#34;&#34; or sequence is None:
+            return []
+
+        nodes_split = sequence.split(&#34;,&#34;)
+        nodes = []
+
+        for node in nodes_split:
+            nodes.append(int(node.rstrip(&#34;\n&#34;)))
+
+        return nodes
+
+    @staticmethod
+    def stops_validator(nodes_list: List[int], stops_list: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
+        nodes are stops
+        :param nodes_list: list of node sequence
+        :param stops_list: list of stops sequence
+        :return: True if parameters are valid. Raise a exceptions if not
+        &#34;&#34;&#34;
+        if not stops_list:
+            raise StopSequenceIsNotValidException(&#34;stop sequence is not valid, this is empty&#34;)
+
+        # to check if each stops be in node_sequences
+        for stop in stops_list:
+            if stop not in nodes_list:
+                raise StopsSequencesException(&#34;stop is not reachable&#34;)
+        # to check if first stop is equal to first node in node sequences
+        if nodes_list[0] != stops_list[0]:
+            raise FirstStopIsNotValidException(&#34;first stop is not valid, must be equal to first node&#34;)
+        # to check if last stop is equal to last node in node sequences
+        if nodes_list[len(nodes_list) - 1] != stops_list[len(stops_list) - 1]:
+            raise LastStopIsNotValidException(&#34;last stop is not valid, must be equal to last node&#34;)
+        return True
+
+    @staticmethod
+    def direction_validator(nodes_list_i: List[int], nodes_list_r: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if both direction of a route form a cycle
+        :param nodes_list_i: list of node sequence (forward direction)
+        :param nodes_list_r: list of node sequence (return direction)
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        if not nodes_list_i or not nodes_list_r:
+            raise NodeSequencesIsNotValidException(&#34;Node sequence is empty, this is not valid sequence&#34;)
+
+        if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
+                nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
+            raise NotCycleException(&#34;sequence of nodes of both directions do not form a cycle&#34;)
+        return True
+
+    @staticmethod
+    def sequences_validator(sequence: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if sequence have a loop
+        :param sequence: list of node sequence
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+
+        for node1 in sequence:
+            n = 0
+            for node2 in sequence:
+                if node1 == node2:
+                    n = n + 1
+            if n &gt; 1:
+                raise NodeSequencesIsNotValidException(&#34;node sequence loops&#34;)
+
+        return True
+
+
+class TransportNetwork:
+
+    def __init__(self, graph_obj: Graph):
+        &#34;&#34;&#34;
+        transport route manager on a city graph
+        :param graph_obj: Graph where transport network develops
+        &#34;&#34;&#34;
+        self.__graph_obj = graph_obj
+        self.__routes = []
+        self.__routes_id = []
+        self.__modes = []
+
+    def __edges_validator(self, node_list: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if each edges in a node_sequences list exist in the graph object
+        :param node_list: list of nodes
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        for i in range(len(node_list) - 1):
+            j = i + 1
+            if not self.__graph_obj.edge_exist(node_list[i], node_list[j]):
+                raise NodeSequencesIsNotValidException(&#34;Node sequences is not valid because a edge does not exist&#34;)
+        return True
+
+    def get_modes(self) -&gt; List[TransportMode]:
+        return self.__modes
+
+    def get_routes(self) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get all routes
+        :return: List[Route]
+        &#34;&#34;&#34;
+        return self.__routes
+
+    def get_route(self, route_id) -&gt; Route:
+        &#34;&#34;&#34;
+        to get a specific route by a route_id
+        :param route_id: route id
+        :return: Route object if route id is defined in the network. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        if route_id in self.__routes_id:
+            i = self.__routes_id.index(route_id)
+            return self.__routes[i]
+        else:
+            raise RouteIdNotFoundException(&#34;route_id not found&#34;)
+
+    def add_transport_mode(self, mode: TransportMode):
+        &#34;&#34;&#34;
+        to add a transport mode in the network
+        :param mode: TransportMode
+        :return:
+        &#34;&#34;&#34;
+
+        if not isinstance(mode, TransportMode):
+            raise ModeIsNotValidException(&#34;Mode is not valid&#34;)
+
+        if mode not in self.__modes:
+
+            mode_manager = TransportModeManager(add_default_mode=False)
+
+            list_mode = [mode]
+
+            for modes in self.__modes:
+                if modes not in list_mode:
+                    list_mode.append(modes)
+
+            for modes in list_mode:
+                mode_manager.add_mode(modes)
+
+            if mode_manager.is_valid_to_assignment_step():
+                self.__modes.append(mode)
+            else:
+                raise TransportModeException(
+                    &#34;only 2 transport mode can be defined and at least one should have d parameter = 1&#34;)
+
+    def remove_transport_mode(self, mode: TransportMode):
+        &#34;&#34;&#34;
+        to remove a transport mode in the network and all lines defined with that transport mode
+        :param mode: TransportMode
+        :return:
+        &#34;&#34;&#34;
+
+        list_mode = []
+
+        for modes in self.__modes:
+            if modes != mode:
+                list_mode.append(modes)
+
+        self.__modes = list_mode
+
+        for route in self.__routes:
+            if route.mode == mode:
+                self.remove_route(route.id)
+
+    def add_route(self, route_obj: Route):
+        &#34;&#34;&#34;
+        to add a specific route in routes list
+        :param route_obj: Route object
+        :return:
+        &#34;&#34;&#34;
+        if not isinstance(route_obj, Route):
+            raise RouteIsNotvalidException(&#34;route_obj is not valid&#34;)
+
+        route_id = route_obj.id
+        nodes_sequence_i = route_obj.nodes_sequence_i
+        nodes_sequence_r = route_obj.nodes_sequence_r
+
+        if self.__edges_validator(nodes_sequence_i) or self.__edges_validator(nodes_sequence_r):
+            if route_id not in self.__routes_id:
+                self.add_transport_mode(route_obj.mode)
+                self.__routes.append(route_obj)
+                self.__routes_id.append(route_id)
+            else:
+                raise RouteIdDuplicatedException(&#34;route_id is duplicated&#34;)
+
+    def remove_route(self, route_id):
+        &#34;&#34;&#34;
+        to delete a specific route_id in the network
+        :param route_id: route id
+        :return:
+        &#34;&#34;&#34;
+        if route_id in self.__routes_id:
+            i = self.__routes_id.index(route_id)
+            self.__routes_id.pop(i)
+            self.__routes.pop(i)
+        else:
+            raise RouteIdNotFoundException(&#34;route_id not found&#34;)
+
+    def routes_to_file(self, file_path):
+        &#34;&#34;&#34;
+        to save file with all routes information
+        :param file_path:
+        :return:
+        &#34;&#34;&#34;
+        # route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r
+        col_route_id = []
+        col_mode = []
+        col_nodes_sequence_i = []
+        col_nodes_sequence_r = []
+        col_stops_sequence_i = []
+        col_stops_sequence_r = []
+
+        for route in self.__routes:
+            col_route_id.append(route.id)
+            col_mode.append(route.mode.name)
+            col_nodes_sequence_i.append(route.sequences_to_string(route.nodes_sequence_i))
+            col_nodes_sequence_r.append(route.sequences_to_string(route.nodes_sequence_r))
+            col_stops_sequence_i.append(route.sequences_to_string(route.stops_sequence_i))
+            col_stops_sequence_r.append(route.sequences_to_string(route.stops_sequence_r))
+
+        df_transit_network = pd.DataFrame()
+        df_transit_network[&#34;route_id&#34;] = col_route_id
+        df_transit_network[&#34;mode&#34;] = col_mode
+        df_transit_network[&#34;nodes_sequence_i&#34;] = col_nodes_sequence_i
+        df_transit_network[&#34;nodes_sequence_r&#34;] = col_nodes_sequence_r
+        df_transit_network[&#34;stops_sequence_i&#34;] = col_stops_sequence_i
+        df_transit_network[&#34;stops_sequence_r&#34;] = col_stops_sequence_r
+
+        df_transit_network.to_csv(file_path, sep=&#34;;&#34;, index=False, encoding=&#34;utf-8&#34;)
+
+    def get_circular_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+        subcenter nodes.
+        :param mode_obj: transport Mode
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        zones = self.__graph_obj.get_zones()
+        if len(zones) &lt;= 1:
+            raise CircularRouteIsNotValidException(&#34;to add a predefined circular route you have a city &#34;
+                                                   &#34;with more of one zone created&#34;)
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        route_id_i = &#34;CIR_I_{}&#34;.format(mode_name)
+        route_id_r = &#34;CIR_R_{}&#34;.format(mode_name)
+
+        nodes_sequence_i = &#34;&#34;
+        nodes_sequence_r = &#34;&#34;
+
+        for i in range(len(zones)):
+
+            if nodes_sequence_i == &#34;&#34;:
+                nodes_sequence_i = nodes_sequence_i + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + str(zones[len(zones) - 1 - i].subcenter.id)
+            else:
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1 - i].subcenter.id)
+
+        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[0].subcenter.id)
+        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1].subcenter.id)
+
+        stops_sequence_i = nodes_sequence_i
+        stops_sequence_r = nodes_sequence_r
+
+        route1 = Route(route_id_i, mode_obj, nodes_sequence_i, &#34;&#34;, stops_sequence_i, &#34;&#34;, _type=RouteType.CIRCULAR)
+        route2 = Route(route_id_r, mode_obj, &#34;&#34;, nodes_sequence_r, &#34;&#34;, stops_sequence_r, _type=RouteType.CIRCULAR)
+
+        return [route1, route2]
+
+    def get_feeder_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc for I direction and sc-p for R direction.
+        :param mode_obj: TransportMode
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        routes = []
+        for zone in self.__graph_obj.get_zones():
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            route_id = &#34;F_{}_{}&#34;.format(mode_name, zone.id)
+            nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+            stops_sequence_i = nodes_sequence_i
+            nodes_sequence_r = &#34;{},{}&#34;.format(id_sc, id_p)
+            stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+
+            routes.append(route)
+
+        return routes
+
+    def get_radial_routes(self, mode_obj: TransportMode, short: bool = False, express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd for I direction and cbd-sc-p for R direction.
+        :param mode_obj: TransportMode
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenter (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        cbd = self.__graph_obj.get_cbd()
+        id_cbd = cbd.id
+
+        routes = []
+
+        for zone in self.__graph_obj.get_zones():
+
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            if short is True:
+                route_id = &#34;RS_{}_{}&#34;.format(mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{}&#34;.format(id_sc, id_cbd)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_sc)
+                stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = &#34;RE_{}_{}&#34;.format(mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_cbd)
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_p)
+                else:
+                    route_id = &#34;R_{}_{}&#34;.format(mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def get_diametral_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                             express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd-sc&#39;-p&#39; for I direction and p&#39;-sc&#39;-cbd-sc-p for R direction. p&#39; and sc&#39; are periphery and subcenter
+        nodes with zone id equivalent to the id of the treated zone plus the jump
+        :param mode_obj: TransportMode
+        :param jump: to identified other zone where diametral routes transit
+        :param short: if diametral routes omit the passage through the periphery (default: False)
+        :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        cbd = self.__graph_obj.get_cbd()
+        id_cbd = cbd.id
+
+        zones = self.__graph_obj.get_zones()
+
+        if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+        end = len(zones)
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            end = math.floor(len(zones) / 2)
+
+        routes = []
+
+        for zone in zones[:end]:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump &lt;= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            if short is True:
+                if express is True:
+                    route_id = &#34;DSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+                else:
+                    route_id = &#34;DS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = &#34;DE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                    nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+                else:
+                    route_id = &#34;D{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def get_tangencial_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                              express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-sc&#39;-...-sc&#39;&#39;-p&#39;&#39; for I direction and p&#39;&#39;-sc&#39;&#39;-...-sc&#39;-sc-p for R direction. sc&#39;, ..., sc&#39;&#39; are subcenter
+        nodes with zone id less than or equal to id of the treated zone plus the jump. p&#39;&#39; and sc&#39;&#39; are periphery
+        and subcenter nodes with id equivalent to the id of the treated zone plus the jump
+        :param mode_obj: TransportMode
+        :param jump: to identified other zone where tangencial routes transit
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenters nodes (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        zones = self.__graph_obj.get_zones()
+
+        if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+        end = len(zones)
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            end = math.floor(len(zones) / 2)
+
+        routes = []
+
+        for zone in zones[:end]:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump &lt;= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            list_zones_id = []
+
+            if zone2_id &gt; zone_id and jump != 1:
+                for i in range(zone_id + 1, zone2_id):
+                    list_zones_id.append(i)
+
+            if zone2_id &lt; zone_id:
+                if zone_id != len(zones):
+                    for i in range(zone_id + 1, len(zones) + 1):
+                        list_zones_id.append(i)
+
+                for i in range(1, zone2_id):
+                    list_zones_id.append(i)
+
+            if short is True:
+                if express is True:
+                    route_id = &#34;TSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+
+                    nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                    nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc2))
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc))
+
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+
+                else:
+                    route_id = &#34;TS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                    nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{}&#34;.format(id_sc2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{}&#34;.format(id_sc)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            else:
+                if express is True:
+                    route_id = &#34;TE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                    nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+                else:
+                    route_id = &#34;T{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                    nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def plot(self, file_path, list_routes=None, direction=None):
+        &#34;&#34;&#34;
+        to plot network and graph
+        :param file_path:
+        :param list_routes: list of routes to plot, default value is None and plot all routes
+        :param direction: &#34;I&#34; or &#34;R&#34; direction to plot. default value is None and plot both direction.
+        :return:
+        &#34;&#34;&#34;
+        # if list routes is empty then plot all routes
+        if list_routes is None:
+            list_routes = self.__routes_id
+
+        # edges information and positions
+        # edge city
+        edges_graph = []
+        position = defaultdict(list)
+        for edge in self.__graph_obj.get_edges():
+            edges_graph.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
+
+        # nodes information and positions
+        info_cbd = []
+        info_sc = []
+        info_p = []
+        id_cbd = []
+        id_sc = []
+        id_p = []
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
+
+        for node in self.__graph_obj.get_nodes():
+            if isinstance(node, CBD):
+                info_cbd.append(node)
+            if isinstance(node, Periphery):
+                info_p.append(node)
+            if isinstance(node, Subcenter):
+                info_sc.append(node)
+
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
+            id_cbd.append(cbd.id)
+
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
+            id_sc.append(sc.id)
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
+            id_p.append(p.id)
+
+        # edges routes and stops
+        edges_i = []
+        edges_r = []
+        stops_i = []
+        stops_r = []
+        for route_id in list_routes:
+            if route_id not in self.__routes_id:
+                raise RouteIdNotFoundException(&#34;route_id does not found&#34;)
+            else:
+                ind = self.__routes_id.index(route_id)
+                route = self.__routes[ind]
+                nodes_i = route.nodes_sequence_i
+                nodes_r = route.nodes_sequence_r
+                stop_i = route.stops_sequence_i
+                stop_r = route.stops_sequence_r
+
+                for i in range(len(nodes_i) - 1):
+                    id1 = nodes_i[i]
+                    id2 = nodes_i[i + 1]
+                    edges_i.append((id1, id2))
+                for i in range(len(nodes_r) - 1):
+                    id1 = nodes_r[i]
+                    id2 = nodes_r[i + 1]
+                    edges_r.append((id1, id2))
+                for i in range(len(stop_i)):
+                    if stop_i[i] not in stops_i:
+                        stops_i.append(stop_i[i])
+                for i in range(len(stop_r)):
+                    if stop_r[i] not in stops_r:
+                        stops_r.append(stop_r[i])
+
+        G = nx.DiGraph()
+        G.add_edges_from(edges_graph)
+        G.add_edges_from(edges_i)
+        G.add_edges_from(edges_r)
+
+        # separate calls to draw labels, nodes and edges
+        # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                               node_size=300)
+        # plot stops
+        if direction is None or direction == &#34;I&#34;:
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_i, node_color=&#39;yellow&#39;,
+                                   node_size=300)
+        if direction is None or direction == &#34;R&#34;:
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_r, node_color=&#39;yellow&#39;,
+                                   node_size=300)
+        # plot labels
+        nx.draw_networkx_labels(G, position)
+        # plot edges city
+        nx.draw_networkx_edges(G, position, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+        # plot edges_i
+        if direction is None or direction == &#34;I&#34;:
+            nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color=&#39;lime&#39;, arrows=True)
+        # plot edges_r
+        if direction is None or direction == &#34;R&#34;:
+            nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color=&#39;aqua&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.savefig(file_path)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sidermit.publictransportsystem.network.Route"><code class="flex name class">
+<span>class <span class="ident">Route</span></span>
+<span>(</span><span>route_id, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>, nodes_sequence_i: str, nodes_sequence_r: str, stops_sequence_i: str, stops_sequence_r: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to defined a route
+:param route_id: route id
+:param mode_obj: TransportMode object. Means of transport of the route
+:param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+:param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+:param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+:param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+:param _type: RouteType, default value CUSTOM.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Route:
+
+    def __init__(self, route_id, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                 stops_sequence_i: str, stops_sequence_r: str, _type: RouteType = RouteType.CUSTOM):
+        &#34;&#34;&#34;
+        to defined a route
+        :param route_id: route id
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :param _type: RouteType, default value CUSTOM.
+        &#34;&#34;&#34;
+        self.id = None
+        self.mode = None
+        self.nodes_sequence_i = None
+        self.nodes_sequence_r = None
+        self.stops_sequence_i = None
+        self.stops_sequence_r = None
+        self._type = _type
+        if _type == RouteType.CUSTOM and (
+                nodes_sequence_i is None or nodes_sequence_r is None or nodes_sequence_i == &#34;&#34; or nodes_sequence_r == &#34;&#34;):
+            raise NodeSequencesIsNotValidException(&#34;You should give a value for nodes_sequence_i and nodes_sequence_r&#34;)
+        if _type == RouteType.CUSTOM and (
+                stops_sequence_i is None or stops_sequence_r is None or stops_sequence_i == &#34;&#34; or stops_sequence_r == &#34;&#34;):
+            raise StopSequenceIsNotValidException(&#34;You should give a value for stops_sequence_i and stops_sequence_r&#34;)
+
+        if route_id is None:
+            raise RouteIdIsNotValidException(&#34;route_id is not valid. Try to give a value for route_id&#34;)
+
+        # special case for circular routes
+        if _type == RouteType.PREDEFINED or _type == RouteType.CIRCULAR:
+            self.id = route_id
+            self.mode = mode_obj
+            self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+            self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+            self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+            self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+
+        else:
+            # to valid parameters
+            if self.parameters_validator(mode_obj,
+                                         nodes_sequence_i, nodes_sequence_r,
+                                         stops_sequence_i, stops_sequence_r):
+                self.id = route_id
+                self.mode = mode_obj
+                self.nodes_sequence_i = self.sequences_to_list(nodes_sequence_i)
+                self.nodes_sequence_r = self.sequences_to_list(nodes_sequence_r)
+                self.stops_sequence_i = self.sequences_to_list(stops_sequence_i)
+                self.stops_sequence_r = self.sequences_to_list(stops_sequence_r)
+
+    def parameters_validator(self, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                             stops_sequence_i: str, stops_sequence_r: str) -&gt; bool:
+        &#34;&#34;&#34;
+        to check all parameters
+        :param mode_obj: TransportMode object. Means of transport of the route
+        :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+        :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+        :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+        :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+        :return: True if parameters are valid. Exception if not.
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        nodes_i = self.sequences_to_list(nodes_sequence_i)
+        nodes_r = self.sequences_to_list(nodes_sequence_r)
+        stops_i = self.sequences_to_list(stops_sequence_i)
+        stops_r = self.sequences_to_list(stops_sequence_r)
+
+        if self.direction_validator(nodes_i, nodes_r):
+            if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
+                if self.sequences_validator(nodes_i) and self.sequences_validator(nodes_r):
+                    return True
+
+    @staticmethod
+    def sequences_to_string(sequence_list: List[str]) -&gt; str:
+        &#34;&#34;&#34;
+        convert a node id sequence list to a string
+        :param sequence_list: node id sequence list
+        :return: String
+        &#34;&#34;&#34;
+        line = &#34;&#34;
+        for node in sequence_list:
+            if line == &#34;&#34;:
+                line = line + str(node)
+            else:
+                line = line + &#34;,&#34; + str(node)
+        return line
+
+    @staticmethod
+    def sequences_to_list(sequence: str) -&gt; List[int]:
+        &#34;&#34;&#34;
+        convert a string of node id sequence to a list
+        :param sequence: String
+        :return: List[node id]
+        &#34;&#34;&#34;
+        if sequence == &#34;&#34; or sequence is None:
+            return []
+
+        nodes_split = sequence.split(&#34;,&#34;)
+        nodes = []
+
+        for node in nodes_split:
+            nodes.append(int(node.rstrip(&#34;\n&#34;)))
+
+        return nodes
+
+    @staticmethod
+    def stops_validator(nodes_list: List[int], stops_list: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
+        nodes are stops
+        :param nodes_list: list of node sequence
+        :param stops_list: list of stops sequence
+        :return: True if parameters are valid. Raise a exceptions if not
+        &#34;&#34;&#34;
+        if not stops_list:
+            raise StopSequenceIsNotValidException(&#34;stop sequence is not valid, this is empty&#34;)
+
+        # to check if each stops be in node_sequences
+        for stop in stops_list:
+            if stop not in nodes_list:
+                raise StopsSequencesException(&#34;stop is not reachable&#34;)
+        # to check if first stop is equal to first node in node sequences
+        if nodes_list[0] != stops_list[0]:
+            raise FirstStopIsNotValidException(&#34;first stop is not valid, must be equal to first node&#34;)
+        # to check if last stop is equal to last node in node sequences
+        if nodes_list[len(nodes_list) - 1] != stops_list[len(stops_list) - 1]:
+            raise LastStopIsNotValidException(&#34;last stop is not valid, must be equal to last node&#34;)
+        return True
+
+    @staticmethod
+    def direction_validator(nodes_list_i: List[int], nodes_list_r: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if both direction of a route form a cycle
+        :param nodes_list_i: list of node sequence (forward direction)
+        :param nodes_list_r: list of node sequence (return direction)
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        if not nodes_list_i or not nodes_list_r:
+            raise NodeSequencesIsNotValidException(&#34;Node sequence is empty, this is not valid sequence&#34;)
+
+        if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
+                nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
+            raise NotCycleException(&#34;sequence of nodes of both directions do not form a cycle&#34;)
+        return True
+
+    @staticmethod
+    def sequences_validator(sequence: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if sequence have a loop
+        :param sequence: list of node sequence
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+
+        for node1 in sequence:
+            n = 0
+            for node2 in sequence:
+                if node1 == node2:
+                    n = n + 1
+            if n &gt; 1:
+                raise NodeSequencesIsNotValidException(&#34;node sequence loops&#34;)
+
+        return True</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="sidermit.publictransportsystem.network.Route.direction_validator"><code class="name flex">
+<span>def <span class="ident">direction_validator</span></span>(<span>nodes_list_i: List[int], nodes_list_r: List[int]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check if both direction of a route form a cycle
+:param nodes_list_i: list of node sequence (forward direction)
+:param nodes_list_r: list of node sequence (return direction)
+:return: True if parameters are valid. Raise a exceptions if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def direction_validator(nodes_list_i: List[int], nodes_list_r: List[int]) -&gt; bool:
+    &#34;&#34;&#34;
+    to check if both direction of a route form a cycle
+    :param nodes_list_i: list of node sequence (forward direction)
+    :param nodes_list_r: list of node sequence (return direction)
+    :return: True if parameters are valid. Raise a exceptions if not.
+    &#34;&#34;&#34;
+    if not nodes_list_i or not nodes_list_r:
+        raise NodeSequencesIsNotValidException(&#34;Node sequence is empty, this is not valid sequence&#34;)
+
+    if nodes_list_i[0] != nodes_list_r[len(nodes_list_r) - 1] or \
+            nodes_list_r[0] != nodes_list_i[len(nodes_list_i) - 1]:
+        raise NotCycleException(&#34;sequence of nodes of both directions do not form a cycle&#34;)
+    return True</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.Route.sequences_to_list"><code class="name flex">
+<span>def <span class="ident">sequences_to_list</span></span>(<span>sequence: str) ‑> List[int]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>convert a string of node id sequence to a list
+:param sequence: String
+:return: List[node id]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def sequences_to_list(sequence: str) -&gt; List[int]:
+    &#34;&#34;&#34;
+    convert a string of node id sequence to a list
+    :param sequence: String
+    :return: List[node id]
+    &#34;&#34;&#34;
+    if sequence == &#34;&#34; or sequence is None:
+        return []
+
+    nodes_split = sequence.split(&#34;,&#34;)
+    nodes = []
+
+    for node in nodes_split:
+        nodes.append(int(node.rstrip(&#34;\n&#34;)))
+
+    return nodes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.Route.sequences_to_string"><code class="name flex">
+<span>def <span class="ident">sequences_to_string</span></span>(<span>sequence_list: List[str]) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>convert a node id sequence list to a string
+:param sequence_list: node id sequence list
+:return: String</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def sequences_to_string(sequence_list: List[str]) -&gt; str:
+    &#34;&#34;&#34;
+    convert a node id sequence list to a string
+    :param sequence_list: node id sequence list
+    :return: String
+    &#34;&#34;&#34;
+    line = &#34;&#34;
+    for node in sequence_list:
+        if line == &#34;&#34;:
+            line = line + str(node)
+        else:
+            line = line + &#34;,&#34; + str(node)
+    return line</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.Route.sequences_validator"><code class="name flex">
+<span>def <span class="ident">sequences_validator</span></span>(<span>sequence: List[int]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check if sequence have a loop
+:param sequence: list of node sequence
+:return: True if parameters are valid. Raise a exceptions if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def sequences_validator(sequence: List[int]) -&gt; bool:
+    &#34;&#34;&#34;
+    to check if sequence have a loop
+    :param sequence: list of node sequence
+    :return: True if parameters are valid. Raise a exceptions if not.
+    &#34;&#34;&#34;
+
+    for node1 in sequence:
+        n = 0
+        for node2 in sequence:
+            if node1 == node2:
+                n = n + 1
+        if n &gt; 1:
+            raise NodeSequencesIsNotValidException(&#34;node sequence loops&#34;)
+
+    return True</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.Route.stops_validator"><code class="name flex">
+<span>def <span class="ident">stops_validator</span></span>(<span>nodes_list: List[int], stops_list: List[int]) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
+nodes are stops
+:param nodes_list: list of node sequence
+:param stops_list: list of stops sequence
+:return: True if parameters are valid. Raise a exceptions if not</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@staticmethod
+def stops_validator(nodes_list: List[int], stops_list: List[int]) -&gt; bool:
+    &#34;&#34;&#34;
+    to check if all stops of a direction of a route are a sub group of node_sequences. Also check if first and last
+    nodes are stops
+    :param nodes_list: list of node sequence
+    :param stops_list: list of stops sequence
+    :return: True if parameters are valid. Raise a exceptions if not
+    &#34;&#34;&#34;
+    if not stops_list:
+        raise StopSequenceIsNotValidException(&#34;stop sequence is not valid, this is empty&#34;)
+
+    # to check if each stops be in node_sequences
+    for stop in stops_list:
+        if stop not in nodes_list:
+            raise StopsSequencesException(&#34;stop is not reachable&#34;)
+    # to check if first stop is equal to first node in node sequences
+    if nodes_list[0] != stops_list[0]:
+        raise FirstStopIsNotValidException(&#34;first stop is not valid, must be equal to first node&#34;)
+    # to check if last stop is equal to last node in node sequences
+    if nodes_list[len(nodes_list) - 1] != stops_list[len(stops_list) - 1]:
+        raise LastStopIsNotValidException(&#34;last stop is not valid, must be equal to last node&#34;)
+    return True</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="sidermit.publictransportsystem.network.Route.parameters_validator"><code class="name flex">
+<span>def <span class="ident">parameters_validator</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>, nodes_sequence_i: str, nodes_sequence_r: str, stops_sequence_i: str, stops_sequence_r: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to check all parameters
+:param mode_obj: TransportMode object. Means of transport of the route
+:param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+:param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+:param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+:param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+:return: True if parameters are valid. Exception if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def parameters_validator(self, mode_obj: TransportMode, nodes_sequence_i: str, nodes_sequence_r: str,
+                         stops_sequence_i: str, stops_sequence_r: str) -&gt; bool:
+    &#34;&#34;&#34;
+    to check all parameters
+    :param mode_obj: TransportMode object. Means of transport of the route
+    :param nodes_sequence_i: sequence of id nodes of the city graph where the route travels in the forward direction
+    :param nodes_sequence_r: sequence of id nodes of the city graph where the route travels in the return direction
+    :param stops_sequence_i: sequence of id nodes of the city graph where the route stops in the forward direction
+    :param stops_sequence_r: sequence of id nodes of the city graph where the route stops in the return direction
+    :return: True if parameters are valid. Exception if not.
+    &#34;&#34;&#34;
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    nodes_i = self.sequences_to_list(nodes_sequence_i)
+    nodes_r = self.sequences_to_list(nodes_sequence_r)
+    stops_i = self.sequences_to_list(stops_sequence_i)
+    stops_r = self.sequences_to_list(stops_sequence_r)
+
+    if self.direction_validator(nodes_i, nodes_r):
+        if self.stops_validator(nodes_i, stops_i) and self.stops_validator(nodes_r, stops_r):
+            if self.sequences_validator(nodes_i) and self.sequences_validator(nodes_r):
+                return True</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="sidermit.publictransportsystem.network.RouteType"><code class="flex name class">
+<span>class <span class="ident">RouteType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>route types, CUSTOM for user-created custom routes, PREDEFINED for predefined routes created by a method of the
+TransportNetwork class, CIRCULAR to a special type of predefined route with different construction rules</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteType(Enum):
+    &#34;&#34;&#34;
+    route types, CUSTOM for user-created custom routes, PREDEFINED for predefined routes created by a method of the
+    TransportNetwork class, CIRCULAR to a special type of predefined route with different construction rules
+    &#34;&#34;&#34;
+    CUSTOM = 1
+    PREDEFINED = 2
+    CIRCULAR = 3</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="sidermit.publictransportsystem.network.RouteType.CIRCULAR"><code class="name">var <span class="ident">CIRCULAR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sidermit.publictransportsystem.network.RouteType.CUSTOM"><code class="name">var <span class="ident">CUSTOM</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="sidermit.publictransportsystem.network.RouteType.PREDEFINED"><code class="name">var <span class="ident">PREDEFINED</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork"><code class="flex name class">
+<span>class <span class="ident">TransportNetwork</span></span>
+<span>(</span><span>graph_obj: <a title="sidermit.city.graph.Graph" href="../city/graph.html#sidermit.city.graph.Graph">Graph</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>transport route manager on a city graph
+:param graph_obj: Graph where transport network develops</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransportNetwork:
+
+    def __init__(self, graph_obj: Graph):
+        &#34;&#34;&#34;
+        transport route manager on a city graph
+        :param graph_obj: Graph where transport network develops
+        &#34;&#34;&#34;
+        self.__graph_obj = graph_obj
+        self.__routes = []
+        self.__routes_id = []
+        self.__modes = []
+
+    def __edges_validator(self, node_list: List[int]) -&gt; bool:
+        &#34;&#34;&#34;
+        to check if each edges in a node_sequences list exist in the graph object
+        :param node_list: list of nodes
+        :return: True if parameters are valid. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        for i in range(len(node_list) - 1):
+            j = i + 1
+            if not self.__graph_obj.edge_exist(node_list[i], node_list[j]):
+                raise NodeSequencesIsNotValidException(&#34;Node sequences is not valid because a edge does not exist&#34;)
+        return True
+
+    def get_modes(self) -&gt; List[TransportMode]:
+        return self.__modes
+
+    def get_routes(self) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get all routes
+        :return: List[Route]
+        &#34;&#34;&#34;
+        return self.__routes
+
+    def get_route(self, route_id) -&gt; Route:
+        &#34;&#34;&#34;
+        to get a specific route by a route_id
+        :param route_id: route id
+        :return: Route object if route id is defined in the network. Raise a exceptions if not.
+        &#34;&#34;&#34;
+        if route_id in self.__routes_id:
+            i = self.__routes_id.index(route_id)
+            return self.__routes[i]
+        else:
+            raise RouteIdNotFoundException(&#34;route_id not found&#34;)
+
+    def add_transport_mode(self, mode: TransportMode):
+        &#34;&#34;&#34;
+        to add a transport mode in the network
+        :param mode: TransportMode
+        :return:
+        &#34;&#34;&#34;
+
+        if not isinstance(mode, TransportMode):
+            raise ModeIsNotValidException(&#34;Mode is not valid&#34;)
+
+        if mode not in self.__modes:
+
+            mode_manager = TransportModeManager(add_default_mode=False)
+
+            list_mode = [mode]
+
+            for modes in self.__modes:
+                if modes not in list_mode:
+                    list_mode.append(modes)
+
+            for modes in list_mode:
+                mode_manager.add_mode(modes)
+
+            if mode_manager.is_valid_to_assignment_step():
+                self.__modes.append(mode)
+            else:
+                raise TransportModeException(
+                    &#34;only 2 transport mode can be defined and at least one should have d parameter = 1&#34;)
+
+    def remove_transport_mode(self, mode: TransportMode):
+        &#34;&#34;&#34;
+        to remove a transport mode in the network and all lines defined with that transport mode
+        :param mode: TransportMode
+        :return:
+        &#34;&#34;&#34;
+
+        list_mode = []
+
+        for modes in self.__modes:
+            if modes != mode:
+                list_mode.append(modes)
+
+        self.__modes = list_mode
+
+        for route in self.__routes:
+            if route.mode == mode:
+                self.remove_route(route.id)
+
+    def add_route(self, route_obj: Route):
+        &#34;&#34;&#34;
+        to add a specific route in routes list
+        :param route_obj: Route object
+        :return:
+        &#34;&#34;&#34;
+        if not isinstance(route_obj, Route):
+            raise RouteIsNotvalidException(&#34;route_obj is not valid&#34;)
+
+        route_id = route_obj.id
+        nodes_sequence_i = route_obj.nodes_sequence_i
+        nodes_sequence_r = route_obj.nodes_sequence_r
+
+        if self.__edges_validator(nodes_sequence_i) or self.__edges_validator(nodes_sequence_r):
+            if route_id not in self.__routes_id:
+                self.add_transport_mode(route_obj.mode)
+                self.__routes.append(route_obj)
+                self.__routes_id.append(route_id)
+            else:
+                raise RouteIdDuplicatedException(&#34;route_id is duplicated&#34;)
+
+    def remove_route(self, route_id):
+        &#34;&#34;&#34;
+        to delete a specific route_id in the network
+        :param route_id: route id
+        :return:
+        &#34;&#34;&#34;
+        if route_id in self.__routes_id:
+            i = self.__routes_id.index(route_id)
+            self.__routes_id.pop(i)
+            self.__routes.pop(i)
+        else:
+            raise RouteIdNotFoundException(&#34;route_id not found&#34;)
+
+    def routes_to_file(self, file_path):
+        &#34;&#34;&#34;
+        to save file with all routes information
+        :param file_path:
+        :return:
+        &#34;&#34;&#34;
+        # route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r
+        col_route_id = []
+        col_mode = []
+        col_nodes_sequence_i = []
+        col_nodes_sequence_r = []
+        col_stops_sequence_i = []
+        col_stops_sequence_r = []
+
+        for route in self.__routes:
+            col_route_id.append(route.id)
+            col_mode.append(route.mode.name)
+            col_nodes_sequence_i.append(route.sequences_to_string(route.nodes_sequence_i))
+            col_nodes_sequence_r.append(route.sequences_to_string(route.nodes_sequence_r))
+            col_stops_sequence_i.append(route.sequences_to_string(route.stops_sequence_i))
+            col_stops_sequence_r.append(route.sequences_to_string(route.stops_sequence_r))
+
+        df_transit_network = pd.DataFrame()
+        df_transit_network[&#34;route_id&#34;] = col_route_id
+        df_transit_network[&#34;mode&#34;] = col_mode
+        df_transit_network[&#34;nodes_sequence_i&#34;] = col_nodes_sequence_i
+        df_transit_network[&#34;nodes_sequence_r&#34;] = col_nodes_sequence_r
+        df_transit_network[&#34;stops_sequence_i&#34;] = col_stops_sequence_i
+        df_transit_network[&#34;stops_sequence_r&#34;] = col_stops_sequence_r
+
+        df_transit_network.to_csv(file_path, sep=&#34;;&#34;, index=False, encoding=&#34;utf-8&#34;)
+
+    def get_circular_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+        subcenter nodes.
+        :param mode_obj: transport Mode
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        zones = self.__graph_obj.get_zones()
+        if len(zones) &lt;= 1:
+            raise CircularRouteIsNotValidException(&#34;to add a predefined circular route you have a city &#34;
+                                                   &#34;with more of one zone created&#34;)
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        route_id_i = &#34;CIR_I_{}&#34;.format(mode_name)
+        route_id_r = &#34;CIR_R_{}&#34;.format(mode_name)
+
+        nodes_sequence_i = &#34;&#34;
+        nodes_sequence_r = &#34;&#34;
+
+        for i in range(len(zones)):
+
+            if nodes_sequence_i == &#34;&#34;:
+                nodes_sequence_i = nodes_sequence_i + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + str(zones[len(zones) - 1 - i].subcenter.id)
+            else:
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[i].subcenter.id)
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1 - i].subcenter.id)
+
+        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[0].subcenter.id)
+        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1].subcenter.id)
+
+        stops_sequence_i = nodes_sequence_i
+        stops_sequence_r = nodes_sequence_r
+
+        route1 = Route(route_id_i, mode_obj, nodes_sequence_i, &#34;&#34;, stops_sequence_i, &#34;&#34;, _type=RouteType.CIRCULAR)
+        route2 = Route(route_id_r, mode_obj, &#34;&#34;, nodes_sequence_r, &#34;&#34;, stops_sequence_r, _type=RouteType.CIRCULAR)
+
+        return [route1, route2]
+
+    def get_feeder_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc for I direction and sc-p for R direction.
+        :param mode_obj: TransportMode
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        routes = []
+        for zone in self.__graph_obj.get_zones():
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            route_id = &#34;F_{}_{}&#34;.format(mode_name, zone.id)
+            nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+            stops_sequence_i = nodes_sequence_i
+            nodes_sequence_r = &#34;{},{}&#34;.format(id_sc, id_p)
+            stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+
+            routes.append(route)
+
+        return routes
+
+    def get_radial_routes(self, mode_obj: TransportMode, short: bool = False, express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd for I direction and cbd-sc-p for R direction.
+        :param mode_obj: TransportMode
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenter (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        cbd = self.__graph_obj.get_cbd()
+        id_cbd = cbd.id
+
+        routes = []
+
+        for zone in self.__graph_obj.get_zones():
+
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            if short is True:
+                route_id = &#34;RS_{}_{}&#34;.format(mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{}&#34;.format(id_sc, id_cbd)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_sc)
+                stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = &#34;RE_{}_{}&#34;.format(mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_cbd)
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_p)
+                else:
+                    route_id = &#34;R_{}_{}&#34;.format(mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def get_diametral_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                             express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-cbd-sc&#39;-p&#39; for I direction and p&#39;-sc&#39;-cbd-sc-p for R direction. p&#39; and sc&#39; are periphery and subcenter
+        nodes with zone id equivalent to the id of the treated zone plus the jump
+        :param mode_obj: TransportMode
+        :param jump: to identified other zone where diametral routes transit
+        :param short: if diametral routes omit the passage through the periphery (default: False)
+        :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        cbd = self.__graph_obj.get_cbd()
+        id_cbd = cbd.id
+
+        zones = self.__graph_obj.get_zones()
+
+        if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+        end = len(zones)
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            end = math.floor(len(zones) / 2)
+
+        routes = []
+
+        for zone in zones[:end]:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump &lt;= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            if short is True:
+                if express is True:
+                    route_id = &#34;DSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+                else:
+                    route_id = &#34;DS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                    stops_sequence_r = nodes_sequence_r
+            else:
+                if express is True:
+                    route_id = &#34;DE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                    nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+                else:
+                    route_id = &#34;D{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                    stops_sequence_i = nodes_sequence_i
+                    nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                    stops_sequence_r = nodes_sequence_r
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def get_tangencial_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                              express: bool = False) -&gt; List[Route]:
+        &#34;&#34;&#34;
+        to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+        p-sc-sc&#39;-...-sc&#39;&#39;-p&#39;&#39; for I direction and p&#39;&#39;-sc&#39;&#39;-...-sc&#39;-sc-p for R direction. sc&#39;, ..., sc&#39;&#39; are subcenter
+        nodes with zone id less than or equal to id of the treated zone plus the jump. p&#39;&#39; and sc&#39;&#39; are periphery
+        and subcenter nodes with id equivalent to the id of the treated zone plus the jump
+        :param mode_obj: TransportMode
+        :param jump: to identified other zone where tangencial routes transit
+        :param short: if radial routes omit the passage through the periphery (default: False)
+        :param express: if radial routes omit to stop in the subcenters nodes (default: False)
+        :return: List[Route]
+        &#34;&#34;&#34;
+        if not isinstance(mode_obj, TransportMode):
+            raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+        mode_name = mode_obj.name
+
+        zones = self.__graph_obj.get_zones()
+
+        if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+            raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+        end = len(zones)
+        if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+            end = math.floor(len(zones) / 2)
+
+        routes = []
+
+        for zone in zones[:end]:
+            id_p = zone.periphery.id
+            id_sc = zone.subcenter.id
+
+            zone_id = zone.id
+
+            if zone_id + jump &lt;= len(zones):
+                zone2_id = zone_id + jump
+            else:
+                zone2_id = zone_id + jump - len(zones)
+
+            # zones are sort per id in list
+            zone2 = zones[zone2_id - 1]
+
+            id_p2 = zone2.periphery.id
+            id_sc2 = zone2.subcenter.id
+
+            list_zones_id = []
+
+            if zone2_id &gt; zone_id and jump != 1:
+                for i in range(zone_id + 1, zone2_id):
+                    list_zones_id.append(i)
+
+            if zone2_id &lt; zone_id:
+                if zone_id != len(zones):
+                    for i in range(zone_id + 1, len(zones) + 1):
+                        list_zones_id.append(i)
+
+                for i in range(1, zone2_id):
+                    list_zones_id.append(i)
+
+            if short is True:
+                if express is True:
+                    route_id = &#34;TSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+
+                    nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                    nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc2))
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc))
+
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+
+                else:
+                    route_id = &#34;TS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                    nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{}&#34;.format(id_sc2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{}&#34;.format(id_sc)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            else:
+                if express is True:
+                    route_id = &#34;TE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                    nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                    stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                    stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+                else:
+                    route_id = &#34;T{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                    nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                    nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                    for i in range(len(list_zones_id)):
+                        zone3 = zones[list_zones_id[i] - 1]
+                        zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                        nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                        nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                    stops_sequence_i = nodes_sequence_i
+                    stops_sequence_r = nodes_sequence_r
+
+            route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                          stops_sequence_r, _type=RouteType.PREDEFINED)
+            routes.append(route)
+
+        return routes
+
+    def plot(self, file_path, list_routes=None, direction=None):
+        &#34;&#34;&#34;
+        to plot network and graph
+        :param file_path:
+        :param list_routes: list of routes to plot, default value is None and plot all routes
+        :param direction: &#34;I&#34; or &#34;R&#34; direction to plot. default value is None and plot both direction.
+        :return:
+        &#34;&#34;&#34;
+        # if list routes is empty then plot all routes
+        if list_routes is None:
+            list_routes = self.__routes_id
+
+        # edges information and positions
+        # edge city
+        edges_graph = []
+        position = defaultdict(list)
+        for edge in self.__graph_obj.get_edges():
+            edges_graph.append((edge.node1.id, edge.node2.id))
+            if not position.get(edge.node1.id):
+                position[edge.node1.id].append(edge.node1.x)
+                position[edge.node1.id].append(edge.node1.y)
+            if not position.get(edge.node2.id):
+                position[edge.node2.id].append(edge.node2.x)
+                position[edge.node2.id].append(edge.node2.y)
+
+        # nodes information and positions
+        info_cbd = []
+        info_sc = []
+        info_p = []
+        id_cbd = []
+        id_sc = []
+        id_p = []
+        x_cbd = []
+        y_cbd = []
+        x_sc = []
+        y_sc = []
+        x_p = []
+        y_p = []
+
+        for node in self.__graph_obj.get_nodes():
+            if isinstance(node, CBD):
+                info_cbd.append(node)
+            if isinstance(node, Periphery):
+                info_p.append(node)
+            if isinstance(node, Subcenter):
+                info_sc.append(node)
+
+        for cbd in info_cbd:
+            x_cbd.append(cbd.x)
+            y_cbd.append(cbd.y)
+            id_cbd.append(cbd.id)
+
+        for sc in info_sc:
+            x_sc.append(sc.x)
+            y_sc.append(sc.y)
+            id_sc.append(sc.id)
+        for p in info_p:
+            x_p.append(p.x)
+            y_p.append(p.y)
+            id_p.append(p.id)
+
+        # edges routes and stops
+        edges_i = []
+        edges_r = []
+        stops_i = []
+        stops_r = []
+        for route_id in list_routes:
+            if route_id not in self.__routes_id:
+                raise RouteIdNotFoundException(&#34;route_id does not found&#34;)
+            else:
+                ind = self.__routes_id.index(route_id)
+                route = self.__routes[ind]
+                nodes_i = route.nodes_sequence_i
+                nodes_r = route.nodes_sequence_r
+                stop_i = route.stops_sequence_i
+                stop_r = route.stops_sequence_r
+
+                for i in range(len(nodes_i) - 1):
+                    id1 = nodes_i[i]
+                    id2 = nodes_i[i + 1]
+                    edges_i.append((id1, id2))
+                for i in range(len(nodes_r) - 1):
+                    id1 = nodes_r[i]
+                    id2 = nodes_r[i + 1]
+                    edges_r.append((id1, id2))
+                for i in range(len(stop_i)):
+                    if stop_i[i] not in stops_i:
+                        stops_i.append(stop_i[i])
+                for i in range(len(stop_r)):
+                    if stop_r[i] not in stops_r:
+                        stops_r.append(stop_r[i])
+
+        G = nx.DiGraph()
+        G.add_edges_from(edges_graph)
+        G.add_edges_from(edges_i)
+        G.add_edges_from(edges_r)
+
+        # separate calls to draw labels, nodes and edges
+        # plot p, Sc and CBD
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                               node_size=300)
+        # plot stops
+        if direction is None or direction == &#34;I&#34;:
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_i, node_color=&#39;yellow&#39;,
+                                   node_size=300)
+        if direction is None or direction == &#34;R&#34;:
+            nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_r, node_color=&#39;yellow&#39;,
+                                   node_size=300)
+        # plot labels
+        nx.draw_networkx_labels(G, position)
+        # plot edges city
+        nx.draw_networkx_edges(G, position, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+        # plot edges_i
+        if direction is None or direction == &#34;I&#34;:
+            nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color=&#39;lime&#39;, arrows=True)
+        # plot edges_r
+        if direction is None or direction == &#34;R&#34;:
+            nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color=&#39;aqua&#39;, arrows=True)
+
+        plt.title(&#34;City graph&#34;)
+        plt.xlabel(&#34;X&#34;)
+        plt.ylabel(&#34;Y&#34;)
+        plt.gca().set_aspect(&#39;equal&#39;)
+        plt.savefig(file_path)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.add_route"><code class="name flex">
+<span>def <span class="ident">add_route</span></span>(<span>self, route_obj: <a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to add a specific route in routes list
+:param route_obj: Route object
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_route(self, route_obj: Route):
+    &#34;&#34;&#34;
+    to add a specific route in routes list
+    :param route_obj: Route object
+    :return:
+    &#34;&#34;&#34;
+    if not isinstance(route_obj, Route):
+        raise RouteIsNotvalidException(&#34;route_obj is not valid&#34;)
+
+    route_id = route_obj.id
+    nodes_sequence_i = route_obj.nodes_sequence_i
+    nodes_sequence_r = route_obj.nodes_sequence_r
+
+    if self.__edges_validator(nodes_sequence_i) or self.__edges_validator(nodes_sequence_r):
+        if route_id not in self.__routes_id:
+            self.add_transport_mode(route_obj.mode)
+            self.__routes.append(route_obj)
+            self.__routes_id.append(route_id)
+        else:
+            raise RouteIdDuplicatedException(&#34;route_id is duplicated&#34;)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.add_transport_mode"><code class="name flex">
+<span>def <span class="ident">add_transport_mode</span></span>(<span>self, mode: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to add a transport mode in the network
+:param mode: TransportMode
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_transport_mode(self, mode: TransportMode):
+    &#34;&#34;&#34;
+    to add a transport mode in the network
+    :param mode: TransportMode
+    :return:
+    &#34;&#34;&#34;
+
+    if not isinstance(mode, TransportMode):
+        raise ModeIsNotValidException(&#34;Mode is not valid&#34;)
+
+    if mode not in self.__modes:
+
+        mode_manager = TransportModeManager(add_default_mode=False)
+
+        list_mode = [mode]
+
+        for modes in self.__modes:
+            if modes not in list_mode:
+                list_mode.append(modes)
+
+        for modes in list_mode:
+            mode_manager.add_mode(modes)
+
+        if mode_manager.is_valid_to_assignment_step():
+            self.__modes.append(mode)
+        else:
+            raise TransportModeException(
+                &#34;only 2 transport mode can be defined and at least one should have d parameter = 1&#34;)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_circular_routes"><code class="name flex">
+<span>def <span class="ident">get_circular_routes</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+subcenter nodes.
+:param mode_obj: transport Mode
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_circular_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get predefined circular routes, 2 routes with only a direction and whose stops and nodes sequence are all
+    subcenter nodes.
+    :param mode_obj: transport Mode
+    :return: List[Route]
+    &#34;&#34;&#34;
+
+    zones = self.__graph_obj.get_zones()
+    if len(zones) &lt;= 1:
+        raise CircularRouteIsNotValidException(&#34;to add a predefined circular route you have a city &#34;
+                                               &#34;with more of one zone created&#34;)
+
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    mode_name = mode_obj.name
+
+    route_id_i = &#34;CIR_I_{}&#34;.format(mode_name)
+    route_id_r = &#34;CIR_R_{}&#34;.format(mode_name)
+
+    nodes_sequence_i = &#34;&#34;
+    nodes_sequence_r = &#34;&#34;
+
+    for i in range(len(zones)):
+
+        if nodes_sequence_i == &#34;&#34;:
+            nodes_sequence_i = nodes_sequence_i + str(zones[i].subcenter.id)
+            nodes_sequence_r = nodes_sequence_r + str(zones[len(zones) - 1 - i].subcenter.id)
+        else:
+            nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[i].subcenter.id)
+            nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1 - i].subcenter.id)
+
+    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zones[0].subcenter.id)
+    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zones[len(zones) - 1].subcenter.id)
+
+    stops_sequence_i = nodes_sequence_i
+    stops_sequence_r = nodes_sequence_r
+
+    route1 = Route(route_id_i, mode_obj, nodes_sequence_i, &#34;&#34;, stops_sequence_i, &#34;&#34;, _type=RouteType.CIRCULAR)
+    route2 = Route(route_id_r, mode_obj, &#34;&#34;, nodes_sequence_r, &#34;&#34;, stops_sequence_r, _type=RouteType.CIRCULAR)
+
+    return [route1, route2]</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_diametral_routes"><code class="name flex">
+<span>def <span class="ident">get_diametral_routes</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>, jump: int = 1, short: bool = False, express: bool = False) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+p-sc-cbd-sc'-p' for I direction and p'-sc'-cbd-sc-p for R direction. p' and sc' are periphery and subcenter
+nodes with zone id equivalent to the id of the treated zone plus the jump
+:param mode_obj: TransportMode
+:param jump: to identified other zone where diametral routes transit
+:param short: if diametral routes omit the passage through the periphery (default: False)
+:param express: if diametral routes omit to stop in the subcenter and cbd nodes
+(default: False)
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_diametral_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                         express: bool = False) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get predefined diametral routes, where for each zone exist a route with nodes and stops sequences beetween
+    p-sc-cbd-sc&#39;-p&#39; for I direction and p&#39;-sc&#39;-cbd-sc-p for R direction. p&#39; and sc&#39; are periphery and subcenter
+    nodes with zone id equivalent to the id of the treated zone plus the jump
+    :param mode_obj: TransportMode
+    :param jump: to identified other zone where diametral routes transit
+    :param short: if diametral routes omit the passage through the periphery (default: False)
+    :param express: if diametral routes omit to stop in the subcenter and cbd nodes  (default: False)
+    :return: List[Route]
+    &#34;&#34;&#34;
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    mode_name = mode_obj.name
+
+    cbd = self.__graph_obj.get_cbd()
+    id_cbd = cbd.id
+
+    zones = self.__graph_obj.get_zones()
+
+    if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+        raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+    end = len(zones)
+    if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+        end = math.floor(len(zones) / 2)
+
+    routes = []
+
+    for zone in zones[:end]:
+        id_p = zone.periphery.id
+        id_sc = zone.subcenter.id
+
+        zone_id = zone.id
+
+        if zone_id + jump &lt;= len(zones):
+            zone2_id = zone_id + jump
+        else:
+            zone2_id = zone_id + jump - len(zones)
+
+        # zones are sort per id in list
+        zone2 = zones[zone2_id - 1]
+
+        id_p2 = zone2.periphery.id
+        id_sc2 = zone2.subcenter.id
+
+        if short is True:
+            if express is True:
+                route_id = &#34;DSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+            else:
+                route_id = &#34;DS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{}&#34;.format(id_sc, id_cbd, id_sc2)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = &#34;{},{},{}&#34;.format(id_sc2, id_cbd, id_sc)
+                stops_sequence_r = nodes_sequence_r
+        else:
+            if express is True:
+                route_id = &#34;DE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+            else:
+                route_id = &#34;D{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{},{},{}&#34;.format(id_p, id_sc, id_cbd, id_sc2, id_p2)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = &#34;{},{},{},{},{}&#34;.format(id_p2, id_sc2, id_cbd, id_sc, id_p)
+                stops_sequence_r = nodes_sequence_r
+        route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                      stops_sequence_r, _type=RouteType.PREDEFINED)
+        routes.append(route)
+
+    return routes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_feeder_routes"><code class="name flex">
+<span>def <span class="ident">get_feeder_routes</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+p-sc for I direction and sc-p for R direction.
+:param mode_obj: TransportMode
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_feeder_routes(self, mode_obj: TransportMode) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get predefined feeder routes, where for each zone exist a route with nodes and stops sequences beetween
+    p-sc for I direction and sc-p for R direction.
+    :param mode_obj: TransportMode
+    :return: List[Route]
+    &#34;&#34;&#34;
+
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    mode_name = mode_obj.name
+
+    routes = []
+    for zone in self.__graph_obj.get_zones():
+        id_p = zone.periphery.id
+        id_sc = zone.subcenter.id
+
+        route_id = &#34;F_{}_{}&#34;.format(mode_name, zone.id)
+        nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+        stops_sequence_i = nodes_sequence_i
+        nodes_sequence_r = &#34;{},{}&#34;.format(id_sc, id_p)
+        stops_sequence_r = nodes_sequence_r
+
+        route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                      stops_sequence_r, _type=RouteType.PREDEFINED)
+
+        routes.append(route)
+
+    return routes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_modes"><code class="name flex">
+<span>def <span class="ident">get_modes</span></span>(<span>self) ‑> List[<a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_modes(self) -&gt; List[TransportMode]:
+    return self.__modes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_radial_routes"><code class="name flex">
+<span>def <span class="ident">get_radial_routes</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>, short: bool = False, express: bool = False) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+p-sc-cbd for I direction and cbd-sc-p for R direction.
+:param mode_obj: TransportMode
+:param short: if radial routes omit the passage through the periphery (default: False)
+:param express: if radial routes omit to stop in the subcenter (default: False)
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_radial_routes(self, mode_obj: TransportMode, short: bool = False, express: bool = False) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get predefined radial routes, where for each zone exist a route with nodes and stops sequences beetween
+    p-sc-cbd for I direction and cbd-sc-p for R direction.
+    :param mode_obj: TransportMode
+    :param short: if radial routes omit the passage through the periphery (default: False)
+    :param express: if radial routes omit to stop in the subcenter (default: False)
+    :return: List[Route]
+    &#34;&#34;&#34;
+
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    mode_name = mode_obj.name
+
+    cbd = self.__graph_obj.get_cbd()
+    id_cbd = cbd.id
+
+    routes = []
+
+    for zone in self.__graph_obj.get_zones():
+
+        id_p = zone.periphery.id
+        id_sc = zone.subcenter.id
+
+        if short is True:
+            route_id = &#34;RS_{}_{}&#34;.format(mode_name, zone.id)
+            nodes_sequence_i = &#34;{},{}&#34;.format(id_sc, id_cbd)
+            stops_sequence_i = nodes_sequence_i
+            nodes_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_sc)
+            stops_sequence_r = nodes_sequence_r
+        else:
+            if express is True:
+                route_id = &#34;RE_{}_{}&#34;.format(mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_cbd)
+                nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                stops_sequence_r = &#34;{},{}&#34;.format(id_cbd, id_p)
+            else:
+                route_id = &#34;R_{}_{}&#34;.format(mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{},{}&#34;.format(id_p, id_sc, id_cbd)
+                stops_sequence_i = nodes_sequence_i
+                nodes_sequence_r = &#34;{},{},{}&#34;.format(id_cbd, id_sc, id_p)
+                stops_sequence_r = nodes_sequence_r
+
+        route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                      stops_sequence_r, _type=RouteType.PREDEFINED)
+        routes.append(route)
+
+    return routes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_route"><code class="name flex">
+<span>def <span class="ident">get_route</span></span>(<span>self, route_id) ‑> <a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get a specific route by a route_id
+:param route_id: route id
+:return: Route object if route id is defined in the network. Raise a exceptions if not.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_route(self, route_id) -&gt; Route:
+    &#34;&#34;&#34;
+    to get a specific route by a route_id
+    :param route_id: route id
+    :return: Route object if route id is defined in the network. Raise a exceptions if not.
+    &#34;&#34;&#34;
+    if route_id in self.__routes_id:
+        i = self.__routes_id.index(route_id)
+        return self.__routes[i]
+    else:
+        raise RouteIdNotFoundException(&#34;route_id not found&#34;)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_routes"><code class="name flex">
+<span>def <span class="ident">get_routes</span></span>(<span>self) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get all routes
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_routes(self) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get all routes
+    :return: List[Route]
+    &#34;&#34;&#34;
+    return self.__routes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.get_tangencial_routes"><code class="name flex">
+<span>def <span class="ident">get_tangencial_routes</span></span>(<span>self, mode_obj: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>, jump: int = 1, short: bool = False, express: bool = False) ‑> List[<a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+p-sc-sc'-&hellip;-sc''-p'' for I direction and p''-sc''-&hellip;-sc'-sc-p for R direction. sc', &hellip;, sc'' are subcenter
+nodes with zone id less than or equal to id of the treated zone plus the jump. p'' and sc'' are periphery
+and subcenter nodes with id equivalent to the id of the treated zone plus the jump
+:param mode_obj: TransportMode
+:param jump: to identified other zone where tangencial routes transit
+:param short: if radial routes omit the passage through the periphery (default: False)
+:param express: if radial routes omit to stop in the subcenters nodes (default: False)
+:return: List[Route]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_tangencial_routes(self, mode_obj: TransportMode, jump: int = 1, short: bool = False,
+                          express: bool = False) -&gt; List[Route]:
+    &#34;&#34;&#34;
+    to get predefined tangencial routes, where for each zone exist a route with nodes and stops sequences beetween
+    p-sc-sc&#39;-...-sc&#39;&#39;-p&#39;&#39; for I direction and p&#39;&#39;-sc&#39;&#39;-...-sc&#39;-sc-p for R direction. sc&#39;, ..., sc&#39;&#39; are subcenter
+    nodes with zone id less than or equal to id of the treated zone plus the jump. p&#39;&#39; and sc&#39;&#39; are periphery
+    and subcenter nodes with id equivalent to the id of the treated zone plus the jump
+    :param mode_obj: TransportMode
+    :param jump: to identified other zone where tangencial routes transit
+    :param short: if radial routes omit the passage through the periphery (default: False)
+    :param express: if radial routes omit to stop in the subcenters nodes (default: False)
+    :return: List[Route]
+    &#34;&#34;&#34;
+    if not isinstance(mode_obj, TransportMode):
+        raise ModeIsNotValidException(&#34;mode obj is not valid&#34;)
+
+    mode_name = mode_obj.name
+
+    zones = self.__graph_obj.get_zones()
+
+    if jump &gt; len(zones) / 2 or jump &lt;= 0 or not isinstance(jump, int):
+        raise JumpIsNotValidException(&#34;jump must be a int in range (0 - (n° zones)/2)&#34;)
+
+    end = len(zones)
+    if len(zones) % 2.0 == 0 and jump == math.floor(len(zones) / 2):
+        end = math.floor(len(zones) / 2)
+
+    routes = []
+
+    for zone in zones[:end]:
+        id_p = zone.periphery.id
+        id_sc = zone.subcenter.id
+
+        zone_id = zone.id
+
+        if zone_id + jump &lt;= len(zones):
+            zone2_id = zone_id + jump
+        else:
+            zone2_id = zone_id + jump - len(zones)
+
+        # zones are sort per id in list
+        zone2 = zones[zone2_id - 1]
+
+        id_p2 = zone2.periphery.id
+        id_sc2 = zone2.subcenter.id
+
+        list_zones_id = []
+
+        if zone2_id &gt; zone_id and jump != 1:
+            for i in range(zone_id + 1, zone2_id):
+                list_zones_id.append(i)
+
+        if zone2_id &lt; zone_id:
+            if zone_id != len(zones):
+                for i in range(zone_id + 1, len(zones) + 1):
+                    list_zones_id.append(i)
+
+            for i in range(1, zone2_id):
+                list_zones_id.append(i)
+
+        if short is True:
+            if express is True:
+                route_id = &#34;TSE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+
+                nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+
+                for i in range(len(list_zones_id)):
+                    zone3 = zones[list_zones_id[i] - 1]
+                    zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc2))
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(&#34;{}&#34;.format(id_sc))
+
+                stops_sequence_i = &#34;{},{}&#34;.format(id_sc, id_sc2)
+                stops_sequence_r = &#34;{},{}&#34;.format(id_sc2, id_sc)
+
+            else:
+                route_id = &#34;TS{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{}&#34;.format(id_sc)
+                nodes_sequence_r = &#34;{}&#34;.format(id_sc2)
+                for i in range(len(list_zones_id)):
+                    zone3 = zones[list_zones_id[i] - 1]
+                    zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{}&#34;.format(id_sc2)
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{}&#34;.format(id_sc)
+                stops_sequence_i = nodes_sequence_i
+                stops_sequence_r = nodes_sequence_r
+
+        else:
+            if express is True:
+                route_id = &#34;TE{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                for i in range(len(list_zones_id)):
+                    zone3 = zones[list_zones_id[i] - 1]
+                    zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                stops_sequence_i = &#34;{},{}&#34;.format(id_p, id_p2)
+                stops_sequence_r = &#34;{},{}&#34;.format(id_p2, id_p)
+            else:
+                route_id = &#34;T{}_{}_{}&#34;.format(jump, mode_name, zone.id)
+                nodes_sequence_i = &#34;{},{}&#34;.format(id_p, id_sc)
+                nodes_sequence_r = &#34;{},{}&#34;.format(id_p2, id_sc2)
+                for i in range(len(list_zones_id)):
+                    zone3 = zones[list_zones_id[i] - 1]
+                    zone4 = zones[list_zones_id[len(list_zones_id) - 1 - i] - 1]
+
+                    nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + str(zone3.subcenter.id)
+                    nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + str(zone4.subcenter.id)
+                nodes_sequence_i = nodes_sequence_i + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc2, id_p2)
+                nodes_sequence_r = nodes_sequence_r + &#34;,&#34; + &#34;{},{}&#34;.format(id_sc, id_p)
+                stops_sequence_i = nodes_sequence_i
+                stops_sequence_r = nodes_sequence_r
+
+        route = Route(route_id, mode_obj, nodes_sequence_i, nodes_sequence_r, stops_sequence_i,
+                      stops_sequence_r, _type=RouteType.PREDEFINED)
+        routes.append(route)
+
+    return routes</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.plot"><code class="name flex">
+<span>def <span class="ident">plot</span></span>(<span>self, file_path, list_routes=None, direction=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to plot network and graph
+:param file_path:
+:param list_routes: list of routes to plot, default value is None and plot all routes
+:param direction: "I" or "R" direction to plot. default value is None and plot both direction.
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot(self, file_path, list_routes=None, direction=None):
+    &#34;&#34;&#34;
+    to plot network and graph
+    :param file_path:
+    :param list_routes: list of routes to plot, default value is None and plot all routes
+    :param direction: &#34;I&#34; or &#34;R&#34; direction to plot. default value is None and plot both direction.
+    :return:
+    &#34;&#34;&#34;
+    # if list routes is empty then plot all routes
+    if list_routes is None:
+        list_routes = self.__routes_id
+
+    # edges information and positions
+    # edge city
+    edges_graph = []
+    position = defaultdict(list)
+    for edge in self.__graph_obj.get_edges():
+        edges_graph.append((edge.node1.id, edge.node2.id))
+        if not position.get(edge.node1.id):
+            position[edge.node1.id].append(edge.node1.x)
+            position[edge.node1.id].append(edge.node1.y)
+        if not position.get(edge.node2.id):
+            position[edge.node2.id].append(edge.node2.x)
+            position[edge.node2.id].append(edge.node2.y)
+
+    # nodes information and positions
+    info_cbd = []
+    info_sc = []
+    info_p = []
+    id_cbd = []
+    id_sc = []
+    id_p = []
+    x_cbd = []
+    y_cbd = []
+    x_sc = []
+    y_sc = []
+    x_p = []
+    y_p = []
+
+    for node in self.__graph_obj.get_nodes():
+        if isinstance(node, CBD):
+            info_cbd.append(node)
+        if isinstance(node, Periphery):
+            info_p.append(node)
+        if isinstance(node, Subcenter):
+            info_sc.append(node)
+
+    for cbd in info_cbd:
+        x_cbd.append(cbd.x)
+        y_cbd.append(cbd.y)
+        id_cbd.append(cbd.id)
+
+    for sc in info_sc:
+        x_sc.append(sc.x)
+        y_sc.append(sc.y)
+        id_sc.append(sc.id)
+    for p in info_p:
+        x_p.append(p.x)
+        y_p.append(p.y)
+        id_p.append(p.id)
+
+    # edges routes and stops
+    edges_i = []
+    edges_r = []
+    stops_i = []
+    stops_r = []
+    for route_id in list_routes:
+        if route_id not in self.__routes_id:
+            raise RouteIdNotFoundException(&#34;route_id does not found&#34;)
+        else:
+            ind = self.__routes_id.index(route_id)
+            route = self.__routes[ind]
+            nodes_i = route.nodes_sequence_i
+            nodes_r = route.nodes_sequence_r
+            stop_i = route.stops_sequence_i
+            stop_r = route.stops_sequence_r
+
+            for i in range(len(nodes_i) - 1):
+                id1 = nodes_i[i]
+                id2 = nodes_i[i + 1]
+                edges_i.append((id1, id2))
+            for i in range(len(nodes_r) - 1):
+                id1 = nodes_r[i]
+                id2 = nodes_r[i + 1]
+                edges_r.append((id1, id2))
+            for i in range(len(stop_i)):
+                if stop_i[i] not in stops_i:
+                    stops_i.append(stop_i[i])
+            for i in range(len(stop_r)):
+                if stop_r[i] not in stops_r:
+                    stops_r.append(stop_r[i])
+
+    G = nx.DiGraph()
+    G.add_edges_from(edges_graph)
+    G.add_edges_from(edges_i)
+    G.add_edges_from(edges_r)
+
+    # separate calls to draw labels, nodes and edges
+    # plot p, Sc and CBD
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_p, node_color=&#39;red&#39;, node_size=300)
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_sc, node_color=&#39;blue&#39;, node_size=300)
+    nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=id_cbd, node_color=&#39;purple&#39;,
+                           node_size=300)
+    # plot stops
+    if direction is None or direction == &#34;I&#34;:
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_i, node_color=&#39;yellow&#39;,
+                               node_size=300)
+    if direction is None or direction == &#34;R&#34;:
+        nx.draw_networkx_nodes(G, position, cmap=plt.get_cmap(&#39;Set2&#39;), nodelist=stops_r, node_color=&#39;yellow&#39;,
+                               node_size=300)
+    # plot labels
+    nx.draw_networkx_labels(G, position)
+    # plot edges city
+    nx.draw_networkx_edges(G, position, edgelist=edges_graph, edge_color=&#39;orange&#39;, arrows=True)
+    # plot edges_i
+    if direction is None or direction == &#34;I&#34;:
+        nx.draw_networkx_edges(G, position, edgelist=edges_i, edge_color=&#39;lime&#39;, arrows=True)
+    # plot edges_r
+    if direction is None or direction == &#34;R&#34;:
+        nx.draw_networkx_edges(G, position, edgelist=edges_r, edge_color=&#39;aqua&#39;, arrows=True)
+
+    plt.title(&#34;City graph&#34;)
+    plt.xlabel(&#34;X&#34;)
+    plt.ylabel(&#34;Y&#34;)
+    plt.gca().set_aspect(&#39;equal&#39;)
+    plt.savefig(file_path)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.remove_route"><code class="name flex">
+<span>def <span class="ident">remove_route</span></span>(<span>self, route_id)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to delete a specific route_id in the network
+:param route_id: route id
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_route(self, route_id):
+    &#34;&#34;&#34;
+    to delete a specific route_id in the network
+    :param route_id: route id
+    :return:
+    &#34;&#34;&#34;
+    if route_id in self.__routes_id:
+        i = self.__routes_id.index(route_id)
+        self.__routes_id.pop(i)
+        self.__routes.pop(i)
+    else:
+        raise RouteIdNotFoundException(&#34;route_id not found&#34;)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.remove_transport_mode"><code class="name flex">
+<span>def <span class="ident">remove_transport_mode</span></span>(<span>self, mode: <a title="sidermit.publictransportsystem.mode.TransportMode" href="mode.html#sidermit.publictransportsystem.mode.TransportMode">TransportMode</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to remove a transport mode in the network and all lines defined with that transport mode
+:param mode: TransportMode
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove_transport_mode(self, mode: TransportMode):
+    &#34;&#34;&#34;
+    to remove a transport mode in the network and all lines defined with that transport mode
+    :param mode: TransportMode
+    :return:
+    &#34;&#34;&#34;
+
+    list_mode = []
+
+    for modes in self.__modes:
+        if modes != mode:
+            list_mode.append(modes)
+
+    self.__modes = list_mode
+
+    for route in self.__routes:
+        if route.mode == mode:
+            self.remove_route(route.id)</code></pre>
+</details>
+</dd>
+<dt id="sidermit.publictransportsystem.network.TransportNetwork.routes_to_file"><code class="name flex">
+<span>def <span class="ident">routes_to_file</span></span>(<span>self, file_path)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>to save file with all routes information
+:param file_path:
+:return:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def routes_to_file(self, file_path):
+    &#34;&#34;&#34;
+    to save file with all routes information
+    :param file_path:
+    :return:
+    &#34;&#34;&#34;
+    # route_id, mode_name, nodes_sequence_i, nodes_sequence_r, stops_sequence_i, stops_sequence_r
+    col_route_id = []
+    col_mode = []
+    col_nodes_sequence_i = []
+    col_nodes_sequence_r = []
+    col_stops_sequence_i = []
+    col_stops_sequence_r = []
+
+    for route in self.__routes:
+        col_route_id.append(route.id)
+        col_mode.append(route.mode.name)
+        col_nodes_sequence_i.append(route.sequences_to_string(route.nodes_sequence_i))
+        col_nodes_sequence_r.append(route.sequences_to_string(route.nodes_sequence_r))
+        col_stops_sequence_i.append(route.sequences_to_string(route.stops_sequence_i))
+        col_stops_sequence_r.append(route.sequences_to_string(route.stops_sequence_r))
+
+    df_transit_network = pd.DataFrame()
+    df_transit_network[&#34;route_id&#34;] = col_route_id
+    df_transit_network[&#34;mode&#34;] = col_mode
+    df_transit_network[&#34;nodes_sequence_i&#34;] = col_nodes_sequence_i
+    df_transit_network[&#34;nodes_sequence_r&#34;] = col_nodes_sequence_r
+    df_transit_network[&#34;stops_sequence_i&#34;] = col_stops_sequence_i
+    df_transit_network[&#34;stops_sequence_r&#34;] = col_stops_sequence_r
+
+    df_transit_network.to_csv(file_path, sep=&#34;;&#34;, index=False, encoding=&#34;utf-8&#34;)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sidermit.publictransportsystem" href="index.html">sidermit.publictransportsystem</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sidermit.publictransportsystem.network.Route" href="#sidermit.publictransportsystem.network.Route">Route</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.publictransportsystem.network.Route.direction_validator" href="#sidermit.publictransportsystem.network.Route.direction_validator">direction_validator</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.Route.parameters_validator" href="#sidermit.publictransportsystem.network.Route.parameters_validator">parameters_validator</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.Route.sequences_to_list" href="#sidermit.publictransportsystem.network.Route.sequences_to_list">sequences_to_list</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.Route.sequences_to_string" href="#sidermit.publictransportsystem.network.Route.sequences_to_string">sequences_to_string</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.Route.sequences_validator" href="#sidermit.publictransportsystem.network.Route.sequences_validator">sequences_validator</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.Route.stops_validator" href="#sidermit.publictransportsystem.network.Route.stops_validator">stops_validator</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sidermit.publictransportsystem.network.RouteType" href="#sidermit.publictransportsystem.network.RouteType">RouteType</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.publictransportsystem.network.RouteType.CIRCULAR" href="#sidermit.publictransportsystem.network.RouteType.CIRCULAR">CIRCULAR</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.RouteType.CUSTOM" href="#sidermit.publictransportsystem.network.RouteType.CUSTOM">CUSTOM</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.RouteType.PREDEFINED" href="#sidermit.publictransportsystem.network.RouteType.PREDEFINED">PREDEFINED</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="sidermit.publictransportsystem.network.TransportNetwork" href="#sidermit.publictransportsystem.network.TransportNetwork">TransportNetwork</a></code></h4>
+<ul class="">
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.add_route" href="#sidermit.publictransportsystem.network.TransportNetwork.add_route">add_route</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.add_transport_mode" href="#sidermit.publictransportsystem.network.TransportNetwork.add_transport_mode">add_transport_mode</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_circular_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_circular_routes">get_circular_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_diametral_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_diametral_routes">get_diametral_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_feeder_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_feeder_routes">get_feeder_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_modes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_modes">get_modes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_radial_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_radial_routes">get_radial_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_route" href="#sidermit.publictransportsystem.network.TransportNetwork.get_route">get_route</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_routes">get_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.get_tangencial_routes" href="#sidermit.publictransportsystem.network.TransportNetwork.get_tangencial_routes">get_tangencial_routes</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.plot" href="#sidermit.publictransportsystem.network.TransportNetwork.plot">plot</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.remove_route" href="#sidermit.publictransportsystem.network.TransportNetwork.remove_route">remove_route</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.remove_transport_mode" href="#sidermit.publictransportsystem.network.TransportNetwork.remove_transport_mode">remove_transport_mode</a></code></li>
+<li><code><a title="sidermit.publictransportsystem.network.TransportNetwork.routes_to_file" href="#sidermit.publictransportsystem.network.TransportNetwork.routes_to_file">routes_to_file</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

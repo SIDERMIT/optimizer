@@ -1,0 +1,3602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.1" />
+<title>sidermit.exceptions API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>sidermit.exceptions</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># General exception
+class SIDERMITException(Exception):
+    pass
+
+
+# Optimizer exception
+class OptimizerException(SIDERMITException):
+    pass
+
+
+# Graph exception
+class GraphException(SIDERMITException):
+    pass
+
+
+# Demand exception
+class DemandException(SIDERMITException):
+    pass
+
+
+# Transport Mode exception
+class TransportModeException(SIDERMITException):
+    pass
+
+
+# Transport User exception
+class TransportUserException(SIDERMITException):
+    pass
+
+
+# Transport Network Exceptions
+class TransportNetworkException(SIDERMITException):
+    pass
+
+
+class HyperpathException(SIDERMITException):
+    pass
+
+
+# Graph Exceptions
+
+
+# build Zone
+class PeripheryNodeTypeIsNotValidException(GraphException):
+    pass
+
+
+class SubcenterNodeTypeIsNotValidException(GraphException):
+    pass
+
+
+# build Node
+class NodeRadiusIsNotValidException(GraphException):
+    pass
+
+
+class NodeAngleIsNotValidException(GraphException):
+    pass
+
+
+class NodeWidthIsNotValidException(GraphException):
+    pass
+
+
+# build graph
+class CBDDoesNotExistException(GraphException):
+    pass
+
+
+class ZoneIdIsNotValidException(GraphException):
+    pass
+
+
+class AddPreviousZonesException(GraphException):
+    pass
+
+
+class PeripheryTypeIsNotValidException(GraphException):
+    pass
+
+
+class SubcenterTypeIsNotValidException(GraphException):
+    pass
+
+
+class CBDTypeIsNotValidException(GraphException):
+    pass
+
+
+class CBDDuplicatedException(GraphException):
+    pass
+
+
+class NodeIdDuplicatedException(GraphException):
+    pass
+
+
+class EdgeDoesNotExistException(GraphException):
+    pass
+
+
+class EdgeIdDuplicatedException(GraphException):
+    pass
+
+
+class NIsNotDefined(GraphException):
+    pass
+
+
+class NIsNotValidNumberException(GraphException):
+    pass
+
+
+class LIsNotDefined(GraphException):
+    pass
+
+
+class LIsNotValidNumberException(GraphException):
+    pass
+
+
+class GIsNotDefined(GraphException):
+    pass
+
+
+class GIsNotValidNumberException(GraphException):
+    pass
+
+
+class PIsNotDefined(GraphException):
+    pass
+
+
+class PIsNotValidNumberException(GraphException):
+    pass
+
+
+class EdgeIsNotAvailableException(GraphException):
+    pass
+
+
+class PajekFormatIsNotValidException(GraphException):
+    pass
+
+
+class FileFormatIsNotValidException(GraphException):
+    pass
+
+
+class NodeTypeIsNotValidException(GraphException):
+    pass
+
+
+class EthaValueRequiredException(GraphException):
+    pass
+
+
+class EthaZoneValueRequiredException(GraphException):
+    pass
+
+
+class EthaValueIsNotValidException(GraphException):
+    pass
+
+
+class EthaZoneValueIsNotValidException(GraphException):
+    pass
+
+
+class AngleListLengthIsNotValidException(GraphException):
+    pass
+
+
+class AngleValueIsNotValidException(GraphException):
+    pass
+
+
+class GiListLengthIsNotValidException(GraphException):
+    pass
+
+
+class GiValueIsNotValidException(GraphException):
+    pass
+
+
+class HiListLengthIsNotValidException(GraphException):
+    pass
+
+
+class HiValueIsNotValidException(GraphException):
+    pass
+
+
+class LineNumberInFileIsNotValidException(GraphException):
+    pass
+
+
+class PeripherySubcenterNumberForZoneException(GraphException):
+    pass
+
+
+class PeripheryDoesNotExistException(GraphException):
+    pass
+
+
+class SubcenterDoesNotExistException(GraphException):
+    pass
+
+
+class NodeIdIsNotValidException(GraphException):
+    pass
+
+
+class EdgeIdIsNotValidException(GraphException):
+    pass
+
+
+class NodeDoesNotExistException(GraphException):
+    pass
+
+
+class WritePajekFileException(GraphException):
+    pass
+
+
+class NameIsNotDefinedException(GraphException):
+    pass
+
+
+class NodeIdIsNotAnInteger(GraphException):
+    pass
+
+
+class NodeIdDemandIsNotAnInteger(DemandException):
+    pass
+
+
+class VijIsNotValidException(DemandException):
+    pass
+
+
+class DemandMatrixIsNotValidException(DemandException):
+    pass
+
+
+class ZoneIdIsNotAnInteger(GraphException):
+    pass
+
+
+# Demand Exceptions
+class GraphIsNotValidException(DemandException):
+    pass
+
+
+class NIsNotValidException(DemandException):
+    pass
+
+
+class YIsNotValidException(DemandException):
+    pass
+
+
+class AIsNotValidException(DemandException):
+    pass
+
+
+class AlphaIsNotValidException(DemandException):
+    pass
+
+
+class BetaIsNotValidException(DemandException):
+    pass
+
+
+class NOutOfRangeException(DemandException):
+    pass
+
+
+class YOutOfRangeException(DemandException):
+    pass
+
+
+class AOutOfRangeException(DemandException):
+    pass
+
+
+class AlphaOutOfRangeException(DemandException):
+    pass
+
+
+class BetaOutOfRangeException(DemandException):
+    pass
+
+
+class AlphaBetaOutOfRangeException(DemandException):
+    pass
+
+
+class DestinationIdDoesNotFoundException(DemandException):
+    pass
+
+
+class OriginIdDoesNotFoundException(DemandException):
+    pass
+
+
+class TripsValueIsNotValidException(DemandException):
+    pass
+
+
+# TransportModeException
+class ByaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C2IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class C1IsNotValidExceptions(TransportModeException):
+    pass
+
+
+class KmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class FmaxIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class ThetaIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class DIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class TatIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class VIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class CoIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class ModeIsNotValidException(TransportModeException):
+    pass
+
+
+class NameIsNotValidExceptions(TransportModeException):
+    pass
+
+
+class FiniIsNotValidException(TransportModeException):
+    pass
+
+
+class AddModeExceptions(TransportModeException):
+    pass
+
+
+class ModeDoesNotExistExceptions(TransportModeException):
+    pass
+
+
+class ModeNotFoundExceptions(TransportModeException):
+    pass
+
+
+# transport user exceptions
+class PvIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class VaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PwIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpvIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpaIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class PtIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SpwIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class SptIsNotValidExceptions(TransportUserException):
+    pass
+
+
+class RouteIdIsNotValidException(TransportNetworkException):
+    pass
+
+
+class NodeSequenceIsNotValidException(TransportNetworkException):
+    pass
+
+
+class StopSequenceIsNotValidException(TransportNetworkException):
+    pass
+
+
+class ModeNameIsNotValidException(TransportNetworkException):
+    pass
+
+
+class SequencesLenException(TransportNetworkException):
+    pass
+
+
+class StopsSequencesException(TransportNetworkException):
+    pass
+
+
+class FirstStopIsNotValidException(TransportNetworkException):
+    pass
+
+
+class LastStopIsNotValidException(TransportNetworkException):
+    pass
+
+
+class NotCycleException(TransportNetworkException):
+    pass
+
+
+class NodeSequencesIsNotValidException(TransportNetworkException):
+    pass
+
+
+class RouteIdNotFoundException(TransportNetworkException):
+    pass
+
+
+class RouteIdDuplicatedException(TransportNetworkException):
+    pass
+
+
+class ModeNameNotFoundException(TransportNetworkException):
+    pass
+
+
+class JumpIsNotValidException(TransportNetworkException):
+    pass
+
+
+class BanRouteIdException(TransportNetworkException):
+    pass
+
+
+class CircularRouteIsNotValidException(TransportNetworkException):
+    pass
+
+
+class RouteIsNotvalidException(TransportNetworkException):
+    pass
+
+
+class TransportNetworkIsNotValidException(HyperpathException):
+    pass
+
+
+class ConstraintViolationException(OptimizerException):
+    pass
+
+
+class NegativeFrequencyException(OptimizerException):
+    pass
+
+
+class NoOptimalSolutionFoundException(OptimizerException):
+    pass</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="sidermit.exceptions.AIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">AIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">AOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AddModeExceptions"><code class="flex name class">
+<span>class <span class="ident">AddModeExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AddModeExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AddPreviousZonesException"><code class="flex name class">
+<span>class <span class="ident">AddPreviousZonesException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AddPreviousZonesException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AlphaBetaOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">AlphaBetaOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AlphaBetaOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AlphaIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">AlphaIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AlphaIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AlphaOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">AlphaOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AlphaOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AngleListLengthIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">AngleListLengthIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AngleListLengthIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.AngleValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">AngleValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AngleValueIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.BanRouteIdException"><code class="flex name class">
+<span>class <span class="ident">BanRouteIdException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BanRouteIdException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.BetaIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">BetaIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BetaIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.BetaOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">BetaOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BetaOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ByaIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">ByaIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ByaIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.C1IsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">C1IsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class C1IsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.C2IsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">C2IsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class C2IsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.CBDDoesNotExistException"><code class="flex name class">
+<span>class <span class="ident">CBDDoesNotExistException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CBDDoesNotExistException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.CBDDuplicatedException"><code class="flex name class">
+<span>class <span class="ident">CBDDuplicatedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CBDDuplicatedException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.CBDTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">CBDTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CBDTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.CircularRouteIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">CircularRouteIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CircularRouteIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.CoIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">CoIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CoIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ConstraintViolationException"><code class="flex name class">
+<span>class <span class="ident">ConstraintViolationException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ConstraintViolationException(OptimizerException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.OptimizerException" href="#sidermit.exceptions.OptimizerException">OptimizerException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.DIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">DIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.DemandException"><code class="flex name class">
+<span>class <span class="ident">DemandException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DemandException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.AIsNotValidException" href="#sidermit.exceptions.AIsNotValidException">AIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.AOutOfRangeException" href="#sidermit.exceptions.AOutOfRangeException">AOutOfRangeException</a></li>
+<li><a title="sidermit.exceptions.AlphaBetaOutOfRangeException" href="#sidermit.exceptions.AlphaBetaOutOfRangeException">AlphaBetaOutOfRangeException</a></li>
+<li><a title="sidermit.exceptions.AlphaIsNotValidException" href="#sidermit.exceptions.AlphaIsNotValidException">AlphaIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.AlphaOutOfRangeException" href="#sidermit.exceptions.AlphaOutOfRangeException">AlphaOutOfRangeException</a></li>
+<li><a title="sidermit.exceptions.BetaIsNotValidException" href="#sidermit.exceptions.BetaIsNotValidException">BetaIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.BetaOutOfRangeException" href="#sidermit.exceptions.BetaOutOfRangeException">BetaOutOfRangeException</a></li>
+<li><a title="sidermit.exceptions.DemandMatrixIsNotValidException" href="#sidermit.exceptions.DemandMatrixIsNotValidException">DemandMatrixIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.DestinationIdDoesNotFoundException" href="#sidermit.exceptions.DestinationIdDoesNotFoundException">DestinationIdDoesNotFoundException</a></li>
+<li><a title="sidermit.exceptions.GraphIsNotValidException" href="#sidermit.exceptions.GraphIsNotValidException">GraphIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NIsNotValidException" href="#sidermit.exceptions.NIsNotValidException">NIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NOutOfRangeException" href="#sidermit.exceptions.NOutOfRangeException">NOutOfRangeException</a></li>
+<li><a title="sidermit.exceptions.NodeIdDemandIsNotAnInteger" href="#sidermit.exceptions.NodeIdDemandIsNotAnInteger">NodeIdDemandIsNotAnInteger</a></li>
+<li><a title="sidermit.exceptions.OriginIdDoesNotFoundException" href="#sidermit.exceptions.OriginIdDoesNotFoundException">OriginIdDoesNotFoundException</a></li>
+<li><a title="sidermit.exceptions.TripsValueIsNotValidException" href="#sidermit.exceptions.TripsValueIsNotValidException">TripsValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.VijIsNotValidException" href="#sidermit.exceptions.VijIsNotValidException">VijIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.YIsNotValidException" href="#sidermit.exceptions.YIsNotValidException">YIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.YOutOfRangeException" href="#sidermit.exceptions.YOutOfRangeException">YOutOfRangeException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.DemandMatrixIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">DemandMatrixIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DemandMatrixIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.DestinationIdDoesNotFoundException"><code class="flex name class">
+<span>class <span class="ident">DestinationIdDoesNotFoundException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DestinationIdDoesNotFoundException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EdgeDoesNotExistException"><code class="flex name class">
+<span>class <span class="ident">EdgeDoesNotExistException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EdgeDoesNotExistException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EdgeIdDuplicatedException"><code class="flex name class">
+<span>class <span class="ident">EdgeIdDuplicatedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EdgeIdDuplicatedException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EdgeIdIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">EdgeIdIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EdgeIdIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EdgeIsNotAvailableException"><code class="flex name class">
+<span>class <span class="ident">EdgeIsNotAvailableException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EdgeIsNotAvailableException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EthaValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">EthaValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EthaValueIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EthaValueRequiredException"><code class="flex name class">
+<span>class <span class="ident">EthaValueRequiredException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EthaValueRequiredException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EthaZoneValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">EthaZoneValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EthaZoneValueIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.EthaZoneValueRequiredException"><code class="flex name class">
+<span>class <span class="ident">EthaZoneValueRequiredException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class EthaZoneValueRequiredException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.FileFormatIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">FileFormatIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileFormatIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.FiniIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">FiniIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FiniIsNotValidException(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.FirstStopIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">FirstStopIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FirstStopIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.FmaxIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">FmaxIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FmaxIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GIsNotDefined"><code class="flex name class">
+<span>class <span class="ident">GIsNotDefined</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GIsNotDefined(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GIsNotValidNumberException"><code class="flex name class">
+<span>class <span class="ident">GIsNotValidNumberException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GIsNotValidNumberException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GiListLengthIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">GiListLengthIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GiListLengthIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GiValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">GiValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GiValueIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GraphException"><code class="flex name class">
+<span>class <span class="ident">GraphException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GraphException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.AddPreviousZonesException" href="#sidermit.exceptions.AddPreviousZonesException">AddPreviousZonesException</a></li>
+<li><a title="sidermit.exceptions.AngleListLengthIsNotValidException" href="#sidermit.exceptions.AngleListLengthIsNotValidException">AngleListLengthIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.AngleValueIsNotValidException" href="#sidermit.exceptions.AngleValueIsNotValidException">AngleValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.CBDDoesNotExistException" href="#sidermit.exceptions.CBDDoesNotExistException">CBDDoesNotExistException</a></li>
+<li><a title="sidermit.exceptions.CBDDuplicatedException" href="#sidermit.exceptions.CBDDuplicatedException">CBDDuplicatedException</a></li>
+<li><a title="sidermit.exceptions.CBDTypeIsNotValidException" href="#sidermit.exceptions.CBDTypeIsNotValidException">CBDTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.EdgeDoesNotExistException" href="#sidermit.exceptions.EdgeDoesNotExistException">EdgeDoesNotExistException</a></li>
+<li><a title="sidermit.exceptions.EdgeIdDuplicatedException" href="#sidermit.exceptions.EdgeIdDuplicatedException">EdgeIdDuplicatedException</a></li>
+<li><a title="sidermit.exceptions.EdgeIdIsNotValidException" href="#sidermit.exceptions.EdgeIdIsNotValidException">EdgeIdIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.EdgeIsNotAvailableException" href="#sidermit.exceptions.EdgeIsNotAvailableException">EdgeIsNotAvailableException</a></li>
+<li><a title="sidermit.exceptions.EthaValueIsNotValidException" href="#sidermit.exceptions.EthaValueIsNotValidException">EthaValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.EthaValueRequiredException" href="#sidermit.exceptions.EthaValueRequiredException">EthaValueRequiredException</a></li>
+<li><a title="sidermit.exceptions.EthaZoneValueIsNotValidException" href="#sidermit.exceptions.EthaZoneValueIsNotValidException">EthaZoneValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.EthaZoneValueRequiredException" href="#sidermit.exceptions.EthaZoneValueRequiredException">EthaZoneValueRequiredException</a></li>
+<li><a title="sidermit.exceptions.FileFormatIsNotValidException" href="#sidermit.exceptions.FileFormatIsNotValidException">FileFormatIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.GIsNotDefined" href="#sidermit.exceptions.GIsNotDefined">GIsNotDefined</a></li>
+<li><a title="sidermit.exceptions.GIsNotValidNumberException" href="#sidermit.exceptions.GIsNotValidNumberException">GIsNotValidNumberException</a></li>
+<li><a title="sidermit.exceptions.GiListLengthIsNotValidException" href="#sidermit.exceptions.GiListLengthIsNotValidException">GiListLengthIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.GiValueIsNotValidException" href="#sidermit.exceptions.GiValueIsNotValidException">GiValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.HiListLengthIsNotValidException" href="#sidermit.exceptions.HiListLengthIsNotValidException">HiListLengthIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.HiValueIsNotValidException" href="#sidermit.exceptions.HiValueIsNotValidException">HiValueIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.LIsNotDefined" href="#sidermit.exceptions.LIsNotDefined">LIsNotDefined</a></li>
+<li><a title="sidermit.exceptions.LIsNotValidNumberException" href="#sidermit.exceptions.LIsNotValidNumberException">LIsNotValidNumberException</a></li>
+<li><a title="sidermit.exceptions.LineNumberInFileIsNotValidException" href="#sidermit.exceptions.LineNumberInFileIsNotValidException">LineNumberInFileIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NIsNotDefined" href="#sidermit.exceptions.NIsNotDefined">NIsNotDefined</a></li>
+<li><a title="sidermit.exceptions.NIsNotValidNumberException" href="#sidermit.exceptions.NIsNotValidNumberException">NIsNotValidNumberException</a></li>
+<li><a title="sidermit.exceptions.NameIsNotDefinedException" href="#sidermit.exceptions.NameIsNotDefinedException">NameIsNotDefinedException</a></li>
+<li><a title="sidermit.exceptions.NodeAngleIsNotValidException" href="#sidermit.exceptions.NodeAngleIsNotValidException">NodeAngleIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NodeDoesNotExistException" href="#sidermit.exceptions.NodeDoesNotExistException">NodeDoesNotExistException</a></li>
+<li><a title="sidermit.exceptions.NodeIdDuplicatedException" href="#sidermit.exceptions.NodeIdDuplicatedException">NodeIdDuplicatedException</a></li>
+<li><a title="sidermit.exceptions.NodeIdIsNotAnInteger" href="#sidermit.exceptions.NodeIdIsNotAnInteger">NodeIdIsNotAnInteger</a></li>
+<li><a title="sidermit.exceptions.NodeIdIsNotValidException" href="#sidermit.exceptions.NodeIdIsNotValidException">NodeIdIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NodeRadiusIsNotValidException" href="#sidermit.exceptions.NodeRadiusIsNotValidException">NodeRadiusIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NodeTypeIsNotValidException" href="#sidermit.exceptions.NodeTypeIsNotValidException">NodeTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NodeWidthIsNotValidException" href="#sidermit.exceptions.NodeWidthIsNotValidException">NodeWidthIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.PIsNotDefined" href="#sidermit.exceptions.PIsNotDefined">PIsNotDefined</a></li>
+<li><a title="sidermit.exceptions.PIsNotValidNumberException" href="#sidermit.exceptions.PIsNotValidNumberException">PIsNotValidNumberException</a></li>
+<li><a title="sidermit.exceptions.PajekFormatIsNotValidException" href="#sidermit.exceptions.PajekFormatIsNotValidException">PajekFormatIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.PeripheryDoesNotExistException" href="#sidermit.exceptions.PeripheryDoesNotExistException">PeripheryDoesNotExistException</a></li>
+<li><a title="sidermit.exceptions.PeripheryNodeTypeIsNotValidException" href="#sidermit.exceptions.PeripheryNodeTypeIsNotValidException">PeripheryNodeTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.PeripherySubcenterNumberForZoneException" href="#sidermit.exceptions.PeripherySubcenterNumberForZoneException">PeripherySubcenterNumberForZoneException</a></li>
+<li><a title="sidermit.exceptions.PeripheryTypeIsNotValidException" href="#sidermit.exceptions.PeripheryTypeIsNotValidException">PeripheryTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.SubcenterDoesNotExistException" href="#sidermit.exceptions.SubcenterDoesNotExistException">SubcenterDoesNotExistException</a></li>
+<li><a title="sidermit.exceptions.SubcenterNodeTypeIsNotValidException" href="#sidermit.exceptions.SubcenterNodeTypeIsNotValidException">SubcenterNodeTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.SubcenterTypeIsNotValidException" href="#sidermit.exceptions.SubcenterTypeIsNotValidException">SubcenterTypeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.WritePajekFileException" href="#sidermit.exceptions.WritePajekFileException">WritePajekFileException</a></li>
+<li><a title="sidermit.exceptions.ZoneIdIsNotAnInteger" href="#sidermit.exceptions.ZoneIdIsNotAnInteger">ZoneIdIsNotAnInteger</a></li>
+<li><a title="sidermit.exceptions.ZoneIdIsNotValidException" href="#sidermit.exceptions.ZoneIdIsNotValidException">ZoneIdIsNotValidException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.GraphIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">GraphIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GraphIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.HiListLengthIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">HiListLengthIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HiListLengthIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.HiValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">HiValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HiValueIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.HyperpathException"><code class="flex name class">
+<span>class <span class="ident">HyperpathException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HyperpathException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkIsNotValidException" href="#sidermit.exceptions.TransportNetworkIsNotValidException">TransportNetworkIsNotValidException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.JumpIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">JumpIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class JumpIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.KmaxIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">KmaxIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class KmaxIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.LIsNotDefined"><code class="flex name class">
+<span>class <span class="ident">LIsNotDefined</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LIsNotDefined(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.LIsNotValidNumberException"><code class="flex name class">
+<span>class <span class="ident">LIsNotValidNumberException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LIsNotValidNumberException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.LastStopIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">LastStopIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LastStopIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.LineNumberInFileIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">LineNumberInFileIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class LineNumberInFileIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ModeDoesNotExistExceptions"><code class="flex name class">
+<span>class <span class="ident">ModeDoesNotExistExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModeDoesNotExistExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ModeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">ModeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModeIsNotValidException(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ModeNameIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">ModeNameIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModeNameIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ModeNameNotFoundException"><code class="flex name class">
+<span>class <span class="ident">ModeNameNotFoundException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModeNameNotFoundException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ModeNotFoundExceptions"><code class="flex name class">
+<span>class <span class="ident">ModeNotFoundExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ModeNotFoundExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NIsNotDefined"><code class="flex name class">
+<span>class <span class="ident">NIsNotDefined</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NIsNotDefined(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NIsNotValidNumberException"><code class="flex name class">
+<span>class <span class="ident">NIsNotValidNumberException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NIsNotValidNumberException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">NOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NameIsNotDefinedException"><code class="flex name class">
+<span>class <span class="ident">NameIsNotDefinedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NameIsNotDefinedException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NameIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">NameIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NameIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NegativeFrequencyException"><code class="flex name class">
+<span>class <span class="ident">NegativeFrequencyException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NegativeFrequencyException(OptimizerException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.OptimizerException" href="#sidermit.exceptions.OptimizerException">OptimizerException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NoOptimalSolutionFoundException"><code class="flex name class">
+<span>class <span class="ident">NoOptimalSolutionFoundException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NoOptimalSolutionFoundException(OptimizerException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.OptimizerException" href="#sidermit.exceptions.OptimizerException">OptimizerException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeAngleIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeAngleIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeAngleIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeDoesNotExistException"><code class="flex name class">
+<span>class <span class="ident">NodeDoesNotExistException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeDoesNotExistException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeIdDemandIsNotAnInteger"><code class="flex name class">
+<span>class <span class="ident">NodeIdDemandIsNotAnInteger</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeIdDemandIsNotAnInteger(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeIdDuplicatedException"><code class="flex name class">
+<span>class <span class="ident">NodeIdDuplicatedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeIdDuplicatedException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeIdIsNotAnInteger"><code class="flex name class">
+<span>class <span class="ident">NodeIdIsNotAnInteger</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeIdIsNotAnInteger(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeIdIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeIdIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeIdIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeRadiusIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeRadiusIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeRadiusIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeSequenceIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeSequenceIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeSequenceIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeSequencesIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeSequencesIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeSequencesIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NodeWidthIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">NodeWidthIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NodeWidthIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.NotCycleException"><code class="flex name class">
+<span>class <span class="ident">NotCycleException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class NotCycleException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.OptimizerException"><code class="flex name class">
+<span>class <span class="ident">OptimizerException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OptimizerException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.ConstraintViolationException" href="#sidermit.exceptions.ConstraintViolationException">ConstraintViolationException</a></li>
+<li><a title="sidermit.exceptions.NegativeFrequencyException" href="#sidermit.exceptions.NegativeFrequencyException">NegativeFrequencyException</a></li>
+<li><a title="sidermit.exceptions.NoOptimalSolutionFoundException" href="#sidermit.exceptions.NoOptimalSolutionFoundException">NoOptimalSolutionFoundException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.OriginIdDoesNotFoundException"><code class="flex name class">
+<span>class <span class="ident">OriginIdDoesNotFoundException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class OriginIdDoesNotFoundException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PIsNotDefined"><code class="flex name class">
+<span>class <span class="ident">PIsNotDefined</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PIsNotDefined(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PIsNotValidNumberException"><code class="flex name class">
+<span>class <span class="ident">PIsNotValidNumberException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PIsNotValidNumberException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PaIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">PaIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PaIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PajekFormatIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">PajekFormatIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PajekFormatIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PeripheryDoesNotExistException"><code class="flex name class">
+<span>class <span class="ident">PeripheryDoesNotExistException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeripheryDoesNotExistException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PeripheryNodeTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">PeripheryNodeTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeripheryNodeTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PeripherySubcenterNumberForZoneException"><code class="flex name class">
+<span>class <span class="ident">PeripherySubcenterNumberForZoneException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeripherySubcenterNumberForZoneException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PeripheryTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">PeripheryTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PeripheryTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PtIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">PtIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PtIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PvIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">PvIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PvIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.PwIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">PwIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PwIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.RouteIdDuplicatedException"><code class="flex name class">
+<span>class <span class="ident">RouteIdDuplicatedException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteIdDuplicatedException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.RouteIdIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">RouteIdIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteIdIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.RouteIdNotFoundException"><code class="flex name class">
+<span>class <span class="ident">RouteIdNotFoundException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteIdNotFoundException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.RouteIsNotvalidException"><code class="flex name class">
+<span>class <span class="ident">RouteIsNotvalidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RouteIsNotvalidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SIDERMITException"><code class="flex name class">
+<span>class <span class="ident">SIDERMITException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SIDERMITException(Exception):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.HyperpathException" href="#sidermit.exceptions.HyperpathException">HyperpathException</a></li>
+<li><a title="sidermit.exceptions.OptimizerException" href="#sidermit.exceptions.OptimizerException">OptimizerException</a></li>
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SequencesLenException"><code class="flex name class">
+<span>class <span class="ident">SequencesLenException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SequencesLenException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SpaIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">SpaIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SpaIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SptIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">SptIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SptIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SpvIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">SpvIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SpvIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SpwIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">SpwIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SpwIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.StopSequenceIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">StopSequenceIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StopSequenceIsNotValidException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.StopsSequencesException"><code class="flex name class">
+<span>class <span class="ident">StopsSequencesException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StopsSequencesException(TransportNetworkException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SubcenterDoesNotExistException"><code class="flex name class">
+<span>class <span class="ident">SubcenterDoesNotExistException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubcenterDoesNotExistException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SubcenterNodeTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">SubcenterNodeTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubcenterNodeTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.SubcenterTypeIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">SubcenterTypeIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class SubcenterTypeIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">TIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TatIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">TatIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TatIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ThetaIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">ThetaIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ThetaIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TransportModeException"><code class="flex name class">
+<span>class <span class="ident">TransportModeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransportModeException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.AddModeExceptions" href="#sidermit.exceptions.AddModeExceptions">AddModeExceptions</a></li>
+<li><a title="sidermit.exceptions.ByaIsNotValidExceptions" href="#sidermit.exceptions.ByaIsNotValidExceptions">ByaIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.C1IsNotValidExceptions" href="#sidermit.exceptions.C1IsNotValidExceptions">C1IsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.C2IsNotValidExceptions" href="#sidermit.exceptions.C2IsNotValidExceptions">C2IsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.CoIsNotValidExceptions" href="#sidermit.exceptions.CoIsNotValidExceptions">CoIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.DIsNotValidExceptions" href="#sidermit.exceptions.DIsNotValidExceptions">DIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.FiniIsNotValidException" href="#sidermit.exceptions.FiniIsNotValidException">FiniIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.FmaxIsNotValidExceptions" href="#sidermit.exceptions.FmaxIsNotValidExceptions">FmaxIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.KmaxIsNotValidExceptions" href="#sidermit.exceptions.KmaxIsNotValidExceptions">KmaxIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.ModeDoesNotExistExceptions" href="#sidermit.exceptions.ModeDoesNotExistExceptions">ModeDoesNotExistExceptions</a></li>
+<li><a title="sidermit.exceptions.ModeIsNotValidException" href="#sidermit.exceptions.ModeIsNotValidException">ModeIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.ModeNotFoundExceptions" href="#sidermit.exceptions.ModeNotFoundExceptions">ModeNotFoundExceptions</a></li>
+<li><a title="sidermit.exceptions.NameIsNotValidExceptions" href="#sidermit.exceptions.NameIsNotValidExceptions">NameIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.TIsNotValidExceptions" href="#sidermit.exceptions.TIsNotValidExceptions">TIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.TatIsNotValidExceptions" href="#sidermit.exceptions.TatIsNotValidExceptions">TatIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.ThetaIsNotValidExceptions" href="#sidermit.exceptions.ThetaIsNotValidExceptions">ThetaIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.VIsNotValidExceptions" href="#sidermit.exceptions.VIsNotValidExceptions">VIsNotValidExceptions</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TransportNetworkException"><code class="flex name class">
+<span>class <span class="ident">TransportNetworkException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransportNetworkException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.BanRouteIdException" href="#sidermit.exceptions.BanRouteIdException">BanRouteIdException</a></li>
+<li><a title="sidermit.exceptions.CircularRouteIsNotValidException" href="#sidermit.exceptions.CircularRouteIsNotValidException">CircularRouteIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.FirstStopIsNotValidException" href="#sidermit.exceptions.FirstStopIsNotValidException">FirstStopIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.JumpIsNotValidException" href="#sidermit.exceptions.JumpIsNotValidException">JumpIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.LastStopIsNotValidException" href="#sidermit.exceptions.LastStopIsNotValidException">LastStopIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.ModeNameIsNotValidException" href="#sidermit.exceptions.ModeNameIsNotValidException">ModeNameIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.ModeNameNotFoundException" href="#sidermit.exceptions.ModeNameNotFoundException">ModeNameNotFoundException</a></li>
+<li><a title="sidermit.exceptions.NodeSequenceIsNotValidException" href="#sidermit.exceptions.NodeSequenceIsNotValidException">NodeSequenceIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NodeSequencesIsNotValidException" href="#sidermit.exceptions.NodeSequencesIsNotValidException">NodeSequencesIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.NotCycleException" href="#sidermit.exceptions.NotCycleException">NotCycleException</a></li>
+<li><a title="sidermit.exceptions.RouteIdDuplicatedException" href="#sidermit.exceptions.RouteIdDuplicatedException">RouteIdDuplicatedException</a></li>
+<li><a title="sidermit.exceptions.RouteIdIsNotValidException" href="#sidermit.exceptions.RouteIdIsNotValidException">RouteIdIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.RouteIdNotFoundException" href="#sidermit.exceptions.RouteIdNotFoundException">RouteIdNotFoundException</a></li>
+<li><a title="sidermit.exceptions.RouteIsNotvalidException" href="#sidermit.exceptions.RouteIsNotvalidException">RouteIsNotvalidException</a></li>
+<li><a title="sidermit.exceptions.SequencesLenException" href="#sidermit.exceptions.SequencesLenException">SequencesLenException</a></li>
+<li><a title="sidermit.exceptions.StopSequenceIsNotValidException" href="#sidermit.exceptions.StopSequenceIsNotValidException">StopSequenceIsNotValidException</a></li>
+<li><a title="sidermit.exceptions.StopsSequencesException" href="#sidermit.exceptions.StopsSequencesException">StopsSequencesException</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TransportNetworkIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">TransportNetworkIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransportNetworkIsNotValidException(HyperpathException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.HyperpathException" href="#sidermit.exceptions.HyperpathException">HyperpathException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TransportUserException"><code class="flex name class">
+<span>class <span class="ident">TransportUserException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TransportUserException(SIDERMITException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.PaIsNotValidExceptions" href="#sidermit.exceptions.PaIsNotValidExceptions">PaIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.PtIsNotValidExceptions" href="#sidermit.exceptions.PtIsNotValidExceptions">PtIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.PvIsNotValidExceptions" href="#sidermit.exceptions.PvIsNotValidExceptions">PvIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.PwIsNotValidExceptions" href="#sidermit.exceptions.PwIsNotValidExceptions">PwIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.SpaIsNotValidExceptions" href="#sidermit.exceptions.SpaIsNotValidExceptions">SpaIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.SptIsNotValidExceptions" href="#sidermit.exceptions.SptIsNotValidExceptions">SptIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.SpvIsNotValidExceptions" href="#sidermit.exceptions.SpvIsNotValidExceptions">SpvIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.SpwIsNotValidExceptions" href="#sidermit.exceptions.SpwIsNotValidExceptions">SpwIsNotValidExceptions</a></li>
+<li><a title="sidermit.exceptions.VaIsNotValidExceptions" href="#sidermit.exceptions.VaIsNotValidExceptions">VaIsNotValidExceptions</a></li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.TripsValueIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">TripsValueIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TripsValueIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.VIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">VIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VIsNotValidExceptions(TransportModeException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.VaIsNotValidExceptions"><code class="flex name class">
+<span>class <span class="ident">VaIsNotValidExceptions</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VaIsNotValidExceptions(TransportUserException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.VijIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">VijIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VijIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.WritePajekFileException"><code class="flex name class">
+<span>class <span class="ident">WritePajekFileException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WritePajekFileException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.YIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">YIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YIsNotValidException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.YOutOfRangeException"><code class="flex name class">
+<span>class <span class="ident">YOutOfRangeException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class YOutOfRangeException(DemandException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ZoneIdIsNotAnInteger"><code class="flex name class">
+<span>class <span class="ident">ZoneIdIsNotAnInteger</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ZoneIdIsNotAnInteger(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="sidermit.exceptions.ZoneIdIsNotValidException"><code class="flex name class">
+<span>class <span class="ident">ZoneIdIsNotValidException</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ZoneIdIsNotValidException(GraphException):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></li>
+<li><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="sidermit" href="index.html">sidermit</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="sidermit.exceptions.AIsNotValidException" href="#sidermit.exceptions.AIsNotValidException">AIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AOutOfRangeException" href="#sidermit.exceptions.AOutOfRangeException">AOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AddModeExceptions" href="#sidermit.exceptions.AddModeExceptions">AddModeExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AddPreviousZonesException" href="#sidermit.exceptions.AddPreviousZonesException">AddPreviousZonesException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AlphaBetaOutOfRangeException" href="#sidermit.exceptions.AlphaBetaOutOfRangeException">AlphaBetaOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AlphaIsNotValidException" href="#sidermit.exceptions.AlphaIsNotValidException">AlphaIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AlphaOutOfRangeException" href="#sidermit.exceptions.AlphaOutOfRangeException">AlphaOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AngleListLengthIsNotValidException" href="#sidermit.exceptions.AngleListLengthIsNotValidException">AngleListLengthIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.AngleValueIsNotValidException" href="#sidermit.exceptions.AngleValueIsNotValidException">AngleValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.BanRouteIdException" href="#sidermit.exceptions.BanRouteIdException">BanRouteIdException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.BetaIsNotValidException" href="#sidermit.exceptions.BetaIsNotValidException">BetaIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.BetaOutOfRangeException" href="#sidermit.exceptions.BetaOutOfRangeException">BetaOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ByaIsNotValidExceptions" href="#sidermit.exceptions.ByaIsNotValidExceptions">ByaIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.C1IsNotValidExceptions" href="#sidermit.exceptions.C1IsNotValidExceptions">C1IsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.C2IsNotValidExceptions" href="#sidermit.exceptions.C2IsNotValidExceptions">C2IsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.CBDDoesNotExistException" href="#sidermit.exceptions.CBDDoesNotExistException">CBDDoesNotExistException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.CBDDuplicatedException" href="#sidermit.exceptions.CBDDuplicatedException">CBDDuplicatedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.CBDTypeIsNotValidException" href="#sidermit.exceptions.CBDTypeIsNotValidException">CBDTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.CircularRouteIsNotValidException" href="#sidermit.exceptions.CircularRouteIsNotValidException">CircularRouteIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.CoIsNotValidExceptions" href="#sidermit.exceptions.CoIsNotValidExceptions">CoIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ConstraintViolationException" href="#sidermit.exceptions.ConstraintViolationException">ConstraintViolationException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.DIsNotValidExceptions" href="#sidermit.exceptions.DIsNotValidExceptions">DIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.DemandException" href="#sidermit.exceptions.DemandException">DemandException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.DemandMatrixIsNotValidException" href="#sidermit.exceptions.DemandMatrixIsNotValidException">DemandMatrixIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.DestinationIdDoesNotFoundException" href="#sidermit.exceptions.DestinationIdDoesNotFoundException">DestinationIdDoesNotFoundException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EdgeDoesNotExistException" href="#sidermit.exceptions.EdgeDoesNotExistException">EdgeDoesNotExistException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EdgeIdDuplicatedException" href="#sidermit.exceptions.EdgeIdDuplicatedException">EdgeIdDuplicatedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EdgeIdIsNotValidException" href="#sidermit.exceptions.EdgeIdIsNotValidException">EdgeIdIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EdgeIsNotAvailableException" href="#sidermit.exceptions.EdgeIsNotAvailableException">EdgeIsNotAvailableException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EthaValueIsNotValidException" href="#sidermit.exceptions.EthaValueIsNotValidException">EthaValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EthaValueRequiredException" href="#sidermit.exceptions.EthaValueRequiredException">EthaValueRequiredException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EthaZoneValueIsNotValidException" href="#sidermit.exceptions.EthaZoneValueIsNotValidException">EthaZoneValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.EthaZoneValueRequiredException" href="#sidermit.exceptions.EthaZoneValueRequiredException">EthaZoneValueRequiredException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.FileFormatIsNotValidException" href="#sidermit.exceptions.FileFormatIsNotValidException">FileFormatIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.FiniIsNotValidException" href="#sidermit.exceptions.FiniIsNotValidException">FiniIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.FirstStopIsNotValidException" href="#sidermit.exceptions.FirstStopIsNotValidException">FirstStopIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.FmaxIsNotValidExceptions" href="#sidermit.exceptions.FmaxIsNotValidExceptions">FmaxIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GIsNotDefined" href="#sidermit.exceptions.GIsNotDefined">GIsNotDefined</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GIsNotValidNumberException" href="#sidermit.exceptions.GIsNotValidNumberException">GIsNotValidNumberException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GiListLengthIsNotValidException" href="#sidermit.exceptions.GiListLengthIsNotValidException">GiListLengthIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GiValueIsNotValidException" href="#sidermit.exceptions.GiValueIsNotValidException">GiValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GraphException" href="#sidermit.exceptions.GraphException">GraphException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.GraphIsNotValidException" href="#sidermit.exceptions.GraphIsNotValidException">GraphIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.HiListLengthIsNotValidException" href="#sidermit.exceptions.HiListLengthIsNotValidException">HiListLengthIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.HiValueIsNotValidException" href="#sidermit.exceptions.HiValueIsNotValidException">HiValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.HyperpathException" href="#sidermit.exceptions.HyperpathException">HyperpathException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.JumpIsNotValidException" href="#sidermit.exceptions.JumpIsNotValidException">JumpIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.KmaxIsNotValidExceptions" href="#sidermit.exceptions.KmaxIsNotValidExceptions">KmaxIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.LIsNotDefined" href="#sidermit.exceptions.LIsNotDefined">LIsNotDefined</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.LIsNotValidNumberException" href="#sidermit.exceptions.LIsNotValidNumberException">LIsNotValidNumberException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.LastStopIsNotValidException" href="#sidermit.exceptions.LastStopIsNotValidException">LastStopIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.LineNumberInFileIsNotValidException" href="#sidermit.exceptions.LineNumberInFileIsNotValidException">LineNumberInFileIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ModeDoesNotExistExceptions" href="#sidermit.exceptions.ModeDoesNotExistExceptions">ModeDoesNotExistExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ModeIsNotValidException" href="#sidermit.exceptions.ModeIsNotValidException">ModeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ModeNameIsNotValidException" href="#sidermit.exceptions.ModeNameIsNotValidException">ModeNameIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ModeNameNotFoundException" href="#sidermit.exceptions.ModeNameNotFoundException">ModeNameNotFoundException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ModeNotFoundExceptions" href="#sidermit.exceptions.ModeNotFoundExceptions">ModeNotFoundExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NIsNotDefined" href="#sidermit.exceptions.NIsNotDefined">NIsNotDefined</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NIsNotValidException" href="#sidermit.exceptions.NIsNotValidException">NIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NIsNotValidNumberException" href="#sidermit.exceptions.NIsNotValidNumberException">NIsNotValidNumberException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NOutOfRangeException" href="#sidermit.exceptions.NOutOfRangeException">NOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NameIsNotDefinedException" href="#sidermit.exceptions.NameIsNotDefinedException">NameIsNotDefinedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NameIsNotValidExceptions" href="#sidermit.exceptions.NameIsNotValidExceptions">NameIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NegativeFrequencyException" href="#sidermit.exceptions.NegativeFrequencyException">NegativeFrequencyException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NoOptimalSolutionFoundException" href="#sidermit.exceptions.NoOptimalSolutionFoundException">NoOptimalSolutionFoundException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeAngleIsNotValidException" href="#sidermit.exceptions.NodeAngleIsNotValidException">NodeAngleIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeDoesNotExistException" href="#sidermit.exceptions.NodeDoesNotExistException">NodeDoesNotExistException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeIdDemandIsNotAnInteger" href="#sidermit.exceptions.NodeIdDemandIsNotAnInteger">NodeIdDemandIsNotAnInteger</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeIdDuplicatedException" href="#sidermit.exceptions.NodeIdDuplicatedException">NodeIdDuplicatedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeIdIsNotAnInteger" href="#sidermit.exceptions.NodeIdIsNotAnInteger">NodeIdIsNotAnInteger</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeIdIsNotValidException" href="#sidermit.exceptions.NodeIdIsNotValidException">NodeIdIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeRadiusIsNotValidException" href="#sidermit.exceptions.NodeRadiusIsNotValidException">NodeRadiusIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeSequenceIsNotValidException" href="#sidermit.exceptions.NodeSequenceIsNotValidException">NodeSequenceIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeSequencesIsNotValidException" href="#sidermit.exceptions.NodeSequencesIsNotValidException">NodeSequencesIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeTypeIsNotValidException" href="#sidermit.exceptions.NodeTypeIsNotValidException">NodeTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NodeWidthIsNotValidException" href="#sidermit.exceptions.NodeWidthIsNotValidException">NodeWidthIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.NotCycleException" href="#sidermit.exceptions.NotCycleException">NotCycleException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.OptimizerException" href="#sidermit.exceptions.OptimizerException">OptimizerException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.OriginIdDoesNotFoundException" href="#sidermit.exceptions.OriginIdDoesNotFoundException">OriginIdDoesNotFoundException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PIsNotDefined" href="#sidermit.exceptions.PIsNotDefined">PIsNotDefined</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PIsNotValidNumberException" href="#sidermit.exceptions.PIsNotValidNumberException">PIsNotValidNumberException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PaIsNotValidExceptions" href="#sidermit.exceptions.PaIsNotValidExceptions">PaIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PajekFormatIsNotValidException" href="#sidermit.exceptions.PajekFormatIsNotValidException">PajekFormatIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PeripheryDoesNotExistException" href="#sidermit.exceptions.PeripheryDoesNotExistException">PeripheryDoesNotExistException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PeripheryNodeTypeIsNotValidException" href="#sidermit.exceptions.PeripheryNodeTypeIsNotValidException">PeripheryNodeTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PeripherySubcenterNumberForZoneException" href="#sidermit.exceptions.PeripherySubcenterNumberForZoneException">PeripherySubcenterNumberForZoneException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PeripheryTypeIsNotValidException" href="#sidermit.exceptions.PeripheryTypeIsNotValidException">PeripheryTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PtIsNotValidExceptions" href="#sidermit.exceptions.PtIsNotValidExceptions">PtIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PvIsNotValidExceptions" href="#sidermit.exceptions.PvIsNotValidExceptions">PvIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.PwIsNotValidExceptions" href="#sidermit.exceptions.PwIsNotValidExceptions">PwIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.RouteIdDuplicatedException" href="#sidermit.exceptions.RouteIdDuplicatedException">RouteIdDuplicatedException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.RouteIdIsNotValidException" href="#sidermit.exceptions.RouteIdIsNotValidException">RouteIdIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.RouteIdNotFoundException" href="#sidermit.exceptions.RouteIdNotFoundException">RouteIdNotFoundException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.RouteIsNotvalidException" href="#sidermit.exceptions.RouteIsNotvalidException">RouteIsNotvalidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SIDERMITException" href="#sidermit.exceptions.SIDERMITException">SIDERMITException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SequencesLenException" href="#sidermit.exceptions.SequencesLenException">SequencesLenException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SpaIsNotValidExceptions" href="#sidermit.exceptions.SpaIsNotValidExceptions">SpaIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SptIsNotValidExceptions" href="#sidermit.exceptions.SptIsNotValidExceptions">SptIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SpvIsNotValidExceptions" href="#sidermit.exceptions.SpvIsNotValidExceptions">SpvIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SpwIsNotValidExceptions" href="#sidermit.exceptions.SpwIsNotValidExceptions">SpwIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.StopSequenceIsNotValidException" href="#sidermit.exceptions.StopSequenceIsNotValidException">StopSequenceIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.StopsSequencesException" href="#sidermit.exceptions.StopsSequencesException">StopsSequencesException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SubcenterDoesNotExistException" href="#sidermit.exceptions.SubcenterDoesNotExistException">SubcenterDoesNotExistException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SubcenterNodeTypeIsNotValidException" href="#sidermit.exceptions.SubcenterNodeTypeIsNotValidException">SubcenterNodeTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.SubcenterTypeIsNotValidException" href="#sidermit.exceptions.SubcenterTypeIsNotValidException">SubcenterTypeIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TIsNotValidExceptions" href="#sidermit.exceptions.TIsNotValidExceptions">TIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TatIsNotValidExceptions" href="#sidermit.exceptions.TatIsNotValidExceptions">TatIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ThetaIsNotValidExceptions" href="#sidermit.exceptions.ThetaIsNotValidExceptions">ThetaIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TransportModeException" href="#sidermit.exceptions.TransportModeException">TransportModeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TransportNetworkException" href="#sidermit.exceptions.TransportNetworkException">TransportNetworkException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TransportNetworkIsNotValidException" href="#sidermit.exceptions.TransportNetworkIsNotValidException">TransportNetworkIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TransportUserException" href="#sidermit.exceptions.TransportUserException">TransportUserException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.TripsValueIsNotValidException" href="#sidermit.exceptions.TripsValueIsNotValidException">TripsValueIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.VIsNotValidExceptions" href="#sidermit.exceptions.VIsNotValidExceptions">VIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.VaIsNotValidExceptions" href="#sidermit.exceptions.VaIsNotValidExceptions">VaIsNotValidExceptions</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.VijIsNotValidException" href="#sidermit.exceptions.VijIsNotValidException">VijIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.WritePajekFileException" href="#sidermit.exceptions.WritePajekFileException">WritePajekFileException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.YIsNotValidException" href="#sidermit.exceptions.YIsNotValidException">YIsNotValidException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.YOutOfRangeException" href="#sidermit.exceptions.YOutOfRangeException">YOutOfRangeException</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ZoneIdIsNotAnInteger" href="#sidermit.exceptions.ZoneIdIsNotAnInteger">ZoneIdIsNotAnInteger</a></code></h4>
+</li>
+<li>
+<h4><code><a title="sidermit.exceptions.ZoneIdIsNotValidException" href="#sidermit.exceptions.ZoneIdIsNotValidException">ZoneIdIsNotValidException</a></code></h4>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.1</a>.</p>
+</footer>
+</body>
+</html>

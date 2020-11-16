@@ -51,6 +51,7 @@ extensiones
 Opcionales:
 1-Implementar heap binaria en hyperpath
 2-Generar actualización de arcos boarding en vez de reconstruir grafo extendido en cada etapa del optimizador
+3-Matriz OD transpuesta
 
 Futuros:
 1-Incorporar mas modos de transporte
