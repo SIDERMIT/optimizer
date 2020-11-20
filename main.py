@@ -137,7 +137,7 @@ for route in routes:
 
 # static method to run a optimization, return optimizer object
 # max_number_of_iteration set in 5
-opt_obj = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=20)
+opt_obj = Optimizer.network_optimization(graph_obj, demand_obj, passenger_obj, network_obj, max_number_of_iteration=2)
 
 # to get a data structure with overall results
 overall_result = opt_obj.get_overall_results()

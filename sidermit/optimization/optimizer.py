@@ -396,6 +396,17 @@ class Optimizer:
 
         better_result = opt_obj.get_better_result(list_res)
 
+        if better_result is not None:
+            fopt, success, status, message, constr_violation, fun = better_result
+            fopt2 = []
+            for x in fopt:
+                if x < 1 / 24:
+                    fopt2.append(0)
+                else:
+                    fopt2.append(x)
+            fopt = fopt2
+            better_result = fopt, success, status, message, constr_violation, fun
+
         if opt_obj.status_optimization(better_result):
             return better_result
 
@@ -463,6 +474,7 @@ class Optimizer:
         :return:
         """
         fopt, success, status, message, constr_violation, vrc = res
+
         f = self.fopt_to_f(fopt)
 
         line = "\n\nOptimization Results"
@@ -484,6 +496,7 @@ class Optimizer:
         :return: Optimizer object, boarding dictionary, alighting dictionary, k dictionary, loaded_section_route
         """
         fopt, success, status, message, constr_violation, vrc = res
+
         f = self.fopt_to_f(fopt)
         final_optimizer = Optimizer(self.graph_obj, self.demand_obj, self.passenger_obj, self.network_obj, f)
         z, v, loaded_section_route = Assignment.get_alighting_and_boarding(final_optimizer.Vij,
@@ -519,149 +532,187 @@ class Optimizer:
 
         for route in final_optimizer.network_obj.get_routes():
 
-            # flota de buses
-            b = cycle_time_line[route.id] * f[route.id]
-            nodes_sequence_i = route.nodes_sequence_i
-            nodes_sequence_r = route.nodes_sequence_r
-            # carga que hay en los tramos
-            total_pax = 0
-            charge_i = []
-            charge_r = []
-            # total de subidas a la ruta
-            total_b = 0
+            if f[route.id] > 0:
 
-            # caso circular
-            if route._type == RouteType.CIRCULAR:
+                # flota de buses
+                b = cycle_time_line[route.id] * f[route.id]
+                nodes_sequence_i = route.nodes_sequence_i
+                nodes_sequence_r = route.nodes_sequence_r
+                # carga que hay en los tramos
+                total_pax = 0
+                charge_i = []
+                charge_r = []
+                # total de subidas a la ruta
+                total_b = 0
 
-                # circular con sentido de ida
-                if len(nodes_sequence_i) > 0:
-                    node_sequence = nodes_sequence_i
-                    direction = "I"
-                # circular con sentido de vuelta
+                # caso circular
+                if route._type == RouteType.CIRCULAR:
+
+                    # circular con sentido de ida
+                    if len(nodes_sequence_i) > 0:
+                        node_sequence = nodes_sequence_i
+                        direction = "I"
+                    # circular con sentido de vuelta
+                    else:
+                        node_sequence = nodes_sequence_r
+                        direction = "R"
+                    load_i = []
+                    for i in node_sequence:
+                        for stop_node in z[route.id][direction]:
+                            if stop_node.city_node.graph_node.id == i:
+                                total_b += z[route.id][direction][stop_node]
+                                break
+                        for stop_node in loaded_section_route[route.id][direction]:
+                            if stop_node.city_node.graph_node.id == i:
+                                load_i.append(loaded_section_route[route.id][direction][stop_node])
+                                break
+
+                    if total_b == 0:
+                        co = 0
+                    else:
+                        co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
+                                total_b * f[route.id])
+
+                    if len(load_i) >= 1:
+                        charge_min = min(load_i) / max(load_i)
+                    else:
+                        load_i = [1] * len(node_sequence)
+                        charge_min = 0
+
+                    sub_table = []
+                    sub_table_i = []
+                    sub_table_r = []
+
+                    node_i = None
+                    charge_ij = None
+                    for i in range(len(node_sequence)):
+                        if i == 0:
+                            node_i = node_sequence[i]
+                            charge_ij = load_i[i] / max(load_i)
+                            continue
+                        else:
+                            node_j = node_sequence[i]
+                            sub_table.append((node_i, node_j, abs(charge_ij)))
+                            node_i = node_j
+                            charge_ij = load_i[i] / max(load_i)
+
+                    # circular con sentido de ida
+                    if len(nodes_sequence_i) > 0:
+                        sub_table_i = sub_table
+                    # circular con sentido de vuelta
+                    else:
+                        sub_table_r = sub_table
+
+                    output.append((
+                        route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b,
+                        cycle_time_line[route.id] * 60,
+                        co, abs(charge_min), sub_table_i, sub_table_r))
                 else:
-                    node_sequence = nodes_sequence_r
-                    direction = "R"
-                load_i = []
-                for i in node_sequence:
-                    for stop_node in z[route.id][direction]:
-                        if stop_node.city_node.graph_node.id == i:
-                            total_b += z[route.id][direction][stop_node]
-                            break
-                    for stop_node in loaded_section_route[route.id][direction]:
-                        if stop_node.city_node.graph_node.id == i:
-                            load_i.append(loaded_section_route[route.id][direction][stop_node])
-                            break
+                    # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
+                    total_pax = 0
+                    for node_id in nodes_sequence_i:
+                        bool_add = False
+                        for stopnode in z[route.id]["I"]:
+                            if stopnode.city_node.graph_node.id == node_id:
+                                pax_b = z[route.id]["I"][stopnode]
+                                pax_a = v[route.id]["I"][stopnode]
+                                total_pax += pax_b - pax_a
+                                total_b += pax_b
 
-                if total_b == 0:
-                    co = 0
-                else:
+                                charge_i.append((node_id, total_pax / k[route.id]))
+                                bool_add = True
+                                break
+                        if bool_add is False:
+                            charge_i.append((node_id, total_pax / k[route.id]))
+
+                    total_pax = 0
+                    for node_id in nodes_sequence_r:
+                        bool_add = False
+                        for stopnode in z[route.id]["R"]:
+                            if stopnode.city_node.graph_node.id == node_id:
+                                pax_b = z[route.id]["R"][stopnode]
+                                pax_a = v[route.id]["R"][stopnode]
+                                total_pax += pax_b - pax_a
+                                total_b += pax_b
+
+                                charge_r.append((node_id, total_pax / k[route.id]))
+                                bool_add = True
+                                break
+                        if bool_add is False:
+                            charge_r.append((node_id, total_pax / k[route.id]))
+
                     co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
                             total_b * f[route.id])
 
-                if len(load_i) >= 1:
-                    charge_min = min(load_i) / max(load_i)
-                else:
-                    load_i = [1] * len(node_sequence)
-                    charge_min = 0
+                    charge_min = float("inf")
+                    sub_table_i = []
+                    node_i = None
+                    charge_ij = None
+                    for node_j, charge in charge_i:
+                        if node_i is None:
+                            node_i = node_j
+                            charge_ij = charge
+                            continue
+                        else:
+                            sub_table_i.append((node_i, node_j, abs(charge_ij)))
+                            if charge_min > charge_ij:
+                                charge_min = charge_ij
+                            node_i = node_j
+                            charge_ij = charge
 
-                sub_table = []
-                sub_table_i = []
-                sub_table_r = []
+                    sub_table_r = []
+                    node_i = None
+                    charge_ij = None
+                    for node_j, charge in charge_r:
+                        if node_i is None:
+                            node_i = node_j
+                            charge_ij = charge
+                            continue
+                        else:
+                            sub_table_r.append((node_i, node_j, abs(charge_ij)))
+                            if charge_min > charge_ij:
+                                charge_min = charge_ij
+                            node_i = node_j
+                            charge_ij = charge
 
-                node_i = None
-                charge_ij = None
-                for i in range(len(node_sequence)):
-                    if i == 0:
-                        node_i = node_sequence[i]
-                        charge_ij = load_i[i] / max(load_i)
-                        continue
-                    else:
-                        node_j = node_sequence[i]
-                        sub_table.append((node_i, node_j, abs(charge_ij)))
-                        node_i = node_j
-                        charge_ij = load_i[i] / max(load_i)
-
-                # circular con sentido de ida
-                if len(nodes_sequence_i) > 0:
-                    sub_table_i = sub_table
-                # circular con sentido de vuelta
-                else:
-                    sub_table_r = sub_table
-
-                output.append((
-                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
-                    co, abs(charge_min), sub_table_i, sub_table_r))
+                    output.append((
+                        route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b,
+                        cycle_time_line[route.id] * 60,
+                        co, abs(charge_min), sub_table_i, sub_table_r))
             else:
-                # z and v: dic[route_id][direction][stop: StopNode] = pax [pax/veh]
-                total_pax = 0
-                for node_id in nodes_sequence_i:
-                    bool_add = False
-                    for stopnode in z[route.id]["I"]:
-                        if stopnode.city_node.graph_node.id == node_id:
-                            pax_b = z[route.id]["I"][stopnode]
-                            pax_a = v[route.id]["I"][stopnode]
-                            total_pax += pax_b - pax_a
-                            total_b += pax_b
+                nodes_sequence_i = route.nodes_sequence_i
+                nodes_sequence_r = route.nodes_sequence_r
 
-                            charge_i.append((node_id, total_pax / k[route.id]))
-                            bool_add = True
-                            break
-                    if bool_add is False:
-                        charge_i.append((node_id, total_pax / k[route.id]))
-
-                total_pax = 0
-                for node_id in nodes_sequence_r:
-                    bool_add = False
-                    for stopnode in z[route.id]["R"]:
-                        if stopnode.city_node.graph_node.id == node_id:
-                            pax_b = z[route.id]["R"][stopnode]
-                            pax_a = v[route.id]["R"][stopnode]
-                            total_pax += pax_b - pax_a
-                            total_b += pax_b
-
-                            charge_r.append((node_id, total_pax / k[route.id]))
-                            bool_add = True
-                            break
-                    if bool_add is False:
-                        charge_r.append((node_id, total_pax / k[route.id]))
-
-                co = (route.mode.co + route.mode.c1 * k[route.id]) * f[route.id] * cycle_time_line[route.id] / (
-                        total_b * f[route.id])
-
-                charge_min = float("inf")
                 sub_table_i = []
-                node_i = None
-                charge_ij = None
-                for node_j, charge in charge_i:
-                    if node_i is None:
-                        node_i = node_j
-                        charge_ij = charge
-                        continue
-                    else:
-                        sub_table_i.append((node_i, node_j, abs(charge_ij)))
-                        if charge_min > charge_ij:
-                            charge_min = charge_ij
-                        node_i = node_j
-                        charge_ij = charge
-
                 sub_table_r = []
+
                 node_i = None
                 charge_ij = None
-                for node_j, charge in charge_r:
-                    if node_i is None:
-                        node_i = node_j
-                        charge_ij = charge
+                for i in range(len(nodes_sequence_i)):
+                    if i == 0:
+                        node_i = nodes_sequence_i[i]
+                        charge_ij = 0
                         continue
                     else:
-                        sub_table_r.append((node_i, node_j, abs(charge_ij)))
-                        if charge_min > charge_ij:
-                            charge_min = charge_ij
+                        node_j = nodes_sequence_i[i]
+                        sub_table_i.append((node_i, node_j, abs(charge_ij)))
                         node_i = node_j
-                        charge_ij = charge
+                        charge_ij = 0
+                node_i = None
+                charge_ij = None
+                for i in range(len(nodes_sequence_r)):
+                    if i == 0:
+                        node_i = nodes_sequence_r[i]
+                        charge_ij = 0
+                        continue
+                    else:
+                        node_j = nodes_sequence_r[i]
+                        sub_table_r.append((node_i, node_j, abs(charge_ij)))
+                        node_i = node_j
+                        charge_ij = 0
 
                 output.append((
-                    route.id, f[route.id], f[route.id] / route.mode.d, k[route.id], b, cycle_time_line[route.id] * 60,
-                    co, abs(charge_min), sub_table_i, sub_table_r))
+                    route.id, 0, 0, 0, 0, 0, 0, 0, sub_table_i, sub_table_r))
 
         return output
 
