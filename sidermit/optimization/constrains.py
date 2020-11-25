@@ -48,7 +48,7 @@ class Constrains:
             nodei = edge.node1.id
             nodej = edge.node2.id
             for mode in list_mode:
-                fmax = mode.fmax
+                fmax = mode.fmax / mode.d
                 sum_f = 0
                 for route in routes:
                     if route.mode == mode:
