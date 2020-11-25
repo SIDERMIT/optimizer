@@ -178,16 +178,17 @@ class Hyperpath:
                     theta = i.mode.theta
 
                     # initial case
-                    if frequencies[i] == 0 and labels[i] == float('inf'):
+                    if frequencies[i] == 0 and labels[i] == float('inf') and edge.f != 0:
                         # print(edge.type)
                         successor[i].append(edge)
                         labels[i] = (theta * self.passenger_obj.pw / self.passenger_obj.pv + edge.f * t_i) / edge.f
                         frequencies[i] = frequencies[i] + edge.f
                     # previously assigned label
                     else:
-                        successor[i].append(edge)
-                        labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
-                        frequencies[i] = frequencies[i] + edge.f
+                        if edge.f != 0:
+                            successor[i].append(edge)
+                            labels[i] = (frequencies[i] * labels[i] + edge.f * t_i) / (frequencies[i] + edge.f)
+                            frequencies[i] = frequencies[i] + edge.f
 
                 # we verify that all the successors of i remain optimal
                 for edge_b in successor[i]:
