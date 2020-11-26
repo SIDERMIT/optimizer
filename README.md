@@ -3,11 +3,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/SIDERMIT/optimizer/badge.svg?branch=master)](https://coveralls.io/github/SIDERMIT/optimizer?branch=master)
 
 # Optimizer
-package to calculate route variables
+Package to design optimal public transport networks in parameterizable cities
 
-# Módulos
+# Package documentation
 
-city_graph:  Creación grafo de ciudad por parámetros o archivos. 
+Link: https://sidermit.github.io/optimizer/
 
 # Python requirements
 
