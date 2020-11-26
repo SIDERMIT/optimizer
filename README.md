@@ -9,6 +9,8 @@ Package to design optimal public transport networks in parameterizable cities
 
 Link: https://sidermit.github.io/optimizer/
 
+Link examples: https://github.com/SIDERMIT/optimizer/tree/master/examples
+
 # Python requirements
 
 Project works with python 3.7 or higher
